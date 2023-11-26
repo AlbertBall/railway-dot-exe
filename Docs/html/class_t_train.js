@@ -178,6 +178,7 @@ var class_t_train =
     [ "TrainFailurePending", "class_t_train.html#abd48d5379cf0cb608d372e8a5f8c46c6", null ],
     [ "TrainGone", "class_t_train.html#a3ecf54f0385bc6157ebe5f56512caf1f", null ],
     [ "TrainID", "class_t_train.html#a95a26f26e890d53e38f1f8067977ef0e", null ],
+    [ "TrainInFront", "class_t_train.html#a095d70724f7538df81a0b6c6f97978e6", null ],
     [ "TrainMode", "class_t_train.html#a860f87857baefc44a4928311698055a8", null ],
     [ "TrainSkippedEvents", "class_t_train.html#a912a7dbe0465faf5f93e39aabf3ae7a3", null ],
     [ "TreatPassAsTimeLocDeparture", "class_t_train.html#a9f60ab98af982c4f90a3fbd19a582811", null ],

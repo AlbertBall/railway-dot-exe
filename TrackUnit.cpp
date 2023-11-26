@@ -6271,13 +6271,13 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
     // to not be plotted with the above function.
 
                 //replot the blue square to cover the blank area - added at v2.18.0
-                TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
+                TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(36, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
                 if(IMPair.first > 0) //can only have one entry in IMPair for signals
                 {
-                    TTrackElement ITE = InactiveTrackElementAt(7777, IMPair.first);
+                    TTrackElement ITE = InactiveTrackElementAt(1414, IMPair.first);
                     if(ITE.SpeedTag == 131)
                     {
-                        ITE.PlotVariableTrackElement(7777, Disp); //plot the blue square again to cover the blank area
+                        ITE.PlotVariableTrackElement(9, Disp); //plot the blue square again to cover the blank area
                     }
                 }
 
@@ -6347,13 +6347,13 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
                             Disp->PlotSignalBlank(1, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
                             // plot special signal platform if present
                             Graphics::TBitmap* SignalPlatformGraphic;
-                            TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc, FoundFlag); //added at v2.18.0
+                            TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(37, TrackElement.HLoc, TrackElement.VLoc, FoundFlag); //added at v2.18.0
                             if(IMPair.first > 0) //can only have one entry in IMPair for signals
                             {
-                                TTrackElement ITE = InactiveTrackElementAt(7777, IMPair.first);
+                                TTrackElement ITE = InactiveTrackElementAt(1415, IMPair.first);
                                 if(ITE.SpeedTag == 131)
                                 {
-                                    ITE.PlotVariableTrackElement(7777, Disp); //plot the blue square again to cover the blank area
+                                    ITE.PlotVariableTrackElement(10, Disp); //plot the blue square again to cover the blank area
                                 }
                             }
                             PlotSignalPlatforms(1, TrackElement.HLoc, TrackElement.VLoc, Disp);
@@ -6376,13 +6376,13 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
                 {
                     // plot blank first, then plot platform if present - striped or not depending on LocationName being set
                     Disp->PlotSignalBlank(2, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
-                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc, FoundFlag); //added at v2.18.0
+                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(38, TrackElement.HLoc, TrackElement.VLoc, FoundFlag); //added at v2.18.0
                     if(IMPair.first > 0) //can only have one entry in IMPair for signals
                     {
-                        TTrackElement ITE = InactiveTrackElementAt(7777, IMPair.first);
+                        TTrackElement ITE = InactiveTrackElementAt(1416, IMPair.first);
                         if(ITE.SpeedTag == 131)
                         {
-                            ITE.PlotVariableTrackElement(7777, Disp); //plot the blue square again to cover the blank area
+                            ITE.PlotVariableTrackElement(11, Disp); //plot the blue square again to cover the blank area
                         }
                     }
                     PlotSignalPlatforms(2, TrackElement.HLoc, TrackElement.VLoc, Disp); // if no platforms nothing is plotted
@@ -6400,13 +6400,13 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
                 {
                     // plot blank first, then plot platform if present - striped or not depending on LocationName being set
                     Disp->PlotSignalBlank(3, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
-                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc, FoundFlag); //added at v2.18.0
+                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(39, TrackElement.HLoc, TrackElement.VLoc, FoundFlag); //added at v2.18.0
                     if(IMPair.first > 0) //can only have one entry in IMPair for signals
                     {
-                        TTrackElement ITE = InactiveTrackElementAt(7777, IMPair.first);
+                        TTrackElement ITE = InactiveTrackElementAt(1417, IMPair.first);
                         if(ITE.SpeedTag == 131)
                         {
-                            ITE.PlotVariableTrackElement(7777, Disp); //plot the blue square again to cover the blank area
+                            ITE.PlotVariableTrackElement(12, Disp); //plot the blue square again to cover the blank area
                         }
                     }
                     PlotSignalPlatforms(3, TrackElement.HLoc, TrackElement.VLoc, Disp); // if no platforms nothing is plotted
@@ -11266,12 +11266,12 @@ the lead element of the front train will be at the location if it is possible.
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisLocationLongEnoughForSplit," + AnsiString(TrainID) + "," +
         LocationName + AnsiString(LeadElement) + "," + AnsiString(LeadExitPos) + "," + AnsiString(MidElement) + "," + AnsiString(MidEntryPos));
 
-    TemporaryDelay = false;
+    TemporaryDelay = false; //used in calling function to set LastActionTime to TTClockTime so failure messages only given every 30 secs
     //count forwards from LeadElement - only need to count forwards 2 elements to ptovide for room for new front train
     int FwdPos[3] = {LeadElement, -1, -1}; //0 starts at LeadElement and increases as go forwards
     int RwdPos[3] = {MidElement, -1, -1}; //0 starts at MidElement and increases as go backwards
-    TTrackElement FwdPos0Element = TrackElementAt(7777, LeadElement);
-    TTrackElement RwdPos0Element = TrackElementAt(7777, MidElement);
+    TTrackElement FwdPos0Element = TrackElementAt(1666, LeadElement);
+    TTrackElement RwdPos0Element = TrackElementAt(1667, MidElement);
     int FwdPos1EntryPos, FwdPos1ExitPos, FwdPos2EntryPos, FwdPos2ExitPos, RwdPos1EntryPos, RwdPos1ExitPos, RwdPos2EntryPos, RwdPos2ExitPos; //these needed to test for other train on element
 
     bool FwdDerail1 = false, FwdDerail2 = false, RwdDerail1 = false, RwdDerail2 = false;
@@ -11285,20 +11285,20 @@ the lead element of the front train will be at the location if it is possible.
     if(FwdPos[1] > -1)
     {
         NumFwdElements = 1;
-        TTrackElement FwdPos1Element = TrackElementAt(7777, FwdPos[1]);
+        TTrackElement FwdPos1Element = TrackElementAt(1668, FwdPos[1]);
         if(FwdPos1Element.ActiveTrackElementName == LocationName)
         {
             NumFwdNamedElements = 1;
         }
         FwdPos1EntryPos = FwdPos0Element.ConnLinkPos[LeadExitPos];
-        FwdPos1ExitPos = GetAnyElementOppositeLinkPos(7777, FwdPos[1], FwdPos1EntryPos, FwdDerail1);
+        FwdPos1ExitPos = GetAnyElementOppositeLinkPos(4, FwdPos[1], FwdPos1EntryPos, FwdDerail1);
         FwdPos[2] = FwdPos1Element.Conn[FwdPos1ExitPos];
         if(FwdPos[2] > -1)
         {
             NumFwdElements = 2;
             FwdPos2EntryPos = FwdPos1Element.ConnLinkPos[FwdPos1ExitPos];
-            FwdPos2ExitPos = GetAnyElementOppositeLinkPos(7777, FwdPos[2], FwdPos2EntryPos, FwdDerail2); //this is purely to obtain Derail
-            TTrackElement FwdPos2Element = TrackElementAt(7777, FwdPos[2]);
+            FwdPos2ExitPos = GetAnyElementOppositeLinkPos(5, FwdPos[2], FwdPos2EntryPos, FwdDerail2); //this is purely to obtain Derail
+            TTrackElement FwdPos2Element = TrackElementAt(1669, FwdPos[2]);
             if(FwdPos2Element.ActiveTrackElementName == LocationName)
             {
                 NumFwdNamedElements = 2;
@@ -11311,20 +11311,20 @@ the lead element of the front train will be at the location if it is possible.
     if(RwdPos[1] > -1)
     {
         NumRwdElements = 2; //includes MidElement
-        TTrackElement RwdPos1Element = TrackElementAt(7777, RwdPos[1]);
+        TTrackElement RwdPos1Element = TrackElementAt(1670, RwdPos[1]);
         if(RwdPos1Element.ActiveTrackElementName == LocationName)
         {
             NumRwdNamedElements = 2; //includes MidElement
         }
         RwdPos1ExitPos = RwdPos0Element.ConnLinkPos[MidEntryPos];
-        RwdPos1EntryPos = GetAnyElementOppositeLinkPos(7777, RwdPos[1], RwdPos1ExitPos, RwdDerail1);
+        RwdPos1EntryPos = GetAnyElementOppositeLinkPos(6, RwdPos[1], RwdPos1ExitPos, RwdDerail1);
         RwdPos[2] = RwdPos1Element.Conn[RwdPos1EntryPos];
         if(RwdPos[2] > -1)
         {
             NumRwdElements = 3; //includes MidElement
             RwdPos2ExitPos = RwdPos1Element.ConnLinkPos[RwdPos1EntryPos];
-            RwdPos2EntryPos = GetAnyElementOppositeLinkPos(7777, RwdPos[2], RwdPos2ExitPos, RwdDerail2); //this is purely to obtain Derail
-            TTrackElement RwdPos2Element = TrackElementAt(7777, RwdPos[2]);
+            RwdPos2EntryPos = GetAnyElementOppositeLinkPos(7, RwdPos[2], RwdPos2ExitPos, RwdDerail2); //this is purely to obtain Derail
+            TTrackElement RwdPos2Element = TrackElementAt(1671, RwdPos[2]);
             if(RwdPos2Element.ActiveTrackElementName == LocationName)
             {
                 NumRwdNamedElements = 3; //includes MidElement
@@ -11342,26 +11342,26 @@ the lead element of the front train will be at the location if it is possible.
         RearTrainRearPos = MidElement;
         if(FwdDerail1 || FwdDerail2)
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
+            TrainController->StopTTClockMessage(159, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2661);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, FwdPos[1], FwdPos1EntryPos, TrainID))
+        if(OtherTrainOnTrack(6, FwdPos[1], FwdPos1EntryPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(160, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2662);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, FwdPos[2], FwdPos2ExitPos, TrainID))
+        if(OtherTrainOnTrack(7, FwdPos[2], FwdPos2ExitPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(161, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2663);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2664);
         return(true);
     }
 
@@ -11373,33 +11373,33 @@ the lead element of the front train will be at the location if it is possible.
         RearTrainRearPos = RwdPos[1];
         if(FwdDerail1)
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
+            TrainController->StopTTClockMessage(162, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2665);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
         if(RwdDerail1)
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + ", points set wrongly behind train.  Please change these points to allow the split.");
+            TrainController->StopTTClockMessage(163, HeadCode + " unable to split at " + LocationName + ", points set wrongly behind train.  Please change these points to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2666);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, FwdPos[1], FwdPos1EntryPos, TrainID))
+        if(OtherTrainOnTrack(8, FwdPos[1], FwdPos1EntryPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(164, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2667);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, RwdPos[1], RwdPos1ExitPos, TrainID))
+        if(OtherTrainOnTrack(9, RwdPos[1], RwdPos1ExitPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(165, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2668);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2669);
         return(true);
     }
 
@@ -11411,26 +11411,26 @@ the lead element of the front train will be at the location if it is possible.
         RearTrainRearPos = RwdPos[2];
         if(RwdDerail1 || RwdDerail2)
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + ", points set wrongly behind train.  Please change these points to allow the split.");
+            TrainController->StopTTClockMessage(166, HeadCode + " unable to split at " + LocationName + ", points set wrongly behind train.  Please change these points to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2670);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, RwdPos[1], RwdPos1ExitPos, TrainID))
+        if(OtherTrainOnTrack(10, RwdPos[1], RwdPos1ExitPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(167, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2671);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, RwdPos[2], RwdPos2EntryPos, TrainID))
+        if(OtherTrainOnTrack(11, RwdPos[2], RwdPos2EntryPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(168, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2672);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2673);
         return(true);
     }
 
@@ -11443,26 +11443,26 @@ the lead element of the front train will be at the location if it is possible.
         RearTrainRearPos = MidElement;
         if(FwdDerail1 || FwdDerail2)
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
+            TrainController->StopTTClockMessage(169, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2674);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, FwdPos[1], FwdPos1EntryPos, TrainID))
+        if(OtherTrainOnTrack(12, FwdPos[1], FwdPos1EntryPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(170, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2675);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, FwdPos[2], FwdPos2ExitPos, TrainID))
+        if(OtherTrainOnTrack(13, FwdPos[2], FwdPos2ExitPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(171, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2676);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2677);
         return(true);
     }
 
@@ -11474,33 +11474,33 @@ the lead element of the front train will be at the location if it is possible.
         RearTrainRearPos = RwdPos[1];
         if(FwdDerail1)
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
+            TrainController->StopTTClockMessage(172, HeadCode + " unable to split at " + LocationName + ", points set wrongly ahead of train.  Please change these points to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2678);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
         if(RwdDerail1)
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + ", points set wrongly behind train.  Please change these points to allow the split.");
+            TrainController->StopTTClockMessage(173, HeadCode + " unable to split at " + LocationName + ", points set wrongly behind train.  Please change these points to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2679);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, FwdPos[1], FwdPos1EntryPos, TrainID))
+        if(OtherTrainOnTrack(14, FwdPos[1], FwdPos1EntryPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(174, HeadCode + " unable to split at " + LocationName + " because another train is obstructing ahead of this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2680);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        if(OtherTrainOnTrack(7777, RwdPos[1], RwdPos1ExitPos, TrainID))
+        if(OtherTrainOnTrack(15, RwdPos[1], RwdPos1ExitPos, TrainID))
         {
-            TrainController->StopTTClockMessage(7777, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
+            TrainController->StopTTClockMessage(175, HeadCode + " unable to split at " + LocationName + " because another train is obstructing behind this train.  Please move the obstructing train to allow the split.");
             TemporaryDelay = true;
-            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            Utilities->CallLogPop(2681);     //may be able to split further back but leave as is to avoid complication
             return(true);
         }
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2682);
         return(true);
     }
 //anything else fails as location too short

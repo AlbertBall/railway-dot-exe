@@ -91,6 +91,8 @@ digraph "TTrack::PlotPastedTrackElementWithAttributes"
   Node22 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
   Node22 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -104,6 +106,7 @@ digraph "TTrack::PlotPastedTrackElementWithAttributes"
   Node24 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node24 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node24 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

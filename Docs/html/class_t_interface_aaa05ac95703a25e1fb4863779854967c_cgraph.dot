@@ -165,6 +165,7 @@ digraph "TInterface::ClearandRebuildRailway"
   Node48 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
   Node48 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node48 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 -> Node43 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node48 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node41 -> Node43 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node41 -> Node51 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

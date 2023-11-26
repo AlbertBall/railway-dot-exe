@@ -351,7 +351,6 @@ private:
 ///<flags to indicate whether the respective message has been sent
     bool TrainFailurePending;
 ///< set when failure due & takes effect when all PlotElements properly set, added at v2.4.0
-
     int IncrementalDigits;
 ///< the number of digits to increment by in repeat entries
     int IncrementalMinutes;

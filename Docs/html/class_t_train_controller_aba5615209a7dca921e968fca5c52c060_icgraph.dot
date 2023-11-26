@@ -107,8 +107,6 @@ digraph "TTrainController::StopTTClockMessage"
   Node37 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node37 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node32 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node32 -> Node40 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node40 [label="TInterface::RepairFailed\lTrainMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad3ddf42d51934815002002a770df766a",tooltip=" "];
   Node32 -> Node36 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node32 -> Node37 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node32 -> Node41 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -148,8 +146,12 @@ digraph "TTrainController::StopTTClockMessage"
   Node221 [label="TOneRoute::SignalHasFailed",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_one_route.html#a4177e4c0c4d6817515cb19f4f7e1427b",tooltip="Check incorporated in route search routines after have found a legitimate route, returns false for si..."];
   Node221 -> Node217 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node41 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node44 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node223 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node223 [label="TOneRoute::TruncateRoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a431473ce9a2ef6c49781ab84c972a641",tooltip="Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFl..."];
+  Node223 [label="TTrack::ThisLocationLong\lEnoughForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#ae1e7949ca5ec34e166b4e38e4ef62c52",tooltip="checks if the track that the train is on is long enough for a split, returns false if not,..."];
+  Node223 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node223 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node44 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node224 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node224 [label="TOneRoute::TruncateRoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a431473ce9a2ef6c49781ab84c972a641",tooltip="Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFl..."];
   Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

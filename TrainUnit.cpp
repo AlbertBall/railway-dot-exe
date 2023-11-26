@@ -1332,7 +1332,7 @@ void TTrain::UpdateTrain(int Caller)
             int NextPos = Track->TrackElementAt(649, LeadElement).Conn[LeadExitPos];
             if(NextPos > -1)
             {
-                int NextEntryPos = Track->TrackElementAt(650, LeadElement).ConnLinkPos[LeadExitPos];
+                int NextEntryPos = Track->TrackElementAt(1674, LeadElement).ConnLinkPos[LeadExitPos];
                 if(Track->OtherTrainOnTrack(1, NextPos, NextEntryPos, TrainID))
                 // true if another train on NextEntryPos track whether bridge or not
                 {
@@ -1358,7 +1358,7 @@ void TTrain::UpdateTrain(int Caller)
             }
         }
     }
-    if(TrainFailurePending) // ok, stopped so PlotElements set
+    if(Stopped() && TrainFailurePending) // ok, stopped so PlotElements set
     {
         TrainHasFailed(4);
         Utilities->CallLogPop(1097);
@@ -1423,8 +1423,8 @@ void TTrain::UpdateTrain(int Caller)
                 EntrySpeed = 0;
                 bool Derail; //not used
                 EntryTime = TrainController->TTClockTime;
-                int NextElementPosition = Track->TrackElementAt(199, LeadElement).Conn[Track->GetAnyElementOppositeLinkPos(7777, LeadElement, LeadEntryPos, Derail)];
-                int NextEntryPos = Track->TrackElementAt(200, LeadElement).ConnLinkPos[Track->GetAnyElementOppositeLinkPos(7777, LeadElement, LeadEntryPos, Derail)];
+                int NextElementPosition = Track->TrackElementAt(199, LeadElement).Conn[Track->GetAnyElementOppositeLinkPos(8, LeadElement, LeadEntryPos, Derail)];
+                int NextEntryPos = Track->TrackElementAt(200, LeadElement).ConnLinkPos[Track->GetAnyElementOppositeLinkPos(9, LeadElement, LeadEntryPos, Derail)];
                 FirstHalfMove = true;                               //above changed at 2.18.0 from GetNonPoints... to GetAnyElement... as had wrong
                 StoppedAtLocation = false;                          //element and link found with non-station names on points as can now stop on points
 
@@ -1587,9 +1587,9 @@ void TTrain::UpdateTrain(int Caller)
     {
         if((LeadElement > -1) && (LeadExitPos > -1))
         {
-            int NextPos = Track->TrackElementAt(649, LeadElement).Conn[LeadExitPos];
-            int NextEntryPos = Track->TrackElementAt(650, LeadElement).ConnLinkPos[LeadExitPos];
-            if(Track->OtherTrainOnTrack(1, NextPos, NextEntryPos, TrainID))
+            int NextPos = Track->TrackElementAt(1672, LeadElement).Conn[LeadExitPos];
+            int NextEntryPos = Track->TrackElementAt(1675, LeadElement).ConnLinkPos[LeadExitPos];
+            if(Track->OtherTrainOnTrack(16, NextPos, NextEntryPos, TrainID))
             // true if another train on NextEntryPos track whether bridge or not
             {
                 TrainInFront = true;
@@ -5789,7 +5789,7 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
     if(TemporaryDelay)
     {
         LastActionTime = TrainController->TTClockTime;
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2683);
         return;
     }
 
@@ -5804,7 +5804,7 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
     RearStartElement = RearTrainRearPos;
     for(int x = 0; x < 4; x++)
     {
-        if(Track->TrackElementAt(7777, RearStartElement).Conn[x] == RearTrainFrontPos)
+        if(Track->TrackElementAt(1664, RearStartElement).Conn[x] == RearTrainFrontPos)
         {
             RearStartExitPos = x;
         }
@@ -5903,21 +5903,21 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
     {
         if(!ZeroPowerNoFrontSplitMessage)
         {
-            TrainController->StopTTClockMessage(82, HeadCode + ": A train without power can't split");
+            TrainController->StopTTClockMessage(176, HeadCode + ": A train without power can't split");
         }
         ZeroPowerNoFrontSplitMessage = true;
-        Utilities->CallLogPop(2137);
+        Utilities->CallLogPop(2685);
         return;
     }
-    AnsiString LocationName = Track->TrackElementAt(555, LeadElement).ActiveTrackElementName;
+    AnsiString LocationName = Track->TrackElementAt(1676, LeadElement).ActiveTrackElementName;
 
     if(LocationName == "")
     {
-        LocationName = Track->TrackElementAt(837, MidElement).ActiveTrackElementName;
+        LocationName = Track->TrackElementAt(1677, MidElement).ActiveTrackElementName;
     }
     int RearTrainRearPos, RearTrainFrontPos;
     int FrontTrainRearPos, FrontTrainFrontPos, FrontTrainExitPos;
-    AnsiString OtherHeadCode = TrainController->GetRepeatHeadCode(1, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
+    AnsiString OtherHeadCode = TrainController->GetRepeatHeadCode(67, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 
     if(LocationName == "")
     {
@@ -5933,11 +5933,11 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
         {
             if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
             {
-                TrainController->StopTTClockMessage(151, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
-                TrainController->LogActionError(6, HeadCode, "", FailLocTooShort, LocationName);
+                TrainController->StopTTClockMessage(177, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
+                TrainController->LogActionError(66, HeadCode, "", FailLocTooShort, LocationName);
                 TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
             }
-            Utilities->CallLogPop(1009);
+            Utilities->CallLogPop(2686);
             return;
         }
     }
@@ -5945,7 +5945,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
     if(TemporaryDelay)
     {
         LastActionTime = TrainController->TTClockTime;
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2684);
         return;
     }
 
@@ -5955,12 +5955,12 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
     bool SplitTrainExplicitDescription = ActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription;
     TTrainDataEntry *LinkedTrainEntryPtr = ActionVectorEntryPtr->LinkedTrainEntryPtr;
 
-    UnplotTrain(0);
+    UnplotTrain(11);
     StartSpeed = 0;
     RearStartElement = FrontTrainRearPos;
     for(int x = 0; x < 4; x++)
     {
-        if(Track->TrackElementAt(7777, RearStartElement).Conn[x] == FrontTrainFrontPos)
+        if(Track->TrackElementAt(1665, RearStartElement).Conn[x] == FrontTrainFrontPos)
         {
             RearStartExitPos = x;
         }
@@ -5970,9 +5970,9 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
     {
         StoppedWithoutPower = true;
     }
-    PlotStartPosition(3);
-    PlotTrainWithNewBackgroundColour(14, clStationStopBackground, Display);
-    LogAction(9, HeadCode, OtherHeadCode, FrontSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->SplitDistribution, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+    PlotStartPosition(12);
+    PlotTrainWithNewBackgroundColour(55, clStationStopBackground, Display);
+    LogAction(38, HeadCode, OtherHeadCode, RearSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->SplitDistribution, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
 //    ActionVectorEntryPtr++;  moved lower down at v2.15.0 because of new section below
     LastActionTime = TrainController->TTClockTime;
 
@@ -6013,11 +6013,11 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
     ActionVectorEntryPtr++; //moved here at v2.18.0 to give more chances to split in case points set wrongly initially, also when AddTrain TrainVector
                             //may be repositioned so all references to this train may be invalid
 
-    if(!TrainController->AddTrain(0, RearTrainRearPos, RearTrainFrontPos, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
+    if(!TrainController->AddTrain(4, RearTrainRearPos, RearTrainFrontPos, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
                                   "Timetable", LinkedTrainEntryPtr, RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false, EventType))
     // false for SignallerControl
     {
-        Utilities->CallLogPop(1721); // EventType not used here
+        Utilities->CallLogPop(2687); // EventType not used here
         // if fails either a throw will have been sent in AddTrain or start position failed prob because of
         // another train, in which case a message will have been sent to the perf log, also might well clear later
         // when other train moves away
@@ -6039,7 +6039,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
 
     TTOD.TrainID = TrainController->TrainVector.back().TrainID;
     TTOD.RunningEntry = Running;
-    Utilities->CallLogPop(998);
+    Utilities->CallLogPop(2688);
 }
 
 // ---------------------------------------------------------------------------

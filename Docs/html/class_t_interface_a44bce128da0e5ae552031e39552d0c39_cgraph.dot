@@ -168,6 +168,7 @@ digraph "TInterface::HighLightOneGap"
   Node49 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
   Node49 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node49 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node49 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node49 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node42 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node42 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

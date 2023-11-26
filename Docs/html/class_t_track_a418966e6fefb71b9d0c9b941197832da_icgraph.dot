@@ -109,10 +109,6 @@ digraph "TTrack::GetVectorPositionsFromInactiveTrackMap"
   Node167 [label="TTrack::PlotPlainLowered\lLinkedLevelCrossingBarriersAnd\lSetMarkers",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#ad8a74040f61dffb16633deea5054deef",tooltip="Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway (..."];
   Node119 -> Node182 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node182 [label="TTrack::PlotPlainRaisedLinked\lLevelCrossingBarriersAndSetMarkers",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#a1f59015a92ef00604156a44011b4f4c8",tooltip="Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway."];
-  Node119 -> Node183 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node183 [label="TTrack::PlotRaisedLinked\lLevelCrossingBarriers",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#adbaf9ab8b709af9d194603892ac91133",tooltip="Plot & close (to trains) all level crossings linked to TrackElement - always plots as red - auto."];
-  Node183 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node183 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node191 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node191 [label="TTrack::IsLCBarrierDownAtHV",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aad258b17c96ace0dbbad3754eb743274",tooltip="True if an open (to trains) level crossing is found at H & V."];
   Node191 -> Node146 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -138,7 +134,13 @@ digraph "TTrack::GetVectorPositionsFromInactiveTrackMap"
   Node207 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node207 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node210 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node210 [label="TTrack::PlotSignalPlatforms",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b",tooltip="Plot platforms if any for a signal graphic - plotted before signal so shows through transparent signa..."];
+  Node210 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
+  Node210 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node210 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node210 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node212 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node212 [label="TTrack::PlotSignalPlatforms",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b",tooltip="Plot platforms if any for a signal graphic - plotted before signal so shows through transparent signa..."];
+  Node212 -> Node210 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node36 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node37 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

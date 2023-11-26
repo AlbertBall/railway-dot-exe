@@ -410,9 +410,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af05aab9136551763f221773cda241ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16dbc5b1b3898d70218cf52e52434bb6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a16dbc5b1b3898d70218cf52e52434bb6">OneStationLongEnoughForSplit</a> (int Caller, AnsiString LocationName)</td></tr>
 <tr class="separator:a16dbc5b1b3898d70218cf52e52434bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeac90568597c9f13a27fa90c58f9041f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#aeac90568597c9f13a27fa90c58f9041f">OtherTrainOnTrack</a> (int Caller, int NextPos, int NextEntryPos, int OwnTrainID)</td></tr>
-<tr class="memdesc:aeac90568597c9f13a27fa90c58f9041f"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if another train on NextEntryPos track of element at NextPos, whether bridge or not, return false if not, or if NextPos == -1, or if only own train on the track.  <a href="class_t_track.html#aeac90568597c9f13a27fa90c58f9041f">More...</a><br /></td></tr>
-<tr class="separator:aeac90568597c9f13a27fa90c58f9041f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2e0a1a60d7c023e87974e6fd34c3e41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#ab2e0a1a60d7c023e87974e6fd34c3e41">OtherTrainOnTrack</a> (int Caller, int TrackPos, int LinkPos, int OwnTrainID)</td></tr>
+<tr class="memdesc:ab2e0a1a60d7c023e87974e6fd34c3e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if another train on LinkPos track of element at TrackPos, whether bridge or not, return false if not, or if TrackPos == -1, or LinkPos == -1, or if only own train on the track.  <a href="class_t_track.html#ab2e0a1a60d7c023e87974e6fd34c3e41">More...</a><br /></td></tr>
+<tr class="separator:ab2e0a1a60d7c023e87974e6fd34c3e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c2888cb7acea2b9c65c5f9cc538df66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a7c2888cb7acea2b9c65c5f9cc538df66">PlatformOnSignalSide</a> (int Caller, int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *&amp;SignalPlatformGraphic)</td></tr>
 <tr class="memdesc:a7c2888cb7acea2b9c65c5f9cc538df66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether there is a platform present at HLoc &amp; VLoc at the same side as the signal represented by SpeedTag, if so return true, and also return a pointer to the appropriate platform graphic (same as a normal platform graphic but with a bit cut out for the signal)  <a href="class_t_track.html#a7c2888cb7acea2b9c65c5f9cc538df66">More...</a><br /></td></tr>
 <tr class="separator:a7c2888cb7acea2b9c65c5f9cc538df66"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -434,12 +434,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a90e1db27659603b72a703c017ee576c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a90e1db27659603b72a703c017ee576c8">ReturnNextTrackElement</a> (int Caller, <a class="el" href="class_t_track_element.html">TTrackElement</a> &amp;Next)</td></tr>
 <tr class="memdesc:a90e1db27659603b72a703c017ee576c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed-in or out track rebuilding, or writing image files), return true if there is a next one or false if not.  <a href="class_t_track.html#a90e1db27659603b72a703c017ee576c8">More...</a><br /></td></tr>
 <tr class="separator:a90e1db27659603b72a703c017ee576c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e059276b45e61ff0826f7b02f6fad39"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a4e059276b45e61ff0826f7b02f6fad39">ThisNonStationLongEnoughForSplit</a> (int Caller, AnsiString LocationName, int FirstNamedElementPos, int TrainLinkPos, int &amp;SecondNamedElementPos, int &amp;FirstNamedLinkedElementPos, int &amp;SecondNamedLinkedElementPos)</td></tr>
-<tr class="memdesc:a4e059276b45e61ff0826f7b02f6fad39"><td class="mdescLeft">&#160;</td><td class="mdescRight">as below but allow points &amp; crossoverssee above under  <a href="class_t_track.html#a4e059276b45e61ff0826f7b02f6fad39">More...</a><br /></td></tr>
-<tr class="separator:a4e059276b45e61ff0826f7b02f6fad39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22fbc44ac291500a58f90f97de356c97"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a22fbc44ac291500a58f90f97de356c97">ThisStationLongEnoughForSplit</a> (int Caller, AnsiString LocationName, int FirstNamedElementPos, int &amp;SecondNamedElementPos, int &amp;FirstNamedLinkedElementPos, int &amp;SecondNamedLinkedElementPos)</td></tr>
-<tr class="memdesc:a22fbc44ac291500a58f90f97de356c97"><td class="mdescLeft">&#160;</td><td class="mdescRight">See above under 'OneStationLongEnoughForSplit'.  <a href="class_t_track.html#a22fbc44ac291500a58f90f97de356c97">More...</a><br /></td></tr>
-<tr class="separator:a22fbc44ac291500a58f90f97de356c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1e7949ca5ec34e166b4e38e4ef62c52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#ae1e7949ca5ec34e166b4e38e4ef62c52">ThisLocationLongEnoughForSplit</a> (int Caller, AnsiString HeadCode, int TrainID, AnsiString LocationName, int LeadElement, int LeadExitPos, int MidElement, int MidEntryPos, int &amp;FrontTrainFrontPos, int &amp;FrontTrainRearPos, int &amp;RearTrainFrontPos, int &amp;RearTrainRearPos, bool &amp;TemporaryDelay)</td></tr>
+<tr class="memdesc:ae1e7949ca5ec34e166b4e38e4ef62c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the track that the train is on is long enough for a split, returns false if not, or if points set wrongly or a train obstructing the split  <a href="class_t_track.html#ae1e7949ca5ec34e166b4e38e4ef62c52">More...</a><br /></td></tr>
+<tr class="separator:ae1e7949ca5ec34e166b4e38e4ef62c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addd8e149e66c99a295541c9eda13eae4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#addd8e149e66c99a295541c9eda13eae4">TimetabledLocationNameAllocated</a> (int Caller, AnsiString LocationName)</td></tr>
 <tr class="memdesc:addd8e149e66c99a295541c9eda13eae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name.  <a href="class_t_track.html#addd8e149e66c99a295541c9eda13eae4">More...</a><br /></td></tr>
 <tr class="separator:addd8e149e66c99a295541c9eda13eae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1671,7 +1668,7 @@ Here is the call graph for this function:</div>
 
 <p>Used to check the validity of footcrossing links. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08337">8337</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08377">8377</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1719,7 +1716,7 @@ Here is the caller graph for this function:</div>
 
 <p>TrackElement.LocationName becomes 'Name' (for active and inactive elements) and, if TrackElement is a platform or named non-station location, any active element at the same HLoc &amp; VLoc position has its ActiveTrackElementName set to 'Name'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08726">8726</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08766">8766</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1780,7 +1777,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used during location naming to check for adjacent named elements to a given element at HLoc &amp; VLoc with a specific SpeedTag, and if found allow that element to be inserted into the LNPendingList for naming similarly. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08660">8660</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08700">8700</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1847,7 +1844,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in SearchForAndUpdateLocationName to check for adjacent named elements to a given element at HLoc &amp; VLoc with a specific SpeedTag, and if found allow that name to be used for this element and all other named elements that are linked to it. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09298">9298</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09338">9338</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1902,7 +1899,7 @@ Here is the caller graph for this function:</div>
 
 <p>Checks BarrierDownVector and returns true if there is one that is linked to the LC at H &amp; V positions and is set to manual (TypeOfRoute == 2), and returns the vector position in BDVectorPos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06548">6548</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06588">6588</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1962,7 +1959,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a route or train present on any linked level crossing element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07587">7587</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07627">7627</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2004,7 +2001,7 @@ Here is the caller graph for this function:</div>
 
 <p>True for a blank (SpeedTag == 0) element at a specific Trackvector position, no longer used after TrackErase changed (now EraseTrackElement) so that blank elements aren't used. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10926">10926</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10966">10966</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2109,7 +2106,7 @@ Here is the caller graph for this function:</div>
 
 <p>Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent of the railway (HLocMin, VLocMin, HLocMax &amp; VLocMax) for use in zoomed in and out displays and in saving railway images. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10698">10698</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10738">10738</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2158,7 +2155,7 @@ Here is the caller graph for this function:</div>
 
 <p>Changes the LocationName in the name multimap to NewName at the location pointed to by the TLocationNameMultiMapIterator from whatever it was before. Accepts null entries so that a formerly named element can have the name changed to "". </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09531">9531</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09571">9571</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2241,7 +2238,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a footcrossing is linked properly at both ends. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08183">8183</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08223">8223</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2273,7 +2270,7 @@ Here is the caller graph for this function:</div>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07938">7938</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07978">7978</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2305,7 +2302,7 @@ Here is the caller graph for this function:</div>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09358">9358</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09398">9398</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2338,7 +2335,7 @@ Here is the caller graph for this function:</div>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07906">7906</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07946">7946</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2371,7 +2368,7 @@ Here is the caller graph for this function:</div>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07866">7866</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07906">7906</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2516,7 +2513,7 @@ Here is the caller graph for this function:</div>
 
 <p>After an element has been erased from the TrackVector, all the later elements are moved down one. This function decrements the position values for all values above that of the erased element in the gap elements, TrackMap and LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09621">9621</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09661">9661</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2559,7 +2556,7 @@ Here is the caller graph for this function:</div>
 
 <p>After an element has been erased from the InactiveTrackVector, all the later elements are moved down one. This function decrements the position values for all values above that of the erased element in both InactiveTrack2MultiMap and LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09578">9578</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09618">9618</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2620,7 +2617,7 @@ Here is the caller graph for this function:</div>
 
 <p>As DiagonalFouledByRouteOrTrain (in <a class="el" href="class_t_all_routes.html" title="Handles data and functions relating to all routes on the railway.">TAllRoutes</a>) but only checks for a train (may or may not be a route present (new at v1.2.0)) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11985">11985</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11961">11961</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2662,7 +2659,7 @@ Here is the caller graph for this function:</div>
 
 <p>examines LocationNameMultiMap and returns true if there are two or more locations with the same name - added at v2.6.1 to cater for Bill78's new .dev file merge program and used when try to save as a .rly file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08864">8864</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08904">8904</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2705,7 +2702,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if the element defined by MapPos is present in LNDone2MultiMap, used during location naming. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08763">8763</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08803">8803</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2746,7 +2743,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08790">8790</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08830">8830</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2796,7 +2793,7 @@ Here is the caller graph for this function:</div>
 <p>All platform, concourse, footcrossing &amp; non-station named location elements are able to have a LocationName allocated. </p>
 <p>Track elements (including footcrossings) are able to have an ActiveTrackElementName allocated provided there is an adjacent platform or a NamedNonStationLocation. To set these names the user selects a single named location element (not a footcrossing), enters the name, and this is then allocated as a LocationName to all linked platform, concourse and footcrossing elements, and as an ActiveTrackElementName to all track elements adjacent to platforms (inc footcrossing tracks if (but only if) they have a platform at that location). </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08368">8368</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08408">8408</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2840,7 +2837,7 @@ Here is the caller graph for this function:</div>
 
 <p>Examines LocationNameMultiMap and if the LocationName is found all elements at that H &amp; V (in both active and inactive vectors) have the name erased both as a LocationName and a ActiveTrackElementName. The LocationNameMultiMap is also rebuilt to correspond to the new names in the vectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09053">9053</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09093">9093</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3032,7 +3029,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the link array position for the element at StartTVPosition that gives the closest link to the element a EndTVPosition. NB the StartTVPosition is expected to be a single track element as only positions 0 &amp; 1 are checked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11801">11801</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11777">11777</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3092,7 +3089,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in locating the screen name position for a named location, return true if find an inactive element called 'Name'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11756">11756</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11732">11732</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3146,7 +3143,7 @@ Here is the caller graph for this function:</div>
 
 <p>Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the name LocationName. If it finds it the pointer TLocationNameMultiMapIterator is returned. If it fails ErrorString is set to an appropriate text to allow the calling function to report the error. Otherwise it is set to "". </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09472">9472</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09512">9512</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3342,7 +3339,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the opposite link position for the element at TrackVectorPosition with link position LinkPos, if the element is points and they are set against the exit then &amp;Derail is returned true. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11836">11836</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11812">11812</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3351,7 +3348,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_a5b63dde2b21a37d5db7e4d078b03a74c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 22 -->
+</div>
 </div>
 
 </div>
@@ -3384,7 +3382,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return a pointer to the point fillet (the bit that appears to move when points are changed) for the point and its Attribute specified in TrackElement. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07785">7785</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07825">7825</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3425,7 +3423,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 22 -->
+<div class="center"><!-- SVG 23 -->
 </div>
 </div>
 
@@ -3458,7 +3456,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 23 -->
+<div class="center"><!-- SVG 24 -->
 </div>
 </div>
 
@@ -3491,7 +3489,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 24 -->
+<div class="center"><!-- SVG 25 -->
 </div>
 </div>
 
@@ -3572,7 +3570,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 25 -->
+<div class="center"><!-- SVG 26 -->
 </div>
 </div>
 
@@ -3648,7 +3646,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 26 -->
+<div class="center"><!-- SVG 27 -->
 </div>
 </div>
 
@@ -3700,7 +3698,7 @@ Here is the caller graph for this function:</div>
 
 <p>With large railways only part of the railway is displayed on screen, and this function converts true (relative to the whole railway) H &amp; V positions to screen (relative to the displayed screen) H &amp; V positions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07855">7855</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07895">7895</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3709,7 +3707,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 27 -->
+<div class="center"><!-- SVG 28 -->
 </div>
 </div>
 
@@ -3770,7 +3768,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 28 -->
+<div class="center"><!-- SVG 29 -->
 </div>
 </div>
 
@@ -3819,7 +3817,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 29 -->
+<div class="center"><!-- SVG 30 -->
 </div>
 </div>
 
@@ -3871,7 +3869,7 @@ Here is the caller graph for this function:</div>
 
 <p>Converse of GetScreenPositionsFromTruePos except that in this function HLoc &amp; VLoc are expressed in track elements (i.e. 16x16 pixel squares) rather than in single pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07826">7826</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07866">7866</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3913,7 +3911,7 @@ Here is the caller graph for this function:</div>
 
 <p>Takes an adjusted vector position value from either vector (if active, Position = -TruePos -1, if inactive, Position = TruePos) and returns a pointer to the relevant element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09549">9549</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09589">9589</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3922,7 +3920,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 30 -->
+<div class="center"><!-- SVG 31 -->
 </div>
 </div>
 
@@ -3962,7 +3960,7 @@ Here is the caller graph for this function:</div>
 
 <p>Takes the ElementID value (an AnsiString) (e.g. "8-13", "N43-N127", etc) and returns the corresponding track vector position, if none is found then -1 is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08027">8027</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08067">8067</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3971,7 +3969,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 31 -->
+<div class="center"><!-- SVG 32 -->
 </div>
 </div>
 
@@ -4023,7 +4021,7 @@ Here is the caller graph for this function:</div>
 
 <p>Converse of GetScreenPositionsFromTruePos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07841">7841</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07881">7881</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4086,7 +4084,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 32 -->
+<div class="center"><!-- SVG 33 -->
 </div>
 </div>
 
@@ -4141,7 +4139,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 33 -->
+<div class="center"><!-- SVG 34 -->
 </div>
 </div>
 
@@ -4174,7 +4172,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 34 -->
+<div class="center"><!-- SVG 35 -->
 </div>
 </div>
 
@@ -4252,7 +4250,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used to check the validity of footcrossing links. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08288">8288</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08328">8328</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4294,7 +4292,7 @@ Here is the caller graph for this function:</div>
 
 <p>A range-checked version of InactiveTrackVector.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10912">10912</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10952">10952</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4303,7 +4301,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 35 -->
+<div class="center"><!-- SVG 36 -->
 </div>
 </div>
 
@@ -4397,7 +4395,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if there is an element adjacent to LinkIn for element at HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11740">11740</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11716">11716</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4446,7 +4444,7 @@ Here is the call graph for this function:</div>
 
 <p>True if there is a vector entry at H &amp; V that is set to manual (TypeOfRoute == 2) and returns the vector position in BDVectorPos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06605">6605</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06645">6645</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4505,7 +4503,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>True if track at link positions [0] &amp; [1] if FirstTrack true, else that at [2] &amp; [3] in TrackElement has the default length and speed limit, return true if so </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10149">10149</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10189">10189</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4514,7 +4512,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 36 -->
+<div class="center"><!-- SVG 37 -->
 </div>
 </div>
 
@@ -4554,7 +4552,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a level crossing is found at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07524">7524</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07564">7564</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4563,7 +4561,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 37 -->
+<div class="center"><!-- SVG 38 -->
 </div>
 </div>
 
@@ -4603,7 +4601,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if an open (to trains) level crossing is found at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07440">7440</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07480">7480</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4612,7 +4610,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 38 -->
+<div class="center"><!-- SVG 39 -->
 </div>
 </div>
 
@@ -4652,7 +4650,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if barrier is in process of opening or closing at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07496">7496</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07536">7536</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4661,7 +4659,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 39 -->
+<div class="center"><!-- SVG 40 -->
 </div>
 </div>
 
@@ -4701,7 +4699,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a closed (to trains) level crossing is found at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07468">7468</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07508">7508</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4749,7 +4747,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a non-station named location at HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10245">10245</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10285">10285</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4758,7 +4756,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 40 -->
+<div class="center"><!-- SVG 41 -->
 </div>
 </div>
 
@@ -4798,7 +4796,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a non-station named location or platform at HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10218">10218</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10258">10258</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4847,7 +4845,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 41 -->
+<div class="center"><!-- SVG 42 -->
 </div>
 </div>
 
@@ -4882,7 +4880,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 42 -->
+<div class="center"><!-- SVG 43 -->
 </div>
 </div>
 
@@ -4955,7 +4953,7 @@ Here is the call graph for this function:</div>
 
 <p>checks for a route being set across an LC to prevent barriers raising </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07712">7712</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07752">7752</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4997,7 +4995,7 @@ Here is the caller graph for this function:</div>
 
 <p>Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLength. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09790">9790</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09830">9830</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -5006,7 +5004,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 43 -->
+<div class="center"><!-- SVG 44 -->
 </div>
 </div>
 
@@ -5062,7 +5060,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 44 -->
+<div class="center"><!-- SVG 45 -->
 </div>
 </div>
 <div class="dynheader">
@@ -5105,7 +5103,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 45 -->
+<div class="center"><!-- SVG 46 -->
 </div>
 </div>
 <div class="dynheader">
@@ -5244,7 +5242,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 46 -->
+<div class="center"><!-- SVG 47 -->
 </div>
 </div>
 <div class="dynheader">
@@ -5283,7 +5281,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a non-empty LocationName found in LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08850">8850</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08890">8890</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -5324,7 +5322,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 47 -->
+<div class="center"><!-- SVG 48 -->
 </div>
 </div>
 
@@ -5370,7 +5368,7 @@ Here is the caller graph for this function:</div>
 
 <p>Mark on screen a track element according to its length and speed limit if either of these differ from their default values. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09812">9812</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09852">9852</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -5379,7 +5377,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 48 -->
+<div class="center"><!-- SVG 49 -->
 </div>
 </div>
 
@@ -5466,7 +5464,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if the active or inactive TrackElement at HLoc &amp; VLoc has its FixedNamedLocationElement member true. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08817">8817</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08857">8857</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -5475,7 +5473,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 49 -->
+<div class="center"><!-- SVG 50 -->
 </div>
 </div>
 
@@ -5508,7 +5506,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 50 -->
+<div class="center"><!-- SVG 51 -->
 </div>
 </div>
 
@@ -5541,7 +5539,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 51 -->
+<div class="center"><!-- SVG 52 -->
 </div>
 </div>
 
@@ -5574,7 +5572,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 52 -->
+<div class="center"><!-- SVG 53 -->
 </div>
 </div>
 
@@ -5607,7 +5605,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 53 -->
+<div class="center"><!-- SVG 54 -->
 </div>
 </div>
 
@@ -5631,7 +5629,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if there is a platform, NamedNonStationLocation or Concourse present in the railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09729">9729</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09769">9769</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -5640,7 +5638,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 54 -->
+<div class="center"><!-- SVG 55 -->
 </div>
 </div>
 
@@ -5673,7 +5671,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 55 -->
+<div class="center"><!-- SVG 56 -->
 </div>
 </div>
 
@@ -5707,7 +5705,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns the number of separate platforms (not platform elements) at a given location, either a station or non station named location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12056">12056</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12032">12032</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -5749,7 +5747,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if there is at least one named location element with name 'LocationName', used in timetable integrity checking. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11537">11537</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11513">11513</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -5758,7 +5756,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 56 -->
+<div class="center"><!-- SVG 57 -->
 </div>
 </div>
 
@@ -5792,17 +5790,17 @@ Here is the caller graph for this function:</div>
 
 <p>As below but here allow points &amp; crossovers. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11054">11054</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11094">11094</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 57 -->
+<div class="center"><!-- SVG 58 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 58 -->
+<div class="center"><!-- SVG 59 -->
 </div>
 </div>
 
@@ -5835,24 +5833,24 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>check sufficient track elements with same LocationName linked together without any trailing point links to allow a train split. Only one length is needed to return true, but this doesn't mean that all platforms at the location are long enough. When a split is required during operation a specific check is made using ThisStationLongEnoughForSplit. Need at least two linked track elements with the same LocationName, with connected elements at each end, which may or may not be named and no connections via point trailing links. Note that these conditions exclude opposed buffers since these not linked. Used in timetable integrity checking. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10947">10947</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10987">10987</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 59 -->
+<div class="center"><!-- SVG 60 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 60 -->
+<div class="center"><!-- SVG 61 -->
 </div>
 </div>
 
 </div>
 </div>
-<a id="aeac90568597c9f13a27fa90c58f9041f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeac90568597c9f13a27fa90c58f9041f">&#9670;&nbsp;</a></span>OtherTrainOnTrack()</h2>
+<a id="ab2e0a1a60d7c023e87974e6fd34c3e41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2e0a1a60d7c023e87974e6fd34c3e41">&#9670;&nbsp;</a></span>OtherTrainOnTrack()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5867,13 +5865,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>NextPos</em>, </td>
+          <td class="paramname"><em>TrackPos</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>NextEntryPos</em>, </td>
+          <td class="paramname"><em>LinkPos</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -5889,18 +5887,20 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>True if another train on NextEntryPos track of element at NextPos, whether bridge or not, return false if not, or if NextPos == -1, or if only own train on the track. </p>
+<p>True if another train on LinkPos track of element at TrackPos, whether bridge or not, return false if not, or if TrackPos == -1, or LinkPos == -1, or if only own train on the track. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11694">11694</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11670">11670</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_track_aeac90568597c9f13a27fa90c58f9041f_cgraph.svg" width="595" height="100"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 62 -->
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_aeac90568597c9f13a27fa90c58f9041f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 63 -->
+</div>
 </div>
 
 </div>
@@ -5951,7 +5951,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check whether there is a platform present at HLoc &amp; VLoc at the same side as the signal represented by SpeedTag, if so return true, and also return a pointer to the appropriate platform graphic (same as a normal platform graphic but with a bit cut out for the signal) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11565">11565</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11541">11541</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6033,13 +6033,13 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 61 -->
+<div class="center"><!-- SVG 64 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 62 -->
+<div class="center"><!-- SVG 65 -->
 </div>
 </div>
 
@@ -6088,7 +6088,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 63 -->
+<div class="center"><!-- SVG 66 -->
 </div>
 </div>
 
@@ -6137,7 +6137,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 64 -->
+<div class="center"><!-- SVG 67 -->
 </div>
 </div>
 
@@ -6201,7 +6201,7 @@ Here is the caller graph for this function:</div>
 
 <p>Just replot the basic track elements at a level crossing (for flashing) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07341">7341</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07381">7381</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6273,7 +6273,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered, colour is green) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06624">6624</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06664">6664</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6343,13 +6343,13 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 65 -->
+<div class="center"><!-- SVG 68 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 66 -->
+<div class="center"><!-- SVG 69 -->
 </div>
 </div>
 
@@ -6407,7 +6407,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway (Manual true = manually lowered, colour is green) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07033">7033</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07073">7073</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6416,7 +6416,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 67 -->
+<div class="center"><!-- SVG 70 -->
 </div>
 </div>
 
@@ -6468,7 +6468,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07267">7267</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07307">7307</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6477,7 +6477,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 68 -->
+<div class="center"><!-- SVG 71 -->
 </div>
 </div>
 
@@ -6527,13 +6527,13 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 69 -->
+<div class="center"><!-- SVG 72 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 70 -->
+<div class="center"><!-- SVG 73 -->
 </div>
 </div>
 
@@ -6585,7 +6585,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot &amp; close (to trains) all level crossings linked to TrackElement - always plots as red - auto. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07194">7194</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07234">7234</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6594,7 +6594,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 71 -->
+<div class="center"><!-- SVG 74 -->
 </div>
 </div>
 
@@ -6638,12 +6638,13 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_aa5742fbc2eb3f8743dde84005499f89e_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 75 -->
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 72 -->
+<div class="center"><!-- SVG 76 -->
 </div>
 </div>
 
@@ -6689,7 +6690,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot platforms if any for a signal graphic - plotted before signal so shows through transparent signal pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06385">6385</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06425">6425</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6698,7 +6699,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 73 -->
+<div class="center"><!-- SVG 77 -->
 </div>
 </div>
 
@@ -6750,7 +6751,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plots either a LC or a blank element to flash manual LCs in zoomout mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07729">7729</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07769">7769</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6792,7 +6793,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot on screen the zoomed-out railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10585">10585</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10625">10625</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6824,7 +6825,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot on screen in zoomed-out mode and in gap setting mode a small red square corresponding to the gap position that is waiting to have its matching gap selected (see also ShowSelectedGap) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10658">10658</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10698">10698</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6866,7 +6867,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in checking for duplicate location names after Bill78 (discord name) developed the .dev file merge tool - added at v2.6.1. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08913">8913</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08953">8953</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6875,7 +6876,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 74 -->
+<div class="center"><!-- SVG 78 -->
 </div>
 </div>
 
@@ -6899,7 +6900,7 @@ Here is the caller graph for this function:</div>
 
 <p>Add all LCs to LCVector - note that this contains all LC elements whether linked to others or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11907">11907</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11883">11883</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6931,7 +6932,7 @@ Here is the caller graph for this function:</div>
 
 <p>clear then add all simple element track vector positions to the vector, added at v2.13.0 </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12214">12214</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12190">12190</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6940,7 +6941,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 75 -->
+<div class="center"><!-- SVG 79 -->
 </div>
 </div>
 
@@ -6964,7 +6965,7 @@ Here is the caller graph for this function:</div>
 
 <p>Clears the existing LocationNameMultiMap and rebuilds it from TrackVector and InactiveTrackVector. Called after the track is linked as many of the vector positions are likely to change - called from <a class="el" href="class_t_track.html#a5e2e215fae5247206220d301c324e9a0" title="When track is being built it is entered into the TrackVector in the order in which it is built,...">RepositionAndMapTrack()</a>; after names are changed in EraseLocationAndActiveTrackElementNames; and after the name changes in EnterLocationName. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09689">9689</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09729">9729</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -6973,7 +6974,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 76 -->
+<div class="center"><!-- SVG 80 -->
 </div>
 </div>
 
@@ -7017,13 +7018,13 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 77 -->
+<div class="center"><!-- SVG 81 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 78 -->
+<div class="center"><!-- SVG 82 -->
 </div>
 </div>
 
@@ -7066,7 +7067,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 79 -->
+<div class="center"><!-- SVG 83 -->
 </div>
 </div>
 
@@ -7090,7 +7091,7 @@ Here is the caller graph for this function:</div>
 
 <p>restore points to unfailed state, added at v2.13.0 </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12156">12156</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12132">12132</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7122,7 +7123,7 @@ Here is the caller graph for this function:</div>
 
 <p>restore signal to unfailed state, added at v2.13.0 </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12124">12124</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12100">12100</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7154,7 +7155,7 @@ Here is the caller graph for this function:</div>
 
 <p>remove TSR, added at v2.13.0 </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12186">12186</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12162">12162</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7217,7 +7218,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Track elements have members that indicate whether and on what track a train is present (TrainIDOnElement, TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 and TrainIDOnBridgeOrFailedPointOrigSpeedLimit23). This function resets them all to their non-train-present state of -1. Called by <a class="el" href="class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0" title="unplot all trains from screen">TTrainController::UnplotTrains</a> Also used for failed points to store original speedlimits </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07812">7812</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07852">7852</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7258,7 +7259,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 80 -->
+<div class="center"><!-- SVG 84 -->
 </div>
 </div>
 
@@ -7346,7 +7347,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set all LC attributes to 0 (closed to trains) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07569">7569</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07609">7609</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7355,7 +7356,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 81 -->
+<div class="center"><!-- SVG 85 -->
 </div>
 </div>
 
@@ -7485,7 +7486,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return a pointer to the striped (i.e. when unnamed) graphic corresponding to TrackElement, if TrackElement isn't a named element just return its normal graphic. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10835">10835</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10875">10875</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7531,7 +7532,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 82 -->
+<div class="center"><!-- SVG 86 -->
 </div>
 </div>
 
@@ -7574,7 +7575,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 83 -->
+<div class="center"><!-- SVG 87 -->
 </div>
 </div>
 
@@ -7740,7 +7741,7 @@ Here is the caller graph for this function:</div>
 
 <p>save graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12028">12028</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12004">12004</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7795,17 +7796,17 @@ Here is the caller graph for this function:</div>
 <p>Checks all locations that are adjacent to the one entered for linked named location elements. </p>
 <p>If any LocationName is found in any of the linked elements, that name is used for all elements that are now linked to it. The location entered doesn't need to be a FixedNamedLocationElement and there doesn't even need to be an element there. Used during EraseTrackElement (in which case the SpeedTag is that for the element that is erased) and PlotAndAddTrackElement, to bring the named location and timetable naming up to date with the deletion or insertion. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09095">9095</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09135">9135</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 84 -->
+<div class="center"><!-- SVG 88 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 85 -->
+<div class="center"><!-- SVG 89 -->
 </div>
 </div>
 
@@ -7874,7 +7875,7 @@ Here is the caller graph for this function:</div>
 
 <p>A range-checked version of SelectVector.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11727">11727</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11703">11703</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -7883,7 +7884,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 86 -->
+<div class="center"><!-- SVG 90 -->
 </div>
 </div>
 
@@ -7916,7 +7917,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 87 -->
+<div class="center"><!-- SVG 91 -->
 </div>
 </div>
 
@@ -7951,7 +7952,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 88 -->
+<div class="center"><!-- SVG 92 -->
 </div>
 </div>
 
@@ -7975,7 +7976,7 @@ Here is the caller graph for this function:</div>
 
 <p>Work through all elements in TrackVector setting all lengths &amp; speed limits to default values - including both tracks for 2-track elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09755">9755</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09795">9795</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8023,7 +8024,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set TypeOfRoute value to 2 to indicate barriers manually closed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06531">6531</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06571">6571</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8065,7 +8066,7 @@ Here is the caller graph for this function:</div>
 
 <p>Convert the position values for the TrackElement into an identification string and load in ElementID. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07991">7991</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08031">8031</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8074,7 +8075,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 89 -->
+<div class="center"><!-- SVG 93 -->
 </div>
 </div>
 
@@ -8108,7 +8109,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 90 -->
+<div class="center"><!-- SVG 94 -->
 </div>
 </div>
 
@@ -8142,7 +8143,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 91 -->
+<div class="center"><!-- SVG 95 -->
 </div>
 </div>
 
@@ -8188,7 +8189,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set LC attribute at H &amp; V; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07547">7547</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07587">7587</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8242,7 +8243,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set linked LC attributes; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06449">6449</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06489">6489</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8290,7 +8291,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06491">6491</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06531">6531</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8322,17 +8323,17 @@ Here is the caller graph for this function:</div>
 
 <p>similar to SetStationEntryStopLinkPosses but for non-station named elements </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10461">10461</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10501">10501</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 92 -->
+<div class="center"><!-- SVG 96 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 93 -->
+<div class="center"><!-- SVG 97 -->
 </div>
 </div>
 
@@ -8357,7 +8358,7 @@ Here is the caller graph for this function:</div>
 <p>Called when trying to link track and when a name changed when track already linked. </p>
 <p>Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name, and sets the EntryLink values for the front of train stop points for each direction. For stations (not non-station named locations) of length n, where n &gt; 1, stop element is [floor((n+1)/2) + 1] from each end (unless buffers at one or both ends in which case stop points are the end elements). Note that for a single element the stop point is the element itself (formula doesn't apply). For NamedNonStationLocations the stop points are at the end elements to allow trains to stack up. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10272">10272</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10312">10312</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8366,7 +8367,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 94 -->
+<div class="center"><!-- SVG 98 -->
 </div>
 </div>
 
@@ -8400,7 +8401,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 95 -->
+<div class="center"><!-- SVG 99 -->
 </div>
 </div>
 
@@ -8434,7 +8435,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 96 -->
+<div class="center"><!-- SVG 100 -->
 </div>
 </div>
 
@@ -8468,7 +8469,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 97 -->
+<div class="center"><!-- SVG 101 -->
 </div>
 </div>
 
@@ -8511,149 +8512,117 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 98 -->
-</div>
-</div>
-
-</div>
-</div>
-<a id="a4e059276b45e61ff0826f7b02f6fad39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e059276b45e61ff0826f7b02f6fad39">&#9670;&nbsp;</a></span>ThisNonStationLongEnoughForSplit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TTrack::ThisNonStationLongEnoughForSplit </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>Caller</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">AnsiString&#160;</td>
-          <td class="paramname"><em>LocationName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>FirstNamedElementPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>TrainLinkPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>SecondNamedElementPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>FirstNamedLinkedElementPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>SecondNamedLinkedElementPos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>as below but allow points &amp; crossoverssee above under </p>
-
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11346">11346</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 99 -->
-</div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 100 -->
-</div>
-</div>
-
-</div>
-</div>
-<a id="a22fbc44ac291500a58f90f97de356c97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22fbc44ac291500a58f90f97de356c97">&#9670;&nbsp;</a></span>ThisStationLongEnoughForSplit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TTrack::ThisStationLongEnoughForSplit </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>Caller</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">AnsiString&#160;</td>
-          <td class="paramname"><em>LocationName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>FirstNamedElementPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>SecondNamedElementPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>FirstNamedLinkedElementPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>SecondNamedLinkedElementPos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>See above under 'OneStationLongEnoughForSplit'. </p>
-
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11217">11217</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 101 -->
-</div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
 <div class="center"><!-- SVG 102 -->
+</div>
+</div>
+
+</div>
+</div>
+<a id="ae1e7949ca5ec34e166b4e38e4ef62c52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1e7949ca5ec34e166b4e38e4ef62c52">&#9670;&nbsp;</a></span>ThisLocationLongEnoughForSplit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrack::ThisLocationLongEnoughForSplit </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>HeadCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>TrainID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>LocationName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>LeadElement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>LeadExitPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>MidElement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>MidEntryPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>FrontTrainFrontPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>FrontTrainRearPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>RearTrainFrontPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>RearTrainRearPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;&#160;</td>
+          <td class="paramname"><em>TemporaryDelay</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>checks if the track that the train is on is long enough for a split, returns false if not, or if points set wrongly or a train obstructing the split </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11258">11258</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 103 -->
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 104 -->
 </div>
 </div>
 
@@ -8687,7 +8656,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09014">9014</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09054">9054</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8696,7 +8665,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 103 -->
+<div class="center"><!-- SVG 105 -->
 </div>
 </div>
 
@@ -8720,7 +8689,7 @@ Here is the caller graph for this function:</div>
 
 <p>Empty the track and inactive track vectors, the corresponding track maps, and LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10667">10667</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10707">10707</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8762,7 +8731,7 @@ Here is the caller graph for this function:</div>
 
 <p>A range-checked version of TrackVector.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10898">10898</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10938">10938</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -8814,7 +8783,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 104 -->
+<div class="center"><!-- SVG 106 -->
 </div>
 </div>
 
@@ -8857,7 +8826,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 105 -->
+<div class="center"><!-- SVG 107 -->
 </div>
 </div>
 
@@ -8892,7 +8861,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 106 -->
+<div class="center"><!-- SVG 108 -->
 </div>
 </div>
 
@@ -8944,7 +8913,7 @@ Here is the caller graph for this function:</div>
 
 <p>New at v1.2.0; checks whether a train present at input location and link and returns its ID if so. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11924">11924</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11900">11900</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -9008,7 +8977,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 107 -->
+<div class="center"><!-- SVG 109 -->
 </div>
 </div>
 <div class="dynheader">
@@ -9077,7 +9046,7 @@ Here is the caller graph for this function:</div>
 
 <p>handles moving of user graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10803">10803</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l10843">10843</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -9181,7 +9150,7 @@ Here is the caller graph for this function:</div>
 
 <p>A range-checked version of UserGraphicVector.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12232">12232</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12208">12208</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -9190,7 +9159,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 108 -->
+<div class="center"><!-- SVG 110 -->
 </div>
 </div>
 

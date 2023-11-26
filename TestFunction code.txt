@@ -1,0 +1,207 @@
+//Code to test train splits especially with named points & crossovers, with warnings about points set wrongly and obstructing trains
+//includes additional code in Interface.h & .cpp
+
+In TestFunction:
+
+//---------------------------------------------------------------------------
+
+        AnsiString LocationName = "";
+        bool Derail; //not used
+        int FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos;
+        int LeadElement, LeadEntryPos, LeadExitPos, MidElement, MidEntryPos, MidExitPos;
+        TTrackElement TELead, TEMid, FTFElement, FTRElement, RTFElement, RTRElement;
+        randomize();
+        if(TestFunctionCount >= int(Track->TrackVector.size()))
+        {
+            ShowMessage("Complete");
+            goto END;
+        }
+        {   //need this as goto END above bypasses local variable initialisation
+            int TrainIDCount = 0;
+            if(TestFunctionFirstPass) //set up a list of random TrainIDs & store them, then display them every time round loop
+            {
+                while(true)
+                {
+                    if(TrainIDCount >= int(Track->TrackVector.size()))
+                    {
+                        break;
+                    }
+                    TTrackElement TE = Track->TrackElementAt(-1, TrainIDCount);
+                    int randval = (rand() % 8);
+                    if(randval == 0)
+                    {
+                        if(TE.ActiveTrackElementName == "aaa")
+                        {
+                            IDList.push_back(TrainIDCount);
+                        }
+                    }
+                    TrainIDCount++;
+                }
+            }
+            TestFunctionFirstPass = false;
+            while(Track->TrackElementAt(-1, TestFunctionCount).ActiveTrackElementName != "aaa")
+            {
+                TestFunctionCount++;
+                if(TestFunctionCount >= int(Track->TrackVector.size()))
+                {
+                    ShowMessage("Complete");
+                    goto END;
+                }
+            }
+            TELead = Track->TrackElementAt(-1, TestFunctionCount);
+            if(TELead.ActiveTrackElementName != "")
+            {
+                LocationName = TELead.ActiveTrackElementName;
+                LeadElement = TestFunctionCount;
+                int ConnLink = 0; //keep incrementing this to max of 3
+                if(TELead.Conn[ConnLink] > -1)
+                {
+                    LeadEntryPos = ConnLink;
+                    LeadExitPos = Track->GetAnyElementOppositeLinkPos(-2, LeadElement, LeadEntryPos, Derail);
+                    MidElement = TELead.Conn[ConnLink];
+                    TEMid = Track->TrackElementAt(-2, MidElement);
+                    MidExitPos = TELead.ConnLinkPos[ConnLink];
+                    MidEntryPos = Track->GetAnyElementOppositeLinkPos(-1, MidElement, MidExitPos, Derail);
+                }
+                else
+                {
+                    goto END;
+                }
+                //centre leadElement on screen
+                Display->DisplayOffsetH = ((TELead.HLoc * 16) - Interface->MainScreen->Width / 2) / 16; // ScreenPosH = HPos - (DisplayOffsetH * 16)
+                Display->DisplayOffsetV = ((TELead.VLoc * 16) - Interface->MainScreen->Height / 2) / 16;
+                ClearandRebuildRailway(-1);
+                Display->PlotOutput(-1, (TELead.HLoc * 16), (TELead.VLoc * 16), RailGraphics->bmRedRect); //LeadElement Red Square
+                Display->PlotOutput(-1, (TEMid.HLoc * 16), (TEMid.VLoc * 16), RailGraphics->bmGreenRect); //MidElement Green Square
+                for(unsigned int x = 0; x < Track->TrackVector.size(); x++)
+                {
+                    unsigned int y = IDList.front();
+                    IDList.pop_front();
+                    IDList.push_back(y);
+                    TTrackElement &TE = Track->TrackElementAt(-1, y);
+                    TE.TrainIDOnElement = 2; //can't be 1 as that's own train ID
+                    Display->PlotOutput(-1, (TE.HLoc * 16), (TE.VLoc * 16), RailGraphics->CodeT);
+                }
+
+                bool TemporaryDelay = false;
+                if(Track->ThisLocationLongEnoughForSplit(-1, "1A00", 100, LocationName, LeadElement, LeadExitPos,  //100 is own train TrainID
+                    MidElement, MidEntryPos, FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos, TemporaryDelay))
+                {
+                    if(!TemporaryDelay)
+                    {
+                        if((FrontTrainFrontPos != LeadElement) && (FrontTrainFrontPos != MidElement))
+                        {
+                            FTFElement = Track->TrackElementAt(-3, FrontTrainFrontPos);
+                            Display->PlotOutput(-1, (FTFElement.HLoc * 16), (FTFElement.VLoc * 16), RailGraphics->CodeF);
+                        }
+                        if((FrontTrainRearPos != LeadElement) && (FrontTrainRearPos != MidElement))
+                        {
+                            FTRElement = Track->TrackElementAt(-3, FrontTrainRearPos);
+                            Display->PlotOutput(-1, (FTRElement.HLoc * 16), (FTRElement.VLoc * 16), RailGraphics->Code_f);
+                        }
+                        if((RearTrainFrontPos != LeadElement) && (RearTrainFrontPos != MidElement))
+                        {
+                            RTFElement = Track->TrackElementAt(-3, RearTrainFrontPos);
+                            Display->PlotOutput(-1, (RTFElement.HLoc * 16), (RTFElement.VLoc * 16), RailGraphics->Code_r);
+                        }
+                        if((RearTrainRearPos != LeadElement) && (RearTrainRearPos != MidElement))
+                        {
+                            RTRElement = Track->TrackElementAt(-3, RearTrainRearPos);
+                            Display->PlotOutput(-1, (RTRElement.HLoc * 16), (RTRElement.VLoc * 16), RailGraphics->CodeR);
+                        }
+                    }
+                }
+                else
+                {
+                    ShowMessage("Too short or points or obstructing train failure");
+                }
+            }
+            else
+            {
+                while(Track->TrackElementAt(-1, TestFunctionCount).ActiveTrackElementName == "")
+                {
+                    TestFunctionCount++;
+                    if(TestFunctionCount >= int(Track->TrackVector.size()))
+                    {
+                        ShowMessage("Complete");
+                    }
+                }
+//                TestFunctionCount--;
+            }
+        }
+        END:
+
+//As above in Interface.cpp
+//---------------------------------------------------------------------------
+
+#include <stdlib.h> //for rand() function in TestFunction()
+    TestFunctionCount = 0; //used only in test function
+    TestFunctionFirstPass = true;  //used only in test function
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MainScreenDblClick(TObject *Sender)
+{
+    TestFunctionCount++;
+    TestFunction();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::FormDblClick(TObject *Sender)
+{
+        while(Track->TrackElementAt(-1, TestFunctionCount).ActiveTrackElementName != "aaa")
+        {
+            TestFunctionCount;
+            if(TestFunctionCount == 0)
+            {
+                break;
+            }
+        }
+    TestFunction();
+}
+//---------------------------------------------------------------------------
+
+//As above in Interface.h
+//---------------------------------------------------------------------------
+
+    void __fastcall MainScreenDblClick(TObject *Sender);
+    void __fastcall FormDblClick(TObject *Sender); //added atv2.17.0
+    int TestFunctionCount; //used only in test function
+    bool TestFunctionFirstPass; //used only in test function
+    std::list<unsigned int> IDList;
+
+//---------------------------------------------------------------------------
+
+//this displays all location stop positions on a railway to check for correct positioning (only in TestFunction)
+//---------------------------------------------------------------------------
+
+        for(TTrack::TTrackVectorIterator TVIt = Track->TrackVector.begin(); TVIt != Track->TrackVector.end(); TVIt++)
+        {
+            if(TVIt->StationEntryStopLinkPos1 > -1)
+            {
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16), RailGraphics->smBrightGreen);
+            }
+            if(TVIt->StationEntryStopLinkPos2 > -1)
+            {
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 4), RailGraphics->smMagenta);
+            }
+            if(TVIt->StationEntryStopLinkPos3 > -1)
+            {
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 8), RailGraphics->smOrange);
+            }
+            if(TVIt->StationEntryStopLinkPos4 > -1)
+            {                     ddd
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 12), RailGraphics->smRed);
+            }
+        }
+
+//---------------------------------------------------------------------------
+
+//this tests the error function
+//---------------------------------------------------------------------------
+
+    throw Exception("test error");
+
+//---------------------------------------------------------------------------
+
+

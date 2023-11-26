@@ -22323,6 +22323,28 @@ FINISHEDLOADING:
                             ARVIt->SetRouteSignals(13);
                         }
                     }
+                    //set TrainInFront if appropriate
+                    for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt < TrainController->TrainVector.end(); TVIt++)
+                    {
+                        TTrain &Tr = *TVIt;
+                        if((Tr.LeadElement > -1) && (Tr.LeadExitPos > -1))//this section added at v2.18.0
+                        {
+                            int NextPos = Track->TrackElementAt(1673, Tr.LeadElement).Conn[Tr.LeadExitPos];
+                            if(NextPos > -1)
+                            {
+                                int NextEntryPos = Track->TrackElementAt(650, Tr.LeadElement).ConnLinkPos[Tr.LeadExitPos];
+                                if(Track->OtherTrainOnTrack(17, NextPos, NextEntryPos, Tr.TrainID))
+                                // true if another train on NextEntryPos track whether bridge or not
+                                {
+                                    Tr.TrainInFront = true;
+                                }
+                                else
+                                {
+                                    Tr.TrainInFront = false;
+                                }
+                            }
+                        }
+                    }
                     ClearandRebuildRailway(42);
                 }
             }

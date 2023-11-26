@@ -68,6 +68,8 @@ digraph "TTrack::RebuildTrackAndText"
   Node17 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
   Node17 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -81,6 +83,7 @@ digraph "TTrack::RebuildTrackAndText"
   Node19 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node19 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node19 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

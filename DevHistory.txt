@@ -1,38 +1,16 @@
-Multi non-station locations:
+v2.18.0 Beta write-up:
 
-/track line 19759 - bridge expected!  ELinkIn = 9 & get link = 6 at 17952 1S14, ok for 2.16.1 - tried on non-names rly & ttb & same- but was trying to set 2 routes at once, one as planned and one from duddesden or derby across b'ham - sometimes see it sometimes not
-This also occurred in 2.17.0 so not a new fault
-Problem is that have allowed a rogue route element in searchvector that is only found when try to enter it into the routemap.  Identify the point and disallow in SearchForPref... and SearchForNonPref... It was in the section that had been disabled because too long winded - check for existing element in searchvector - now just search on crossovers, points and bridges on same track so doesn't take too much time, and if get on a loop then the search limit will stop the search
+This is a beta version for v2.18.0 incorporating non-station named elements on points, crossovers and diagonals.  It has been a lot more difficult to develop than expected, largely because of train splits that now have to allow for trains on more complex elements than previously.  Please give it a thorough testing.  I have tested it of course and am still in the process of testing, but the more people involved in testing the more likely that remaining bugs will be found - and the revised routines give plenty of scope for new bugs!
 
-/maybe keep existing split code for platforms and devise new one for non-station named locs.
-Yes: to do: find way for timetable to distinguish between platforms and non-station locs & create new function OneNonStationLongEnoughForSplit
-select FrontTrainStationSplit or FrontTrainNonStationSplit for fsp & same for rear
-create new functions FrontTrainNonStationSplit & RearTrainNonStationSplit, ThisNonStationLongEnoughForSplit + add to caller checker.  Helped by fact that trains stop at end of non-stations, so just ensure that have enough room at back for rear split (using existing points settings - check that get existing point error message if not set correctly) and at front for front split - where arriving front train moved to rear.
+Please note that railways and sessions that have named points/crossovers/diagonals and are saved in this version will fail to load in earlier versions.
 
-Mention the existing search bug in version update (discussed above starting 'track line 19759')
+Some existing bugs have also been found as follows:
 
-Mention 50-50 mass power split missing in logs
+1. The route search function failed if a very long route tried to extend across both tracks on a crossover.  It's not a fault that is likely to occur in practice but has been corrected by an internal check for this situation.
 
-update manual & onscreen help if necessary
+2. The recent variable mass and power split when train splitting failed to show up in the performance log when the split was 50-50.  It was present in the floating information window and has now been included in the logs.
 
-note that can't use earlier versions to load railways or sessions with blue on points/crossings/diagonals
-
-at b'ham when 7G46 changes direction at small heath it still retains the 'forward track occupied' message
-
-deal with 7777s & callerchecker
-
-Mention messages given every 30 secs if train obstructs or points not set correctly in train split
-
-Manual - best not to have sigs within platforms if trains split as can be unprotected
-
-/still to understand StoppedForTrainInFront & ensure it works correctly: background to show when should be moving in timetable & signaller, prevent signaller move when train in front
-
-need to test TrainInFront & StoppedForTrainInFront extensively
-
-check TrainInFront for any reason may be needed in session files - look at all instances for anything that might cause probs before operation begins & set during UpdateTrain
-
-
-
+3. It was found that the background colour wasn't always set correctly when a train was prevented from moving by the presence of another train immediately in front.  This has now been corrected.
 
 
 

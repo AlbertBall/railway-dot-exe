@@ -751,7 +751,7 @@ void TTrain::UpdateTrain(int Caller)
             {
                 // here if failure due
                 TrainFailurePending = true;
-                // fail when PlotElements set to proper Lead & Mid Elements
+                // the failure occurs when PlotElements set to proper Lead & Mid Elements
             }
         }
     }
@@ -1088,8 +1088,8 @@ void TTrain::UpdateTrain(int Caller)
                     // added for v1.3.2 because when add new train to TrainVector 'this' address likely invalidated, hence make no more changes to
                     //'this' train.  Next clock cycle will deal with any required changes
                     FrontTrainSplit(0);
-                    if(TrainFailurePending) // ok, stopped so PlotElements set
-                    {
+                    if(TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
+                    {                       //this is checked before each return
                         TrainHasFailed(0);
                     }
                     Utilities->CallLogPop(2041);
@@ -1100,7 +1100,7 @@ void TTrain::UpdateTrain(int Caller)
                     // added for v1.3.2 because when add new train to TrainVector 'this' address likely invalidated, hence make no more changes to
                     //'this' train.  Next clock cycle will deal with any required changes
                     RearTrainSplit(0);
-                    if(TrainFailurePending) // ok, stopped so PlotElements set
+                    if(TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
                     {
                         TrainHasFailed(1);
                     }
@@ -1192,7 +1192,7 @@ void TTrain::UpdateTrain(int Caller)
                     // Drop missed actions so user can still use sig mode to get back on track
                     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailUnexpectedBuffers;
                 }
-                if(TrainFailurePending) // ok, stopped so PlotElements set
+                if(TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
                 {
                     BufferZoomOutFlashRequired = false;
                     TrainHasFailed(2);
@@ -1212,7 +1212,7 @@ void TTrain::UpdateTrain(int Caller)
                     // Drop missed actions so user can still use sig mode to get back on track
                     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailBuffersPreventingStart;
                 }
-                if(TrainFailurePending) // ok, stopped so PlotElements set
+                if(TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
                 {
                     BufferZoomOutFlashRequired = false;
                     TrainHasFailed(3);
@@ -1358,7 +1358,7 @@ void TTrain::UpdateTrain(int Caller)
             }
         }
     }
-    if(Stopped() && TrainFailurePending) // ok, stopped so PlotElements set
+    if(Stopped() && TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
     {
         TrainHasFailed(4);
         Utilities->CallLogPop(1097);
@@ -1542,7 +1542,7 @@ void TTrain::UpdateTrain(int Caller)
     if(Stopped())
     // this is what prevents another movement if the train is stopped
     {
-        if(TrainFailurePending) // ok, stopped so PlotElements set
+        if(TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
         {
             TrainHasFailed(5);
         }
@@ -2087,7 +2087,7 @@ void TTrain::UpdateTrain(int Caller)
                 CheckAndCancelRouteForWrongEndEntry(2, LeadElement, LeadEntryPos);
                 if(Stopped())
                 {
-                    if(TrainFailurePending) // ok, stopped so PlotElements set
+                    if(TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
                     {
                         TrainHasFailed(6);
                     }

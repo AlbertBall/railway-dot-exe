@@ -1,6 +1,6 @@
 v2.18.0 Beta write-up:
 
-This is a beta version for v2.18.0 incorporating non-station named elements on points, crossovers and diagonals.  It has been a lot more difficult to develop than expected, largely because of train splits that now have to allow for trains on more complex elements than previously.  Please give it a thorough testing.  I have tested it of course and am still in the process of testing, but the more people involved in testing the more likely that remaining bugs will be found - and the revised routines give plenty of scope for new bugs!
+This is a beta version for v2.18.0 incorporating non-station named elements on points, crossovers and diagonals.  It has been a lot more difficult to develop than expected, largely because of train splits that now have to allow for trains on more complex elements than previously.  Please give it a thorough testing.  I have tested it of course and am still in the process of testing, but I often miss what turns out to be obvious in hindsight, so the more people involved in testing the more likely that remaining bugs will be found - and the revised routines give plenty of scope for new bugs!
 
 Please note that railways and sessions that have named points/crossovers/diagonals and are saved in this version will fail to load in earlier versions.
 

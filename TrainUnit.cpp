@@ -1357,6 +1357,10 @@ void TTrain::UpdateTrain(int Caller)
                 SetTrainMovementValues(16, NextElementPosition, NextEntryPos);
             }
         }
+        if(BeingCalledOn && ClearToNextSignal(1)) //new at v2.18.0 to increase max speed when train in front moves off before reaches it
+        {
+            BeingCalledOn = false;
+        }
     }
     if(Stopped() && TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
     {
@@ -4872,7 +4876,7 @@ bool TTrain::ClearToNextSignal(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ClearToNextSignal" + "," + HeadCode);
     int ReturnVal = 0;
     int ElementCount = 0;
-/*   dropped at v2.12.0 as takes up a great deal of time unnecessarily - substitute 1000 elements instead and return true (very unlikley to need to search this far [10km at min length])
+/*   dropped at v2.12.0 as takes up a great deal of time unnecessarily - substitute 1000 elements instead and return true (very unlikely to need to search this far [10km at min length])
     for(unsigned int x = 0; x < Track->TrackVector.size(); x++)
     {
         Track->TrackElementAt(1031, x).TempTrackMarker01 = false;
@@ -4896,9 +4900,9 @@ bool TTrain::ClearToNextSignal(int Caller)
             ReturnVal = 2;
             break;
         }
-        if((EntryPos < 2) && (Track->TrackElementAt(386, CurrentTrackVectorPosition).Config[1 - EntryPos] == Signal) && (Track->TrackElementAt(529,
-            CurrentTrackVectorPosition).Attribute != 4)) // Attr 4 == call-on signal
-        {
+        if((EntryPos < 2) && (Track->TrackElementAt(386, CurrentTrackVectorPosition).Config[1 - EntryPos] == Signal) && !Track->TrackElementAt(529,
+            CurrentTrackVectorPosition).CallingOnSet && (LeadElement != CurrentTrackVectorPosition)) // CallingOnSet true when position lights lit,
+        {//added LeadElement condition at v2.18.0 as train may be on the callon signal after CallOnSet false & don't want to return true for that
             ReturnVal = 3;
             break;
         }

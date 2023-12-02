@@ -10233,6 +10233,7 @@ pause or run and it cycled round the operate panel buttons
             int RouteNumber = 0;
             unsigned int RoutePrefDirPos = 0;
             TAllRoutes::TRoute2MultiMapIterator R2It;
+            AnsiString COS = "No";
 
             if(Track->FindNonPlatformMatch(1, HLoc, VLoc, Position, TrackElement))
             {
@@ -10243,11 +10244,15 @@ pause or run and it cycled round the operate panel buttons
                     RouteNumber = R2It->second.first;
                     RoutePrefDirPos = R2It->second.second;
                 }
+                if(TrackElement.CallingOnSet)
+                {
+                    COS = "Yes";
+                }
 
                 DevelopmentPanel->Caption = MouseStr + "; TVPos: " + AnsiString(Position) + "; H: " + AnsiString(HLoc) + "; V: " + AnsiString(VLoc) +
                     "; SpTg: " + AnsiString(TrackElement.SpeedTag) + "; Type: " + Type[TrackElement.TrackType] + "; Att: " + AnsiString(TrackElement.Attribute)
-                    + ";SPos1: " + AnsiString(TrackElement.StationEntryStopLinkPos1) + ";SPos2: " + AnsiString(TrackElement.StationEntryStopLinkPos2)
-                    + ";SPos3: " + AnsiString(TrackElement.StationEntryStopLinkPos3) + ";SPos4: " + AnsiString(TrackElement.StationEntryStopLinkPos4)
+                    + "; COS: " + COS + "; SPos1: " + AnsiString(TrackElement.StationEntryStopLinkPos1) + "; SPos2: " + AnsiString(TrackElement.StationEntryStopLinkPos2)
+                    + "; SPos3: " + AnsiString(TrackElement.StationEntryStopLinkPos3) + "; SPos4: " + AnsiString(TrackElement.StationEntryStopLinkPos4)
                     + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) +
                     "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + "; Locname: " + TrackElement.LocationName + "; Activename: " +
                     TrackElement.ActiveTrackElementName + "; InRoute " + InARoute + "; RtNum " + RouteNumber + "; PDVecPos " + RoutePrefDirPos + " Links: " +

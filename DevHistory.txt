@@ -1,20 +1,6 @@
-v2.18.0 Beta write-up:
+When being called on max speed is 30k/h but never resets to earlier max speed.  It's due to the call on signal not retaining its callon status when the train moves onto it  so it counts as clear.  Use latest session for KC when investigating.
 
-This is a beta version for v2.18.0 incorporating non-station named elements on points, crossovers and diagonals.  It has been a lot more difficult to develop than expected, largely because of train splits that now have to allow for trains on more complex elements than previously.  Because of this a number of functions have had to be rewritten.  Please give it a thorough testing.  I have tested it of course and am still in the process of testing, but I often miss what turns out to be obvious in hindsight, so the more people involved in testing the more likely that remaining bugs will be found - and the revised routines give plenty of scope for new bugs!
-
-Please download the relevant 32 or 64 bit version and add it to the folder where your existing RailOS32.exe or RailOS64.exe version already resides to try it out.
-
-Please note that railways and sessions that have named points/crossovers/diagonals and are saved in this version will fail to load in earlier versions.
-
-Some existing bugs have also been found as follows:
-
-1. The route search function failed if a very long route tried to extend across both tracks on a crossover.  It's not a fault that is likely to occur in practice but has been corrected by an internal check for this situation.
-
-2. The recent variable mass and power split when train splitting failed to show up in the performance log when the split was 50-50.  It was present in the floating information window and has now been included in the logs.
-
-3. It was found that the background colour wasn't always set correctly when a train was prevented from moving by the presence of another train immediately in front.  This has now been corrected.
-
-
+After 1st mod on 2nd call first after train is 2725 so clear to next signal returns true (current vec pos = 2724 so condits met) - ok cured now by altering condits in ClearToNextSignal
 
 Development History
 
@@ -34,6 +20,24 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#101 ageekdude — 01/12/23 at 15:09
+I was wondering if it would be possible to have more granular zoom instead of the two zoom options. It doesn't need to be perfectly smooth, but more zoom options and being able to zoom in more than you are currently able would be a great feature.
+
+Albert — 01/12/23 at 08:53
+The difficulty with zoom in RailOS is that it isn't a genuine zoom at all.  In fact it's two separate displays - full size and miniature.  If the display was a single image then it could probably be scaled to provide a continuous zoom, but in fact it's a mosaic of individual 16 x 16 pixel elements in full size and 4 x 4 pixel elements in miniature.  The miniature display is as small as it can be made while still providing reasonable clarity.
+
+Size changes can always be made by varying screen resolution of course if a more permanent size change is required.
+
+I'll add your suggestion to the wish list but given the display structure of the program (a) I don't know how it could be done and (b) if it could be done I suspect it would be very difficult from a coding point of view - so it's not something that I intend to pursue unless a simple method suggests itself.
+
+#100 fitzburger96 — 30/11/23 at 00:31
+Just an idea I've been thinking about. Would it be possible to incorporate pictures into the description page when the mouse hovers over a service? In my Brisbane route, there are 4 main types of EMUs (pictured) just for the commuter traffic, ranging from over 40 years old to virtually brand new, of course with differences in performance. Being able to visualise each unit may help a new operator to learn the differences.
+
+Of course this could be toggled on or off according to a user's preference, and it would be up to each creator to supply stock images if they choose to include any.
+
+Albert — 30/11/23 at 08:33
+I'll add this suggestion to the list in case anyone wants to have a go at coding it but personally I'm not keen.  Unless a modification is very simple I prefer to limit my own coding time to things that add functionality that can't be achieved by any other means.  Pictures of stock can be incorporated using user graphics if that is what is wanted, though they will be fixed rather than shown by hovering.  Bear in mind too that such pictures, whether fixed or hovering, are unlikely to be acceptable for web site publication because of copyright restrictions.
+
 #99 (see also #33) Qwertytops — 10/11/23 at 12:41
 Would it be difficult to have a distinction between wired and unwired track (and trains too obviously)? The electrified railway I'm building shares sections with diesel freight lines and there was an incident recently where an operator accidentally sent an electric train into an unwired platform
 
@@ -47,7 +51,7 @@ Albert — 10/11/23 at 15:22
 Yes it's been suggested before and I have thought about it, but it involves considerable programming difficulties involving both trains and track as well as the display difficulties that @Oxalin refers to.  Also there are many different types of electrified track - see https://en.wikipedia.org/wiki/Railway_electrification_in_Great_Britain and this is just for the UK, so it represents a significant task and not one that I'm eager to undertake!  Nevertheless I'll add it again to the wish list in case someone wants to pick it up at some stage.
 
 #98 Qwertytops 26/10/23
-Would you think of adding some kind of connecting things so different locations could be joined without putting the blue squares on points/bridges?
+[done at v2.18.0] Would you think of adding some kind of connecting things so different locations could be joined without putting the blue squares on points/bridges?
 
 Albert 26/10/23
 I'll think about allowing blue squares on points and crossovers (but not bridges) in a future release, perhaps with a warning that signaller control might be needed to move stopped trains if they prevent other train movements

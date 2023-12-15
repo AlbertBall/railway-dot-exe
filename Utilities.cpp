@@ -6,7 +6,7 @@
 
       This is a source code file for "railway.exe", a railway operation
       simulator, written originally in Borland C++ Builder 4 Professional with
-      later updates in Embarcadero C++Builder 10.2.
+      later updates in Embarcadero C++Builder.
       Copyright (C) 2010 Albert Ball [original development]
 
       This program is free software: you can redistribute it and/or modify

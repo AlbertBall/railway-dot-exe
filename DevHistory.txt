@@ -1,6 +1,7 @@
-When being called on max speed is 30k/h but never resets to earlier max speed.  It's due to the call on signal not retaining its callon status when the train moves onto it  so it counts as clear.  Use latest session for KC when investigating.
+/Add protection against trying to read a .ttb file without nulls
 
-After 1st mod on 2nd call first after train is 2725 so clear to next signal returns true (current vec pos = 2724 so condits met) - ok cured now by altering condits in ClearToNextSignal
+comment out the test function code
+
 
 Development History
 
@@ -19,6 +20,31 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+#102 Qwertytops — 07/12/23 at 10:34
+Would it be doable to have a visualisation of speed limits? Like a gradient that shows the speed limits of each individual track component
+
+Albert — 07/12/23 at 11:17
+These are shown in the floating window along with track lengths if you select 'track information'.
+
+Qwertytops — 07/12/23 at 11:38
+Yeah but to have like an overview
+
+Albert — 07/12/23 at 15:12
+I think you are asking for information that is already available in one format to be presented in a different format. The question that arises in my mind is 'would that form of information allow operators to do anything that they can't already do without it?' As trains automatically obey track speed limits I can't think of anything, but I might well be missing something. 
+
+Qwertytops — 07/12/23 at 23:19
+That’s exactly what I’m asking and the answer is no. I just think it would be a good overall visualisation because it’s hard to see the limit of a large area especially if there are lots of points without going slow
+
+BWJM — 08/12/23 at 00:04
+I can see how it might be useful when building a railway to see if you've got any anomalous sections that are not configured correctly.  It would be easier to see this with colour-coded track (or some other visual indicator) than having to check each individual track segment.  Yes, I know there is some colour coding right now, but it could be more granular, and perhaps separated from track length.
+Note: I'm not endorsing nor opposing the request, just adding some thoughts. 
+Image
+
+Albert — 08/12/23 at 08:56
+I think this is well into the 'nice to have' category rather than something that would add significant functionality.  I take your point @BWJM but I suspect that for adequate granularity there would need to be so many different colours that it risks confusion rather than enlightenment.  Additionally anything that can be said about speed limits can also be said about track lengths so that adds another factor.  I'll add it to the wish list as ever but at the moment I don't feel any enthusiasm for the idea.
+
+BWJM — 08/12/23 at 08:57
+I don't disagree
 
 #101 ageekdude — 01/12/23 at 15:09
 I was wondering if it would be possible to have more granular zoom instead of the two zoom options. It doesn't need to be perfectly smooth, but more zoom options and being able to zoom in more than you are currently able would be a great feature.

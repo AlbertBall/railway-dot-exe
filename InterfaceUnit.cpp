@@ -6,7 +6,7 @@
 
    This is a source code file for "railway.exe", a railway operation
    simulator, written originally in Borland C++ Builder 4 Professional with
-   later updates in Embarcadero C++Builder 10.2.
+   later updates in Embarcadero C++Builder.
    Copyright (C) 2010 Albert Ball [original development]
 
    This program is free software: you can redistribute it and/or modify
@@ -3592,6 +3592,12 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                 while(true)
                 {
                     TTBLFile.getline(TimetableEntryString, 10000, '\0'); // pick up the entire AnsiString, including any embedded newlines
+                    if(strlen(TimetableEntryString) > 9997) //added at v2.18.0 because of Jason B's error reading a file without NULs (07/12/23)
+                    {                                       //can't use failbit as the compiler says it's always true - don't understand why
+                        ShowMessage("Unable to read a line from file " + CreateEditTTFileName + ".\nEither the file is corrupt or a single service entry exceeds 10,000 characters.");
+                        Utilities->CallLogPop(2689);
+                        return;
+                    }
                     if(TTBLFile.eof() && (TimetableEntryString[0] == '\0')) // stores a null in 1st position if doesn't load any characters
                     {
                         // may still have eof even if read a line, and
@@ -6510,7 +6516,7 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
     {
         if(TimetableEditVector.empty())
         {
-            return; // should be able to access this if it is but keep in for safety
+            return; // shouldn't be able to access this if it is but keep in for safety
         }
         TrainController->LogEvent("AZOrderClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AZOrderClick");
@@ -24986,6 +24992,170 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
+
+        AnsiString Key = "Manchester Victoria";  //For train start time order use 'Key = "Start";', any other location name value uses the
+                                                 //time order of the first appearance of that name (e.g. 'Key = "Manchester Victoria";)
+        if(TimetableEditVector.empty())
+        {
+            Utilities->CallLogPop(2376);
+            return;
+        }
+        TrainController->LogEvent("TimeOrder");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimeOrder");
+        TTEVIterator SortStart, SortEnd;
+
+        AnsiString Time = "", StartTime = "";
+        int StartPos = 0;
+        bool PreStart = true, MainBody = false, PostEnd = false;
+        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+        {
+            if(PreStart)
+            {
+                StartTime = (*x).SubString(1,5);
+                if(((StartTime[1] >= '0') && (StartTime[1] <= '9')) &&
+                    ((StartTime[2] >= '0') && (StartTime[2] <= '9')) &&
+                    ((StartTime[3] == ':')))
+                {
+                    *x = "//:58" + (*x);
+                    PreStart = false;
+                    MainBody = true;
+                }
+                else
+                {
+                    *x = "//:57" + (*x);
+                }
+            }
+            else if(MainBody)
+            {
+                if(*x == "") //end of MainBody
+                {
+                    MainBody = false;
+                    PostEnd = true;
+                    *x = "::::;";
+                    continue;
+                }
+                if((*x)[1] == '*')
+                {
+                    *x = "//:59" + (*x); //so all go up front after start time
+                    continue;
+                }
+                if(Key == "Start")
+                {
+                    StartPos = (*x).Pos(";Snt");
+                    if(StartPos == 0)
+                    {
+                        StartPos = (*x).Pos(";Sns");
+                    }
+                    if(StartPos == 0)
+                    {
+                        StartPos = (*x).Pos(";Sfs");
+                    }
+                    if((StartPos == 0) || (StartPos < 11)) //11 allows for min length of headcode (4), comma (1), time (5) and the ';' (1)
+                    {
+                        ShowMessage("No start entry or other error in  " + (*x));
+                        Utilities->CallLogPop(-1);
+                        return;
+                    }
+                    //now work forwards from the last comma to make sure there's room for the time
+                    int y = StartPos;
+                    while((y > 0) && ((*x)[y] != ','))
+                    {
+                        y--;
+                    }
+                    if(y == 0)
+                    {
+                        ShowMessage("No comma prior to time entry in " + (*x));
+                        Utilities->CallLogPop(-1);
+                        return;
+                    }
+                    else if((StartPos - y) < 6) //StartPos -> ';' and y -> ',' so if less than 6 there's no room for the time
+                    {
+                        ShowMessage("No room for the time entry in " + (*x));
+                        Utilities->CallLogPop(-1);
+                        return;
+                    }
+                }
+                else
+                {
+                    StartPos = (*x).Pos(";" + Key);
+                    if(StartPos == 0) //can't find name so add these to end of main body
+                    {
+                        *x = ":::::" + (*x);
+                    }
+                    //now work forwards from the last comma to make sure there's room for the time
+                    int y = StartPos;
+                    while((y > 0) && ((*x)[y] != ','))
+                    {
+                        y--;
+                    }
+                    if(y == 0)
+                    {
+                        ShowMessage("No comma prior to time entry in " + (*x));
+                        Utilities->CallLogPop(-1);
+                        return;
+                    }
+                    else if((StartPos - y) < 6) //StartPos -> ';' and y -> ',' so if less than 6 there's no room for the time
+                    {
+                        ShowMessage("No room for the time entry in " + (*x));
+                        Utilities->CallLogPop(-1);
+                        return;
+                    }
+                    else
+                    {
+                        StartPos = y + 6; //point to the ';' after the first time on the line (may have arrival & departure ot a 'pas' entry)
+                    }
+                }
+                Time = (*x).SubString(StartPos - 5,5);
+                *x = Time + (*x);
+            }
+            else if(PostEnd)
+            {
+                *x = ":::;;" + (*x);
+            }
+            else
+            {
+                ShowMessage("Can't identify entry " + (*x));
+                Utilities->CallLogPop(-1);
+                return;
+            }
+        }
+        TTSelectedEntry = *TTCurrentEntryIterator;
+        OriginalTimetableEditVector = TimetableEditVector;
+        SortStart = TimetableEditVector.begin(); // if no start time set sort from beginning
+        if(TTFirstServiceIterator != TimetableEditVector.end())
+        {
+            SortStart = TTFirstServiceIterator;
+        }
+        SortEnd = TimetableEditVector.end(); // if no last service set sort to end
+        if(TTLastServiceIterator != TimetableEditVector.end())
+        {
+            SortEnd = TTLastServiceIterator + 1;
+        }
+        std::sort(SortStart, SortEnd);
+        //now remove the times at start of each entry
+        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+        {
+            *x = (*x).SubString(6, (*x).Length() - 5);
+        }
+
+        CompileAllEntriesMemoAndSetIterators(11);
+        bool CurrentEntryChanged = false;
+        TimetableChangedFlag = true;
+        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+        {
+            if(TTSelectedEntry == *x)
+            {
+                TTCurrentEntryIterator = x;
+                CurrentEntryChanged = true;
+            }
+        }
+        if(!CurrentEntryChanged)
+        {
+            TTCurrentEntryIterator = TTStartTimeIterator;
+        }
+        TimetableValidFlag = false;
+        Level1Mode = TimetableMode;
+        SetLevel1Mode(-1);
 
 //end of test code
         Utilities->CallLogPop(2376);

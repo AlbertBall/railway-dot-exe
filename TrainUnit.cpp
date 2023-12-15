@@ -6,7 +6,7 @@
 
   This is a source code file for "railway.exe", a railway operation
   simulator, written originally in Borland C++ Builder 4 Professional with
-  later updates in Embarcadero C++Builder 10.2.
+  later updates in Embarcadero C++Builder.
   Copyright (C) 2010 Albert Ball [original development]
 
   This program is free software: you can redistribute it and/or modify
@@ -1344,7 +1344,7 @@ void TTrain::UpdateTrain(int Caller)
                 }
             }
         }
-        if(StoppedForTrainInFront)
+        if((BeingCalledOn && RevisedStoppedAtLoc()) || StoppedForTrainInFront)
         {
             if(ClearToNextSignal(0))
             {
@@ -1356,10 +1356,6 @@ void TTrain::UpdateTrain(int Caller)
                 FirstHalfMove = true;
                 SetTrainMovementValues(16, NextElementPosition, NextEntryPos);
             }
-        }
-        if(BeingCalledOn && ClearToNextSignal(1)) //new at v2.18.0 to increase max speed when train in front moves off before reaches it
-        {
-            BeingCalledOn = false;
         }
     }
     if(Stopped() && TrainFailurePending) // ok, stopped so PlotElements set when the train stopped in an earlier update
@@ -6873,7 +6869,7 @@ bool TTrain::AbleToMoveButForSignal(int Caller)
 {
     // first check if a train immediately in front (may have moved there since this train stopped so StoppedForTrainInFront
     // won't be set; if there is a train then set StoppedForTrainInFront
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AbleToMoveButForSignal" + "," + HeadCode);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AbleToMoveButForSignalOrTrainInFront" + "," + HeadCode);
     // addition below for v1.3.2 after Carwyn Thomas fault reported 24/05/15 - need to check if exiting at continuation (LeadElement == -1) as if so fails at VecPos = .....
     if(LeadElement == -1) // exiting at continuation
     {

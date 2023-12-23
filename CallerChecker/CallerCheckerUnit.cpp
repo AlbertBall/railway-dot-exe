@@ -131,7 +131,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "ClearToNextSignal",
         "ClockTimer2",
         "ColNametoNumber",
-        "CompileAllEntriesMemoAndSetPointers",
+        "CompileAllEntriesMemoAndSetIterators",
         "ConvertSignalsToOppositeHand",
         "ConsolidatePrefDirs",
         "ConsolidateSARNTArrDep",

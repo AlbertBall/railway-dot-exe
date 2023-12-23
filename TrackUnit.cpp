@@ -15983,9 +15983,10 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
 // can't set XLink or XLinkPos yet if the element is a non-failed leading point.
 
 /* check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
-   drop this as time-consuming, and RouteSearchLimit will stop the search if on a loop <--NO, need to keep in the case of crossovers as can reach
-   element on opposite track and still find the required end point - causes error when adding to the Route"MultiMap (happened by chance when
-   developing non-station named elements on points & crossovers).  BUT need to speed up, don't use brute force search through all searchvector.
+   drop this at v2.16.1 as time-consuming, and RouteSearchLimit will stop the search if on a loop <--NO, need to keep in the case of points and
+   crossovers as can reach element on opposite track and still find the required end point - causes error when adding to the Route2MultiMap
+   (happened by chance when developing non-station named elements on points & crossovers).  BUT need to speed up, don't use brute force search
+   through all searchvector.
 
    just test 4-track elements & fail for crossover, points or bridge on same track, if 2-track then looping and searchlimit will stop - changed at v2.18.0
 */

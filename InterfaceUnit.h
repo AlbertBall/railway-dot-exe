@@ -753,7 +753,8 @@ __published: // IDE-managed Components
     TButton *InvertTTEntryButton;
     TButton *Button1;
     TBitBtn *FlashControlButton;
-    TButton *ExpandRepeatsButton;  //added at v2.15.0
+    TButton *ExpandRepeatsButton;
+    TButton *TimeOrderButton;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -980,7 +981,8 @@ __published: // IDE-managed Components
     void __fastcall SigAutoNonConsecButtonClick(TObject *Sender);
     void __fastcall InvertTTEntryButtonClick(TObject *Sender);
     void __fastcall FlashControlButtonClick(TObject *Sender);
-    void __fastcall ExpandRepeatsButtonClick(TObject *Sender); //added at v2.17.0
+    void __fastcall ExpandRepeatsButtonClick(TObject *Sender);
+    void __fastcall TimeOrderButtonClick(TObject *Sender); //added at v2.17.0
 
 public: // AboutForm needs access to these
 
@@ -1243,6 +1245,8 @@ private:
 ///< true when AutoSig route building selected during operation
     bool AZWarningSent;
 ///< true when warning about alphabetical timetable order has been given
+    bool TimeWarningSent;
+///< true when warning about time timetable order has been given
     bool CancelSelectionFlag;
 ///< used in case pasting to avoid RecoverClipboard call when set
     bool ClipboardChecked;
@@ -1327,6 +1331,8 @@ private:
 ///< indicates that a train under signaller control leaving a location when awaiting departure warning that it must be returned to restore timetable control has been sent
     bool TTAZSaveWarningNotRequired;
 ///< if false a warning is given when attempting to save a timetable in alphabetical order, if the save proceeds then this is set to true and the warning is not given again
+    bool TTTimeSaveWarningNotRequired;
+///< if false a warning is given when attempting to save a timetable in time order, if the save proceeds then this is set to true and the warning is not given again
     bool TTClockAdjustWarningHide;
 ///< true if user opts not to show the timetable clock adjustment warning (false on starting the program)
     bool TwoLocationNamePanelHide;
@@ -1342,6 +1348,8 @@ private:
     bool TimetableValidFlag;
 ///< indicates that a 'Validate timetable' button click in the timetable editor has succeeded
     bool TimetableChangedInAZOrderFlag;
+///< used to give a warning message that changes will be discarded if proceed
+    bool TimetableChangedInTimeOrderFlag;
 ///< used to give a warning message that changes will be discarded if proceed
     bool ShowActionsDueForm;
 ///< true when the 'trains needing action' button has been clicked during operation (new at v2.2.0)
@@ -1369,6 +1377,7 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     bool DeleteTTEntryKeyFlag;
     bool NewTTEntryKeyFlag;
     bool AZOrderKeyFlag;
+    bool TimeOrderKeyFlag;
     bool TTServiceSyntaxCheckKeyFlag;
     bool ValidateTimetableKeyFlag;
     bool SaveTTKeyFlag;
@@ -1501,7 +1510,7 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     bool AnyTTKeyFlagSet()
     {
         return (PreviousTTEntryKeyFlag || NextTTEntryKeyFlag || MoveTTEntryUpKeyFlag || MoveTTEntryDownKeyFlag || CopyTTEntryKeyFlag || InvertTTEntryKeyFlag
-                || CutTTEntryKeyFlag || PasteTTEntryKeyFlag || DeleteTTEntryKeyFlag || NewTTEntryKeyFlag || AZOrderKeyFlag || TTServiceSyntaxCheckKeyFlag
+                || CutTTEntryKeyFlag || PasteTTEntryKeyFlag || DeleteTTEntryKeyFlag || NewTTEntryKeyFlag || AZOrderKeyFlag || TimeOrderKeyFlag || TTServiceSyntaxCheckKeyFlag
                 || ValidateTimetableKeyFlag || SaveTTKeyFlag || SaveTTAsKeyFlag || RestoreTTKeyFlag || ExportTTKeyFlag || ConflictAnalysisKeyFlag);
     }
 

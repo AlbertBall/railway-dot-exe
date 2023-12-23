@@ -88,7 +88,6 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
     // constructor
     try
     {
-
 //        TestFunctionCount = 0; //used only in test function
 //        TestFunctionFirstPass = true;  //used only in test function
 
@@ -238,7 +237,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrainLeaveWarningSent = false; //added at v2.14.0
         InvertTTEntryMessageSent = false; //added at v2.15.0
         AZWarningSent = false; //added at v2.15.1
+        TimeWarningSent = false; //added at v2.18.0
         TTAZSaveWarningNotRequired = false; //added at v2.15.1
+        TTTimeSaveWarningNotRequired = false; //added at v2.18.0
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -3416,8 +3417,11 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
         TimetableChangedInAZOrderFlag = false;
+        TimetableChangedInTimeOrderFlag = false;
         AZOrderButton->Caption = AnsiString("A-Z Order");
         AZOrderButton->Hint = AnsiString("Arrange services in alphabetical order       Toggle with Shift+ Z");
+        TimeOrderButton->Caption = AnsiString("Time Order");
+        TimeOrderButton->Hint = AnsiString("Arrange services in chronological (time) order       Toggle with Shift+ Y");
         CopiedEntryFlag = false;
         NewEntryInPreparationFlag = false;
         CopiedEntryStr = "";
@@ -3574,8 +3578,11 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                 TimetableValidFlag = false;
                 TTEntryChangedFlag = false;
                 TimetableChangedInAZOrderFlag = false;
+                TimetableChangedInTimeOrderFlag = false;
                 AZOrderButton->Caption = AnsiString("A-Z Order");
                 AZOrderButton->Hint = AnsiString("Arrange services in alphabetical order       Toggle with Shift+ Z");
+                TimeOrderButton->Caption = AnsiString("Time Order");
+                TimeOrderButton->Hint = AnsiString("Arrange services in chronological (time) order       Toggle with Shift+ Y");
                 NewEntryInPreparationFlag = false;
                 CopiedEntryStr = "";
                 CopiedEntryFlag = false;
@@ -4667,6 +4674,10 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
         {
             TimetableChangedInAZOrderFlag = true;
         }
+        if(TimeOrderButton->Caption == AnsiString("Original Order"))
+        {
+            TimetableChangedInTimeOrderFlag = true;
+        }
         TimetableValidFlag = false;
         TimetableChangedFlag = true;
         TTEntryChangedFlag = false;
@@ -4770,8 +4781,9 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         {
             UnicodeString MessageStr =
                 "This will save the timetable in alphabetical order and the original order will be lost.  If this is what is required "
-                "click 'YES' and this warning will not be given again, but if it isn't click 'NO', revert to the original order, and then save it.\n\n"
-                "The saved alphabetical order will become the new original order.";
+                "click 'YES' and this warning will not be shown again, but if it isn't click 'NO'.\n\nIf a new entry has been created it can "
+                "be copied (to avoid losing it) before reverting to the original order and then it can be pasted and saved.\n\n"
+                "If the alphabetical order is saved it will become the new original order.";
             if(!TTAZSaveWarningNotRequired)
             {
                 int button = Application->MessageBox(MessageStr.c_str(), L"Please Note:", MB_YESNO | MB_ICONWARNING);
@@ -4784,6 +4796,25 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
             }
         }
         AZOrderButton->Caption = AnsiString("A-Z Order");
+        if(TimeOrderButton->Caption == AnsiString("Original Order")) //new at v2.18.0
+        {
+            UnicodeString MessageStr =
+                "This will save the timetable in chronological (time) order and the original order will be lost.  If this is what is required "
+                "click 'YES' and this warning will not be shown again, but if it isn't click 'NO'.\n\nIf a new entry has been created it can "
+                "be copied (to avoid losing it) before reverting to the original order and then it can be pasted and saved.\n\n"
+                "If the chronological (time) order is saved it will become the new original order.";
+            if(!TTTimeSaveWarningNotRequired)
+            {
+                int button = Application->MessageBox(MessageStr.c_str(), L"Please Note:", MB_YESNO | MB_ICONWARNING);
+                if(button == IDNO)
+                {
+                    Utilities->CallLogPop(2690);
+                    return;
+                }
+                TTTimeSaveWarningNotRequired = true;
+            }
+        }
+        TimeOrderButton->Caption = AnsiString("Time Order");
         std::ofstream TTBLFile;
         if(CreateEditTTFileName != "")
         {
@@ -6606,13 +6637,221 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
         SetLevel1Mode(136);
         Utilities->CallLogPop(2165);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non-error catch
     {
-        ErrorLog(211, e.Message);
+        ShowMessage("The following error has occurred: " + e.Message + ".\n\nPlease don't save the timetable as it has probably been corrupted - "
+                    "especially likely if the timetable hadn't been validated.\n\nInstead please exit the timetable editor and reload the original."
+                    "\n\nIf the problem persists with a validated timetable please send the railway and original timetable to railwayfeedback@gmail.com"
+                    " - thanks.");
+    //        ErrorLog(211, e.Message);
     }
 }
 
 // ---------------------------------------------------------------------------
+
+void __fastcall TInterface::TimeOrderButtonClick(TObject *Sender)
+{
+    try
+    {
+        if(TimetableEditVector.empty())
+        {
+            return; // shouldn't be able to access this if it is but keep in for safety
+        }
+        TrainController->LogEvent("TimeOrderClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimeOrderClick");
+        if(TimeOrderButton->Caption == AnsiString("Time Order"))
+        {
+            TTEVIterator SortStart, SortEnd;
+            UnicodeString MessageStr =
+                "If you wish to preserve the original order don't save any changes whilst in time order.\n\n"
+                "This warning won't be shown again but a new warning will be given on attempting to save when in time order.";
+            if(!TimeWarningSent)
+            {
+                Application->MessageBox(MessageStr.c_str(), L"IMPORTANT:", MB_OK | MB_ICONWARNING);
+                TimeWarningSent = true;
+            }
+            TTSelectedEntry = *TTCurrentEntryIterator;
+            OriginalTimetableEditVector = TimetableEditVector;
+
+//addition for time order over AZ order
+            AnsiString Time = "", StartTime = "";
+            int StartPos = 0;
+            bool PreStart = true, MainBody = false, PostEnd = false;
+            int IteratorCount = 0; //use this instead of an explicit iterator because vector likely to be reallocated when entries increased in size
+            while(true)
+            {
+                if((TimetableEditVector.begin() + IteratorCount) == TimetableEditVector.end())
+                {
+                    break;
+                }
+                TTimetableEditVector::iterator x = TimetableEditVector.begin() + IteratorCount;
+                if(PreStart)
+                {
+                    StartTime = (*x).SubString(1,5);
+                    if(((StartTime[1] >= '0') && (StartTime[1] <= '9')) &&
+                        ((StartTime[2] >= '0') && (StartTime[2] <= '9')) &&
+                        ((StartTime[3] == ':')))
+                    {
+                        *x = "//:58" + (*x);
+                        PreStart = false;
+                        MainBody = true;
+                        IteratorCount++;
+                    }
+                    else
+                    {
+                        *x = "//:57" + (*x);
+                        IteratorCount++;
+                    }
+                }
+                else if(MainBody)
+                {
+                    if(*x == "") //end of MainBody
+                    {
+                        MainBody = false;
+                        PostEnd = true;
+                        *x = "::::;";
+                        IteratorCount++;
+                        continue;
+                    }
+                    if((*x)[1] == '*')
+                    {
+                        *x = "//:59" + (*x); //so all go up front after start time
+                        IteratorCount++;
+                        continue;
+                    }
+                    StartPos = (*x).Pos(";Snt");
+                    if(StartPos == 0)
+                    {
+                        StartPos = (*x).Pos(";Sns");
+                    }
+                    if(StartPos == 0)
+                    {
+                        StartPos = (*x).Pos(";Sfs");
+                    }
+                    if((StartPos == 0) || (StartPos < 11)) //11 allows for min length of headcode (4), comma (1), time (5) and the ';' (1)
+                    {
+                        throw Exception("No start entry or other error in  " + (*x));
+                    }
+                    //now work forwards from the last comma to make sure there's room for the time
+                    int y = StartPos;
+                    while((y > 0) && ((*x)[y] != ','))
+                    {
+                        y--;
+                    }
+                    if(y == 0)
+                    {
+                        throw Exception("No comma prior to time entry in " + (*x));
+                    }
+                    else if((StartPos - y) < 6) //StartPos -> ';' and y -> ',' so if less than 6 there's no room for the time
+                    {
+                        throw Exception("No room for the time entry in " + (*x));
+                    }
+                    Time = (*x).SubString(StartPos - 5,5);
+                    *x = Time + (*x);
+                    IteratorCount++;
+                }
+                else if(PostEnd)
+                {
+                    *x = ":::;;" + (*x);
+                    IteratorCount++;
+                }
+                else
+                {
+                    throw Exception("Can't identify entry " + (*x));
+                }
+            }
+//end of addition
+
+            SortStart = TimetableEditVector.begin(); // if no start time set sort from beginning
+            if(TTFirstServiceIterator != TimetableEditVector.end())
+            {
+                SortStart = TTFirstServiceIterator;
+            }
+            SortEnd = TimetableEditVector.end(); // if no last service set sort to end
+            if(TTLastServiceIterator != TimetableEditVector.end())
+            {
+                SortEnd = TTLastServiceIterator + 1;
+            }
+            std::sort(SortStart, SortEnd);
+//addition for time order over AZ order
+//now remove the times at start of each entry
+            for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+            {
+                *x = (*x).SubString(6, (*x).Length() - 5);
+            }
+//end of addition
+            CompileAllEntriesMemoAndSetIterators(1);
+            bool CurrentEntryChanged = false;
+            for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+            {
+                if(TTSelectedEntry == *x)
+                {
+                    TTCurrentEntryIterator = x;
+                    CurrentEntryChanged = true;
+                }
+            }
+            if(!CurrentEntryChanged)
+            {
+                TTCurrentEntryIterator = TTStartTimeIterator;
+            }
+            TimeOrderButton->Caption = AnsiString("Original Order");
+            TimeOrderButton->Hint = AnsiString("Arrange services in original order       Toggle with Shift+ Y");
+        }
+        else
+        {
+            if(TimetableChangedInTimeOrderFlag)
+            {
+                UnicodeString MessageStr =
+                    "Reverting to the original order will discard any changes made whilst in time order.\n\nTo preserve the changes click 'No', "
+                    "then save the timetable or use 'save as' if you wish to keep the original timetable.\n\nDo you wish to proceed?";
+                int button = Application->MessageBox(MessageStr.c_str(), L"Warning!", MB_YESNO | MB_ICONWARNING);
+                if(button == IDNO)
+                {
+                    TimetableChangedFlag = true;
+                    TimetableValidFlag = false;
+                    Level1Mode = TimetableMode;
+                    SetLevel1Mode(141);
+                    Utilities->CallLogPop(2691);
+                    return;
+                }
+            }
+            TTSelectedEntry = *TTCurrentEntryIterator;
+            TimetableEditVector = OriginalTimetableEditVector;
+            CompileAllEntriesMemoAndSetIterators(14);
+            bool CurrentEntryChanged = false;
+            for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+            {
+                if(TTSelectedEntry == *x)
+                {
+                    TTCurrentEntryIterator = x;
+                    CurrentEntryChanged = true;
+                }
+            }
+            if(!CurrentEntryChanged)
+            {
+                TTCurrentEntryIterator = TTStartTimeIterator;
+            }
+            TimeOrderButton->Caption = AnsiString("Time Order");
+            TimeOrderButton->Hint = AnsiString("Arrange services in chronological (time) order       Toggle with Shift+ Y");
+        }
+//        TimetableChangedFlag = true;   dropped for v2.11.0
+        TimetableValidFlag = false;
+        TimetableChangedInTimeOrderFlag = false;
+        Level1Mode = TimetableMode;
+        SetLevel1Mode(142);
+        Utilities->CallLogPop(2692);
+    }
+    catch(const Exception &e) //non-error catch
+    {
+        ShowMessage("The following error has occurred: " + e.Message + ".\n\nPlease don't save the timetable as it has probably been corrupted - "
+                    "especially likely if the timetable hadn't been validated.\n\nInstead please exit the timetable editor and reload the original."
+                    "\n\nIf the problem persists with a validated timetable please send the railway and original timetable to railwayfeedback@gmail.com"
+                    " - thanks.");
+//        ErrorLog(, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
 
 void TInterface::ConvertCRLFsToCommas(int Caller, AnsiString &ConvStr)
 {
@@ -6682,6 +6921,7 @@ void TInterface::TimetableHandler()
     SaveTTAsButton->Enabled = false;
     ValidateTimetableButton->Enabled = false;
     AZOrderButton->Enabled = false;
+    TimeOrderButton->Enabled = false;
     TTServiceSyntaxCheckButton->Enabled = false;
     InvertTTEntryButton->Enabled = false;
     NewTTEntryButton->Enabled = false;
@@ -6697,11 +6937,19 @@ void TInterface::TimetableHandler()
     if(!TimetableEditVector.empty() && !TTEntryChangedFlag && !NewEntryInPreparationFlag)
     {
         AZOrderButton->Enabled = true;
+        TimeOrderButton->Enabled = true;
+    }
+    if(AZOrderButton->Caption == "Original Order")
+    {
+        TimeOrderButton->Enabled = false;
+    }
+    if(TimeOrderButton->Caption == "Original Order")
+    {
+        AZOrderButton->Enabled = false;
     }
     if(TimetableChangedFlag)
     {
         TimetableValidFlag = false; // should always be the case anyway but include here to be sure
-
     }
     if(CreateEditTTFileName == "")
     {
@@ -10356,6 +10604,12 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                 AZOrderButton->Click();
                 SetTopIndex(9);
                 AZOrderKeyFlag = false;
+            }
+            else if(TimeOrderKeyFlag)
+            {
+                TimeOrderButton->Click();
+                SetTopIndex(20);
+                TimeOrderKeyFlag = false;
             }
             else if(TTServiceSyntaxCheckKeyFlag)
             {
@@ -15268,6 +15522,10 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
                 if(AZOrderButton->Enabled && (Key == 'Z' || Key == 'z'))
                 {
                     AZOrderKeyFlag = true;
+                }
+                if(TimeOrderButton->Enabled && (Key == 'Y' || Key == 'y'))
+                {
+                    TimeOrderKeyFlag = true;
                 }
 /*
                 if(AddMinsButton->Enabled && (Key == 'M' || Key == 'm'))  //can't have key here as adds the letter to the entry
@@ -24993,169 +25251,6 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
 
-        AnsiString Key = "Manchester Victoria";  //For train start time order use 'Key = "Start";', any other location name value uses the
-                                                 //time order of the first appearance of that name (e.g. 'Key = "Manchester Victoria";)
-        if(TimetableEditVector.empty())
-        {
-            Utilities->CallLogPop(2376);
-            return;
-        }
-        TrainController->LogEvent("TimeOrder");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimeOrder");
-        TTEVIterator SortStart, SortEnd;
-
-        AnsiString Time = "", StartTime = "";
-        int StartPos = 0;
-        bool PreStart = true, MainBody = false, PostEnd = false;
-        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
-        {
-            if(PreStart)
-            {
-                StartTime = (*x).SubString(1,5);
-                if(((StartTime[1] >= '0') && (StartTime[1] <= '9')) &&
-                    ((StartTime[2] >= '0') && (StartTime[2] <= '9')) &&
-                    ((StartTime[3] == ':')))
-                {
-                    *x = "//:58" + (*x);
-                    PreStart = false;
-                    MainBody = true;
-                }
-                else
-                {
-                    *x = "//:57" + (*x);
-                }
-            }
-            else if(MainBody)
-            {
-                if(*x == "") //end of MainBody
-                {
-                    MainBody = false;
-                    PostEnd = true;
-                    *x = "::::;";
-                    continue;
-                }
-                if((*x)[1] == '*')
-                {
-                    *x = "//:59" + (*x); //so all go up front after start time
-                    continue;
-                }
-                if(Key == "Start")
-                {
-                    StartPos = (*x).Pos(";Snt");
-                    if(StartPos == 0)
-                    {
-                        StartPos = (*x).Pos(";Sns");
-                    }
-                    if(StartPos == 0)
-                    {
-                        StartPos = (*x).Pos(";Sfs");
-                    }
-                    if((StartPos == 0) || (StartPos < 11)) //11 allows for min length of headcode (4), comma (1), time (5) and the ';' (1)
-                    {
-                        ShowMessage("No start entry or other error in  " + (*x));
-                        Utilities->CallLogPop(-1);
-                        return;
-                    }
-                    //now work forwards from the last comma to make sure there's room for the time
-                    int y = StartPos;
-                    while((y > 0) && ((*x)[y] != ','))
-                    {
-                        y--;
-                    }
-                    if(y == 0)
-                    {
-                        ShowMessage("No comma prior to time entry in " + (*x));
-                        Utilities->CallLogPop(-1);
-                        return;
-                    }
-                    else if((StartPos - y) < 6) //StartPos -> ';' and y -> ',' so if less than 6 there's no room for the time
-                    {
-                        ShowMessage("No room for the time entry in " + (*x));
-                        Utilities->CallLogPop(-1);
-                        return;
-                    }
-                }
-                else
-                {
-                    StartPos = (*x).Pos(";" + Key);
-                    if(StartPos == 0) //can't find name so add these to end of main body
-                    {
-                        *x = ":::::" + (*x);
-                    }
-                    //now work forwards from the last comma to make sure there's room for the time
-                    int y = StartPos;
-                    while((y > 0) && ((*x)[y] != ','))
-                    {
-                        y--;
-                    }
-                    if(y == 0)
-                    {
-                        ShowMessage("No comma prior to time entry in " + (*x));
-                        Utilities->CallLogPop(-1);
-                        return;
-                    }
-                    else if((StartPos - y) < 6) //StartPos -> ';' and y -> ',' so if less than 6 there's no room for the time
-                    {
-                        ShowMessage("No room for the time entry in " + (*x));
-                        Utilities->CallLogPop(-1);
-                        return;
-                    }
-                    else
-                    {
-                        StartPos = y + 6; //point to the ';' after the first time on the line (may have arrival & departure ot a 'pas' entry)
-                    }
-                }
-                Time = (*x).SubString(StartPos - 5,5);
-                *x = Time + (*x);
-            }
-            else if(PostEnd)
-            {
-                *x = ":::;;" + (*x);
-            }
-            else
-            {
-                ShowMessage("Can't identify entry " + (*x));
-                Utilities->CallLogPop(-1);
-                return;
-            }
-        }
-        TTSelectedEntry = *TTCurrentEntryIterator;
-        OriginalTimetableEditVector = TimetableEditVector;
-        SortStart = TimetableEditVector.begin(); // if no start time set sort from beginning
-        if(TTFirstServiceIterator != TimetableEditVector.end())
-        {
-            SortStart = TTFirstServiceIterator;
-        }
-        SortEnd = TimetableEditVector.end(); // if no last service set sort to end
-        if(TTLastServiceIterator != TimetableEditVector.end())
-        {
-            SortEnd = TTLastServiceIterator + 1;
-        }
-        std::sort(SortStart, SortEnd);
-        //now remove the times at start of each entry
-        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
-        {
-            *x = (*x).SubString(6, (*x).Length() - 5);
-        }
-
-        CompileAllEntriesMemoAndSetIterators(11);
-        bool CurrentEntryChanged = false;
-        TimetableChangedFlag = true;
-        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
-        {
-            if(TTSelectedEntry == *x)
-            {
-                TTCurrentEntryIterator = x;
-                CurrentEntryChanged = true;
-            }
-        }
-        if(!CurrentEntryChanged)
-        {
-            TTCurrentEntryIterator = TTStartTimeIterator;
-        }
-        TimetableValidFlag = false;
-        Level1Mode = TimetableMode;
-        SetLevel1Mode(-1);
 
 //end of test code
         Utilities->CallLogPop(2376);
@@ -28346,4 +28441,5 @@ void TInterface::PlayerHandshakingActions()
 */
 
 //---------------------------------------------------------------------------
+
 

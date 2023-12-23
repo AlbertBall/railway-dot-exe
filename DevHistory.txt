@@ -1,6 +1,22 @@
 /Add protection against trying to read a .ttb file without nulls
 
-comment out the test function code
+/Add time order button:
+/need key toggle, Shift+ Y
+/don't allow other order button to be enabled if other clicked
+/test toggle Y
+
+/check if iterators remain valid when vector expands - no they are not - don't rely on initial iterators
+/recheck all time order messages
+Xorder buttons should only be available when validated and railway loaded
+/validation should be required after reordering, check older version
+
+/Move test function code out of prograsm and into the external test function list
+
+Alter manual iaw new time order & check all other changes
+
+/add CompileAllEntriesMemoAndSetIterators to checker
+
+
 
 
 Development History

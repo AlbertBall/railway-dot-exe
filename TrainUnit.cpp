@@ -19638,7 +19638,7 @@ different to the train's front element name (whether null or not) (no report), a
             }
             SequenceLog += "13c\n";
 
-    //Perform the missing cdt check.  Check every entry simiar to the check in SecondPassActions and if find any print out the full sequence and service entries
+    //Perform the missing cdt check.  Check every entry similar to the check in SecondPassActions and if find any print out the full sequence and service entries
             AnsiString LocationNameToBeChecked = "";
             bool MissingcdtUnreportedFlag = true;
             TNumList MarkerList;
@@ -19649,27 +19649,36 @@ different to the train's front element name (whether null or not) (no report), a
                 int FirstInstance = 9999, SecondInstance = 9999; //9999 ensures won't be marked if not changed
                 bool FullBreak = false;
                 MarkerList.clear();
-                const TActionVectorEntry &AVEntry0 = TDEntry.ActionVector.at(0);
                 // first discard unlocated Snt entries as they don't have location name set
-                if((AVEntry0.Command == "Snt") && (AVEntry0.LocationType == EnRoute))
-                {
-                    y = 1;
-                }
                 while((y < TDEntry.ActionVector.size()) && !FullBreak)
                 // need to check each location name separately in turn, skipped for SignallerControl entries
                 {
-                    if((TDEntry.ActionVector.at(y).Command == "Fer") || (TDEntry.ActionVector.at(y).FormatType == Repeat) ||
+                    if(/*(TDEntry.ActionVector.at(y).Command == "Fer") || */(TDEntry.ActionVector.at(y).FormatType == Repeat) ||
                         (TDEntry.ActionVector.at(y).Command == "Fjo") || (TDEntry.ActionVector.at(y).Command == "Frh") ||
                         (TDEntry.ActionVector.at(y).Command == "Frh-sh"))
                     {
                         break; // out of the 'while' loop since have reached the end
                     }
-                    LocationNameToBeChecked = TDEntry.ActionVector.at(y).LocationName;
+                LocationNameToBeChecked = "";  //this section where continuation name assigned for unlocated Snts added at v2.18.0
+                if((TDEntry.ActionVector.at(y).Command == "Snt") && (TDEntry.ActionVector.at(y).LocationType == EnRoute)) //unlocated Snt - check if the continuation has a name
+                {
+                    int EntryPos = TDEntry.ActionVector.at(0).RearStartOrRepeatMins; //this is a track vector position
+                    LocationNameToBeChecked = Track->TrackElementAt(1678, EntryPos).ActiveTrackElementName;
+                }
+                if(LocationNameToBeChecked == "")
+                {
+                    if(y == 0) //unlocated and un-named Snt, so skip this value of y
+                    {
+                        y++;
+                        continue;
+                    }
+                    LocationNameToBeChecked = TDEntry.ActionVector.at(y).LocationName; //the only un-named values for ActionVectorEntry::LocationName
+                }                                                                      //are for unlocated Snts and Fers
                     FirstInstance = y;
                     for(unsigned int z = y; z < TDEntry.ActionVector.size(); z++)
                     {
                         const TActionVectorEntry &AVEntry = TDEntry.ActionVector.at(z);
-                        if((AVEntry.Command == "Fer") || (AVEntry.FormatType == Repeat) ||
+                        if(/*(AVEntry.Command == "Fer") || */(AVEntry.FormatType == Repeat) ||
                             (AVEntry.Command == "Fjo") || (AVEntry.Command == "Frh") ||
                             (AVEntry.Command == "Frh-sh"))
                         {
@@ -19688,11 +19697,21 @@ different to the train's front element name (whether null or not) (no report), a
                         {
                             for(unsigned int a = z; a < TDEntry.ActionVector.size(); a++)
                             {
+                                AnsiString LocationName;
                                 if(TDEntry.ActionVector.at(a).Command == "cdt")
                                 {
                                     break; // out of the 'a' & 'z' loops since the check is only valid up to a change of direction
                                 }
-                                if(TDEntry.ActionVector.at(a).LocationName == LocationNameToBeChecked)
+                                if(TDEntry.ActionVector.at(a).Command == "Fer") //this section where continuation name assigned for Fers added at v2.18.0
+                                {
+                                    int ExitLoc = TDEntry.ActionVector.at(a).ExitList.front();
+                                    LocationName = Track->TrackElementAt(1679, ExitLoc).ActiveTrackElementName;
+                                }
+                                else
+                                {
+                                    LocationName = TDEntry.ActionVector.at(a).LocationName;
+                                }
+                                if(LocationName == LocationNameToBeChecked)
                                 {
                                     SecondInstance = a;
                                     AnsiString Sequence = TDEntry.ServiceReference;
@@ -19736,7 +19755,7 @@ different to the train's front element name (whether null or not) (no report), a
     name either side of a cdt (before the next cdt) then flag as a questionable cdt.
     Method:  Have an outer loop for each service that looks for cdts.  When found work backwards to the last cdt or beginning and std::list all the
     locations excluding the cdt location.  Then work forwards to the next cdt or the end and do the same.  Sort each list and make unique (duplicated
-    names on one side of a cdt already checked either by the tt validator or the missing cdt check.  Then compare the two lists and if any location
+    names on one side of a cdt already checked either by the tt validator or the missing cdt check).  Then compare the two lists and if any location
     included in both then ok, else report as questionable. If one list is empty then it is reported.
 */
             typedef std::list<AnsiString> TLocList;
@@ -19747,17 +19766,30 @@ different to the train's front element name (whether null or not) (no report), a
                 unsigned int cdtPosition = 9999;
                 AnsiString cdtLocation = "";
                 bool FoundSameName = false;
+                bool FerEntry = false;
                 MarkerList.clear();
                 const TTrainDataEntry &TDEntry = SingleServiceVector.at(x);
-                for(unsigned int y = 0; y < TDEntry.ActionVector.size(); y++)
+                for(unsigned int y = 0; y <= TDEntry.ActionVector.size(); y++) // <= because need to examine Fer endings after reached end of vector
                 // need to check each location name separately in turn, skipped for SignallerControl entries
                 {
+                    if((y == TDEntry.ActionVector.size()) && !FerEntry)
+                    {
+                        break;
+                    }
                     BackwardList.clear();
                     ForwardList.clear();
-                    const TActionVectorEntry &AVEntry = TDEntry.ActionVector.at(y);
-                    if((AVEntry.Command == "Fer") || (AVEntry.FormatType == Repeat) ||  //end of SSVector, shouldn't be any repeats
+                    bool ValidEnd = false;
+                    if(y < TDEntry.ActionVector.size())
+                    {
+                        const TActionVectorEntry &AVEntry = TDEntry.ActionVector.at(y);
+                        if((AVEntry.FormatType == Repeat) ||  //end of SSVector, shouldn't be any repeats
                         (AVEntry.Command == "Fjo") || (AVEntry.Command == "Frh") ||
                         (AVEntry.Command == "Frh-sh"))
+                        {
+                            ValidEnd = true;
+                        }
+                    }
+                    if(FerEntry || ValidEnd)
                     {
                         if(MarkerList.empty())
                         {
@@ -19788,61 +19820,86 @@ different to the train's front element name (whether null or not) (no report), a
                             break;
                         }
                     }
-                    if(AVEntry.Command != "cdt")
+                    if(y < TDEntry.ActionVector.size()) //if it is == ...size() then shouldn't have reached here
                     {
-                        continue; //only looking for cdts
-                    }
-                    //here have found a cdt
-                    cdtPosition = y;
-                    cdtLocation = AVEntry.LocationName;
-                    for(int z = y - 1; z >= 0; z--)
-                    {
-                        const TActionVectorEntry &AVEntry2 = TDEntry.ActionVector.at(z);
-                        if(AVEntry2.Command == "cdt")
+                        const TActionVectorEntry &AVEntry = TDEntry.ActionVector.at(y);
+                        if(AVEntry.Command != "cdt")
                         {
-                            break; //don't look further back than the last cdt
+                            continue; //only looking for cdts
                         }
-                        if((AVEntry2.LocationName != "") && (AVEntry2.LocationName != cdtLocation)) //if an earlier entry == cdtLocation will have been picked up in an earlier check
+                        //here have found a cdt
+                        cdtPosition = y;
+                        cdtLocation = AVEntry.LocationName;
+                        for(int z = y - 1; z >= 0; z--)
                         {
-                            BackwardList.push_back(AVEntry2.LocationName);
-                        }
-                    }
-                    BackwardList.sort();
-                    BackwardList.unique();
-                    for(unsigned int z = y + 1; z < TDEntry.ActionVector.size(); z++)
-                    {
-                        const TActionVectorEntry &AVEntry3 = TDEntry.ActionVector.at(z);
-                        if((AVEntry3.Command == "Fer") || (AVEntry3.FormatType == Repeat) ||
-                            (AVEntry3.Command == "Fjo") || (AVEntry3.Command == "Frh") ||
-                            (AVEntry3.Command == "Frh-sh") || (AVEntry3.Command == "cdt"))
-                        {
-                            break; // out of the 'z' loop since have reached another cdt or the end
-                        }
-                        if((AVEntry3.LocationName != "") && (AVEntry3.LocationName != cdtLocation)) //if a later entry == cdtLocation will have been picked up in an earlier check
-                        {
-                            ForwardList.push_back(AVEntry3.LocationName);
-                        }
-                    }
-                    ForwardList.sort();
-                    ForwardList.unique();
-                    FoundSameName = false;
-                    //now have both lists compiled (may be empty) so check for same name in both & report if don't find any
-                    if(!BackwardList.empty() && !ForwardList.empty())
-                    {
-                        for(TLocList::iterator BLIt = BackwardList.begin(); BLIt != BackwardList.end(); BLIt++)
-                        {
-                            for(TLocList::iterator FLIt = ForwardList.begin(); FLIt != ForwardList.end(); FLIt++)
+                            const TActionVectorEntry &AVEntry2 = TDEntry.ActionVector.at(z);
+                            if(AVEntry2.Command == "cdt")
                             {
-                                if(*BLIt == *FLIt)
+                                break; //don't look further back than the last cdt
+                            }
+                            AnsiString LocName = "";  //this section where continuation name assigned for unlocated Snts added at v2.18.0
+                            if((AVEntry2.Command == "Snt") && (AVEntry2.LocationType == EnRoute)) //unlocated Snt - check if the continuation has a name
+                            {
+                                int EntryPos = AVEntry2.RearStartOrRepeatMins; //this is a track vector position
+                                LocName = Track->TrackElementAt(1680, EntryPos).ActiveTrackElementName;
+                            }
+                            if(LocName == "")
+                            {
+                                LocName = AVEntry2.LocationName; //the only un-named values for ActionVectorEntry::LocationName
+                            }                                                                      //are for unlocated Snts and Fers
+                            if((LocName != "") && (AVEntry2.LocationName != cdtLocation)) //if an earlier entry == cdtLocation will have been picked up in an earlier check
+                            {
+                                BackwardList.push_back(LocName);
+                            }
+                        }
+                        BackwardList.sort();
+                        BackwardList.unique();
+                        for(unsigned int z = y + 1; z < TDEntry.ActionVector.size(); z++)
+                        {
+                            const TActionVectorEntry &AVEntry3 = TDEntry.ActionVector.at(z);
+                            if(/*(AVEntry3.Command == "Fer") || */(AVEntry3.FormatType == Repeat) ||
+                                (AVEntry3.Command == "Fjo") || (AVEntry3.Command == "Frh") ||
+                                (AVEntry3.Command == "Frh-sh") || (AVEntry3.Command == "cdt"))
+                            {
+                                break; // out of the 'z' loop since have reached another cdt or the end
+                            }
+                            AnsiString LocName = "";
+                            if(AVEntry3.Command == "Fer") //this section where continuation name assigned for Fers added at v2.18.0
+                            {
+                                int ExitLoc = AVEntry3.ExitList.front();
+                                LocName = Track->TrackElementAt(1681, ExitLoc).ActiveTrackElementName;
+                                FerEntry = true;
+                            }
+                            else
+                            {
+                                LocName = AVEntry3.LocationName;
+                            }
+                            if((LocName != "") && (AVEntry3.LocationName != cdtLocation)) //if a later entry == cdtLocation will have been picked up in an earlier check
+                            {
+                                ForwardList.push_back(LocName);
+                            }
+                        }
+                        ForwardList.sort();
+                        ForwardList.unique();
+                        FoundSameName = false;
+                        //now have both lists compiled (may be empty) so check for same name in both & report if don't find any
+                        if(!BackwardList.empty() && !ForwardList.empty())
+                        {
+                            for(TLocList::iterator BLIt = BackwardList.begin(); BLIt != BackwardList.end(); BLIt++)
+                            {
+                                for(TLocList::iterator FLIt = ForwardList.begin(); FLIt != ForwardList.end(); FLIt++)
                                 {
-                                    FoundSameName = true;
+                                    if(*BLIt == *FLIt)
+                                    {
+                                        FoundSameName = true;
+                                    }
                                 }
                             }
                         }
-                    }
-                    if(!FoundSameName) //report the inability to find same name
-                    {
-                        MarkerList.push_back(cdtPosition);
+                        if(!FoundSameName) //report the inability to find same name
+                        {
+                            MarkerList.push_back(cdtPosition);
+                        }
                     }
                 }
             }

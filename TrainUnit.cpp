@@ -178,6 +178,7 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     ExitSpeedFull = 0;
     MaxExitSpeed = 0;
     BrakeRate = 0;
+    CoastingBrakeRate = 0.03; //added at v2.18.0
     SignallerStopBrakeRate = 0;
     FirstHalfMove = true;
     EntryTime = 0;
@@ -3797,7 +3798,10 @@ when Straddle == LeadMidLag
 
     OneLengthAccelDecel = false;
     BrakeRate = 0;
-
+    if(PowerAtRail < 1)
+    {
+        BrakeRate = CoastingBrakeRate; //brings train to a stop in 13km in 15min from starting speed of 100km/h (from research)
+    }
 //find FrontElementLength & FrontElementSpeedLimit (these correspond to TrackVectorPosition input value);
     if(CurrentTrackVectorPosition > -1)
     {
@@ -4178,7 +4182,7 @@ when Straddle == LeadMidLag
                     {
                         MaxHalfSpeed = MaxHalfSpeedAtHalfBraking;
                     }
-                    if(MaxHalfSpeed > (2 * EntrySpeed))
+                    if(MaxHalfSpeed > (2 * EntrySpeed) && (PowerAtRail > 1)) //PowerAtRail condition added at v2.18.0
                     // use 2x to prevent kangarooing at last element when had
                     // been braking smoothly at less that 50% braking rate, 2x should prevent all but extreme cases
                     {
@@ -4316,7 +4320,7 @@ when Straddle == LeadMidLag
                     ExitTimeFull = EntryTime + TDateTime((EntrySpeed - ExitSpeedFull) / 3.6 / BrakeRate / 86400.0);
                 }
                 // new condition at v2.4.0
-                else if(PowerAtRail <= 1)
+                else if(PowerAtRail < 1)
                 // use EntrySpeed, CumulativeLength & BrakeRate to calculate the half and full exit times and speeds for next element
                 // avoid using AValue in denominator or have excessively long times
                 {
@@ -4695,7 +4699,9 @@ when Straddle == LeadMidLag
     // allow all values to be set normally in case need to brake, then test for zero power & need to coast
     if(PowerAtRail < 1) // new at v2.4.0    note that km/h/3.6 = m/s
     {
-        // bring to a stop in 20 elements at 100km/h & assume each 100m long for calculating exit times but if on a continuation maintain speed
+        // bring to a stop in 20 elements at 100km/h & assume each 100m long for calculating exit times but if on a continuation maintain speed <--NO,
+        //change to BrakeRate = CoastingBrakeRate = 0.03 and calc times etc as normal - because of Albie Vowles' error report of 231223 where noticed
+        //that failed train treated track lengths of > 2km as 100m so very noticeable. Just ignore for exiting at continuation.
         if(LeadElement > -1)
         {
             if(Track->TrackElementAt(961, LeadElement).TrackType == Continuation)
@@ -4742,6 +4748,7 @@ when Straddle == LeadMidLag
                 return;
             }
         }
+/*      dropped at v2.18.1 in favour of BrakeRate of CoastingBrakeRate which = 0.03m/s/s = see above explanation
         if(EntrySpeed > 7.5) // keep going for at least another element
         {
             ExitSpeedHalf = EntrySpeed - 2.5;
@@ -4767,6 +4774,7 @@ when Straddle == LeadMidLag
             Utilities->CallLogPop(2130);
             return;
         }
+*/
     }
     // TempBrakeRate=MinSingle; TempBrakeRate=MaxSingle; TempBrakeRate=MinDouble; TempBrakeRate=MaxDouble;//included to stop warnings from unused declarations in math.hpp
     // TempBrakeRate=MinExtended; TempBrakeRate=MaxExtended; TempBrakeRate=MinComp; TempBrakeRate=MaxComp;//included to stop warnings from unused declarations in math.hpp
@@ -9143,7 +9151,7 @@ float TTrain::CalcTimeToAct(int Caller, float &TimeToExit, THVShortPair &ExitPai
     TDateTime ArrivalTime; //added at v2.9.0 as MinsEarly used DepartureTime which wasn't correct
     float TempTTE;
 
-    if(TrainFailed)
+    if(TrainFailed && Stopped() && (TrainMode != Signaller))
     {
         Utilities->CallLogPop(2147);
         return(0); // time to act now, time to exit set above

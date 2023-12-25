@@ -435,6 +435,8 @@ private:
 ///< the maximum brake rate that the train can achieve
     double BrakeRate;
 ///< the current train brake rate
+    double CoastingBrakeRate;
+///< the train brake rate when coasting
     double SignallerStopBrakeRate;
 ///< the train brake rate when stopping under signaller control
     double DelayedRandMins;

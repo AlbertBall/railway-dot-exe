@@ -367,3 +367,10 @@ This was used to test the time order function.  It adds a 'Key' variable to allo
         SetLevel1Mode(-1);
 
 //---------------------------------------------------------------------------
+
+Simulate train failure:
+
+TrainController->TrainVectorAt(-1, 0).TrainFailurePending = true;
+
+//---------------------------------------------------------------------------
+

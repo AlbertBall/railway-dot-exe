@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion() + " Beta";
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -13598,6 +13598,10 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
             {
                 Train.PlotTrainWithNewBackgroundColour(28, clStationStopBackground, Display); // pale green
             } // ok to call PlotTrainWithNewBackgroundColour here as PlotElements already set to Lead, Mid & Lag elements
+            else
+            {
+                Train.PlotTrainWithNewBackgroundColour(56, clTrainFailedBackground, Display); //added at v2.18.0 to restore failed background
+            }
 
             if((Train.ActionVectorEntryPtr->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->ArrivalTime >= TDateTime(0)))
             {
@@ -13639,6 +13643,10 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
             {
                 Train.PlotTrainWithNewBackgroundColour(31, clNormalBackground, Display); // to remove other background if was present, moved from
             } // within Train.AbleToMove at v2.4.0 to cancel signal stop background
+            else
+            {
+                Train.PlotTrainWithNewBackgroundColour(57, clTrainFailedBackground, Display); //added at v2.18.0 to restore failed background
+            }
 
             if(Train.AbleToMove(1)) // if has no power
             {
@@ -17931,6 +17939,7 @@ void TInterface::SetLevel1Mode(int Caller)
         DelayMenu->Enabled = false;
         FailureMenu->Visible = false;  //added at v2.14.0
         FailureMenu->Enabled = false;
+        FlashControlButton->Glyph->LoadFromResourceName(0, "NoFlash"); //added at v2.18.0 so reloads with normal flashing
         FlashControlButton->Visible = false; //added at v2.15.0
         StopFlashFlag = false;
         if(Track->IsTrackFinished())
@@ -20428,7 +20437,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
             CurrSpeed = Train.ExitSpeedHalf - 3.6 * (Train.BrakeRate * double(TrainController->TTClockTime - Train.ExitTimeHalf) * 86400.0);
         }
     }
-    else if(Train.BrakeRate > 0.01)
+    else if(Train.BrakeRate > Train.CoastingBrakeRate)
     {
         if(BrakePCRate < 55)
         {
@@ -20458,8 +20467,9 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
             ((Train.ExitSpeedFull - Train.ExitSpeedHalf) * (double(ElapsedDeltaT - FirstHalfTimeDeltaT) / double(SecondHalfTimeDeltaT)));
     }
 
-    else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedFull <= Train.ExitSpeedHalf) && !Train.FirstHalfMove)
+    else if((Train.BrakeRate <= Train.CoastingBrakeRate) && (Train.ExitSpeedFull <= Train.ExitSpeedHalf) && !Train.FirstHalfMove)
     {
+        CurrSpeed = Train.ExitSpeedFull;
         if(Train.PowerAtRail < 1)
         {
             if(Train.TrainFailed)
@@ -20470,17 +20480,16 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
             {
                 Status = "Coasting - no power";
             }
-            CurrSpeed = Train.ExitSpeedFull;
         }
         else
         {
             Status = "Constant speed";
-            CurrSpeed = Train.ExitSpeedFull;
         }
     }
 
-    else // No braking, first half move, ExitSpeedHalf <= EntrySpeed
+    else if((Train.BrakeRate <= Train.CoastingBrakeRate) && (Train.ExitSpeedFull <= Train.ExitSpeedHalf) && Train.FirstHalfMove)
     {
+        CurrSpeed = Train.ExitSpeedHalf;
         if(Train.PowerAtRail < 1) // as designed there is no way a vehicle can coast without having failed
         {
             if(Train.TrainFailed)
@@ -20491,12 +20500,10 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
             {
                 Status = "Coasting - no power";
             }
-            CurrSpeed = Train.ExitSpeedHalf;
         }
         else
         {
             Status = "Constant speed";
-            CurrSpeed = Train.ExitSpeedHalf;
         }
     }
     if(Train.TimetableFinished)
@@ -25250,7 +25257,6 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
-
 
 //end of test code
         Utilities->CallLogPop(2376);

@@ -1,24 +1,3 @@
-/Add protection against trying to read a .ttb file without nulls
-
-/Add time order button:
-/need key toggle, Shift+ Y
-/don't allow other order button to be enabled if other clicked
-/test toggle Y
-
-/check if iterators remain valid when vector expands - no they are not - don't rely on initial iterators
-/recheck all time order messages
-Xorder buttons should only be available when validated and railway loaded
-/validation should be required after reordering, check older version
-
-/Move test function code out of prograsm and into the external test function list
-
-Alter manual iaw new time order & check all other changes
-
-/add CompileAllEntriesMemoAndSetIterators to checker
-
-
-
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -764,6 +743,30 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.17.0 for v2.18.0
+
+New features:
+
+This version allows non-station named elements to be placed on points, crossovers and diagonals.  It has been a lot more difficult to develop than expected, largely because of train splits that now have to allow for trains on more complex elements than previously.  Because of this a number of functions have had to be rewritten.  
+
+***Please note that railways and sessions that have named points/crossovers/diagonals and are saved in this version will fail to load in earlier versions.***
+
+A 'Time Order' button has been added to the timetable editor which lists services in order of train starting times.
+
+Some existing bugs have also been found as follows:
+
+1. The route search function failed if a very long route tried to extend across both tracks on a crossover.  It's not a fault that is likely to occur in practice but has been corrected by an internal check for this situation.
+
+2. The recent variable mass and power split when train splitting failed to show up in the performance log when the split was 50-50.  It was present in the floating information window and has now been included in the logs.
+
+3. It was found that the background colour wasn't always set correctly when a train was prevented from moving by the presence of another train immediately in front.  This has now been corrected.
+
+Not for website:
+
+Added protection against trying to read a .ttb file without nulls
+
+Changed coasting behaviour from treating element lengths as 100m to new CoastingBrakeRate parameter of 0.03m/s/s (arrived at from research)
 
 VERSION CHANGES AFTER v2.16.1 for v2.17.0
 

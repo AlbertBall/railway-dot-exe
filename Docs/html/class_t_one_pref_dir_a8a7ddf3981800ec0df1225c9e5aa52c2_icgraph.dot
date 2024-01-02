@@ -125,13 +125,13 @@ digraph "TOnePrefDir::CheckPrefDir4MultiMap"
   Node45 -> Node43 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node45 -> Node44 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node45 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node112 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node112 [label="TOnePrefDir::LoadOldPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8",tooltip="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..."];
   Node1 -> Node113 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node113 [label="TOnePrefDir::LoadPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d",tooltip="Load a vector and map of preferred directions from the file."];
-  Node113 -> Node73 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node113 -> Node114 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node114 [label="TAllRoutes::LoadRoutes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39",tooltip="Loads the routes from a session file."];
+  Node113 [label="TOnePrefDir::LoadOldPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8",tooltip="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..."];
+  Node1 -> Node114 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node114 [label="TOnePrefDir::LoadPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d",tooltip="Load a vector and map of preferred directions from the file."];
+  Node114 -> Node73 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node114 -> Node115 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node115 [label="TAllRoutes::LoadRoutes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39",tooltip="Loads the routes from a session file."];
+  Node115 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node114 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node113 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

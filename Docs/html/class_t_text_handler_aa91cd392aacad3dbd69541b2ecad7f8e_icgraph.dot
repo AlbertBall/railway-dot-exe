@@ -123,13 +123,13 @@ digraph "TTextHandler::TextVectorPush"
   Node44 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node44 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node101 [label="TInterface::SpeedButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18",tooltip=" "];
-  Node44 -> Node103 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node103 [label="TInterface::TrackOKButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90",tooltip=" "];
+  Node44 -> Node104 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node104 [label="TInterface::TrackOKButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90",tooltip=" "];
   Node44 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node99 [label="TInterface::ZoomButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc",tooltip=" "];
   Node12 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node12 -> Node103 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 -> Node104 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 -> Node25 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

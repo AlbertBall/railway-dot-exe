@@ -118,14 +118,14 @@ digraph "TTrack::GetGapHLoc"
   Node39 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node39 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node99 [label="TInterface::SpeedButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18",tooltip=" "];
-  Node39 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node101 [label="TInterface::TrackOKButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90",tooltip=" "];
+  Node39 -> Node102 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 [label="TInterface::TrackOKButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90",tooltip=" "];
   Node39 -> Node97 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node97 [label="TInterface::ZoomButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc",tooltip=" "];
   Node8 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node8 -> Node106 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node106 [label="TInterface::TextBoxKeyPress",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49",tooltip=" "];
-  Node8 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node107 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node107 [label="TInterface::TextBoxKeyPress",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49",tooltip=" "];
+  Node8 -> Node102 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node8 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node8 -> Node97 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

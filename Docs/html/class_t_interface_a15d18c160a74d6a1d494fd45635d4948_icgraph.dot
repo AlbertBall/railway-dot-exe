@@ -28,4 +28,6 @@ digraph "TInterface::CompileAllEntriesMemoAndSetIterators"
   Node11 [label="TInterface::RestoreTTButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ae3e591300b5557eb124bad845ea6c34e",tooltip=" "];
   Node1 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 [label="TInterface::SaveTTEntryButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3cf355e15ec89570b79bd893ffbf0818",tooltip=" "];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TInterface::TimeOrderButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a36b0607e635cb7c4aedcaf447e335145",tooltip=" "];
 }

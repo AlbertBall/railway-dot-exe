@@ -754,19 +754,21 @@ This version allows non-station named elements to be placed on points, crossover
 
 A 'Time Order' button has been added to the timetable editor which lists services in order of train starting times.
 
+Performance improvement:
+
+Failed train coasting behaviour has been made more realistic after Albie V found noticeable inconsistencies when a train coasted on very long track elements.
+
 Some existing bugs have also been found as follows:
 
-1. The route search function failed if a very long route tried to extend across both tracks on a crossover.  It's not a fault that is likely to occur in practice but has been corrected by an internal check for this situation.
+The route search function failed if a very long route tried to extend across both tracks on points or a crossover.  It's a fault that occurs when a path attempts to double back on itself which in practice will only happen if a railway has very convoluted paths between a starting point and a finishing point.  It has been corrected by an internal check for this situation.
 
-2. The recent variable mass and power split when train splitting failed to show up in the performance log when the split was 50-50.  It was present in the floating information window and has now been included in the logs.
+The recent variable mass and power split when train splitting failed to show up in the performance log when the split was 50-50.  It was present in the floating information window and has now been included in the logs.
 
-3. It was found that the background colour wasn't always set correctly when a train was prevented from moving by the presence of another train immediately in front.  This has now been corrected.
+It was found that the background colour wasn't always set correctly when a train was prevented from moving by the presence of another train immediately in front.  This has now been corrected.
 
 Not for website:
 
 Added protection against trying to read a .ttb file without nulls
-
-Changed coasting behaviour from treating element lengths as 100m to new CoastingBrakeRate parameter of 0.03m/s/s (arrived at from research)
 
 VERSION CHANGES AFTER v2.16.1 for v2.17.0
 

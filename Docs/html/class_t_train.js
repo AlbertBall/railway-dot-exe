@@ -78,6 +78,7 @@ var class_t_train =
     [ "BufferZoomOutFlashRequired", "class_t_train.html#a60a3a9bebf64411f5d200682575a69ee", null ],
     [ "CallingOnFlag", "class_t_train.html#a5a658cdc377c3f4d65af6839614e7cb1", null ],
     [ "CallOnMaxSpeed", "class_t_train.html#a70e34e0666fd1c04b6c9866bfe45290f", null ],
+    [ "CoastingBrakeRate", "class_t_train.html#a6c1bac648c2f44c62f1a419fac893956", null ],
     [ "Crashed", "class_t_train.html#acee5980b53db6ad43e7b5225ad354457", null ],
     [ "CumulativeDelayedRandMinsOneTrain", "class_t_train.html#a578c1198f2e279c03f135e1b556c8c9f", null ],
     [ "DelayedRandMins", "class_t_train.html#a5929356cd2c8f0884dd6f8711f08269e", null ],

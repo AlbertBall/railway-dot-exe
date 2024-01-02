@@ -131,16 +131,16 @@ digraph "TOnePrefDir::LastElementNumber"
   Node15 -> Node43 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node15 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node15 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 -> Node112 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node112 [label="TOnePrefDir::GetPrefDirStart\lElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#ace0402792492c9da2551423f8287e41e",tooltip="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc & VLoc set to..."];
-  Node112 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node11 -> Node113 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node113 [label="TOnePrefDir::LoadOldPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8",tooltip="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..."];
+  Node113 [label="TOnePrefDir::GetPrefDirStart\lElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#ace0402792492c9da2551423f8287e41e",tooltip="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc & VLoc set to..."];
+  Node113 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node11 -> Node114 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node114 [label="TOnePrefDir::LoadPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d",tooltip="Load a vector and map of preferred directions from the file."];
-  Node114 -> Node75 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node114 -> Node115 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node115 [label="TAllRoutes::LoadRoutes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39",tooltip="Loads the routes from a session file."];
+  Node114 [label="TOnePrefDir::LoadOldPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8",tooltip="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..."];
+  Node11 -> Node115 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node115 [label="TOnePrefDir::LoadPrefDir",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d",tooltip="Load a vector and map of preferred directions from the file."];
+  Node115 -> Node75 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node115 -> Node116 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node116 [label="TAllRoutes::LoadRoutes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39",tooltip="Loads the routes from a session file."];
+  Node116 -> Node56 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node115 -> Node56 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node114 -> Node56 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

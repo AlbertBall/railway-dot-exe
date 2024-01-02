@@ -20470,7 +20470,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     else if((Train.BrakeRate <= Train.CoastingBrakeRate) && (Train.ExitSpeedFull <= Train.ExitSpeedHalf) && !Train.FirstHalfMove)
     {
         CurrSpeed = Train.ExitSpeedFull;
-        if(Train.PowerAtRail < 1)
+        if(Train.PowerAtRail < 1) // as designed there is no way a vehicle can coast without having failed
         {
             if(Train.TrainFailed)
             {
@@ -24344,7 +24344,8 @@ void TInterface::SaveErrorFile()
 /*
    In order to reload as a session file:
 
-   NB:  Don't change it to a .txt file, as the '\0' characters [shown as a small square in wordpad] will be changed to spaces if it is subsequently saved
+   NB:  Don't change it to a .txt file, as the '\0' characters will be changed to spaces if it is subsequently
+   saved.  USE NOTEPAD++ instead.
 
    strip out:-
 
@@ -24367,8 +24368,9 @@ void TInterface::SaveErrorFile()
    NB:  Don't change it to a .txt file, as the '\0' characters will be changed to spaces if it is subsequently saved
 
    note or copy the version information at the top of the file
-   copy the two numbers on rows 7 & 8 below ***Interface*** (i.e ***Interface*** = row 0) on their own lines immediately after the ***Track*** line (these become DisplayOffsetH & V)
-   strip out up to but excluding ***Track*** - this is needed to keep the \0 entry at end of ***Track*** [shown as a small square in wordpad]
+   copy the two numbers on rows 7 & 8 below ***Interface*** (i.e ***Interface*** = row 0) on their own lines immediately after the ***Track*** line
+        (these become DisplayOffsetH & V)
+   strip out up to but excluding ***Track*** - this is needed to keep the \0 entry at end of ***Track***
    add the version number either before or instead of ***Track***, ensuring that the \0 is retained
    the next line after the two insertions should contain the number of active elements.
    strip out ***Text*** including the \0

@@ -131,13 +131,13 @@ digraph "TInterface::SetCaption"
   Node55 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node55 -> Node28 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node55 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node55 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node101 [label="TInterface::TrackOKButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90",tooltip=" "];
-  Node28 -> Node106 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node106 [label="TInterface::TextBoxKeyPress",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49",tooltip=" "];
-  Node28 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node17 -> Node106 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node17 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node55 -> Node102 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 [label="TInterface::TrackOKButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90",tooltip=" "];
+  Node28 -> Node107 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node107 [label="TInterface::TextBoxKeyPress",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49",tooltip=" "];
+  Node28 -> Node102 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node107 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node102 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node84 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

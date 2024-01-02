@@ -4701,7 +4701,12 @@ when Straddle == LeadMidLag
     {
         // bring to a stop in 20 elements at 100km/h & assume each 100m long for calculating exit times but if on a continuation maintain speed <--NO,
         //change to BrakeRate = CoastingBrakeRate = 0.03 and calc times etc as normal - because of Albie Vowles' error report of 231223 where noticed
-        //that failed train treated track lengths of > 2km as 100m so very noticeable. Just ignore for exiting at continuation.
+        //that failed train treated track lengths of > 2km as 100m so very noticeable. Keep going for exiting at continuation.
+
+        //Coasting deceleration rate from paper 'Real-time train motion parameter estimation using an Unscented Kalman Filter' at
+        //'https://www.sciencedirect.com/science/article/pii/S0968090X22002212'.  In particular Fig 6 in section 4.3 shows coasting from 400sec to
+        //1000sec corresponds to speed drop from 140km/h to 80km/h, i.e. 60km/h in 600sec, equivalent to 0.02777m/s/s deceleration, so use 0.03m/s/s.
+
         if(LeadElement > -1)
         {
             if(Track->TrackElementAt(961, LeadElement).TrackType == Continuation)
@@ -4748,7 +4753,7 @@ when Straddle == LeadMidLag
                 return;
             }
         }
-/*      dropped at v2.18.1 in favour of BrakeRate of CoastingBrakeRate which = 0.03m/s/s = see above explanation
+/*      dropped at v2.18.1 in favour of CoastingBrakeRate which = 0.03m/s/s = see above explanation
         if(EntrySpeed > 7.5) // keep going for at least another element
         {
             ExitSpeedHalf = EntrySpeed - 2.5;

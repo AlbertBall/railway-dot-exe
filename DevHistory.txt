@@ -766,6 +766,8 @@ The recent variable mass and power split when train splitting failed to show up 
 
 It was found that the background colour wasn't always set correctly when a train was prevented from moving by the presence of another train immediately in front.  This has now been corrected.
 
+The floating train information window didn't always give the correct headcode for follow-on services - now corrected.
+
 Not for website:
 
 Added protection against trying to read a .ttb file without nulls

@@ -20288,7 +20288,7 @@ void TInterface::GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, An
                 if(!TTDEPtr->ActionVector.at(0).SignallerControl) // if signaller control there's no timetable & SpecialStr covers this
                 {
                     TrainTTFloat = TrainController->ContinuationEntryFloatingTTString(0, TTDEPtr, CTEIt->second.RepeatNumber, CTEIt->second.IncrementalMinutes,
-                                                                                      CTEIt->second.IncrementalDigits);
+                          CTEIt->second.IncrementalDigits);
                 }
             }
         }
@@ -25259,6 +25259,7 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
+
 
 //end of test code
         Utilities->CallLogPop(2376);

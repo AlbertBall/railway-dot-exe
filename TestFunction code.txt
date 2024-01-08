@@ -374,3 +374,101 @@ TrainController->TrainVectorAt(-1, 0).TrainFailurePending = true;
 
 //---------------------------------------------------------------------------
 
+Test for no incorrect entries or exits in Manchester Area simulation
+
+
+        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+        {
+            AnsiString ServRef = (*x).SubString(1,8);
+            if((*x).Pos("Fer;N26-12") != 0) //Bolton
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;N26-13") != 0)
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;N26-15") != 0) //Wigan
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;N26-16") != 0)
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;N26-18") != 0) //Liverpool
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;N26-19") != 0)
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;N26-24") != 0) //Warrington
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;N26-25") != 0)
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;51-34") != 0) //Rochdale
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;51-33") != 0)
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;51-41") != 0) //Huddersfield
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;51-40") != 0)
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;51-48") != 0) //Sheffield
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;51-47") != 0)
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;51-52") != 0) //Lon out error
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;51-54") != 0) //Lon out error
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Fer;51-55") != 0) //Lon out error
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;51-51") != 0) //Lon in error
+            {
+                int a = 4; //error
+            }
+            if((*x).Pos("Snt;51-53") != 0) //Lon in error
+            {
+                int a = 4; //error
+            }
+        }
+
+//---------------------------------------------------------------------------
+find tt entries that contain both Man Vic & Man Picc
+
+        for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
+        {
+            AnsiString ServRef = (*x).SubString(1,8);
+            if(((*x).Pos("Manchester Piccadilly") != 0) && ((*x).Pos("Manchester Victoria") != 0))
+            {
+                AnsiString xx = (*x).SubString(1,70);
+                int a = 4; //error
+            }
+        }
+
+//---------------------------------------------------------------------------

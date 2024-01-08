@@ -7572,8 +7572,8 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             {
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
-            RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at approx. " + EventTime;
-            Utilities->CallLogPop(2595);
+            RetStr += "\nNew service joined by " + TrainController->GetRepeatHeadCode(68, AVI->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at approx. " + EventTime;
+            Utilities->CallLogPop(2595);                          //above added GetRepeatHeadCode at v2.18.0 (was just AVI->OtherHeadCode before)
             return(RetStr);
         }
         if((AVI->Command == "Fns") || (AVI->Command == "F-nshs") || (AVI->Command == "Fns-sh")) //added at v2.15.0
@@ -7610,8 +7610,8 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             {
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
-            RetStr += "\nNew service finishes and joins " + AVI->OtherHeadCode + " at approx. " + EventTime;
-            Utilities->CallLogPop(2605);
+            RetStr += "\nNew service finishes and joins " + TrainController->GetRepeatHeadCode(69, AVI->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at approx. " + EventTime;
+            Utilities->CallLogPop(2605);                                    //above added GetRepeatHeadCode at v2.18.0 (was just AVI->OtherHeadCode before)
             return(RetStr);
         }
         if(AVI->Command == "Frh") //added at v2.15.0
@@ -7852,7 +7852,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(21, Ptr->EventTime)) + ": Form new service " + TrainController->GetRepeatHeadCode(16,
-                                                                                                                                             Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " + Ptr->LocationName;
+                    Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " + Ptr->LocationName;
             // use RepeatNumber+1 because it's the repeat number of the NEXT shuttle service that is relevant
             PartStr = GetNewServiceDepartureInfo(7, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, PartStr, true); //if there is a next service this adds the new service departure time to RetStr
         }
@@ -7865,7 +7865,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(23, Ptr->EventTime)) + ": Form new service " + TrainController->GetRepeatHeadCode(17,
-                                                                                                                                             Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " + Ptr->LocationName;
+                    Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " + Ptr->LocationName;
             // use RepeatNumber+1 because it's the repeat number of the NEXT shuttle service that is relevant
             PartStr = GetNewServiceDepartureInfo(9, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, PartStr, true); //if there is a next service this adds the new service departure time to RetStr
         }
@@ -7885,12 +7885,12 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         else if(Ptr->Command == "Fjo")
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(25, Ptr->EventTime)) + ": Join " + TrainController->GetRepeatHeadCode(18, Ptr->OtherHeadCode,
-                                                                                                                                 RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
+                      RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
         }
         else if(Ptr->Command == "jbo")
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(26, Ptr->EventTime)) + ": Joined by " + TrainController->GetRepeatHeadCode(19, Ptr->OtherHeadCode,
-                                                                                                                                      RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
+                      RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
         }
         else if(Ptr->Command == "fsp")
         {
@@ -10476,13 +10476,13 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(6, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(46, Ptr->OtherHeadCode, RepNum, IncDig) + " at " + Ptr->LocationName;
-            PartStr = ControllerGetNewServiceDepartureInfo(11, Ptr, RepNum, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to PartStr
+            PartStr = ControllerGetNewServiceDepartureInfo(11, Ptr, RepNum, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, IncDig, PartStr); //if there is a next service this adds the new service departure time to PartStr
         }
         else if(Ptr->Command == "F-nshs")
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName;
-            PartStr = ControllerGetNewServiceDepartureInfo(13, Ptr, 0, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(13, Ptr, 0, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, IncDig, PartStr); //if there is a next service this adds the new service departure time to RetStr
             //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
             //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
             //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
@@ -10493,20 +10493,20 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(8, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(47, Ptr->OtherHeadCode, RepNum + 1, IncDig) + " at " + Ptr->LocationName;
             // use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
-            PartStr = ControllerGetNewServiceDepartureInfo(15, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(15, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, IncDig, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Fns-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) // last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(9, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 Ptr->NonRepeatingShuttleLinkHeadCode, +" at " + Ptr->LocationName;
-            PartStr = ControllerGetNewServiceDepartureInfo(17, Ptr, 0, TTDEPtr, Ptr->NonRepeatingShuttleLinkEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(17, Ptr, 0, TTDEPtr, Ptr->NonRepeatingShuttleLinkEntryPtr, IncMins, IncDig, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepNum < (TTDEPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(10, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(48, Ptr->OtherHeadCode, RepNum + 1, IncDig) + " at " + Ptr->LocationName;
             // use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
-            PartStr = ControllerGetNewServiceDepartureInfo(19, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(19, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, IncDig, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) // last repeat number
         {
@@ -10570,8 +10570,9 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
 
 // ---------------------------------------------------------------------------
 
-AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr)
-{ //no delays as train not entered yet
+AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr,
+        TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, int IncrementalDigits, AnsiString RetStr)
+{ //no delays as train not entered yet                              //above added IncrementalDigits at v2.18.0 for GetRepeatHeadCode
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TDEPtr->ActionVector.begin()) + ","
                                  + AnsiString(RptNum) + ",ControllerGetNewServiceDepartureInfo," + TDEPtr->HeadCode);
     AnsiString DepTime = "", EventTime = "";
@@ -10615,8 +10616,8 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
         if(AVI->Command == "jbo")
         {
             EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(30, AVI->EventTime, RptNum, IncrementalMinutes));
-            RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at " + EventTime;
-            Utilities->CallLogPop(2238);
+            RetStr += "\nNew service joined by " + GetRepeatHeadCode(70, AVI->OtherHeadCode, RptNum, IncrementalDigits) + " at " + EventTime;
+            Utilities->CallLogPop(2238);         //above added GetRepeatHeadCode at v2.18.0 (was just AVI->OtherHeadCode before)
             return(RetStr);
         }
         if((AVI->Command == "Fns") || (AVI->Command == "F-nshs") || (AVI->Command == "Fns-sh"))
@@ -10629,8 +10630,8 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
         if(AVI->Command == "Fjo")
         {
             EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
-            RetStr += "\nNew service finishes and joins " + AVI->OtherHeadCode + " at " + EventTime;
-            Utilities->CallLogPop(2608);
+            RetStr += "\nNew service finishes and joins " + TrainController->GetRepeatHeadCode(71, AVI->OtherHeadCode, RptNum, IncrementalDigits) + " at " + EventTime;
+            Utilities->CallLogPop(2608);                                    //above added GetRepeatHeadCode at v2.18.0 (was just AVI->OtherHeadCode before)
             return(RetStr);
         }
         if(AVI->Command == "Frh")

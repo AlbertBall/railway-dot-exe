@@ -913,7 +913,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for AtLoc listing (similar to ArrDep but doesn't include times in the input & don't need Location), also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file
     AnsiString ConsolidateSARNTAtLoc(int Caller, const AnsiString Input, int &NumTrainsAtLoc);
 /// Similar to TTrain::GetNewServiceDepartureInfo for use in ContinuationEntryFloatingTTString
-    AnsiString ControllerGetNewServiceDepartureInfo(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr);
+    AnsiString ControllerGetNewServiceDepartureInfo(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr,
+            TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, int IncrementalDigits, AnsiString RetStr);
 /// Build string for use in floating window for expected trains at continuations
     AnsiString ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits);
 /// Check all timetable names in ExitList, if all same return " at [name]" + AllowableExits = elements, else just return "" & AllowableExits = elements.  Used in floating label for Next action and in formatted timetables.

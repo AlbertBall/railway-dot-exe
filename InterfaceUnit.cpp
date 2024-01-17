@@ -12622,6 +12622,9 @@ void __fastcall TInterface::SelectLengthsMenuItemClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectLengthsMenuItemClick");
         TrackElementPanel->Visible = false;
         TrackLengthPanel->Visible = true;
+        RestoreAllDefaultLengthsButton->Enabled = true; //added after v2.18.0 as otherwise retained last value and may have been disabled
+        ResetDefaultLengthButton->Enabled = true;       // as above
+        LengthOKButton->Enabled = true;                 // as above
         TrackLengthPanel->SetFocus();
         SelectLengthsFlag = true;
         InfoPanel->Visible = true;

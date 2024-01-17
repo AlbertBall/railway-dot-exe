@@ -19532,6 +19532,7 @@ different to the train's front element name (whether null or not) (no report), a
 (no report) or buffers (report).
 */
             bool BufferFacingUnReportedFlag = true;
+            bool TrainFacingBuffersReported = false; //new flag added after v2.18.0 for 'no facing buffers' message instead of BufferFacingUnReportedFlag
             for(unsigned int x = 0; x < SingleServiceVector.size(); x++)
             {
                 TTrackElement ThisElement, NextElement;
@@ -19638,11 +19639,15 @@ different to the train's front element name (whether null or not) (no report), a
                             TTFile3 << "Train facing direction on creation analysis:-\n\n";
                             BufferFacingUnReportedFlag = false;
                         }
-                        TTFile3 << "Service " + TDE.ServiceReference + " facing buffers on creation\n";
+                        if(AV.at(1).Command != "cdt")  //added after v2.18.0
+                        {
+                            TTFile3 << "Service " + TDE.ServiceReference + " facing buffers on creation with no immediate change of direction\n";
+                            TrainFacingBuffersReported = true; //added after v2.18.0
+                        }
                     }
                 }
             }
-            if(BufferFacingUnReportedFlag)
+            if(!TrainFacingBuffersReported) //added after v2.18.0
             {
                 TTFile3 << "Nothing to report for train facing directions\n\n";
             }

@@ -1,3 +1,9 @@
+Add - make sure that the latest version is being used - in all fail to load messages
+
+changed facing directions in conflict analysis to ignore if cdt immediately after creation when facing buffers
+
+added buttons enabled when select area and change lengths etc clicked, stayed in earlier state before
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -2988,7 +2994,7 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit and merge with 'development' then 'master' and tag with release version.
+5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch, then merge with current development branch, and tag with release version.
 
 6 Build & store to local Git repository tagged with latest release version
 

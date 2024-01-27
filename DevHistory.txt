@@ -1,8 +1,21 @@
-Add - make sure that the latest version is being used - in all fail to load messages
+/ Add - make sure that the latest version is being used - in all fail to load messages
+/ Railways
+/ Timetables
+/ Sessions
 
-changed facing directions in conflict analysis to ignore if cdt immediately after creation when facing buffers
+/ changed facing directions in conflict analysis to ignore if cdt immediately after creation when facing buffers
 
-added buttons enabled when select area and change lengths etc clicked, stayed in earlier state before
+/added buttons enabled when select area and change lengths etc clicked, stayed in earlier state before
+
+X maybe look for cdt anytime before departure in analysis - leave as is, will be apprent on inspection if ok
+
+/ add hysteresis in actions due so don't change position so quickly, TimeToAct is in minutes (in CalcTimeToAct line 9141 in TrainUnit.cpp) so set this to nearest 10 second value & test - done this and didn't work, problem is the imprecise calculation, maybe try updating less frequently, say every 5 secs - but only when no routes set, want it to update at normal (1 sec) interval then - tried that, didn't update immediately - later attempts successful!  Now updates immediately for route addition, truncation and calling on, otherwise every 5 seconds & seems to work fine
+
+Update manual to say that 'expand repeats' is only available if the tt has been saved and validated (Qwertytops pointed this out on discord in images-and-links on 23/01/24)
+
+add UpdateActionsDuePanel to caller checker
+
+
 
 Development History
 

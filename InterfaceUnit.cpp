@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 post-" + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -2625,7 +2625,7 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
     }
     catch(const Exception &e)  //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
     {
-        TrainController->StopTTClockMessage(134, "Railway file failed to load - may be corrupt.\nError message: " + e.Message);
+        TrainController->StopTTClockMessage(134, "Railway file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " + e.Message);
         Screen->Cursor = TCursor(-2); // Arrow;
         Utilities->CallLogPop(2551);
 //        ErrorLog(17, e.Message);
@@ -3684,7 +3684,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
     }
     catch(const Exception &e) //non-error catch added at v2.14.0
     {
-        TrainController->StopTTClockMessage(139, "Timetable failed to load - may be corrupt.\nError message: " + e.Message);
+        TrainController->StopTTClockMessage(139, "Timetable file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " + e.Message);
         Screen->Cursor = TCursor(-2); // Arrow;
         Utilities->CallLogPop(2555);
 //        ErrorLog(48, e.Message);
@@ -7907,6 +7907,21 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                     TrainController->RestartTime = TrainController->TTClockTime;
                     if(AllRoutes->SearchAllRoutesAndTruncate(0, HLoc, VLoc, PreferredRoute)) // updates LockedRouteClass
                     {
+                        //below addition same as for adding a route and calling on
+                        THVShortPair ExitPair;           //added after v2.18.0 to update actions due panel immediately after new route set
+                        if((ActionsDueForm->Visible) && (Level2OperMode == Operating))      // ditto
+                        {
+                            for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                            {
+                                float LastTimeToExit = TrainController->TrainVectorAt(91, x).TimeToExit;
+                                TrainController->TrainVectorAt(92, x).UpdateTrain(1); //included so 'StoppedAtSignal' flag dropped when route set ahead otherwise
+                                                                                           //the 'NOW' entries have to await the next OpTimeToActUpdateCounter update
+                                TrainController->TrainVectorAt(93, x).OpTimeToAct = TrainController->TrainVectorAt(100, x).CalcTimeToAct(2, LastTimeToExit, ExitPair);
+                            }
+                            TrainController->RebuildOpTimeToActMultimap(2);
+                            UpdateActionsDuePanel(2);
+                        }
+
                         ClearandRebuildRailway(6); // to replot new shorter route
                     }
                     RevertToOriginalRouteSelector(1);
@@ -8569,6 +8584,22 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 ClearandRebuildRailway(69); // added at v1.3.0 to replot route on element after PlotSignal above
                                 TrainController->TrainVectorAt(14, x).AllowedToPassRedSignal = true;
                                 TrainController->TrainVectorAt(29, x).BeingCalledOn = true;
+
+                                //below addition same as for adding and cancelling a route
+                                THVShortPair ExitPair;           //added after v2.18.0 to update actions due panel immediately after new route set
+                                if((ActionsDueForm->Visible) && (Level2OperMode == Operating))      // ditto
+                                {
+                                    for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                                    {
+                                        float LastTimeToExit = TrainController->TrainVectorAt(96, x).TimeToExit;
+                                        TrainController->TrainVectorAt(94, x).UpdateTrain(2); //included so 'StoppedAtSignal' flag dropped when route set ahead otherwise
+                                                                                                   //the 'NOW' entries have to await the next OpTimeToActUpdateCounter update
+                                        TrainController->TrainVectorAt(95, x).OpTimeToAct = TrainController->TrainVectorAt(101, x).CalcTimeToAct(3, LastTimeToExit, ExitPair);
+                                    }
+                                    TrainController->RebuildOpTimeToActMultimap(3);
+                                    UpdateActionsDuePanel(3);
+                                }
+
                                 CallingOnButton->Down = false;
                                 SetRouteButtonsInfoCaptionAndRouteNotStarted(10);
 
@@ -10172,8 +10203,8 @@ void TInterface::ClockTimer2(int Caller)
 
 //timers
         TrainController->OpTimeToActUpdateCounter++;
-///<new v2.2.0, controls 1 second updating for OpTimeToActPanel
-        if(TrainController->OpTimeToActUpdateCounter >= 20)
+///<new v2.2.0, controls 1 second updating for OpTimeToActPanel - changed to 100 from 20 after v2.18.0 to stop trains changing position so frequently
+        if(TrainController->OpTimeToActUpdateCounter >= 100)
         {
             TrainController->OpTimeToActUpdateCounter = 0;
         }
@@ -13452,7 +13483,7 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
     }
     catch(const Exception &e)  //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
     {
-        TrainController->StopTTClockMessage(137, "Timetable file failed to load - may be corrupt.\nError message: " + e.Message);
+        TrainController->StopTTClockMessage(137, "Timetable file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " + e.Message);
         Screen->Cursor = TCursor(-2); // Arrow;
         Utilities->CallLogPop(2553);
 //        ErrorLog(34, e.Message);
@@ -20765,6 +20796,21 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                 ConstructRoute->ConvertAndAddNonPreferredRouteSearchVector(1, ConstructRoute->ReqPosRouteID);
             }
             ConstructRoute->ClearRoute(); // clear it immediately after use so as not to clutter the errorlog
+            //below addition same as for truncating/cancelling a route and calling on
+            THVShortPair ExitPair;           //added after v2.18.0 to update actions due panel immediately after new route set
+            if((ActionsDueForm->Visible) && (Level2OperMode == Operating))      // ditto
+            {
+                for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                {
+                    float LastTimeToExit = TrainController->TrainVectorAt(97, x).TimeToExit;
+                    TrainController->TrainVectorAt(98, x).UpdateTrain(3); //included so 'StoppedAtSignal' flag dropped when route set ahead otherwise
+                                                                               //the 'NOW' entries have to await the next OpTimeToActUpdateCounter update
+                    TrainController->TrainVectorAt(99, x).OpTimeToAct = TrainController->TrainVectorAt(102, x).CalcTimeToAct(4, LastTimeToExit, ExitPair);
+                }
+                TrainController->RebuildOpTimeToActMultimap(4);
+                UpdateActionsDuePanel(4);
+            }
+
             TrainController->BaseTime = TDateTime::CurrentDateTime();
             TrainController->StopTTClockFlag = false;
             Track->RouteFlashFlag = false;
@@ -22659,7 +22705,7 @@ FINISHEDLOADING:
         }
         else  //non-error catch at v2.14.0
         {
-            TrainController->StopTTClockMessage(96, "Session file failed to load - may be corrupt.\nError message: " + e.Message);
+            TrainController->StopTTClockMessage(96, "Session file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " + e.Message);
             Screen->Cursor = TCursor(-2); // Arrow;
             Utilities->CallLogPop(2441);
         }

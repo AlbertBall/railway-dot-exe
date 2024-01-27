@@ -9466,7 +9466,7 @@ float TTrain::CalcTimeToAct(int Caller, float &TimeToExit, THVShortPair &ExitPai
             TimeToAct = TotalStopTime + GenericDistance * 3.6 / 60 / Speed;
             // accel & decel taken into account in
             // CalcDistanceToRedSignalandStopTime
-            // 3.6 convertsKm/h to m/s & 60 converts seconds to minutes
+            // 3.6 converts Km/h to m/s & 60 converts seconds to minutes
             TimeToExit = -1;
             Utilities->CallLogPop(2079);
             return(TimeToAct);

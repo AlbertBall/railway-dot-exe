@@ -544,10 +544,10 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 		"TruncateRoute",
         "TryToConnectTrack",
         "TTrain",
-        "UpdateOperatorActionPanel", //new v2.2.0
         "UnplotTrain",
         "UnplotTrainInZoomOutMode",
         "UnplotTrains",
+        "UpdateActionsDuePanel",
         "UpdateDynamicMapFromTimeToExitMultiMap",
         "UpdateTrain",
         "UserGraphicMove",

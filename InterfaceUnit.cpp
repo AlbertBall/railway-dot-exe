@@ -7920,6 +7920,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             }
                             TrainController->RebuildOpTimeToActMultimap(2);
                             UpdateActionsDuePanel(2);
+                            TrainController->OpTimeToActUpdateCounter = 1; //reset so it won't update for 5 seconds (not 0 so doesn't trigger a further update immediately)
                         }
 
                         ClearandRebuildRailway(6); // to replot new shorter route
@@ -8598,6 +8599,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                     }
                                     TrainController->RebuildOpTimeToActMultimap(3);
                                     UpdateActionsDuePanel(3);
+                                    TrainController->OpTimeToActUpdateCounter = 1; //reset so it won't update for 5 seconds (not 0 so doesn't trigger a further update immediately)
                                 }
 
                                 CallingOnButton->Down = false;
@@ -20809,6 +20811,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                 }
                 TrainController->RebuildOpTimeToActMultimap(4);
                 UpdateActionsDuePanel(4);
+                TrainController->OpTimeToActUpdateCounter = 1; //reset so it won't update for 5 seconds (not 0 so doesn't trigger a further update immediately)
             }
 
             TrainController->BaseTime = TDateTime::CurrentDateTime();

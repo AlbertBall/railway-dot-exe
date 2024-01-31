@@ -11091,7 +11091,7 @@ bool TTrack::OneStationLongEnoughForSplit(int Caller, AnsiString LocationName)
 
 // ---------------------------------------------------------------------------
 
-bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName)
+bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName) //changed at v2.18.0
 /* Check sufficient active elements at same H & V as the non-station element with same ActiveTrackElementName linked together to allow a train split.
       Only one train length is needed to return true, but this doesn't mean that all tracks at the location are long enough.  When a
       split is required a specific check is made using ThisLocationLongEnoughForSplit.
@@ -11259,7 +11259,7 @@ bool TTrack::ThisLocationLongEnoughForSplit(int Caller, AnsiString HeadCode, int
     int MidEntryPos, int &FrontTrainFrontPos, int &FrontTrainRearPos, int &RearTrainFrontPos, int &RearTrainRearPos, bool &TemporaryDelay)
 /* Return false if the track that the train is on isn't long enough for a split - only 1 named element or 2 with only one external link.
 Otherwise find the best 4 final element positions, preferably with FrontTrainFrontPos on a named element.  Conditions are that the original train
-will lie within the 4 elements of the two split trains, and at least 1 element of each slit train will be at the location.  Within those conditions
+will lie within the 4 elements of the two split trains, and at least 1 element of each split train will be at the location.  Within those conditions
 the lead element of the front train will be at the location if it is possible.
 */
 {
@@ -11314,7 +11314,7 @@ the lead element of the front train will be at the location if it is possible.
         TTrackElement RwdPos1Element = TrackElementAt(1670, RwdPos[1]);
         if(RwdPos1Element.ActiveTrackElementName == LocationName)
         {
-            NumRwdNamedElements = 2; //includes MidElement
+            NumRwdNamedElements = 2; //includes MidElement (treats MidElement as named even if not, as eventual positions will be same either way)
         }
         RwdPos1ExitPos = RwdPos0Element.ConnLinkPos[MidEntryPos];
         RwdPos1EntryPos = GetAnyElementOppositeLinkPos(6, RwdPos[1], RwdPos1ExitPos, RwdDerail1);
@@ -11327,7 +11327,7 @@ the lead element of the front train will be at the location if it is possible.
             TTrackElement RwdPos2Element = TrackElementAt(1671, RwdPos[2]);
             if(RwdPos2Element.ActiveTrackElementName == LocationName)
             {
-                NumRwdNamedElements = 3; //includes MidElement
+                NumRwdNamedElements = 3; //includes MidElement (treats MidElement & next position to rear as both named even if not, as eventual positions will be same either way)
             }
         }
     }

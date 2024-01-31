@@ -2,6 +2,7 @@
 / Railways
 / Timetables
 / Sessions
+/ and include if poss in tt error messaages
 
 / changed facing directions in conflict analysis to ignore if cdt immediately after creation when facing buffers
 
@@ -16,6 +17,12 @@ X maybe look for cdt anytime before departure in analysis - leave as is, will be
 / add UpdateActionsDuePanel to caller checker
 
 / remove UpdateOperatorActionPanel from caller checker (wrong name)
+
+add a riminder function if possible - give 'ping' and add warning in red + REMINDER in perf log
+
+investigate Commuterpop's split problem ticket #30
+
+/ corrected bug in both split functions where the returns for false outome from ThisLocationLongEnoughForSplit were inside the event reported block, so caused error when this block accessed for the second time as didn't return, corrected by putting outside this block but still inside the if(ThisLocationLongEnoughForSplit... block
 
 
 Development History

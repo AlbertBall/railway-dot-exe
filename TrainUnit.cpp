@@ -5794,9 +5794,9 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
                 TrainController->LogActionError(6, HeadCode, "", FailLocTooShort, LocationName);
                 TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
             }
-            Utilities->CallLogPop(1009);
-            return;
         }
+        Utilities->CallLogPop(1009); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here after v2.18.0
+        return;
     }
 
     if(TemporaryDelay)
@@ -5814,7 +5814,7 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
 
     UnplotTrain(0);
     StartSpeed = 0;
-    RearStartElement = RearTrainRearPos;
+    RearStartElement = RearTrainRearPos; //this is for the current train, not the new train which will attach to the front of this train
     for(int x = 0; x < 4; x++)
     {
         if(Track->TrackElementAt(1664, RearStartElement).Conn[x] == RearTrainFrontPos)
@@ -5910,15 +5910,15 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
       circumstances the other train will need to be moved sufficiently away to release all 4 positions, then the train will split.
 */
     TrainController->LogEvent("" + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can split when power restored
     {
-        if(!ZeroPowerNoFrontSplitMessage)
+        if(!ZeroPowerNoRearSplitMessage)
         {
             TrainController->StopTTClockMessage(176, HeadCode + ": A train without power can't split");
         }
-        ZeroPowerNoFrontSplitMessage = true;
+        ZeroPowerNoRearSplitMessage = true;
         Utilities->CallLogPop(2685);
         return;
     }
@@ -5934,7 +5934,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
 
     if(LocationName == "")
     {
-        throw Exception("Error - LocationName not set in FrontTrainSplit");
+        throw Exception("Error - LocationName not set in RearTrainSplit");
     }
     // if message given call at ~5 sec intervals in case train repositioned
 
@@ -5950,9 +5950,9 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
                 TrainController->LogActionError(66, HeadCode, "", FailLocTooShort, LocationName);
                 TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
             }
-            Utilities->CallLogPop(2686);
-            return;
         }
+        Utilities->CallLogPop(2686); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here after v2.18.0
+        return;
     }
 
     if(TemporaryDelay)
@@ -5970,7 +5970,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
 
     UnplotTrain(11);
     StartSpeed = 0;
-    RearStartElement = FrontTrainRearPos;
+    RearStartElement = FrontTrainRearPos; //this is for the current train, not the new train which will attach to the rear of this train
     for(int x = 0; x < 4; x++)
     {
         if(Track->TrackElementAt(1665, RearStartElement).Conn[x] == FrontTrainFrontPos)
@@ -11551,7 +11551,8 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     if(!SplitEntry(1, OneEntry, GiveMessages, CheckLocationsExistInRailway, First, Second, Third, Fourth, RearStartOrRepeatMins,
                                    FrontStartOrRepeatDigits, FormatType, LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
                     {
-                        TimetableMessage(GiveMessages, "Error in timetable - Event: '" + OneEntry + "'");
+                        TimetableMessage(GiveMessages, "Error in timetable - Event: '" + OneEntry + "'.\nIf the program version is not the latest the "
+                                                       "timetable may have features that aren't compatible with the version in use.");
                         Utilities->CallLogPop(757);
                         return(false);
                     }

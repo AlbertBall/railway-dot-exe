@@ -7417,8 +7417,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             // this routine new at v2.1.0.  Allows railway moving for zoom-in mode when no element at HLoc & VLoc
             int Dummy; // unused in next function
             AnsiString Text = ""; // needed for TextFound but not used
-            SkipTTTrainMousePosX = X;
-            SkipTTTrainMousePosY = Y;
+            RightClickTrainMousePosX = X;
+            RightClickTrainMousePosY = Y;
             if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->InactiveTrackElementPresentAtHV(0, HLoc, VLoc) && !Track->UserGraphicPresentAtHV(0, X,
                                                                                                                                                           Y, Dummy) && !TextHandler->TextFound(0, X + (Display->DisplayOffsetH * 16), Y + (Display->DisplayOffsetV * 16), Text))
             {
@@ -14095,15 +14095,15 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
         }
         SkipTTActionsListBox->Height = (SkipTTActionsListBox->ItemHeight * Count) + 4;
 //position listbox
-        int Left = SkipTTTrainMousePosX + MainScreen->Left + 16; // so lhs of window is WindowOffset to the right of the mouse pos
+        int Left = RightClickTrainMousePosX + MainScreen->Left + 16; // so lhs of window is WindowOffset to the right of the mouse pos
         if((Left + SkipTTActionsListBox->Width) > MainScreen->Left + MainScreen->Width)
         {
-            Left = SkipTTTrainMousePosX - SkipTTActionsListBox->Width + 16;
+            Left = RightClickTrainMousePosX - SkipTTActionsListBox->Width + 16;
         }
-        int Top = SkipTTTrainMousePosY + MainScreen->Top + 16; // so top of window is one element below the mouse pos (ScreenY + MainScreen->Top would be at mouse pos)
+        int Top = RightClickTrainMousePosY + MainScreen->Top + 16; // so top of window is one element below the mouse pos (ScreenY + MainScreen->Top would be at mouse pos)
         if((Top + SkipTTActionsListBox->Height) > MainScreen->Top + MainScreen->Height)
         {
-            Top = SkipTTTrainMousePosY - SkipTTActionsListBox->Height + 79; // so bottom of window is one element above the mouse pos (95 would be at mouse pos)
+            Top = RightClickTrainMousePosY - SkipTTActionsListBox->Height + 79; // so bottom of window is one element above the mouse pos (95 would be at mouse pos)
             if(Top < 30)
             {
                 Top = 30;
@@ -14120,6 +14120,100 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
     {
         ErrorLog(241, e.Message);
     }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("SetReminderMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetReminderMenuItemClick");
+        TTrain Train = TrainController->TrainVectorAtIdent(7777, SelectedTrainID); //Train not modified here so don't need reference
+        ReminderListBox->Clear();
+        ReminderListBox->ExtendedSelect = false; //this and the next allow only one item to be selected
+        ReminderListBox->MultiSelect = false;
+
+        //populate the listbox
+        AnsiString TTStr = Train.FloatingTimetableString(7777, Train.ActionVectorEntryPtr);
+        AnsiString OneLine;
+        int Count = 0;
+        int NewLinePos = TTStr.Pos('\n');
+        ReminderListBox->Width = 200;
+        ReminderHeaderPanel->Width = 200;
+        for(int x = 0; x < 30; x++)
+        {
+            if((TTStr.Length() > 1) && (NewLinePos <= TTStr.Length()) && (NewLinePos != 0)) //i.e. all lines apart from the last where there is no newline
+            {
+                OneLine = TTStr.SubString(1, NewLinePos); //includes the newline
+                if(OneLine == "\n")
+                {
+                    break; //break before Count increment
+                }
+                if(OneLine == "Timetable:\n") //update TTStr & Newline but don't increment Count  //added at v2.13.0 as 'Timetable:' added
+                {
+                    TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                    NewLinePos = TTStr.Pos('\n');
+                    continue;
+                }
+                Count++;
+                ReminderListBox->Items->Add(OneLine);
+                TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                NewLinePos = TTStr.Pos('\n');
+            }
+            else if((TTStr.Length() > 1) && (NewLinePos == 0) && ((TTStr.SubString(3, 1) == ':') || (TTStr.SubString(1, 5) == "Termi"))) //last line
+            {
+                OneLine = TTStr;
+                Count++;
+                ReminderListBox->Items->Add(OneLine);
+                break;
+            }
+            if(TTStr.Length() <2)
+            {
+                break;
+            }
+            AnsiString EndStr = OneLine.SubString(8, 5);
+            //need these last checks in case last floating line is an allowable exit or a new service departure time which aren't wanted in the list
+            if((EndStr == "Form ") || (EndStr == "Join ") || (EndStr == "Exit ")) //all these are preceded by a time & start at character 8
+            {
+                break;
+            }
+        }
+        if(Count == 0)
+        {
+            ShowMessage("No timetabled events");
+            Utilities->CallLogPop(7777);
+            return;
+        }
+        ReminderListBox->Height = (ReminderListBox->ItemHeight * Count) + 4;
+//position listbox
+        int Left = RightClickTrainMousePosX + MainScreen->Left + 16; // so lhs of window is WindowOffset to the right of the mouse pos
+        if((Left + ReminderListBox->Width) > MainScreen->Left + MainScreen->Width)
+        {
+            Left = RightClickTrainMousePosX - ReminderListBox->Width + 16;
+        }
+        int Top = RightClickTrainMousePosY + MainScreen->Top + 16; // so top of window is one element below the mouse pos (ScreenY + MainScreen->Top would be at mouse pos)
+        if((Top + ReminderListBox->Height) > MainScreen->Top + MainScreen->Height)
+        {
+            Top = RightClickTrainMousePosY - ReminderListBox->Height + 79; // so bottom of window is one element above the mouse pos (95 would be at mouse pos)
+            if(Top < 30)
+            {
+                Top = 30;
+            }
+        }
+        ReminderListBox->Left = Left; // new at v2.7.0 in place of above
+        ReminderHeaderPanel->Left = Left;
+        ReminderListBox->Top = Top;
+        ReminderHeaderPanel->Top = Top - 34; //this panel has a height of 34
+        ShowTTActionsListBox(7777);
+        Utilities->CallLogPop(7777);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(7777, e.Message);
+    }
+
 }
 
 //---------------------------------------------------------------------------
@@ -28502,5 +28596,4 @@ void TInterface::PlayerHandshakingActions()
 */
 
 //---------------------------------------------------------------------------
-
 

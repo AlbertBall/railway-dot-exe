@@ -754,7 +754,8 @@ __published: // IDE-managed Components
     TButton *Button1;
     TBitBtn *FlashControlButton;
     TButton *ExpandRepeatsButton;
-    TButton *TimeOrderButton;  //added at v2.15.0
+    TButton *TimeOrderButton;
+    TMenuItem *SetReminderMenuItem;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -982,7 +983,8 @@ __published: // IDE-managed Components
     void __fastcall InvertTTEntryButtonClick(TObject *Sender);
     void __fastcall FlashControlButtonClick(TObject *Sender);
     void __fastcall ExpandRepeatsButtonClick(TObject *Sender);
-    void __fastcall TimeOrderButtonClick(TObject *Sender); //added at v2.17.0
+    void __fastcall TimeOrderButtonClick(TObject *Sender);
+    void __fastcall SetReminderMenuItemClick(TObject *Sender); //added at v2.17.0
 
 public: // AboutForm needs access to these
 
@@ -1433,8 +1435,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 ///< the original (prior to moving & after finished moving) VLoc value of Edit->Select & Edit->Reselect
     int SelectedTrainID;
 ///< used to store the train ID when right clicked for signaller control actions
-    int SkipTTTrainMousePosX;
-    int SkipTTTrainMousePosY;
+    int RightClickTrainMousePosX;
+    int RightClickTrainMousePosY;
 ///< used to retain the mouse position on the train for SkipTimetabledActionsMenuItemClick
     int StartWholeRailwayMoveHPos;
 ///<mouse X position when start to move the whole railway

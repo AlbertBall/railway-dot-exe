@@ -519,6 +519,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LocationNamesSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesSetGraphic");
 
         SkipListExitImage->Picture->Bitmap->LoadFromResourceName(0, "Exit"); //new at v2.11.0
+        ReminderExitImage->Picture->Bitmap->LoadFromResourceName(0, "Exit"); //new after v2.18.0
 
 
 /* Don't need this - load icon directly into both Interface form & Application (via Project - Options - Application - Load Icon)
@@ -649,6 +650,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         ConsecutiveSelfUpdates = 0;
         SkipTTActionsListBox->Visible = false;
         SkipListHeaderPanel->Visible = false;
+        ReminderHeaderPanel->Visible = false;
         ElapsedTimeTestFunctionStart = false;
         ElapsedTimerRunning = false;
         Utilities->DelayMode = Nil;
@@ -7665,6 +7667,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 ChangeDirectionMenuItem->Visible = false;
                                 SkipTimetabledActionsMenuItem->Enabled = false;
                                 SkipTimetabledActionsMenuItem->Visible = false;
+                                SetReminderMenuItem->Enabled = true;
+                                SetReminderMenuItem->Visible = true;
                                 MoveForwardsMenuItem->Enabled = false;
                                 MoveForwardsMenuItem->Visible = false;
                                 SignallerJoinedByMenuItem->Enabled = false;
@@ -7698,6 +7702,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 TakeSignallerControlMenuItem->Visible = false;
                                 SkipTimetabledActionsMenuItem->Enabled = false;
                                 SkipTimetabledActionsMenuItem->Visible = false;
+                                SetReminderMenuItem->Enabled = false;
+                                SetReminderMenuItem->Visible = false;
                                 BecomeNewServiceMenuItem->Enabled = false;
                                 BecomeNewServiceMenuItem->Visible = false;
                                 if((Train.Crashed) || (Train.Derailed))
@@ -7887,6 +7893,44 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             TrainController->StopTTClockFlag = false;
                             Utilities->CallLogPop(40);
                             return;
+                        }
+                        else
+                        {
+                            //allow right click on any train but only to set a reminder - added after v2.18.0
+                            SetReminderMenuItem->Enabled = true;
+                            SetReminderMenuItem->Visible = true;
+                            TimetableControlMenuItem->Enabled = false;
+                            TimetableControlMenuItem->Visible = false;
+                            ChangeDirectionMenuItem->Enabled = false;
+                            ChangeDirectionMenuItem->Visible = false;
+                            MoveForwardsMenuItem->Enabled = false;
+                            MoveForwardsMenuItem->Visible = false;
+                            SignallerJoinedByMenuItem->Enabled = false;
+                            SignallerJoinedByMenuItem->Visible = false;
+                            RepairFailedTrainMenuItem->Enabled = false;
+                            RepairFailedTrainMenuItem->Visible = false;
+                            StepForwardMenuItem->Enabled = false;
+                            StepForwardMenuItem->Visible = false;
+                            PassRedSignalMenuItem->Enabled = false;
+                            PassRedSignalMenuItem->Visible = false;
+                            SignallerControlStopMenuItem->Enabled = false;
+                            SignallerControlStopMenuItem->Visible = false;
+                            RemoveTrainMenuItem->Enabled = false;
+                            RemoveTrainMenuItem->Visible = false;
+                            TakeSignallerControlMenuItem->Enabled = false;
+                            TakeSignallerControlMenuItem->Visible = false;
+                            SkipTimetabledActionsMenuItem->Enabled = false;
+                            SkipTimetabledActionsMenuItem->Visible = false;
+                            BecomeNewServiceMenuItem->Enabled = false;
+                            BecomeNewServiceMenuItem->Visible = false;
+                            TrainHeadCodeMenuItem->Caption = Train.HeadCode + ":";
+                            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+                            TrainController->RestartTime = TrainController->TTClockTime;
+                            PopupMenu->Popup(MainScreen->Left + X, MainScreen->Top + Y + 43); // menu stops everything so reset timetable time when restarts,
+                            // new at v2.6.1, displays so that can't inadvertently click on a selection if click twice
+                            // 43 is the distance from the top of the screen to the top of TInterface
+                            TrainController->BaseTime = TDateTime::CurrentDateTime();
+                            TrainController->StopTTClockFlag = false;
                         }
                     }
                 }
@@ -10001,7 +10045,6 @@ void __fastcall TInterface::MasterClockTimer(TObject *Sender)
             TrainController->TTClockTime = TDateTime(TTClockSpeed * RealTimeDouble) + TrainController->RestartTime;
 // TrainController->TTClockTime = TDateTime::CurrentDateTime() - TrainController->BaseTime + TrainController->RestartTime;
         }
-
 /*
 //elapsed time investigations - lose ~20% of ticks when nothing loaded & ~30% for a busy session
 //even lose ~20% without ClockTimer2.  but this is when running in IDE, try outside - exactly the same.
@@ -10461,7 +10504,7 @@ void TInterface::ClockTimer2(int Caller)
             (Mouse->CursorPos.x < (ClientOrigin.x + OutputLog10->Width + OutputLog10->Left)) && (Mouse->CursorPos.y >= ClientOrigin.y + OutputLog10->Top) &&
             (Mouse->CursorPos.y < (ClientOrigin.y + OutputLog10->Height + OutputLog10->Top)) && OutputLog10->Caption != "";
 
-        if(WH1 || WH2 || WH3 || WH4 || WH5 || WH6 || WH7 || WH8 || WH9 || WH10 || SkipTTActionsListBox->Visible)
+        if(WH1 || WH2 || WH3 || WH4 || WH5 || WH6 || WH7 || WH8 || WH9 || WH10 || SkipTTActionsListBox->Visible || ReminderListBox->Visible)
         {
             if(!WarningHover)
             {
@@ -11743,7 +11786,7 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
             if(!PDE.EntryExitNumber() || !ELinkPosFound || !XLinkPosFound || !FoundFlag) //error if can't set the number, any link pos not set or !FoundFlag
             {
                 SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
-                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the rotated selection");
+                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the flipped selection");
                 break;
             }
             SelectPrefDir->PrefDirVector.at(x) = PDE;
@@ -11860,7 +11903,7 @@ void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
             if(!PDE.EntryExitNumber() || !ELinkPosFound || !XLinkPosFound || !FoundFlag) //error if can't set the number, any link pos not set or !FoundFlag
             {
                 SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
-                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the rotated selection");
+                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the mirrored selection");
                 break;
             }
             SelectPrefDir->PrefDirVector.at(x) = PDE;
@@ -14021,7 +14064,7 @@ void __fastcall TInterface::RepairFailedTrainMenuItemClick(TObject *Sender)
 // ---------------------------------------------------------------------------
 
 void __fastcall TInterface::SkipTimetabledActionsMenuItemClick(TObject *Sender)
-{
+{    //note that the TTClock stays stopped when SkipTTActionsListBox is visible - sets WarningHover to true in ClockTimer2
 /* Only enable this for stopped at signal or stopped at location.
 
 If stopped at signal then next action will be TimeLoc arrival, TimeTimeLoc, Pass or Fer.
@@ -14041,6 +14084,8 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
         SkipTTActionsListBox->Clear();
         SkipTTActionsListBox->ExtendedSelect = false; //this and the next allow only one item to be selected
         SkipTTActionsListBox->MultiSelect = false;
+        ReminderListBox->Visible = false; //make invisible in case weren't
+        ReminderHeaderPanel->Visible = false;
 
         //populate the listbox
         AnsiString TTStr = Train.FloatingTimetableString(2, Train.ActionVectorEntryPtr);
@@ -14124,8 +14169,8 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender)
-{
+void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added after v2.18.0
+{  //note that the TTClock stays stopped when ReminderListBox is visible - sets WarningHover to true in ClockTimer2
     try
     {
         TrainController->LogEvent("SetReminderMenuItemClick");
@@ -14134,7 +14179,8 @@ void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender)
         ReminderListBox->Clear();
         ReminderListBox->ExtendedSelect = false; //this and the next allow only one item to be selected
         ReminderListBox->MultiSelect = false;
-
+        SkipTTActionsListBox->Visible = false; //make invisible in case weren't
+        SkipListHeaderPanel->Visible = false;
         //populate the listbox
         AnsiString TTStr = Train.FloatingTimetableString(7777, Train.ActionVectorEntryPtr);
         AnsiString OneLine;
@@ -14206,7 +14252,7 @@ void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender)
         ReminderHeaderPanel->Left = Left;
         ReminderListBox->Top = Top;
         ReminderHeaderPanel->Top = Top - 34; //this panel has a height of 34
-        ShowTTActionsListBox(7777);
+        ShowReminderListBox(7777);
         Utilities->CallLogPop(7777);
     }
     catch(const Exception &e)
@@ -14417,7 +14463,79 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
 
 //---------------------------------------------------------------------------
 
-void TInterface::ShowTTActionsListBox(int Caller)  //TTClock stopped in ClockTimer2
+void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)  //added after v2.18.0
+{
+    try
+    {
+        TrainController->LogEvent("ReminderListBoxMouseUp, " + AnsiString(X) + ',' + AnsiString(Y));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReminderListBoxMouseUp");
+        TTrain &Train = TrainController->TrainVectorAtIdent(7777, SelectedTrainID); //Train actionvectorptr advance here so need reference
+        Train.ReminderPtrValue = 0;
+        if(ReminderListBox->Items->Text != "") //not empty
+        {
+            Train.SelReminderString = ReminderListBox->Items->Strings[ReminderListBox->ItemIndex]; //index starts at 0
+        }
+
+        int  Count = 0, PassNum = 0;
+        for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < ReminderListBox->ItemIndex; AVEPtr++)
+        {
+            if((AVEPtr->FormatType == TimeTimeLoc) && (AVEPtr->ArrivalTime != AVEPtr->DepartureTime))
+            {//arr & dep in a single AVEntry if different arr & dep times but two listings, if have same arr & dep time then only a single listing,
+                Count += 2;
+            }
+            else
+            {
+                Count++;
+            }
+            PassNum++;
+        }
+        //set the reminder but ask for confirmation first
+        AnsiString ReminderString  = AnsiString(ReminderListBox->Items->Strings[ReminderListBox->ItemIndex]);
+        if(ReminderString[ReminderString.Length()] == '\n') //strip the newline if there is one as one is added after PerfStr sent to PerformanceFile
+        {
+            ReminderString = ReminderString.SubString(1, (ReminderString.Length() - 1));
+        }
+        int PosArDep = ReminderString.Pos("Arrive & depart");
+        UnicodeString Msg;
+        if(PosArDep > 0)
+        {
+            Msg = L"This will set a reminder at '" + ReminderString + L"'\n(two notifications, first for arrival then for departure).\n\nOK to proceed?";
+        }
+        else
+        {
+            Msg = L"This will set a reminder at '" + ReminderString + L"'.\n\nOK to proceed?";
+        }
+        int button = Application->MessageBox(Msg.c_str(), L"", MB_YESNO);
+        if(button == IDYES)
+        {
+            TActionVectorEntry *AVPtr = Train.ActionVectorEntryPtr;
+            if((AVPtr + PassNum)->Warning)
+            {
+                ShowMessage("There is already a warning at this event, can't set a reminder where there is already a warning");
+                HideReminderListBox(7777);
+                Utilities->CallLogPop(7777);
+                return;
+            }
+            (AVPtr + PassNum)->Reminder = true;
+            AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + "Reminder set at event '" +
+                ReminderString + "'.";
+            Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+            Utilities->PerformanceFile.flush();  //added at v2.13.0
+            PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
+        }
+        HideReminderListBox(7777);
+        Utilities->CallLogPop(7777);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(7777, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::ShowTTActionsListBox(int Caller)  //TTClock stopped in ClockTimer2 by setting WarningHover to true
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ShowTTActionsListBox");
     if(SkipTTActionsListBox->Visible)
@@ -14430,6 +14548,23 @@ void TInterface::ShowTTActionsListBox(int Caller)  //TTClock stopped in ClockTim
     SkipTTActionsListBox->BringToFront();
     SkipListHeaderPanel->BringToFront();
     Utilities->CallLogPop(2431);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::ShowReminderListBox(int Caller)  //TTClock stopped in ClockTimer2 by setting WarningHover to true
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ShowReminderListBox");
+    if(ReminderListBox->Visible)
+    {
+        Utilities->CallLogPop(7777);
+        return;
+    }
+    ReminderListBox->Visible = true;
+    ReminderHeaderPanel->Visible = true;
+    ReminderListBox->BringToFront();
+    ReminderHeaderPanel->BringToFront();
+    Utilities->CallLogPop(7777);
 }
 
 //---------------------------------------------------------------------------
@@ -14449,6 +14584,21 @@ void TInterface::HideTTActionsListBox(int Caller)
 
 //---------------------------------------------------------------------------
 
+void TInterface::HideReminderListBox(int Caller) //added after v2.18.0
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",HideReminderListBox");
+    if(!ReminderListBox->Visible)
+    {
+        Utilities->CallLogPop(7777);
+        return;
+    }
+    ReminderListBox->Visible = false;
+    ReminderHeaderPanel->Visible = false;
+    Utilities->CallLogPop(7777);
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::SkipListExitImageClick(TObject *Sender)
 {
     try
@@ -14461,6 +14611,23 @@ void __fastcall TInterface::SkipListExitImageClick(TObject *Sender)
     catch(const Exception &e)
     {
         ErrorLog(243, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ReminderExitImageClick(TObject *Sender)  //added after v2.18.0
+{
+    try
+    {
+        TrainController->LogEvent("ReminderExitImageClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReminderExitImageClick");
+        HideReminderListBox(7777);
+        Utilities->CallLogPop(7777);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(7777, e.Message);
     }
 }
 
@@ -28596,4 +28763,5 @@ void TInterface::PlayerHandshakingActions()
 */
 
 //---------------------------------------------------------------------------
+
 

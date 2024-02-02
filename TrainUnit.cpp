@@ -5422,7 +5422,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
 */{
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogAction," + OwnHeadCode + "," + OtherHeadCode + "," +
                                  AnsiString(ActionType) + "," + LocationName + "," + HeadCode);
-    AnsiString BaseLog = "", WarningBaseLog = "", PerfLog = "", ActionLog = "";
+    AnsiString BaseLog = "", WarningBaseLog = "", ReminderBaseLog = "", PerfLog = "", ActionLog = "";
     int IntMinsLate = 0;
 
     // need to set it in case MinsLate == 0, since it isn't tested for that
@@ -5560,8 +5560,17 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     else
     {
-        BaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName;
+        if(ActionVectorEntryPtr->Reminder)
+        {
+            BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
+            ReminderBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
+        }
+        else
+        {
+            BaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName;
+        }
     }
+
     bool TimePerformance = true;
 
     if((ActionType == TakeSignallerControl) || (ActionType == RestoreTimetableControl) || (ActionType == RemoveTrain) || (ActionType == SignallerMoveForwards)
@@ -5631,6 +5640,10 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     if(Warning)
     {
         Display->WarningLog(0, WarningBaseLog);
+    }
+    if(ActionVectorEntryPtr->Reminder)
+    {
+        Display->WarningLog(0, ReminderBaseLog);
     }
     // update statistics
     if((ActionType == Arrive) && (IntMinsLate == 0))

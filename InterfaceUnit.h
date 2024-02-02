@@ -755,7 +755,12 @@ __published: // IDE-managed Components
     TBitBtn *FlashControlButton;
     TButton *ExpandRepeatsButton;
     TButton *TimeOrderButton;
-    TMenuItem *SetReminderMenuItem;  //added at v2.15.0
+    TMenuItem *SetReminderMenuItem;
+    TListBox *ReminderListBox;
+    TPanel *ReminderHeaderPanel;
+    TImage *ReminderExitImage;
+    TLabel *ReminderLabel1;
+    TLabel *ReminderLabel2;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -984,7 +989,10 @@ __published: // IDE-managed Components
     void __fastcall FlashControlButtonClick(TObject *Sender);
     void __fastcall ExpandRepeatsButtonClick(TObject *Sender);
     void __fastcall TimeOrderButtonClick(TObject *Sender);
-    void __fastcall SetReminderMenuItemClick(TObject *Sender); //added at v2.17.0
+    void __fastcall SetReminderMenuItemClick(TObject *Sender);
+    void __fastcall ReminderExitImageClick(TObject *Sender);
+    void __fastcall ReminderListBoxMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y); //added at v2.17.0
 
 public: // AboutForm needs access to these
 
@@ -1591,6 +1599,8 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     void FlashingGraphics(int Caller, TDateTime Now);
 /// Called when floating train info needed and train hasn't entered yet
     void GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, AnsiString FormatNoDPStr, AnsiString SpecialStr, AnsiString &TrainStatusFloat, AnsiString &TrainTTFloat); //new at v2.6.2
+/// makes ReminderListBox invisible (if it was visible)
+    void HideReminderListBox(int Caller);
 /// makes TTActionsListBox invisible (if it was visible)
     void HideTTActionsListBox(int Caller);
 /// Called during timetable editing to highlight a single entry in the list of all entries in the left hand long window
@@ -1624,6 +1634,8 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftState Shift, int X, int Y);
 /// Recovers clipboard as track and text vectors
     void RecoverClipboard(int Caller, bool &ValidResult); // new at v2.8.0
+/// makes ReminderListBox visible
+    void ShowReminderListBox(int Caller);
 /// Called during ClearEverything and on startup to reset all major railway data values
     void ResetAll(int Caller);
 /// Called whenever the railway is changed to deal with title displays (loaded railway and timetable) and set the FileChangedFlag so that user will be warned before it is deleted NonPrefDirChangesMade is true if the changes don't involve prefdirs

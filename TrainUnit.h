@@ -126,8 +126,6 @@ public:
 ///< indicates a train that is defined by the timetable as under signaller control
     bool Warning;
 ///< if set triggers an alert in the warning and perf log panels when the action is reached
-    bool Reminder;
-///< if set triggers a 'ping' + alert in the warning and perf log panels when the action is reached.  Added after v2.18.0
     int NumberOfRepeats;
 ///< the number of repeating services
     int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
@@ -148,6 +146,8 @@ public:
 ///< link pointer for use between fsp/rsp & Sfs; Fjo & jbo; Fns & Sns; & all shuttle to shuttle links
     TTrainDataEntry *NonRepeatingShuttleLinkEntryPtr;
 ///< pointer used by shuttles for the non-shuttle train links, in & out, the corresponding non-shuttle linked trains use LinkedTrainEntryPtr
+    unsigned int Reminder; //0=not set, 1=set for other than TimeLoc or TimeTimeLoc; 2=set for dep; 3=set for arr; 4=set for both arr & dep
+///< if set triggers a 'ping' + alert in the warning and perf log panels when the action is reached.  Added after v2.18.0
 
 // inline function
 
@@ -166,7 +166,7 @@ public:
         LinkedTrainEntryPtr = 0;
         NonRepeatingShuttleLinkEntryPtr = 0;
         Warning = false;
-        Reminder = false;
+        Reminder = 0;
         SignallerControl = false;
     }
 };
@@ -376,8 +376,6 @@ private:
 ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr;
 ///< points to the current position in the ActionVector (a member of the TTrainDataEntry class)
-    int ReminderPtrValue;
-///< stores the pointer increment from first action in ActionVector for reminder setting
     int SkipPtrValue;
 ///< stores the pointer increment from first action in ActionVector for skipped actions when a departure is still awaited
     int TrainSkippedEvents;

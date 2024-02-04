@@ -1,6 +1,6 @@
 Session file compatibility:
 
-Principle is that a new program should load an old session file (SF), and an old program should load a new SF.
+Principle is that a new program should load an old session file (SF), and an old program should load a new SF (where the new SF doesn't use variables not recognised in earlier program).
 
 Forward compatibility - old prog loading new SF:  Must be nothing in new SF that changes any existing variable or its behaviour.  Can have new variables providing old prog ignores them in a new SF.
 
@@ -12,3 +12,22 @@ New prog can have new variables but must not be essential on loading an old SF.
 New prog to initialise all new variables to a safe state after loading old session file, though they can change during operation.
 Old prog to ignore any new additions to the new SF.
 New prog to stop loading when old SF finishes.
+
+After last 'DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at vx.x.x"  discarded'
+
+new code is:
+
+SessionFile.get(TempChar);  [TempChar has been declared above]
+while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) [get rid of all end of lines & emerge with eof or 1st 											char of new section]
+{
+    sessionFile.get(TempChar);
+}
+if(SessionFile.eof()) // old session file
+{
+    TrainController->AvHoursIntValue = 0;  [initialise variables for new prog, may not be needed]
+    TrainController->MTBFHours = 0;
+
+    SessionFile.close(); // no TrainController->AvHoursIntValue & no failed trains
+    goto FINISHEDLOADING; //don't like goto's normally but necessary here to avoid multiple else's
+}
+[TempChar now contains the first char of the next section save so get the rest & deal with the new section - end with 'DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at vx.x.x"  discarded']

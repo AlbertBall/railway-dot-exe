@@ -7367,6 +7367,8 @@ void __fastcall TInterface::MainScreenMouseDown(TObject *Sender, TMouseButton Bu
         MMoveCopyCutSelPickedUpFlag = false;
         MMoveTextGraphicTextFoundFlag = false;
         MMoveTextGraphicUserGraphicFoundFlag = false;
+        HideTTActionsListBox(7777); //added after v2.18.0 to get rid of these if they were visible
+        HideReminderListBox(7777);
 
         if(!Track->RouteFlashFlag && !Track->PointFlashFlag)
         {
@@ -13904,12 +13906,15 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
                 return;
             }
             // here if there is an adjacent train under signaller control
+
+/*  restriction removed after v2.18.0
             if((TrainToBeJoinedBy->PowerAtRail < 1) && (ThisTrain.PowerAtRail < 1))
             {
                 ShowMessage("Can't join two trains when both are without power");
                 Utilities->CallLogPop(2157);
                 return;
             }
+*/
             AnsiString UnableToJoinIfWaitingToJoinMessage = "Can't join two trains that are waiting to join under\n"
                                              "timetable control. Manoeuvre them both to the join\n"
                                              "location, make sure they are adjacent, and restore\n"
@@ -13981,7 +13986,7 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
                 // ok to call PlotTrainWithNewBackgroundColour here as PlotElements already set to Lead, Mid & Lag elements
                 ThisTrain.PlotTrainWithNewBackgroundColour(50, clStationStopBackground, Display);
             }
-            ThisTrain.SignallerStopped = true; // maybe as well as stopped without power, thought that takes precedence in floating window
+            ThisTrain.SignallerStopped = true; // maybe as well as stopped without power, though that takes precedence in floating window
             ThisTrain.LogAction(34, ThisTrain.HeadCode, TrainToBeJoinedBy->HeadCode, SignallerJoin, LocName, "", TDateTime(0), false); // TDateTime isn't used
             ThisTrain.ZeroPowerNoFrontSplitMessage = false; // added at v2.4.0, no need to include TrainToBeJoinedBy as that will be removed
             ThisTrain.ZeroPowerNoRearSplitMessage = false;
@@ -14471,12 +14476,10 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
         TrainController->LogEvent("ReminderListBoxMouseUp, " + AnsiString(X) + ',' + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReminderListBoxMouseUp");
         TTrain &Train = TrainController->TrainVectorAtIdent(7777, SelectedTrainID); //Train actionvectorptr advance here so need reference
-        Train.ReminderPtrValue = 0;
         if(ReminderListBox->Items->Text != "") //not empty
         {
             Train.SelReminderString = ReminderListBox->Items->Strings[ReminderListBox->ItemIndex]; //index starts at 0
         }
-
         int  Count = 0, PassNum = 0;
         for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < ReminderListBox->ItemIndex; AVEPtr++)
         {
@@ -14496,7 +14499,18 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
         {
             ReminderString = ReminderString.SubString(1, (ReminderString.Length() - 1));
         }
+        int PosFjo = ReminderString.Pos("Join ");
+        if(PosFjo > 0)
+        {
+            ShowMessage("Reminders cannot be given for 'Join XXXX' events (where XXXX is the joining service).  For a train join warning set a reminder "
+                        "for the joining train at its 'Joined by XXXX' event");
+            HideReminderListBox(7777);
+            Utilities->CallLogPop(7777);
+            return;
+        }
         int PosArDep = ReminderString.Pos("Arrive & depart");
+        int PosArr = ReminderString.Pos("Arrive at");
+        int PosDep = ReminderString.Pos("Depart from");
         UnicodeString Msg;
         if(PosArDep > 0)
         {
@@ -14517,7 +14531,36 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
                 Utilities->CallLogPop(7777);
                 return;
             }
-            (AVPtr + PassNum)->Reminder = true;
+            if(PosArDep > 0)
+            {
+                (AVPtr + PassNum)->Reminder = 4; //both arr & dep
+            }
+            else if(PosArr  > 0)
+            {
+                if((AVPtr + PassNum)->Reminder == 2) //dep already set on its own so set both
+                {
+                    (AVPtr + PassNum)->Reminder = 4; //arr + dep
+                }
+                else
+                {
+                    (AVPtr + PassNum)->Reminder = 3; //arr only
+                }
+            }
+            else if(PosDep  > 0)
+            {
+                if((AVPtr + PassNum)->Reminder == 3) //arr already set on its own so set both
+                {
+                    (AVPtr + PassNum)->Reminder = 4; //arr + dep
+                }
+                else
+                {
+                    (AVPtr + PassNum)->Reminder = 2; //dep only
+                }
+            }
+            else
+            {
+                (AVPtr + PassNum)->Reminder = 1; //not arr, dep or both
+            }
             AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + "Reminder set at event '" +
                 ReminderString + "'.";
             Utilities->PerformanceFile << PerfStr.c_str() << '\n';
@@ -22227,6 +22270,27 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.16.1");
 //end of v2.16.1 additions
 
+//additions at v2.19.0 - reminders save AnsiString of trainvector position + '-' + action vector position of exch reminder
+            AnsiString ReminderEntry = "";
+            if(!TrainController->TrainVector.empty())
+            {
+                for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                {
+                    TTrain Train = TrainController->TrainVectorAt(7777, x);
+                    TActionVector AV = Train.TrainDataEntryPtr->ActionVector;
+                    for(unsigned int y = 0; y < AV.size(); y++)
+                    {
+                        if(AV.at(y).Reminder > 0)
+                        {
+                            ReminderEntry = AnsiString(x + (10000 * AV.at(y).Reminder)) + '-' + AnsiString(y); //allows up to 9999 trains
+                            Utilities->SaveFileString(SessionFile, ReminderEntry);
+                        }
+                    }
+                }
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.19.0");
+//end of v2.19.0 additions
+
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
             SessionFile.close();
@@ -22412,6 +22476,7 @@ void TInterface::LoadSession(int Caller)
                     }
                     // now reload the performance file (also populates PerformanceLogBox)
                     LoadPerformanceFile(0, SessionFile);
+
 // addition at v2.4.0 (train failures)
                     char TempChar;
                     SessionFile.get(TempChar);
@@ -22834,11 +22899,11 @@ void TInterface::LoadSession(int Caller)
                             SessionFile.get(TempChar);
                         }
                         //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\0' in TempChar
-                        if(TempString == "End of file at v2.16.1") //added at v2.17.0, before for some older session files called Utilities->LoadFileString(SessionFile)
-                        {                                          //after "End of file at v2.16.1" had been loaded, last character of file was '\n'
-                            goto FINISHEDLOADING;                  //so it kept going round loop in LoadFileString because there was no '\0' character.
-                        }
-                        if(!TrainController->TrainVector.empty())
+                        if(TempString == "End of file at v2.16.1") //added at v2.17.0, if TempString == 'End of file at v2.16.1' then without this
+                        {                                          //load 'End of file at v2.16.1' into first description, and there is nothing after
+                            goto FINISHEDLOADING;                  //except '\n' at very end of file (after last NUL) so
+                        }                                          //TVIt->Description = Utilities->LoadFileString(SessionFile); loops indefinitely
+                        if(!TrainController->TrainVector.empty())  //as never finds '\0'
                         {
                             for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                             {
@@ -22854,6 +22919,49 @@ void TInterface::LoadSession(int Caller)
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
 //end of v2.16.1 additions
+
+//additions at v2.19.0 - reminders in form of AnsiString "x-y" where x = train vector position & y is action vector position
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st char of 1st reminder
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) // old session file
+                        {
+                            //no initialisations needed as all 'Reminder' values initialised to 0 during program initialisation
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        AnsiString ReminderEntry = "";
+                        //TempChar now contains the first digit of first train's description or 'E' for 'End of file at v2.19.0'
+                        TempString = "";
+                        while((TempChar != '\n') && (TempChar != '\0'))
+                        {
+                            TempString = TempString + TempChar;
+                            SessionFile.get(TempChar);
+                        }
+                        //here have first train's description as an AnsiString in TempString or 'End of file at v2.19.0' & '\0' in TempChar
+                        while(TempString != "End of file at v2.19.0")
+                        {
+                            int PosDash = TempString.Pos('-');
+                            if(PosDash == 0)  //can't find it, will create an erro as it shouldn't ever be
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                AnsiString x = TempString.SubString(1, PosDash - 1);
+                                //x is Reminder * 10000 + Train vector position as an AnsiString, so separate them
+                                unsigned int TrainVecPos = x.SubString(2, 4).ToInt(); //last 4 characters converted to int
+                                unsigned int Reminder = x.SubString(1, 1).ToInt(); //1st character converted to int, 1, 2, 3 or 4
+                                unsigned int y = TempString.SubString(PosDash + 1, TempString.Length() - PosDash).ToInt(); //= AV vector position
+                                TTrain &Train = TrainController->TrainVectorAt(7777, TrainVecPos);
+                                TActionVector &AV = Train.TrainDataEntryPtr->ActionVector;
+                                AV.at(y).Reminder = Reminder;
+                                TempString = Utilities->LoadFileString(SessionFile);
+                            }
+                        }
+//                        Don't need to load DummyString = "End of file at v2.19.0" as it's already been loaded into TempString
                     }
 
 FINISHEDLOADING:
@@ -24975,6 +25083,26 @@ void TInterface::SaveErrorFile()
             }
             Utilities->SaveFileString(ErrorFile, "End of file at v2.16.1");
 //end of v2.16.1 additions
+//additions at v2.19.0 - reminders save AnsiString of trainvector position + '-' + action vector position of exch reminder
+            AnsiString ReminderEntry = "";
+            if(!TrainController->TrainVector.empty())
+            {
+                for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                {
+                    TTrain Train = TrainController->TrainVectorAt(7777, x);
+                    TActionVector AV = Train.TrainDataEntryPtr->ActionVector;
+                    for(unsigned int y = 0; y < AV.size(); y++)
+                    {
+                        if(AV.at(y).Reminder > 0)
+                        {
+                            ReminderEntry = AnsiString(x + (10000 * AV.at(y).Reminder)) + '-' + AnsiString(y); //allows up to 9999 trains
+                            Utilities->SaveFileString(ErrorFile, ReminderEntry);
+                        }
+                    }
+                }
+            }
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.19.0");
+//end of v2.19.0 additions
 
 //REMAINDER STAY AT END OF FILE
 // addition at v2.8.0 in case of clipboard

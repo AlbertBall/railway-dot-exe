@@ -532,9 +532,9 @@ void TDisplay::WarningLog(int Caller, AnsiString Statement)  //also used for Rem
     OutputLog3->Caption = OutputLog4->Caption;
     OutputLog4->Caption = OutputLog5->Caption;
     OutputLog5->Caption = Statement;
-    Beep(1000, 500);       //these added after v2.18.0
-    Beep(1000, 500);
-    Beep(1000, 500);
+    Beep(1000, 200);       //these added after v2.18.0
+    Beep(1000, 200);
+    Beep(1000, 200);
     Utilities->CallLogPop(1785);
 }
 

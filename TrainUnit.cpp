@@ -5560,7 +5560,17 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     else
     {
-        if(ActionVectorEntryPtr->Reminder)
+        if((ActionVectorEntryPtr->Reminder == 1) || (ActionVectorEntryPtr->Reminder == 4))
+        {
+            BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
+            ReminderBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
+        }
+        else if((ActionVectorEntryPtr->Reminder == 2) && (ActionLog == " departed from ")) //depart only
+        {
+            BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
+            ReminderBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
+        }
+        else if((ActionVectorEntryPtr->Reminder == 3) && (ActionLog == " arrived at ")) //arrive only
         {
             BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
             ReminderBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
@@ -5641,7 +5651,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     {
         Display->WarningLog(0, WarningBaseLog);
     }
-    if(ActionVectorEntryPtr->Reminder)
+    if(ReminderBaseLog != "")
     {
         Display->WarningLog(0, ReminderBaseLog);
     }
@@ -5768,6 +5778,8 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
 */
     TrainController->LogEvent("" + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
+
+/*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can split when power restored
     {
@@ -5779,6 +5791,8 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
         Utilities->CallLogPop(2137);
         return;
     }
+*/
+
     AnsiString LocationName = Track->TrackElementAt(555, LeadElement).ActiveTrackElementName;
 
     if(LocationName == "")
@@ -5924,6 +5938,8 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
 */
     TrainController->LogEvent("" + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
+
+/*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can split when power restored
     {
@@ -5935,6 +5951,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
         Utilities->CallLogPop(2685);
         return;
     }
+*/
     AnsiString LocationName = Track->TrackElementAt(1676, LeadElement).ActiveTrackElementName;
 
     if(LocationName == "")
@@ -6128,6 +6145,8 @@ void TTrain::JoinedBy(int Caller)
         TrainController->LogEvent("" + AnsiString(Caller) + "," + HeadCode + ",Waiting to be joined");
     }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",JoinedBy" + "," + HeadCode);
+
+/*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can join when power restored)
     {
@@ -6139,6 +6158,7 @@ void TTrain::JoinedBy(int Caller)
         Utilities->CallLogPop(2140);
         return;
     }
+*/
     TTrain *TrainToBeJoinedBy;
     AnsiString FJOHeadCode = TrainController->GetRepeatHeadCode(4, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 
@@ -6200,6 +6220,8 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
 {
     TrainController->LogEvent("" + AnsiString(Caller) + ",ChangeTrainDirection" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeTrainDirection" + "," + HeadCode);
+
+    /*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can change direction when power restored)
     {
@@ -6211,6 +6233,7 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
         Utilities->CallLogPop(2141);
         return;
     }
+*/
     TColor TempColour = BackgroundColour;
 
     UnplotTrain(2);
@@ -6282,6 +6305,8 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
 { //Note that CumulativeDelayedRandMinsOneTrain carried forward from earlier train (parameter added at v2.13.0)
     TrainController->LogEvent("" + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
+
+/*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can form new service when power restored)
     {
@@ -6293,6 +6318,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
         Utilities->CallLogPop(2142);
         return;
     }
+*/
     AnsiString NewHeadCode = TrainController->GetRepeatHeadCode(5, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 
     AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
@@ -6602,6 +6628,8 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
 //Note that CumulativeDelayedRandMinsOneTrain carried forward from earlier train (parameter added at v2.13.0)
     TrainController->LogEvent("" + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
+
+/*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can for new service when power restored)
     {
@@ -6613,6 +6641,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
         Utilities->CallLogPop(2143);
         return;
     }
+*/
     AnsiString NewHeadCode = ActionVectorEntryPtr->NonRepeatingShuttleLinkHeadCode;
     AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
 
@@ -6671,6 +6700,8 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
         Utilities->CallLogPop(1080);
         return;
     }
+
+/*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can for new service when power restored)
     {
@@ -6682,6 +6713,7 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
         Utilities->CallLogPop(2144);
         return;
     }
+*/
     int TempRepeatNumber = RepeatNumber + 1;
     // need the next repeat value in order to obtain a correct NewHeadCode, but don't increase it
     // until after LogAction or the wrong time will be used
@@ -6723,6 +6755,8 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
 {   //Note that CumulativeDelayedRandMinsOneTrain carried forward from earlier train (parameter added at v2.13.0)
     TrainController->LogEvent("" + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
+
+/*  restriction removed after v2.18.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can for new service when power restored)
     {
@@ -6734,6 +6768,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
         Utilities->CallLogPop(2145);
         return;
     }
+*/
     if(RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))
     // finished all repeats
     {
@@ -11263,7 +11298,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
         TTimetableLocationType LocationType;
         TTimetableShuttleLinkType ShuttleLinkType;
         bool FinishFlag = false;
-        bool NewTrain = false;//added at v2.14.0 to record created trains for later zero power checks
+//        bool NewTrain = false;//added at v2.14.0 to record created trains for later zero power checks <-- not needed after zero power restriction dropped
         for(int x = 0; x < CommaCount + 1; x++)
         {
             if((CommaCount == 0) || (x < CommaCount))
@@ -11296,10 +11331,12 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     Utilities->CallLogPop(756);
                     return(false);
                 }
+/* not needed after v2.18.0
                 if((Second == "Snt") || (Second == "Snt-sh")) //added at v2.14.0, see above
                 {
-                    NewTrain = true;
+                    NewTrain = true; not needed when zero power restrictions removed
                 }
+*/
                 // check if warning for Frh or Fjo & reject
                 if(Warning && (Second == "Frh"))
                 {
@@ -11315,7 +11352,9 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     return(false);
                 }
                 //below added at v2.14.0 to prevent unpowered trains attempting to be joined by (Second == jbo), split (Second -- fsp or rsp),
-                //or change direction.  Form a new service dealt with below for zero power as it's a finish event.
+                //or change direction.  Form a new service dealt with below for zero power as it's a finish event. <-- removed after v2.18.0
+
+/*  restriction removed after v2.18.0
                 if(NewTrain && (PowerAtRail < 1) && (Second == "jbo"))
                 {
                     TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
@@ -11339,6 +11378,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     Utilities->CallLogPop(2547);
                     return(false);
                 }
+*/
                 //end of new additions
                 if(x == 0) // should be start event
                 {
@@ -11570,6 +11610,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         return(false);
                     }
                     //below added at v2.14.0 to prevent unpowered trains attempting to form a new service.
+/*  restriction removed after v2.18.0
                     if(NewTrain && (PowerAtRail < 1) && ((Second == "Fns") || (Second == "Frh-sh") || (Second == "Fns-sh") || (Second == "F-nshs")))
                     {
                         TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
@@ -11578,6 +11619,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         return(false);
                     }
                     //end of new additions
+*/
                     if(SequenceType != FinishSequence)
                     {
                         TimetableMessage(GiveMessages, "Error in timetable - last event should be a finish: '" + OneEntry + "'");
@@ -12856,6 +12898,90 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages, bool &Tw
 
            Many of the errors caught here duplicate those in the preliminary checks, but leave in for completeness
 
+Updated significantly for v2.15.0.  Current procedure:-
+
+Preliminary checks for v0.2b without changing anything, carry each out separately:-
+      1) must have at least one actionvector entry
+      2) if first actionvector entry not SignallerControl then must have at least one more actionvector entry
+      3) if first actionvector entry is SignallerControl then must have no more actionvector entries except a repeat
+      4) first entry must be a start;
+        4a) if first entry is Snt and second is a finish then it can't be Fns-sh or Frh-sh
+        4b) if first entry is Sns or Sfs and second is a finish then it must be either Frh or Fjo
+        4c) if first entry is Snt-sh, Sns-sh or Sns-fsh second can't be a finish
+      5) a start must be the first entry;
+      6) a repeat entry must be the last;
+      7) for other than SignallerControl the last entry must be repeat or finish; if last entry is a repeat the last but one must be a finish;
+      8) a finish entry must be the last or last but one, and if last but one the last must be a repeat
+      Other successor errors will be caught later as all 'throws' changed to messages prior to the bulk of the sucessor checks
+
+Set location for located Snt or Snt-sh and ensure successor AtLocation
+For unlocated Snt-sh give error message
+For unlocated Snt & not sig control check successor moving
+
+Check all other starts (all located) have valid successors
+
+Set location for Sns-sh and Sns-fsh from following TimeLoc, if not one then give message
+
+Carry out linkage checks to ensure all links present, no data set yet & locations not checked yet.  First check for duplicates, then for cross references, then for non-repeating shuttle cross refs.  This is done because the later location naming functions give error messages if there are missing links.
+
+Set names for all Fns finishes from earlier named event or fail if can't find
+Set names for linked Sns events with same event times from above, but first carry out immediate successor checks and give error message for:- no successors, moving successor, another start sequence, a finish that isn't Frh or Fjo or a repeat.  No error messages given here for location not found, that check done later.
+
+Trap errors where rsp/fsp follows an Sfs without a TimeLoc arrival before (or unlikely to be able to set fsp/rsp/Sfs location because Sfs locs set from linked fsp/rsp events)
+
+Name all fsp/rsp events, then check that all named or give error message.
+
+Set all Sfs names from above fsp/rsp links with same event times, but first carry out immediate successor checks and give error message for:- no successors, moving successor, another start sequence, a finish that isn't Frh or Fjo or a repeat.  No error messages given here for location not found, that check done later.
+
+Set remaining AtLoc Command locations from preceding named event
+
+All location names should now be set
+
+Final detailed check of names for all AtLoc Commands.  If find any without a name give an error message:-
+If jbo, fsp, rsp, cdt or dsc say must be preceded by a named event at same location, normally an arrival
+If Sns or Sfs say to make sure the linked finish event is preceded by a named event at same location, normally an arrival
+If Snt-sh say to make sure that the service starts with zero speed and is at a named location
+If Sns-fsh or Sns-sh say to make sure that the event is followed (not necessarily immediately) by a departure
+If Frh, Fns, Fjo, Frh-sh, Fns-sh or F-nshs say that the event must be preceded by an event at the same location that has an identified location name, normally an arrival.
+Missing: pas & Fer not AtLoc, Snt whether located or not covered in detail earlier.
+
+Later checks as before 2.15.0 changes:-
+
+Check remaining successor validity except for TimeLoc arr & dep since those times not set yet
+
+Set arrival & departure times for TimeLocs & set their EventTimes to -1 (up to now all have times as EventTime)
+
+Perform remaining successor checks for TimeLocs
+
+Check all TimeLocs have either Arr or Dep time set and EventTime == -1, all Cmds have EventTime set & Arr & Dep times == -1, & repeats have no times set
+
+Check times stay same or increase through a service, note that can have time of 0 if include midnight
+
+Check locations consistent
+
+Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs (just a potential error warning given in v2.6.0) i.e. same location can appear in any number of consecutive entries but once changed couldn't repeat before a direction change prior to v2.6.0.  Message given in InterfaceUnit
+
+Check all locations except unlocated 'Snt' & 'Fer' have LocationName set and throw error if not.
+
+Carry out full cross reference and duplicate link checks for all services inc shuttles, and set data and check location consistency
+
+Check that each shuttle start ends either in Fns or Fxx-sh (though a single service can't end in Fxx-sh), and that
+when the Fxx-sh is reached it references the original start and not another shuttle - not allowed to link two shuttles, don't ever need to and as designed would skip repeats
+
+Check all entries have all types set to something and throw error if not
+
+All OK if reach here, so set up the TrainOperatingDataVector (already has one entry) & NumberOfTrains
+
+Check that don't include any Continuation names
+
+Check that all repeat times below 96h
+
+Now that all set up change any extended headcodes back to ordinary headcodes (had been service references until now.
+
+Finally call BuildContinuationTrainExpectationMultiMap
+
+***********************************
+
            For info:-
            class TActionVectorEntry //contains a single train action - repeat entry is also of this class though no train action is taken for it
            {
@@ -12956,8 +13082,8 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages, bool &Tw
            Check locations match the arr & dep TimeLoc entries
            Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs
            Make above valid succession checks
-           Check all splits have matching Sfs headcodes (both ways), add locations to Sfs's & check times same
-           Check all new service headcodes (Sns) have matching headcodes (both ways), add locations to Sns's & check times same
+           Check all splits have matching Sfs headcodes (both ways), add locations to Sfs's & check times same [Sfs loc derived from preceding fsp/rsp loc]
+           Check all new service headcodes (Sns) have matching headcodes (both ways), add locations to Sns's & check times same [Sns loc derived from preceding Fns loc]
            Check a split to 'x' doesn't again split to 'x' (anywhere, not just for one train, since headcodes can be duplicated)
            Check each Fns has matching Sns headcodes (both ways), add locations to Fns's & check times same
            Check all joins have matching headcodes (both ways), locations & times & don't occur in same sequence
@@ -13119,8 +13245,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);
             if((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo"))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - only 'Frh' or 'Fjo' finish events are permitted immediately after an 'Sns' or 'Sfs' event for: " +
-                                  TDEntry.HeadCode);
+                SecondPassMessage(GiveMessages, "Error in timetable - only 'Frh' or 'Fjo' finish events are permitted immediately after "
+                                                "an 'Sns' or 'Sfs' event for: " + TDEntry.HeadCode + ". The program is unable to determine the "
+                                                "location of any other type of finish.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2580);
                 return(false);
@@ -13132,7 +13259,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);
             if(AVEntry1.SequenceType == FinishSequence)
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - a finish event can't immediately follow an 'Snt-sh', 'Sns-sh' or 'Sns-fsh' event for: " + TDEntry.HeadCode);
+                SecondPassMessage(GiveMessages, "Error in timetable - a finish event can't immediately follow an 'Snt-sh', 'Sns-sh' or 'Sns-fsh' "
+                                                "event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2616);
                 return(false);
@@ -13423,12 +13551,12 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
     }
 
-
 //at v2.15.0 we want to set Sns, Sfs location names, but to set Sns & Sfs first need the linked Fns & fsp/rsp to have locations set as they aren't yet,
-//and before v2.15.0 they were set from the corresponding Sns & Sfs locations, which in turn were set from later TimeLoc departures.  At v2.15.0 it is required to have
-//these commands followed by Frh & Fjo, so this is why we need the linked Fns & fsp/rsp to have locations set first.  Now all Fns will have a TimeLoc before, so
-//that can provide its location, but fsp/rsp?  Must they have a TimeLoc before? No, and can't rely on starting Sfs having the location set yet.
-//So, new restriction, insist on an rsp/fsp having a TimeLoc before it or a located Snt, and use one of those to set the location for the rsp/fsp and hence the linked Sfs.
+//and before v2.15.0 they were set from the corresponding Sns & Sfs locations, which in turn were set from later TimeLoc departures.  At v2.15.0 it
+//is required to have these commands followed by Frh & Fjo, so this is why we need the linked Fns & fsp/rsp to have locations set first.  Now all Fns
+//will have a TimeLoc before, so that can provide its location, but fsp/rsp?  Must they have a TimeLoc before? No, and can't rely on starting Sfs
+//having the location set yet. So, new restriction, insist on an rsp/fsp having a TimeLoc before it or a located Snt, and use one of those to set the
+//location for the rsp/fsp and hence the linked Sfs.
 
 //NB can't allow an Sfs to be followed by another split or won't find a name, test with many existing tts then add an error to find it
 //Fns must be preceded by an arrival
@@ -13440,7 +13568,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
     {
         LocFoundFlag = false;
         FnsFoundFlag = false;
-        for(int y = TrainDataVector.at(x).ActionVector.size() - 1; y >= 0; y--)
+        for(int y = TrainDataVector.at(x).ActionVector.size() - 1; y >= 0; y--)  //search backwards
         {
             if(TrainDataVector.at(x).ActionVector.at(y).Command == "Fns")
             {
@@ -13465,7 +13593,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             }
             else
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
+                SecondPassMessage(GiveMessages, "Error in timetable - the program can't determine the location of an 'Fns' finish, it  must be preceded "
+                                                "by an event at the same location that has an identified location name, normally an arrival, see "
+                                                + TrainDataVector.at(x).ServiceReference);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2596);
                 return(false);
@@ -13473,7 +13603,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
         if(FnsFoundFlag && !LocFoundFlag)
         {
-            SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
+            SecondPassMessage(GiveMessages, "Error in timetable - the program can't determine the location of an 'Fns' finish, it  must be preceded "
+                                            "by an event at the same location that has an identified location name, normally an arrival, see "
+                                            + TrainDataVector.at(x).ServiceReference);
             TrainDataVector.clear();
             Utilities->CallLogPop(2597);
             return(false);
@@ -16208,7 +16340,7 @@ void TTrainController::TimetableMessage(bool GiveMessages, AnsiString Message)
     // if(ServiceReference == "") ShowMessage(Message);
     if(!CheckHeadCodeValidity(12, false, ServiceReference))
     {
-        ShowMessage(ServiceReference + "(not a valid service ref.): " + Message); //amended at v2.15.1 to give information on 'service' so can find it in lh list
+        ShowMessage(ServiceReference + " (not a valid service ref.): " + Message); //amended at v2.15.1 to give information on 'service' so can find it in lh list
     }
     // changed from above at v2.3.0 as a meaningless value for 'Timetable invalid - unable to find a valid start time on its own line' (uses last entry text)
     // false means don't give messages within the function

@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 post-" + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -519,7 +519,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LocationNamesSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesSetGraphic");
 
         SkipListExitImage->Picture->Bitmap->LoadFromResourceName(0, "Exit"); //new at v2.11.0
-        ReminderExitImage->Picture->Bitmap->LoadFromResourceName(0, "Exit"); //new after v2.18.0
+        ReminderExitImage->Picture->Bitmap->LoadFromResourceName(0, "Exit"); //new at v2.19.0
 
 
 /* Don't need this - load icon directly into both Interface form & Application (via Project - Options - Application - Load Icon)
@@ -7367,8 +7367,8 @@ void __fastcall TInterface::MainScreenMouseDown(TObject *Sender, TMouseButton Bu
         MMoveCopyCutSelPickedUpFlag = false;
         MMoveTextGraphicTextFoundFlag = false;
         MMoveTextGraphicUserGraphicFoundFlag = false;
-        HideTTActionsListBox(7777); //added after v2.18.0 to get rid of these if they were visible
-        HideReminderListBox(7777);
+        HideTTActionsListBox(5); //added at v2.19.0 to get rid of these if they were visible
+        HideReminderListBox(0);
 
         if(!Track->RouteFlashFlag && !Track->PointFlashFlag)
         {
@@ -7898,7 +7898,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                         }
                         else
                         {
-                            //allow right click on any train but only to set a reminder - added after v2.18.0
+                            //allow right click on any train but only to set a reminder - added at v2.19.0
                             SetReminderMenuItem->Enabled = true;
                             SetReminderMenuItem->Visible = true;
                             TimetableControlMenuItem->Enabled = false;
@@ -7954,7 +7954,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                     if(AllRoutes->SearchAllRoutesAndTruncate(0, HLoc, VLoc, PreferredRoute)) // updates LockedRouteClass
                     {
                         //below addition same as for adding a route and calling on
-                        THVShortPair ExitPair;           //added after v2.18.0 to update actions due panel immediately after new route set
+                        THVShortPair ExitPair;           //added at v2.19.0 to update actions due panel immediately after new route set
                         if((ActionsDueForm->Visible) && (Level2OperMode == Operating))      // ditto
                         {
                             for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
@@ -8633,7 +8633,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 TrainController->TrainVectorAt(29, x).BeingCalledOn = true;
 
                                 //below addition same as for adding and cancelling a route
-                                THVShortPair ExitPair;           //added after v2.18.0 to update actions due panel immediately after new route set
+                                THVShortPair ExitPair;           //added at v2.19.0 to update actions due panel immediately after new route set
                                 if((ActionsDueForm->Visible) && (Level2OperMode == Operating))      // ditto
                                 {
                                     for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
@@ -10250,7 +10250,7 @@ void TInterface::ClockTimer2(int Caller)
 
 //timers
         TrainController->OpTimeToActUpdateCounter++;
-///<new v2.2.0, controls 1 second updating for OpTimeToActPanel - changed to 100 from 20 after v2.18.0 to stop trains changing position so frequently
+///<new v2.2.0, controls 1 second updating for OpTimeToActPanel - changed to 100 from 20 at v2.19.0 to stop trains changing position so frequently
         if(TrainController->OpTimeToActUpdateCounter >= 100)
         {
             TrainController->OpTimeToActUpdateCounter = 0;
@@ -12700,7 +12700,7 @@ void __fastcall TInterface::SelectLengthsMenuItemClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectLengthsMenuItemClick");
         TrackElementPanel->Visible = false;
         TrackLengthPanel->Visible = true;
-        RestoreAllDefaultLengthsButton->Enabled = true; //added after v2.18.0 as otherwise retained last value and may have been disabled
+        RestoreAllDefaultLengthsButton->Enabled = true; //added at v2.19.0 as otherwise retained last value and may have been disabled
         ResetDefaultLengthButton->Enabled = true;       // as above
         LengthOKButton->Enabled = true;                 // as above
         TrackLengthPanel->SetFocus();
@@ -13907,7 +13907,7 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
             }
             // here if there is an adjacent train under signaller control
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
             if((TrainToBeJoinedBy->PowerAtRail < 1) && (ThisTrain.PowerAtRail < 1))
             {
                 ShowMessage("Can't join two trains when both are without power");
@@ -14174,20 +14174,20 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added after v2.18.0
+void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added at v2.19.0
 {  //note that the TTClock stays stopped when ReminderListBox is visible - sets WarningHover to true in ClockTimer2
     try
     {
         TrainController->LogEvent("SetReminderMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetReminderMenuItemClick");
-        TTrain Train = TrainController->TrainVectorAtIdent(7777, SelectedTrainID); //Train not modified here so don't need reference
+        TTrain Train = TrainController->TrainVectorAtIdent(70, SelectedTrainID); //Train not modified here so don't need reference
         ReminderListBox->Clear();
         ReminderListBox->ExtendedSelect = false; //this and the next allow only one item to be selected
         ReminderListBox->MultiSelect = false;
         SkipTTActionsListBox->Visible = false; //make invisible in case weren't
         SkipListHeaderPanel->Visible = false;
         //populate the listbox
-        AnsiString TTStr = Train.FloatingTimetableString(7777, Train.ActionVectorEntryPtr);
+        AnsiString TTStr = Train.FloatingTimetableString(3, Train.ActionVectorEntryPtr);
         AnsiString OneLine;
         int Count = 0;
         int NewLinePos = TTStr.Pos('\n');
@@ -14204,7 +14204,7 @@ void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added af
                 }
                 if(OneLine == "Timetable:\n") //update TTStr & Newline but don't increment Count  //added at v2.13.0 as 'Timetable:' added
                 {
-                    TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                    TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos);
                     NewLinePos = TTStr.Pos('\n');
                     continue;
                 }
@@ -14234,7 +14234,7 @@ void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added af
         if(Count == 0)
         {
             ShowMessage("No timetabled events");
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2693);
             return;
         }
         ReminderListBox->Height = (ReminderListBox->ItemHeight * Count) + 4;
@@ -14257,12 +14257,12 @@ void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added af
         ReminderHeaderPanel->Left = Left;
         ReminderListBox->Top = Top;
         ReminderHeaderPanel->Top = Top - 34; //this panel has a height of 34
-        ShowReminderListBox(7777);
-        Utilities->CallLogPop(7777);
+        ShowReminderListBox(0);
+        Utilities->CallLogPop(2694);
     }
     catch(const Exception &e)
     {
-        ErrorLog(7777, e.Message);
+        ErrorLog(248, e.Message);
     }
 
 }
@@ -14286,7 +14286,7 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
     {
         TrainController->LogEvent("SkipTTActionsListBoxMouseUp, " + AnsiString(X) + ',' + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SkipTTActionsListBoxMouseUp");
-        TTrain &Train = TrainController->TrainVectorAtIdent(56, SelectedTrainID); //Train actionvectorptr advance here so need reference
+        TTrain &Train = TrainController->TrainVectorAtIdent(56, SelectedTrainID); //Train.ActionVectorPtr advance here so need reference
         Train.SkipPtrValue = 0;
         if(SkipTTActionsListBox->Items->Text != "") //not empty
         {
@@ -14469,32 +14469,49 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y)  //added after v2.18.0
+          TShiftState Shift, int X, int Y)  //added at v2.19.0
 {
     try
     {
         TrainController->LogEvent("ReminderListBoxMouseUp, " + AnsiString(X) + ',' + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReminderListBoxMouseUp");
-        TTrain &Train = TrainController->TrainVectorAtIdent(7777, SelectedTrainID); //Train actionvectorptr advance here so need reference
+        TTrain &Train = TrainController->TrainVectorAtIdent(71, SelectedTrainID); //Train.ActionVectorPtr not advanced here But keep for consistency
         if(ReminderListBox->Items->Text != "") //not empty
         {
-            Train.SelReminderString = ReminderListBox->Items->Strings[ReminderListBox->ItemIndex]; //index starts at 0
-        }
-        int  Count = 0, PassNum = 0;
-        for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < ReminderListBox->ItemIndex; AVEPtr++)
+            Train.SelReminderString = ReminderListBox->Items->Strings[ReminderListBox->ItemIndex]; //ItemIndex is the index of the selected item
+        }                                                                                          //index starts at 0
+        int  Count = 0, AVPtrIncrement = 0;
+        AnsiString ReminderString  = AnsiString(ReminderListBox->Items->Strings[ReminderListBox->ItemIndex]);
+        int PosArDep = ReminderString.Pos("Arrive & depart");
+        int PosArr = ReminderString.Pos("Arrive at");
+        int PosDep = ReminderString.Pos("Depart from");
+
+        for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < ReminderListBox->ItemIndex; AVEPtr++) //stop when reach selected iten
         {
+            AnsiString DepTimeFromAVEPtr = Utilities->Format96HHMM(Train.GetTrainTime(73, AVEPtr->DepartureTime));
+            AnsiString DepTimeFromListBox = ReminderString.SubString(1, 5);
+
             if((AVEPtr->FormatType == TimeTimeLoc) && (AVEPtr->ArrivalTime != AVEPtr->DepartureTime))
             {//arr & dep in a single AVEntry if different arr & dep times but two listings, if have same arr & dep time then only a single listing,
-                Count += 2;
+                Count += 2; //Count counts the increment of items in the listbox
             }
             else
             {
                 Count++;
             }
-            PassNum++;
+            int PosLoc = ReminderString.Pos(AVEPtr->LocationName);
+
+            if((AVEPtr->FormatType != TimeTimeLoc) || (PosDep == 0) || (PosLoc == 0) || (DepTimeFromAVEPtr != DepTimeFromListBox))
+            {//TimeTimeLocs have two entries in the list box, one for arrive and one for depart, unless the arrival and departure times are the same,
+             //and if select such an entry reminders are given for both arrival and departure.  For others,
+             //don't want to increment AVPtrIncrement (counts the increment of items in the ActionVector)
+             //if have selected a departure, because it's at the same pointer as the arrival.  So only increment AVPtrIncrement if ActionVectorEntryPtr
+             //doesn't correspond to selected item, i.e. is not a TimeTimeLoc, not a departure, not at selected location, or has a different different
+             //departure time
+                AVPtrIncrement++;
+            }
         }
         //set the reminder but ask for confirmation first
-        AnsiString ReminderString  = AnsiString(ReminderListBox->Items->Strings[ReminderListBox->ItemIndex]);
         if(ReminderString[ReminderString.Length()] == '\n') //strip the newline if there is one as one is added after PerfStr sent to PerformanceFile
         {
             ReminderString = ReminderString.SubString(1, (ReminderString.Length() - 1));
@@ -14504,13 +14521,10 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
         {
             ShowMessage("Reminders cannot be given for 'Join XXXX' events (where XXXX is the joining service).  For a train join warning set a reminder "
                         "for the joining train at its 'Joined by XXXX' event");
-            HideReminderListBox(7777);
-            Utilities->CallLogPop(7777);
+            HideReminderListBox(1);
+            Utilities->CallLogPop(2695);
             return;
         }
-        int PosArDep = ReminderString.Pos("Arrive & depart");
-        int PosArr = ReminderString.Pos("Arrive at");
-        int PosDep = ReminderString.Pos("Depart from");
         UnicodeString Msg;
         if(PosArDep > 0)
         {
@@ -14523,56 +14537,75 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
         int button = Application->MessageBox(Msg.c_str(), L"", MB_YESNO);
         if(button == IDYES)
         {
+//AnsiString ActionStr = "";  //diagnostics
             TActionVectorEntry *AVPtr = Train.ActionVectorEntryPtr;
-            if((AVPtr + PassNum)->Warning)
+
+//AnsiString DepTimeFromAVPtr = Utilities->Format96HHMM(Train.GetTrainTime(74, (AVPtr + AVPtrIncrement)->DepartureTime)); //diagnostics
+//AnsiString DepTimeFromLB = ReminderString.SubString(1, 5); //diagnostics
+
+            if((AVPtr + AVPtrIncrement)->Warning)
             {
                 ShowMessage("There is already a warning at this event, can't set a reminder where there is already a warning");
-                HideReminderListBox(7777);
-                Utilities->CallLogPop(7777);
+                HideReminderListBox(2);
+                Utilities->CallLogPop(2696);
                 return;
             }
             if(PosArDep > 0)
             {
-                (AVPtr + PassNum)->Reminder = 4; //both arr & dep
+                (AVPtr + AVPtrIncrement)->Reminder = 4; //both arr & dep
+//ActionStr = "Both"; //diagnostics
             }
             else if(PosArr  > 0)
             {
-                if((AVPtr + PassNum)->Reminder == 2) //dep already set on its own so set both
+//ActionStr = "Arr"; //diagnostics
+                if((AVPtr + AVPtrIncrement)->Reminder == 2) //dep already set on its own so set both
                 {
-                    (AVPtr + PassNum)->Reminder = 4; //arr + dep
+                    (AVPtr + AVPtrIncrement)->Reminder = 4; //arr + dep
+//ActionStr = "Both"; //diagnostics
                 }
                 else
                 {
-                    (AVPtr + PassNum)->Reminder = 3; //arr only
+                    (AVPtr + AVPtrIncrement)->Reminder = 3; //arr only
                 }
             }
             else if(PosDep  > 0)
             {
-                if((AVPtr + PassNum)->Reminder == 3) //arr already set on its own so set both
+//ActionStr = "Dep"; //diagnostics
+                if((AVPtr + AVPtrIncrement)->Reminder == 3) //arr already set on its own so set both
                 {
-                    (AVPtr + PassNum)->Reminder = 4; //arr + dep
+                    (AVPtr + AVPtrIncrement)->Reminder = 4; //arr + dep
+//ActionStr = "Both"; //diagnostics
                 }
                 else
                 {
-                    (AVPtr + PassNum)->Reminder = 2; //dep only
+                    (AVPtr + AVPtrIncrement)->Reminder = 2; //dep only
                 }
             }
             else
             {
-                (AVPtr + PassNum)->Reminder = 1; //not arr, dep or both
+                (AVPtr + AVPtrIncrement)->Reminder = 1; //not arr, dep or both
             }
-            AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + "Reminder set at event '" +
+            AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " Reminder set at event '" +
                 ReminderString + "'.";
             Utilities->PerformanceFile << PerfStr.c_str() << '\n';
             Utilities->PerformanceFile.flush();  //added at v2.13.0
             PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
+
+//double ArrTime = double((AVPtr + AVPtrIncrement)->ArrivalTime); //diagnostics
+//double DepTime = double((AVPtr + AVPtrIncrement)->DepartureTime); //diagnostics
+//double EvTime = double((AVPtr + AVPtrIncrement)->EventTime); //diagnostics
+
+//ShowMessage("Rem=" + AnsiString((AVPtr + AVPtrIncrement)->Reminder) + "\nAction=" + ActionStr + "\nAVPtrInc=" + AVPtrIncrement + "\nLoc=" +
+//        (AVPtr + AVPtrIncrement)->LocationName + "\nCmd=" + (AVPtr + AVPtrIncrement)->Command + "\nArr=" + ArrTime + "\nDep=" + DepTime + "\nEv=" + EvTime +
+//        "\nDTAVPtr=" + DepTimeFromAVPtr + "\nDTListBox=" + DepTimeFromLB); //diagnostics
+
         }
-        HideReminderListBox(7777);
-        Utilities->CallLogPop(7777);
+        HideReminderListBox(3);
+        Utilities->CallLogPop(2697);
     }
     catch(const Exception &e)
     {
-        ErrorLog(7777, e.Message);
+        ErrorLog(249, e.Message);
     }
 }
 
@@ -14600,14 +14633,14 @@ void TInterface::ShowReminderListBox(int Caller)  //TTClock stopped in ClockTime
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ShowReminderListBox");
     if(ReminderListBox->Visible)
     {
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2698);
         return;
     }
     ReminderListBox->Visible = true;
     ReminderHeaderPanel->Visible = true;
     ReminderListBox->BringToFront();
     ReminderHeaderPanel->BringToFront();
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2699);
 }
 
 //---------------------------------------------------------------------------
@@ -14627,17 +14660,17 @@ void TInterface::HideTTActionsListBox(int Caller)
 
 //---------------------------------------------------------------------------
 
-void TInterface::HideReminderListBox(int Caller) //added after v2.18.0
+void TInterface::HideReminderListBox(int Caller) //added at v2.19.0
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",HideReminderListBox");
     if(!ReminderListBox->Visible)
     {
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2700);
         return;
     }
     ReminderListBox->Visible = false;
     ReminderHeaderPanel->Visible = false;
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2701);
 }
 
 //---------------------------------------------------------------------------
@@ -14659,18 +14692,18 @@ void __fastcall TInterface::SkipListExitImageClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::ReminderExitImageClick(TObject *Sender)  //added after v2.18.0
+void __fastcall TInterface::ReminderExitImageClick(TObject *Sender)  //added at v2.19.0
 {
     try
     {
         TrainController->LogEvent("ReminderExitImageClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReminderExitImageClick");
-        HideReminderListBox(7777);
-        Utilities->CallLogPop(7777);
+        HideReminderListBox(4);
+        Utilities->CallLogPop(2702);
     }
     catch(const Exception &e)
     {
-        ErrorLog(7777, e.Message);
+        ErrorLog(250, e.Message);
     }
 }
 
@@ -21103,7 +21136,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
             }
             ConstructRoute->ClearRoute(); // clear it immediately after use so as not to clutter the errorlog
             //below addition same as for truncating/cancelling a route and calling on
-            THVShortPair ExitPair;           //added after v2.18.0 to update actions due panel immediately after new route set
+            THVShortPair ExitPair;           //added at v2.19.0 to update actions due panel immediately after new route set
             if((ActionsDueForm->Visible) && (Level2OperMode == Operating))      // ditto
             {
                 for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
@@ -22276,7 +22309,7 @@ In each case need to ensure that the following points are considered and dealt w
             {
                 for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
                 {
-                    TTrain Train = TrainController->TrainVectorAt(7777, x);
+                    TTrain Train = TrainController->TrainVectorAt(103, x);
                     TActionVector AV = Train.TrainDataEntryPtr->ActionVector;
                     for(unsigned int y = 0; y < AV.size(); y++)
                     {
@@ -22955,7 +22988,7 @@ void TInterface::LoadSession(int Caller)
                                 unsigned int TrainVecPos = x.SubString(2, 4).ToInt(); //last 4 characters converted to int
                                 unsigned int Reminder = x.SubString(1, 1).ToInt(); //1st character converted to int, 1, 2, 3 or 4
                                 unsigned int y = TempString.SubString(PosDash + 1, TempString.Length() - PosDash).ToInt(); //= AV vector position
-                                TTrain &Train = TrainController->TrainVectorAt(7777, TrainVecPos);
+                                TTrain &Train = TrainController->TrainVectorAt(105, TrainVecPos);
                                 TActionVector &AV = Train.TrainDataEntryPtr->ActionVector;
                                 AV.at(y).Reminder = Reminder;
                                 TempString = Utilities->LoadFileString(SessionFile);
@@ -25089,7 +25122,7 @@ void TInterface::SaveErrorFile()
             {
                 for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
                 {
-                    TTrain Train = TrainController->TrainVectorAt(7777, x);
+                    TTrain Train = TrainController->TrainVectorAt(104, x);
                     TActionVector AV = Train.TrainDataEntryPtr->ActionVector;
                     for(unsigned int y = 0; y < AV.size(); y++)
                     {
@@ -28891,5 +28924,6 @@ void TInterface::PlayerHandshakingActions()
 */
 
 //---------------------------------------------------------------------------
+
 
 

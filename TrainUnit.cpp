@@ -5653,7 +5653,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     if(ReminderBaseLog != "")
     {
-        Display->WarningLog(0, ReminderBaseLog);
+        Display->WarningLog(24, ReminderBaseLog);
     }
     // update statistics
     if((ActionType == Arrive) && (IntMinsLate == 0))
@@ -5779,7 +5779,7 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
     TrainController->LogEvent("" + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can split when power restored
     {
@@ -5822,7 +5822,7 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
                 TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
             }
         }
-        Utilities->CallLogPop(1009); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here after v2.18.0
+        Utilities->CallLogPop(1009); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here at v2.19.0
         return;
     }
 
@@ -5939,7 +5939,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
     TrainController->LogEvent("" + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can split when power restored
     {
@@ -5981,7 +5981,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
                 TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
             }
         }
-        Utilities->CallLogPop(2686); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here after v2.18.0
+        Utilities->CallLogPop(2686); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here at v2.19.0
         return;
     }
 
@@ -6146,7 +6146,7 @@ void TTrain::JoinedBy(int Caller)
     }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",JoinedBy" + "," + HeadCode);
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can join when power restored)
     {
@@ -6221,7 +6221,7 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
     TrainController->LogEvent("" + AnsiString(Caller) + ",ChangeTrainDirection" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeTrainDirection" + "," + HeadCode);
 
-    /*  restriction removed after v2.18.0
+    /*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can change direction when power restored)
     {
@@ -6306,7 +6306,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
     TrainController->LogEvent("" + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can form new service when power restored)
     {
@@ -6629,7 +6629,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
     TrainController->LogEvent("" + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can for new service when power restored)
     {
@@ -6701,7 +6701,7 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
         return;
     }
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can for new service when power restored)
     {
@@ -6756,7 +6756,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
     TrainController->LogEvent("" + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
     if(PowerAtRail < 1)
     // new at v2.4.0 (ActionVectorEntryPtr not incremented so can for new service when power restored)
     {
@@ -11331,7 +11331,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     Utilities->CallLogPop(756);
                     return(false);
                 }
-/* not needed after v2.18.0
+/* not needed at v2.19.0
                 if((Second == "Snt") || (Second == "Snt-sh")) //added at v2.14.0, see above
                 {
                     NewTrain = true; not needed when zero power restrictions removed
@@ -11352,9 +11352,9 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     return(false);
                 }
                 //below added at v2.14.0 to prevent unpowered trains attempting to be joined by (Second == jbo), split (Second -- fsp or rsp),
-                //or change direction.  Form a new service dealt with below for zero power as it's a finish event. <-- removed after v2.18.0
+                //or change direction.  Form a new service dealt with below for zero power as it's a finish event. <-- removed at v2.19.0
 
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
                 if(NewTrain && (PowerAtRail < 1) && (Second == "jbo"))
                 {
                     TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
@@ -11610,7 +11610,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         return(false);
                     }
                     //below added at v2.14.0 to prevent unpowered trains attempting to form a new service.
-/*  restriction removed after v2.18.0
+/*  restriction removed at v2.19.0
                     if(NewTrain && (PowerAtRail < 1) && ((Second == "Fns") || (Second == "Frh-sh") || (Second == "Fns-sh") || (Second == "F-nshs")))
                     {
                         TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
@@ -19678,7 +19678,7 @@ different to the train's front element name (whether null or not) (no report), a
 (no report) or buffers (report).
 */
             bool BufferFacingUnReportedFlag = true;
-            bool TrainFacingBuffersReported = false; //new flag added after v2.18.0 for 'no facing buffers' message instead of BufferFacingUnReportedFlag
+            bool TrainFacingBuffersReported = false; //new flag added at v2.19.0 for 'no facing buffers' message instead of BufferFacingUnReportedFlag
             for(unsigned int x = 0; x < SingleServiceVector.size(); x++)
             {
                 TTrackElement ThisElement, NextElement;
@@ -19785,15 +19785,15 @@ different to the train's front element name (whether null or not) (no report), a
                             TTFile3 << "Train facing direction on creation analysis:-\n\n";
                             BufferFacingUnReportedFlag = false;
                         }
-                        if(AV.at(1).Command != "cdt")  //added after v2.18.0
+                        if(AV.at(1).Command != "cdt")  //added at v2.19.0
                         {
                             TTFile3 << "Service " + TDE.ServiceReference + " facing buffers on creation with no immediate change of direction\n";
-                            TrainFacingBuffersReported = true; //added after v2.18.0
+                            TrainFacingBuffersReported = true; //added at v2.19.0
                         }
                     }
                 }
             }
-            if(!TrainFacingBuffersReported) //added after v2.18.0
+            if(!TrainFacingBuffersReported) //added at v2.19.0
             {
                 TTFile3 << "Nothing to report for train facing directions\n\n";
             }

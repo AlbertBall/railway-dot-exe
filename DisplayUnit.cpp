@@ -519,7 +519,7 @@ void TDisplay::PlotDashedRect(int Caller, TRect Rect)
 // ---------------------------------------------------------------------------
 
 // relocated PerformanceLog function to PerfLogForm at v2.13.0 when created new performance log form
-void TDisplay::WarningLog(int Caller, AnsiString Statement)  //also used for Reminders after v2.18.0
+void TDisplay::WarningLog(int Caller, AnsiString Statement)  //also used for Reminders at v2.19.0
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WarningLog," + Statement);
     OutputLog6->Caption = OutputLog7->Caption;
@@ -532,7 +532,7 @@ void TDisplay::WarningLog(int Caller, AnsiString Statement)  //also used for Rem
     OutputLog3->Caption = OutputLog4->Caption;
     OutputLog4->Caption = OutputLog5->Caption;
     OutputLog5->Caption = Statement;
-    Beep(1000, 200);       //these added after v2.18.0
+    Beep(1000, 200);       //these added at v2.19.0
     Beep(1000, 200);
     Beep(1000, 200);
     Utilities->CallLogPop(1785);

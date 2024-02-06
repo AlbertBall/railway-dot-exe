@@ -28,15 +28,34 @@ Manual:  add section on reminders + mention beeps for warnings & held trains + c
 
 / But what's confusing me is that all that has nothing to do with zero power and you successfully changed the service reference of stock that stayed at the same location by having a jbo command immediately after the Sns command, so it should also be possible if the power is zero.  Clearly I need to think a lot more about this and work out some rules for run-arounds in terms of how to do it and what to avoid.  I don't want to change the validator functions any more as it was a complex job the last time, and I don't think it should be necessary just to allow zero power for drop-offs and pick-ups.  Leave it with me and I'll think a bit more!"
 
-Removed all zero power restrictions: while operating: jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh, sig join if both zero power, + in tt validation for jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh - if need to re-instate search on 'restriction removed at vx.x.x'.  In text say nervous about this, may have a reason that I've forgotten but will come to light soonish.
+/ Removed all zero power restrictions: while operating: jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh, sig join if both zero power, + in tt validation for jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh - if need to re-instate search on 'restriction removed at vx.x.x'.  In text say nervous about this, may have a reason that I've forgotten but will come to light soonish.
 
-Manual:  explain can set reminder for any train
+Manual:  explain can set reminder for any train, only available in tt control
 
---> Add reminders in session files
+/ Add reminders in session files
 
-warnings/reminders/held trains/points failed/signal failed/TSR applied/delays/split fail - loc too short/split fail - other train/waiting to join/waiting to be joined by/points restored/signal restored/TSR lifted--> now bold red for latest & regular blue for earlier
+Test session file reminders + check works ok with old sessions and try earlier versions with session reminders
 
-deal with 7777s
+Manual:  more explanation is needed in the manual to make these things (splits & call-ons - esp wrt needing a free named element) clearer, especially the conditions necessary for splits and how the final positioning is arrived at.
+
+Manual: warnings/reminders/held trains/points failed/signal failed/TSR applied/delays/split fail - loc too short/split fail - other train/waiting to join/waiting to be joined by/points restored/signal restored/TSR lifted--> now bold red for latest & regular blue for earlier
+
+/ deal with 7777s
+
+Manual: change 5.2.3 Splits to say how splits now work
+
+Manual: Rules for run-arounds to avoid Sfs followed by Fns (not permitted by tt validator)
+	Have loco as the split-off train & loco uses Sfs/Fjo to rejoin, stock use Fns/Sns/jbo
+	or:
+	Have stock as split-off train & stock uses Sfs/Fjo to rejoin, loco use Fns/Sns/jbo
+	i.e. split-off train to use Fjo, original train to change to new service then jbo
+	Avoid split-off train changing to new service as not permitted - can't have Fns after Sfs
+
+/ Remove diagnostic entries for ReminderListBoxMouseUp
+
+
+
+
 
 
 Development History

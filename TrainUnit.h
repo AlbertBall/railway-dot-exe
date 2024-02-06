@@ -147,7 +147,7 @@ public:
     TTrainDataEntry *NonRepeatingShuttleLinkEntryPtr;
 ///< pointer used by shuttles for the non-shuttle train links, in & out, the corresponding non-shuttle linked trains use LinkedTrainEntryPtr
     unsigned int Reminder; //0=not set, 1=set for other than TimeLoc or TimeTimeLoc; 2=set for dep; 3=set for arr; 4=set for both arr & dep
-///< if set triggers a 'ping' + alert in the warning and perf log panels when the action is reached.  Added after v2.18.0
+///< if set triggers a 'ping' + alert in the warning and perf log panels when the action is reached.  Added at v2.19.0
 
 // inline function
 

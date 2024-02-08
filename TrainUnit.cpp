@@ -5392,7 +5392,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
 
           Arrive:  06:05:40: 2F46 arrived at Old Street 1 minute late
           Pass:  06:05:40: 2F46 passed Old Street 1 minute late
-          Terminate:  06:05:40: 2F46 terminated at Old Street 1 minute late
+          Terminate:  06:05:40: 2F46 terminated at Old Street 1 minute late <-- sent from RemainHere as LogAction not called for terminate
           //NB for Frh just give terminated message but without event time - don't use this function
           Depart:  06:05:15: 3F43 departed from Essex Road 2 minutes late
           Create:  06:05:40: 2F46 created at Old Street 1 minute late
@@ -5430,7 +5430,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     {
         ActionLog = " arrived at ";
     }
-    if(ActionType == Terminate)
+    if(ActionType == Terminate) //redundant as Logaction not called for terminate - RemainHere deals with logging for terminate
     {
         if(TerminatedMessageSent) // to avoid it being sent twice
         {
@@ -6353,7 +6353,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
 
 // ---------------------------------------------------------------------------
 
-void TTrain::RemainHere(int Caller)
+void TTrain::RemainHere(int Caller) //added warnings & reminders at v2.19.0 (not sent from LogAction as not called when train terminates)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + AnsiString(Caller) + ",RemainHere" + "," + HeadCode);
     if(RemainHereLogNotSent) // to prevent repeated logs
@@ -6363,8 +6363,25 @@ void TTrain::RemainHere(int Caller)
     }
     if(!TerminatedMessageSent)
     {
-        PerfLogForm->PerformanceLog(5, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " terminated at " +
-                                ActionVectorEntryPtr->LocationName);
+        TDateTime ActualTime = TrainController->TTClockTime;
+        AnsiString BaseLog = "", Location = ActionVectorEntryPtr->LocationName;
+        AnsiString PerfLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + " terminated at " + Location;
+        if(ActionVectorEntryPtr->Warning)
+        {
+            BaseLog = Utilities->Format96HHMMSS(ActualTime) + " WARNING: " + HeadCode + " terminated at " + Location;
+            Display->WarningLog(25, PerfLog);
+            PerfLogForm->PerformanceLog(65, BaseLog);
+        }
+        else if(ActionVectorEntryPtr->Reminder > 0)
+        {
+            BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + " terminated at " + Location;
+            Display->WarningLog(26, PerfLog);
+            PerfLogForm->PerformanceLog(66, BaseLog);
+        }
+        else
+        {
+            PerfLogForm->PerformanceLog(67, PerfLog);
+        }
         LastActionTime = TrainController->TTClockTime;
         TerminatedMessageSent = true;
     }
@@ -12922,16 +12939,23 @@ Check all other starts (all located) have valid successors
 
 Set location for Sns-sh and Sns-fsh from following TimeLoc, if not one then give message
 
-Carry out linkage checks to ensure all links present, no data set yet & locations not checked yet.  First check for duplicates, then for cross references, then for non-repeating shuttle cross refs.  This is done because the later location naming functions give error messages if there are missing links.
+Carry out linkage checks to ensure all links present, no data set yet & locations not checked yet.  First check for duplicates, then for cross
+references, then for non-repeating shuttle cross refs.  This is done because the later location naming functions give error messages if there
+are missing links.
 
 Set names for all Fns finishes from earlier named event or fail if can't find
-Set names for linked Sns events with same event times from above, but first carry out immediate successor checks and give error message for:- no successors, moving successor, another start sequence, a finish that isn't Frh or Fjo or a repeat.  No error messages given here for location not found, that check done later.
+Set names for linked Sns events with same event times from above, but first carry out immediate successor checks and give error message for:-
+no successors, moving successor, another start sequence, a finish that isn't Frh or Fjo or a repeat.  No error messages given here for location
+not found, that check done later.
 
-Trap errors where rsp/fsp follows an Sfs without a TimeLoc arrival before (or unlikely to be able to set fsp/rsp/Sfs location because Sfs locs set from linked fsp/rsp events)
+Trap errors where rsp/fsp follows an Sfs without a TimeLoc arrival before (or unlikely to be able to set fsp/rsp/Sfs location because Sfs locs set
+from linked fsp/rsp events)
 
 Name all fsp/rsp events, then check that all named or give error message.
 
-Set all Sfs names from above fsp/rsp links with same event times, but first carry out immediate successor checks and give error message for:- no successors, moving successor, another start sequence, a finish that isn't Frh or Fjo or a repeat.  No error messages given here for location not found, that check done later.
+Set all Sfs names from above fsp/rsp links with same event times, but first carry out immediate successor checks and give error message for:-
+no successors, moving successor, another start sequence, a finish that isn't Frh or Fjo or a repeat.  No error messages given here for location
+not found, that check done later.
 
 Set remaining AtLoc Command locations from preceding named event
 
@@ -12942,7 +12966,8 @@ If jbo, fsp, rsp, cdt or dsc say must be preceded by a named event at same locat
 If Sns or Sfs say to make sure the linked finish event is preceded by a named event at same location, normally an arrival
 If Snt-sh say to make sure that the service starts with zero speed and is at a named location
 If Sns-fsh or Sns-sh say to make sure that the event is followed (not necessarily immediately) by a departure
-If Frh, Fns, Fjo, Frh-sh, Fns-sh or F-nshs say that the event must be preceded by an event at the same location that has an identified location name, normally an arrival.
+If Frh, Fns, Fjo, Frh-sh, Fns-sh or F-nshs say that the event must be preceded by an event at the same location that has an identified location name,
+normally an arrival.
 Missing: pas & Fer not AtLoc, Snt whether located or not covered in detail earlier.
 
 Later checks as before 2.15.0 changes:-
@@ -12953,20 +12978,24 @@ Set arrival & departure times for TimeLocs & set their EventTimes to -1 (up to n
 
 Perform remaining successor checks for TimeLocs
 
-Check all TimeLocs have either Arr or Dep time set and EventTime == -1, all Cmds have EventTime set & Arr & Dep times == -1, & repeats have no times set
+Check all TimeLocs have either Arr or Dep time set and EventTime == -1, all Cmds have EventTime set & Arr & Dep times == -1, & repeats have no times
+set
 
 Check times stay same or increase through a service, note that can have time of 0 if include midnight
 
 Check locations consistent
 
-Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs (just a potential error warning given in v2.6.0) i.e. same location can appear in any number of consecutive entries but once changed couldn't repeat before a direction change prior to v2.6.0.  Message given in InterfaceUnit
+Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs (just a potential error warning given in v2.6.0) i.e.
+same location can appear in any number of consecutive entries but once changed couldn't repeat before a direction change prior to v2.6.0.  Message
+given in InterfaceUnit
 
 Check all locations except unlocated 'Snt' & 'Fer' have LocationName set and throw error if not.
 
 Carry out full cross reference and duplicate link checks for all services inc shuttles, and set data and check location consistency
 
 Check that each shuttle start ends either in Fns or Fxx-sh (though a single service can't end in Fxx-sh), and that
-when the Fxx-sh is reached it references the original start and not another shuttle - not allowed to link two shuttles, don't ever need to and as designed would skip repeats
+when the Fxx-sh is reached it references the original start and not another shuttle - not allowed to link two shuttles, don't ever need to and as
+designed would skip repeats
 
 Check all entries have all types set to something and throw error if not
 
@@ -12982,146 +13011,152 @@ Finally call BuildContinuationTrainExpectationMultiMap
 
 ***********************************
 
-           For info:-
-           class TActionVectorEntry //contains a single train action - repeat entry is also of this class though no train action is taken for it
-           {
-           public:
-           AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode; ///< string values for timetabled event entries, null
-           ///< on creation
-           bool SignallerControl; ///< indicates a train that is defined by the timetable as under signaller control
-           bool Warning; ///< if set triggers an alert in the warning panel when the action is reached
-           int NumberOfRepeats; ///< the number of repeating services
-           int RearStartOrRepeatMins, FrontStartOrRepeatDigits; ///< dual-purpose variables used for the TrackVectorPositions of the rear and front
-           ///< train starting elements (for Snt) or for repeat minute & digit values in repeat entries
-           TDateTime EventTime, ArrivalTime, DepartureTime; ///< relevant times at which the action is timetabled, zeroed on creation so change
-           ///< to -1 as a marker for 'not set'
-           TNumList ExitList; ///< the list of valid train exit TrackVector positions for 'Fer' entries (empty to begin with)
-           TTimetableFormatType FormatType; ///< defines the timetable action type
-           TTimetableLocationType LocationType; ///< indicates where the train is when the relevant action occurs
-           TTimetableSequenceType SequenceType; ///< indicates where in the sequence of codes the action lies
-           TTimetableShuttleLinkType ShuttleLinkType; ///< indicates whether or not the action relates to a shuttle service link
-           TTrainDataEntry *LinkedTrainEntryPtr; ///< link pointer for use between fsp/rsp & Sfs; Fjo & jbo; Fns & Sns; & all shuttle to shuttle
-           ///< links
-           TTrainDataEntry *NonRepeatingShuttleLinkEntryPtr; ///< pointer used by shuttles for the non-shuttle train links, in & out, the
-           ///< corresponding non-shuttle linked trains use LinkedTrainEntryPtr
+For info:-
+class TActionVectorEntry //contains a single train action - repeat entry is also of this class though no train action is taken for it
+{
+public:
+AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode; ///< string values for timetabled event entries, null
+///< on creation
+bool SignallerControl; ///< indicates a train that is defined by the timetable as under signaller control
+bool Warning; ///< if set triggers an alert in the warning panel when the action is reached
+int NumberOfRepeats; ///< the number of repeating services
+int RearStartOrRepeatMins, FrontStartOrRepeatDigits; ///< dual-purpose variables used for the TrackVectorPositions of the rear and front
+///< train starting elements (for Snt) or for repeat minute & digit values in repeat entries
+TDateTime EventTime, ArrivalTime, DepartureTime; ///< relevant times at which the action is timetabled, zeroed on creation so change
+///< to -1 as a marker for 'not set'
+TNumList ExitList; ///< the list of valid train exit TrackVector positions for 'Fer' entries (empty to begin with)
+TTimetableFormatType FormatType; ///< defines the timetable action type
+TTimetableLocationType LocationType; ///< indicates where the train is when the relevant action occurs
+TTimetableSequenceType SequenceType; ///< indicates where in the sequence of codes the action lies
+TTimetableShuttleLinkType ShuttleLinkType; ///< indicates whether or not the action relates to a shuttle service link
+TTrainDataEntry *LinkedTrainEntryPtr; ///< link pointer for use between fsp/rsp & Sfs; Fjo & jbo; Fns & Sns; & all shuttle to shuttle
+///< links
+TTrainDataEntry *NonRepeatingShuttleLinkEntryPtr; ///< pointer used by shuttles for the non-shuttle train links, in & out, the
+///< corresponding non-shuttle linked trains use LinkedTrainEntryPtr
 
-           // inline function
+// inline function
 
-           /// Constructor, sets all values to default states
-           TActionVectorEntry() {
-           RearStartOrRepeatMins=0; FrontStartOrRepeatDigits=0; NumberOfRepeats=0; FormatType=NoFormat;
-           SequenceType=NoSequence; LocationType=NoLocation; ShuttleLinkType=NoShuttleLink, EventTime=TDateTime(-1);
-           ArrivalTime=TDateTime(-1); DepartureTime=TDateTime(-1); LinkedTrainEntryPtr=0; NonRepeatingShuttleLinkEntryPtr=0;
-           Warning = false; SignallerControl = false;
-           }
-           };
+/// Constructor, sets all values to default states
+TActionVectorEntry() {
+RearStartOrRepeatMins=0; FrontStartOrRepeatDigits=0; NumberOfRepeats=0; FormatType=NoFormat;
+SequenceType=NoSequence; LocationType=NoLocation; ShuttleLinkType=NoShuttleLink, EventTime=TDateTime(-1);
+ArrivalTime=TDateTime(-1); DepartureTime=TDateTime(-1); LinkedTrainEntryPtr=0; NonRepeatingShuttleLinkEntryPtr=0;
+Warning = false; SignallerControl = false;
+}
+};
 
-           typedef std::vector<TActionVectorEntry> TActionVector;//contains all actions for a single train
+typedef std::vector<TActionVectorEntry> TActionVector;//contains all actions for a single train
 
-           class TTrainDataEntry //contains all data for a single train - copied into train object when becomes active
-           {
-           public:
-           AnsiString HeadCode, ServiceReference, Description; ///< headcode is the first train's headcode, rest are calculated from repeat
-           ///< information; ServiceReference is the full (up to 8 characters) reference
-           ///< from the timetable (added at V0.6b)
-           double MaxBrakeRate; ///< in metres/sec/sec
-           double MaxRunningSpeed; ///< in km/h
-           double PowerAtRail; ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
-           int Mass; ///< in kg
-           int NumberOfTrains; ///< number of repeats + 1
-           int SignallerSpeed; ///< in km/h for use when under signaller control
-           int StartSpeed; ///< in km/h
-           TActionVector ActionVector; ///< all the actions for the train
-           TTrainOperatingDataVector TrainOperatingDataVector; ///< operating information for the train including all its repeats
+class TTrainDataEntry //contains all data for a single train - copied into train object when becomes active
+{
+public:
+AnsiString HeadCode, ServiceReference, Description; ///< headcode is the first train's headcode, rest are calculated from repeat
+///< information; ServiceReference is the full (up to 8 characters) reference
+///< from the timetable (added at V0.6b)
+double MaxBrakeRate; ///< in metres/sec/sec
+double MaxRunningSpeed; ///< in km/h
+double PowerAtRail; ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
+int Mass; ///< in kg
+int NumberOfTrains; ///< number of repeats + 1
+int SignallerSpeed; ///< in km/h for use when under signaller control
+int StartSpeed; ///< in km/h
+TActionVector ActionVector; ///< all the actions for the train
+TTrainOperatingDataVector TrainOperatingDataVector; ///< operating information for the train including all its repeats
 
-           //inline function
+//inline function
 
-           /// Constructor with default values
-           TTrainDataEntry()
-           {
-           StartSpeed=0; MaxRunningSpeed=0; NumberOfTrains=0;
-           }
-           };
+/// Constructor with default values
+TTrainDataEntry()
+{
+StartSpeed=0; MaxRunningSpeed=0; NumberOfTrains=0;
+}
+};
 
-           Allowable successors:-
-           Snt unlocated ->  Fer, TimeLoc (arr), TimeTimeLoc, (new) pas; No others
-           Snt located -> No starts, no finishes except Frh, Fjo (as of v2.0.0), Fns, and F-nshs, no repeat, pas, TimeTimeLoc or TimeLoc arr; any other cmd or TimeLoc (dep) OK
-           Snt-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
-           Sfs ->  No starts, finishes except Frh & Fjo (as of v2.15.0), repeats, pas, TimeTimeLoc, TimeLoc arr, rsp, fsp; any other cmd or TimeLoc (dep) OK [
-                must have departure & arrival before another split]
-           Sns ->  No starts, finishes except Frh & Fjo (as of v2.15.0), repeats, pas, TimeTimeLoc or TimeLoc arr; any other cmd or TimeLoc (dep) OK
-           Sns-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in sequence to
-           set location, else fails)
-           Sns-fsh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in sequence to
-           set location, else fails)
-           Fns ->  R only [must be preceded by a TimeLoc arrival at the finish location, not necessarily immediately]
-           F-nshs ->  Nothing (no repeats permitted)
-           Fjo ->  R only
-           Frh ->  R only
-           Fer ->  R only
-           Frh-sh ->  R only
-           Fns-sh ->  R only
-           jbo ->  No starts, repeats, pas, Fer or TimeTimeLoc; TimeLoc (dep), others OK [must be preceded by an event whose location is set]
-           fsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
-           rsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
-           cdt ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
-           dsc ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
-           TimeLoc (arr) ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
-           TimeLoc (dep) ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
-           TimeTimeLoc ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
-           (new) pas -> Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
-           Repeat ->  Nothing
+Allowable successors:-
+Snt unlocated ->  Fer, TimeLoc (arr), TimeTimeLoc, (new) pas; No others
+Snt located -> No starts, no finishes except Frh, Fjo (as of v2.0.0), Fns, and F-nshs, no repeat, pas, TimeTimeLoc or TimeLoc arr;
+any other cmd or TimeLoc (dep) OK
+Snt-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
+Sfs ->  No starts, finishes except Frh & Fjo (as of v2.15.0), repeats, pas, TimeTimeLoc, TimeLoc arr, rsp, fsp; any other cmd or
+TimeLoc (dep) OK [must have departure & arrival before another split]
+Sns ->  No starts, finishes except Frh & Fjo (as of v2.15.0), repeats, pas, TimeTimeLoc or TimeLoc arr; any other cmd or TimeLoc (dep) OK
+Sns-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in
+sequence to
+set location, else fails)
+Sns-fsh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in
+sequence to
+set location, else fails)
+Fns ->  R only [must be preceded by a TimeLoc arrival at the finish location, not necessarily immediately]
+F-nshs ->  Nothing (no repeats permitted)
+Fjo ->  R only
+Frh ->  R only
+Fer ->  R only
+Frh-sh ->  R only
+Fns-sh ->  R only
+jbo ->  No starts, repeats, pas, Fer or TimeTimeLoc; TimeLoc (dep), others OK [must be preceded by an event whose location is set]
+fsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
+rsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
+cdt ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
+dsc ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
+TimeLoc (arr) ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
+TimeLoc (dep) ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
+TimeTimeLoc ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
+(new) pas -> Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
+Repeat ->  Nothing
 
-           There must be a TimeLoc arrival (or a Sns start at location) in a sequence so successive cmd locations can be set
-           Check all Snt's & set Locations if located (located = zero start speed, either element at a location (but if rear element
-           is a continuation then treated as unlocated), and location listed in the next TimeLoc entry, though needn't be immediately after)
-           If Snt entry at a location specified in a following TimeLoc entry but start speed > 0 give error message
-           Check all times increase or stay same through ActionVector
-           Cycle through all entries in vector setting arr & dep times based on above list
-           Add locations to all relevant cmd entries based on earlier arrival location (or earlier reference for Sfs & Sns)
-           Check locations match the arr & dep TimeLoc entries
-           Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs
-           Make above valid succession checks
-           Check all splits have matching Sfs headcodes (both ways), add locations to Sfs's & check times same [Sfs loc derived from preceding fsp/rsp loc]
-           Check all new service headcodes (Sns) have matching headcodes (both ways), add locations to Sns's & check times same [Sns loc derived from preceding Fns loc]
-           Check a split to 'x' doesn't again split to 'x' (anywhere, not just for one train, since headcodes can be duplicated)
-           Check each Fns has matching Sns headcodes (both ways), add locations to Fns's & check times same
-           Check all joins have matching headcodes (both ways), locations & times & don't occur in same sequence
-           Check each joined by train not joined by same train again (anywhere, not just for one train, since headcodes can be duplicated)
-           Set train info for Sfs & Sns entries
-           Check each repeat entry exactly matches any included joins or splits (user has to enter it to show that really wants it)
-           Check at least one platform long enough for a split (only need 2 lengths) & disallow if not, need length of 2 & 1 extra
-           element at each end, or length of 3 & 1 extra element at either end
-           Check all TimeLocs have either Arr or Dep times set and EventTime == -1
-           Check all Cmds have EventTime set & Arr & Dep times = -1
-           Check all locations except unlocated Snts, Fers and Repeats have a LocationName
+There must be a TimeLoc arrival (or a Sns start at location) in a sequence so successive cmd locations can be set
+Check all Snt's & set Locations if located (located = zero start speed, either element at a location (but if rear element
+is a continuation then treated as unlocated), and location listed in the next TimeLoc entry, though needn't be immediately after)
+If Snt entry at a location specified in a following TimeLoc entry but start speed > 0 give error message
+Check all times increase or stay same through ActionVector
+Cycle through all entries in vector setting arr & dep times based on above list
+Add locations to all relevant cmd entries based on earlier arrival location (or earlier reference for Sfs & Sns)
+Check locations match the arr & dep TimeLoc entries
+Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs
+Make above valid succession checks
+Check all splits have matching Sfs headcodes (both ways), add locations to Sfs's & check times same [Sfs loc derived from preceding fsp/rsp
+loc]
+Check all new service headcodes (Sns) have matching headcodes (both ways), add locations to Sns's & check times same [Sns loc derived from
+preceding Fns loc]
+Check a split to 'x' doesn't again split to 'x' (anywhere, not just for one train, since headcodes can be duplicated)
+Check each Fns has matching Sns headcodes (both ways), add locations to Fns's & check times same
+Check all joins have matching headcodes (both ways), locations & times & don't occur in same sequence
+Check each joined by train not joined by same train again (anywhere, not just for one train, since headcodes can be duplicated)
+Set train info for Sfs & Sns entries
+Check each repeat entry exactly matches any included joins or splits (user has to enter it to show that really wants it)
+Check at least one platform long enough for a split (only need 2 lengths) & disallow if not, need length of 2 & 1 extra
+element at each end, or length of 3 & 1 extra element at either end
+Check all TimeLocs have either Arr or Dep times set and EventTime == -1
+Check all Cmds have EventTime set & Arr & Dep times = -1
+Check all locations except unlocated Snts, Fers and Repeats have a LocationName
 
-           Give messages in function if errors detected and clear the vector.  Return false for failure.
+Give messages in function if errors detected and clear the vector.  Return false for failure.
 */
 
 /* Earlier checks:-
-           Checks carried out with error messages in this function:-
-           At least one comma in the line (it's based on a csv file);
-           No entries following train information;
-           At least one comma in remainder after train information (i.e at least a start and a finish entry);
-           SplitEntry returns false in an intermediate entry - message repeats the entry for information;
-           First entry not a start entry;
-           Train information incomplete before a start entry;
-           Entry follows a finish entry but doesn't begin with 'R';
-           SplitEntry returns false in a finish entry - message repeats the entry for information;
-           Last action entry isn't a finish entry.
+Checks carried out with error messages in this function:-
+At least one comma in the line (it's based on a csv file);
+No entries following train information;
+At least one comma in remainder after train information (i.e at least a start and a finish entry);
+SplitEntry returns false in an intermediate entry - message repeats the entry for information;
+First entry not a start entry;
+Train information incomplete before a start entry;
+Entry follows a finish entry but doesn't begin with 'R';
+SplitEntry returns false in a finish entry - message repeats the entry for information;
+Last action entry isn't a finish entry.
 
-           Function returns false with no message if:-
-           Timetable start time invalid (no message is given for an invalid time as the line is assumed to be an irrelevant line; if no start
-           time is found at all then an error message is given in the calling function);
-           SplitTrainInfo returns false (message given in called function);
-           SplitRepeat returns false (message given in called function).
+Function returns false with no message if:-
+Timetable start time invalid (no message is given for an invalid time as the line is assumed to be an irrelevant line; if no start
+time is found at all then an error message is given in the calling function);
+SplitTrainInfo returns false (message given in called function);
+SplitRepeat returns false (message given in called function).
 
-Double crosslink (shuttle) table: [OtherHeadCode, NonRepeatingShuttleLinkHeadCode, LinkedTrainEntryPtr, NonRepeatingShuttleLinkEntryPtr] <-- these for easier searching for this table
+Double crosslink (shuttle) table: [OtherHeadCode, NonRepeatingShuttleLinkHeadCode, LinkedTrainEntryPtr, NonRepeatingShuttleLinkEntryPtr] <-- these for
+easier searching for this table
 
-Command   Format                    OtherHead                        NonRepeating-  LinkedTrain- NonRepeating-   Decsription
-                                    Code                             ShuttleLink-   EntryPtr     ShuttleLink
-                                                                     HeadCode                    EntryPtr
+Command   Format                    OtherHead                        NonRepeating-  LinkedTrain-      NonRepeating-    Decsription
+                                    Code                             ShuttleLink-   EntryPtr          ShuttleLink
+                                                                     HeadCode                         EntryPtr
 
 Snt-sh  SNTShuttle                  Y (rtn shuttle)                  N              Y (rtn sh)         N               Simple shuttle - no feeder service
 Frh-sh  TimeCmdHeadCode             Y (outwd shuttle)                N              Y (outwd sh)       N               Simple shuttle - no finishing service
@@ -13620,11 +13655,11 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         // use reference so can change internals
         if(AVEntry0.Command == "Sns")
         {
-            //new at v2.15.0.  Only set location if have a forward and backward linkage at same time (these all set when SecondPassActions called).  This isn't
-            //rigorous as may have more than one, but if do then will be caught below in CheckCrossReferencesAndSetData
+            //new at v2.15.0.  Only set location if have a forward and backward linkage at same time (these all set when SecondPassActions called).
+            //This isn't rigorous as may have more than one, but if do then will be caught below in CheckCrossReferencesAndSetData
             //If fail to find location just ignore as will be caught later in CheckCrossReferencesAndSetData
-            //note that at this stage the OtherHeadCode values are service refs, as haven't yet been changed back to headcodes until StripExcessFromHeadCode called
-            //at end of this function
+            //note that at this stage the OtherHeadCode values are service refs, as haven't yet been changed back to headcodes until
+            //StripExcessFromHeadCode called at end of this function
             //need to be the same: forward & reverse service refs, event times, commands correspond
 
             //successor checks first: /no starts, /finishes except Frh & Fjo (as of v2.15.0), /repeats, /pas, /TimeTimeLoc or /TimeLoc arr; any other cmd or TimeLoc (dep) OK

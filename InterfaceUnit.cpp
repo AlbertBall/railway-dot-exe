@@ -14110,13 +14110,13 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
                 }
                 if(OneLine == "Timetable:\n") //update TTStr & Newline but don't increment Count  //added at v2.13.0 as 'Timetable:' added
                 {
-                    TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                    TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos); //removed -1 after NewLinePos at v2.19.0, was an error
                     NewLinePos = TTStr.Pos('\n');
                     continue;
                 }
                 Count++;
                 SkipTTActionsListBox->Items->Add(OneLine);
-                TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos);  //removed -1 after NewLinePos at v2.19.0, was an error
                 NewLinePos = TTStr.Pos('\n');
             }
             else if((TTStr.Length() > 1) && (NewLinePos == 0) && ((TTStr.SubString(3, 1) == ':') || (TTStr.SubString(1, 5) == "Termi"))) //last line
@@ -14210,7 +14210,7 @@ void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added at
                 }
                 Count++;
                 ReminderListBox->Items->Add(OneLine);
-                TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos);
                 NewLinePos = TTStr.Pos('\n');
             }
             else if((TTStr.Length() > 1) && (NewLinePos == 0) && ((TTStr.SubString(3, 1) == ':') || (TTStr.SubString(1, 5) == "Termi"))) //last line

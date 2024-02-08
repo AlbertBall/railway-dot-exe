@@ -34,7 +34,7 @@ Manual:  explain can set reminder for any train, only available in tt control
 
 / Add reminders in session files
 
-Test session file reminders + check works ok with old sessions and try earlier versions with session reminders
+/ Test session file reminders + check works ok with old sessions and try earlier versions with session reminders
 
 Manual:  more explanation is needed in the manual to make these things (splits & call-ons - esp wrt needing a free named element) clearer, especially the conditions necessary for splits and how the final positioning is arrived at.
 
@@ -53,7 +53,13 @@ Manual: Rules for run-arounds to avoid Sfs followed by Fns (not permitted by tt 
 
 / Remove diagnostic entries for ReminderListBoxMouseUp
 
+/ Test Frh warnings & reminders + other finish events
 
+/ Test zero power timetable actions
+
+/ Corrected errors in skip & reminder functions - left off last event - now corrected
+
+Manual: New section Timetable validation, or add details of naming process in existing ection
 
 
 

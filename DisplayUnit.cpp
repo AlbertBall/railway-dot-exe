@@ -45,6 +45,7 @@
 #include "DisplayUnit.h"
 #include "GraphicUnit.h"
 #include "Utilities.h"
+#include "TrainUnit.h"  //to stop the clock during the beeps in WarningLog
 
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -522,6 +523,8 @@ void TDisplay::PlotDashedRect(int Caller, TRect Rect)
 void TDisplay::WarningLog(int Caller, AnsiString Statement)  //also used for Reminders at v2.19.0
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WarningLog," + Statement);
+    TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function - because of the beeps, added at v2.19.0
+    TrainController->RestartTime = TrainController->TTClockTime;
     OutputLog6->Caption = OutputLog7->Caption;
     OutputLog7->Caption = OutputLog8->Caption;
     OutputLog8->Caption = OutputLog9->Caption;
@@ -535,7 +538,9 @@ void TDisplay::WarningLog(int Caller, AnsiString Statement)  //also used for Rem
     Beep(1000, 200);       //these added at v2.19.0
     Beep(1000, 200);
     Beep(1000, 200);
-    Utilities->CallLogPop(1785);
+    TrainController->BaseTime = TDateTime::CurrentDateTime();
+    TrainController->StopTTClockFlag = false;
+   Utilities->CallLogPop(1785);
 }
 
 // ---------------------------------------------------------------------------

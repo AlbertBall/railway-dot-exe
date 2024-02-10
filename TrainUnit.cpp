@@ -5424,11 +5424,13 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
                                  AnsiString(ActionType) + "," + LocationName + "," + HeadCode);
     AnsiString BaseLog = "", WarningBaseLog = "", ReminderBaseLog = "", PerfLog = "", ActionLog = "";
     int IntMinsLate = 0;
-
+    bool TTEvent = false; //indicates a timetabled event, prevents reminders for non-tt events where these set for next tt event
+                          //don't need it for warnings as these passed in from appropriate calling functions
     // need to set it in case MinsLate == 0, since it isn't tested for that
     if(ActionType == Arrive)
     {
         ActionLog = " arrived at ";
+        TTEvent = true;
     }
     if(ActionType == Terminate) //redundant as Logaction not called for terminate - RemainHere deals with logging for terminate
     {
@@ -5438,15 +5440,18 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
             return;
         }
         ActionLog = " terminated at ";
+        TTEvent = true;
         TerminatedMessageSent = true;
     }
     if(ActionType == Depart)
     {
         ActionLog = " departed from ";
+        TTEvent = true;
     }
     if(ActionType == Pass)
     {
         ActionLog = " passed ";
+        TTEvent = true;
     }
     if(ActionType == Create)
     {
@@ -5459,30 +5464,37 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     if(ActionType == ChangeDescription)
     {
         ActionLog = " changed its description to '" + Description + "' at "; //changed to train description at v2.16.1
+        TTEvent = true;
     }
     if(ActionType == Leave)
     {
         ActionLog = " left railway at ";
+        TTEvent = true;
     }
     if(ActionType == FrontSplit)
     {
         ActionLog = " split mass%-Power% = " + SplitDistribution + " from front to ";
+        TTEvent = true;
     }
     if(ActionType == RearSplit)
     {
         ActionLog = " split mass%-Power% = " + SplitDistribution + " from rear to ";
+        TTEvent = true;
     }
     if(ActionType == JoinedByOther)
     {
         ActionLog = " joined by ";
+        TTEvent = true;
     }
     if(ActionType == ChangeDirection)
     {
         ActionLog = " changed direction at ";
+        TTEvent = true;
     }
     if(ActionType == NewService)
     {
         ActionLog = " became new service ";
+        TTEvent = true;
     }
     if(ActionType == TakeSignallerControl)
     {
@@ -5560,17 +5572,17 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     else
     {
-        if((ActionVectorEntryPtr->Reminder == 1) || (ActionVectorEntryPtr->Reminder == 4))
+        if(TTEvent && ((ActionVectorEntryPtr->Reminder == 1) || (ActionVectorEntryPtr->Reminder == 4)))
         {
             BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
             ReminderBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
         }
-        else if((ActionVectorEntryPtr->Reminder == 2) && (ActionLog == " departed from ")) //depart only
+        else if(TTEvent && (ActionVectorEntryPtr->Reminder == 2) && (ActionLog == " departed from ")) //depart only
         {
             BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
             ReminderBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
         }
-        else if((ActionVectorEntryPtr->Reminder == 3) && (ActionLog == " arrived at ")) //arrive only
+        else if(TTEvent && (ActionVectorEntryPtr->Reminder == 3) && (ActionLog == " arrived at ")) //arrive only
         {
             BaseLog = Utilities->Format96HHMMSS(ActualTime) + " REMINDER: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
             ReminderBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0

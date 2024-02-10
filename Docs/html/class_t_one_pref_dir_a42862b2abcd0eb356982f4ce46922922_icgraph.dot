@@ -34,11 +34,15 @@ digraph "TOnePrefDir::LastElementPtr"
   Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node14 [label="TTrain::UpdateTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc",tooltip="Major function called at each clock tick for each train & handles all train movement & associated act..."];
   Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node15 [label="TTrainController::Operate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481",tooltip="called every clock tick to introduce new trains and update existing trains"];
+  Node15 [label="TInterface::FlashingGraphics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59",tooltip="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..."];
   Node15 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node12 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TTrainController::Operate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481",tooltip="called every clock tick to introduce new trains and update existing trains"];
+  Node16 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node16 [label="TTrain::RearTrainSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5",tooltip="Carry out the actions needed when a train is to split from the rear."];
-  Node16 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="TTrain::RearTrainSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5",tooltip="Carry out the actions needed when a train is to split from the rear."];
+  Node17 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node11 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

@@ -152,7 +152,6 @@ digraph "TTrain::NewTrainService"
   Node13 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node13 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node44 [label="TTrain::UnplotTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a4978a3050ca943076eb6cbd03eeee1d4",tooltip="Unplot train from screen in zoomed-in mode."];

@@ -435,7 +435,7 @@ var searchData=
   ['continuationnamemap_810',['ContinuationNameMap',['../class_t_track.html#a4cade2b1cabb095c4a52efc729efb44f',1,'TTrack']]],
   ['continuationtrainexpectationmultimap_811',['ContinuationTrainExpectationMultiMap',['../class_t_train_controller.html#a1a8e542193d93581e0c391d8e7fa3e1b',1,'TTrainController']]],
   ['contributing_2emd_812',['CONTRIBUTING.md',['../_c_o_n_t_r_i_b_u_t_i_n_g_8md.html',1,'']]],
-  ['controllergetnewservicedepartureinfo_813',['ControllerGetNewServiceDepartureInfo',['../class_t_train_controller.html#aab94af5bb445fc36543e2c22d2986daa',1,'TTrainController']]],
+  ['controllergetnewservicedepartureinfo_813',['ControllerGetNewServiceDepartureInfo',['../class_t_train_controller.html#a6f424eda17d3b454a00a32625976c2b3',1,'TTrainController']]],
   ['convertandaddnonpreferredroutesearchvector_814',['ConvertAndAddNonPreferredRouteSearchVector',['../class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01',1,'TOneRoute']]],
   ['convertandaddpreferredroutesearchvector_815',['ConvertAndAddPreferredRouteSearchVector',['../class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca',1,'TOneRoute']]],
   ['convertcrlfstocommas_816',['ConvertCRLFsToCommas',['../class_t_interface.html#a358336965e798e398258e67edbba1195',1,'TInterface']]],

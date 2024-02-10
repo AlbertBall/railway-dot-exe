@@ -102,8 +102,8 @@ digraph "TDisplay::GetImage"
   Node3 -> Node49 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node49 [label="TInterface::FormClose",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad1418f26381a91c4333c3947585ed60e",tooltip=" "];
   Node3 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node184 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node184 [label="TTrack::PlotPoints",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2",tooltip="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..."];
-  Node1 -> Node218 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node218 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
+  Node1 -> Node187 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node187 [label="TTrack::PlotPoints",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2",tooltip="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..."];
+  Node1 -> Node221 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node221 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
 }

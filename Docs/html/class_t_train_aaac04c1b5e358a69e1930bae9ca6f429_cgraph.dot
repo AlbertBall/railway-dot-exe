@@ -171,7 +171,6 @@ digraph "TTrain::ChangeTrainDirection"
   Node49 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node49 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node49 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node40 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node50 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

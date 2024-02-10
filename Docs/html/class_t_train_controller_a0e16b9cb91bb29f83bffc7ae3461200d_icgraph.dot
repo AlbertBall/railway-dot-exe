@@ -1,0 +1,23 @@
+digraph "TTrainController::RebuildOpTimeToActMultimap"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrainController::Rebuild\lOpTimeToActMultimap",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2...."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::FlashingGraphics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59",tooltip="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..."];
+  Node4 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TTrainController::Operate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481",tooltip="called every clock tick to introduce new trains and update existing trains"];
+  Node7 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -179,7 +179,6 @@ digraph "TInterface::BecomeNewServiceMenuItemClick"
   Node45 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node45 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node38 -> Node64 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node38 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node38 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node38 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node73 [label="TTrain::UnplotTrain",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_train.html#a4978a3050ca943076eb6cbd03eeee1d4",tooltip="Unplot train from screen in zoomed-in mode."];
@@ -196,7 +195,6 @@ digraph "TInterface::BecomeNewServiceMenuItemClick"
   Node91 -> Node37 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node91 -> Node45 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node91 -> Node64 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node91 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node91 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node91 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node94 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -207,7 +205,6 @@ digraph "TInterface::BecomeNewServiceMenuItemClick"
   Node94 -> Node37 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node94 -> Node45 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node94 -> Node64 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node94 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node94 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node94 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -218,7 +215,6 @@ digraph "TInterface::BecomeNewServiceMenuItemClick"
   Node95 -> Node37 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node95 -> Node45 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node95 -> Node64 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node95 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node95 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node95 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -243,7 +239,6 @@ digraph "TInterface::BecomeNewServiceMenuItemClick"
   Node98 -> Node37 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node98 -> Node45 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node98 -> Node64 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node98 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node98 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node98 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node98 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

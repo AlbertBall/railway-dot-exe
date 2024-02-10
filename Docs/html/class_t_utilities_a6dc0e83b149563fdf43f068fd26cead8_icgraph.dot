@@ -1,0 +1,61 @@
+digraph "TUtilities::Format96HHMM"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TUtilities::Format96HHMM",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 & resets when it..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TTrainController::Continuation\lEntryFloatingTTString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3",tooltip="Build string for use in floating window for expected trains at continuations."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::GetTrainFloating\lInfoFromContinuation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#adc9ce6e5ee756279efbe92fd749355bf",tooltip="Called when floating train info needed and train hasn't entered yet."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::TrackTrainFloat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b",tooltip="Controls the floating window function, called during the ClockTimer2 function."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TTrainController::Controller\lGetNewServiceDepartureInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a6f424eda17d3b454a00a32625976c2b3",tooltip="Similar to TTrain::GetNewServiceDepartureInfo for use in ContinuationEntryFloatingTTString."];
+  Node7 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TTrainController::Create\lFormattedTimetable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0",tooltip="Examines the internal timetable (TrainDataVector) and creates from it a chronological (...."];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TInterface::ExportTTButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426",tooltip=" "];
+  Node8 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TInterface::ExportTTMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TTrainController::Create\lTTAnalysisFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a6a7975052fcea4a8f0f72214a4a0f298",tooltip="Generate a timetable analysis file in the 'Formatted Timetables' folder, return false if failed for a..."];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TInterface::CPGenFileButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2",tooltip=" "];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TTrain::FloatingLabelNext\lString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9",tooltip="Used in the floating window to display the 'Next' action."];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="TInterface::GetTrainStatus\lFloat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e",tooltip="used for floating window to display train status"];
+  Node14 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="TTrain::FloatingTimetable\lString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177",tooltip="Used in the floating window to display the timetable."];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TInterface::SetReminderMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3f7eb552de43f196be7da32e1743030a",tooltip=" "];
+  Node15 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="TInterface::SkipTimetabled\lActionsMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a40232083747ef274344eed7021c6f43c",tooltip=" "];
+  Node15 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="TTrain::GetNewServiceDepartureInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6",tooltip="called during FloatingLabelNextString to find the next service departure time & next location (last b..."];
+  Node18 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="TInterface::ReminderList\lBoxMouseUp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#af51cb634bd52e389e6ee86f9727cb2ea",tooltip=" "];
+  Node1 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="TTrainController::SameDirection",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a6bd2f1659b0f43b861ab1279af814f70",tooltip="Determines whether two services are running in the same direction when they arrive or depart from Loc..."];
+  Node20 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="TTrainController::Consolidate\lSARNTArrDep",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a9529f225878cf4920b52914022f44c4e",tooltip="Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool..."];
+  Node21 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node22 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="TTrainController::SaveTrain\lDataVectorToFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a6161618bda2a677f797eda9a9deeb9fa",tooltip="diagnostic function to store all train data to a file for examination, not used normally"];
+  Node1 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="TTrainController::Single\lServiceOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#aa92b0775f08a0f99bfe1e54796825df7",tooltip="Outputs the single service vector for train direction analysis purposes in timetable conflict analysi..."];
+  Node23 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -17,6 +17,7 @@ var class_t_action_vector_entry =
     [ "NumberOfRepeats", "class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d", null ],
     [ "OtherHeadCode", "class_t_action_vector_entry.html#a0cce6ed92eea821583a661966baae024", null ],
     [ "RearStartOrRepeatMins", "class_t_action_vector_entry.html#a18171f01d5e5e01242c3c672045efb28", null ],
+    [ "Reminder", "class_t_action_vector_entry.html#a1e2e9eacff85eaf055409a4505cd2b8b", null ],
     [ "SequenceType", "class_t_action_vector_entry.html#a67b29560b218e8b8ba854d326a630682", null ],
     [ "ShuttleLinkType", "class_t_action_vector_entry.html#ae8efcbff8298cf829c26b0db65ffa6b3", null ],
     [ "SignallerControl", "class_t_action_vector_entry.html#a858aae4488b108f2e2771b1ef0e2905e", null ],

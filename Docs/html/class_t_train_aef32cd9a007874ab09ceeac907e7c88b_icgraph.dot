@@ -1,0 +1,48 @@
+digraph "TTrain::LinkOccupied"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrain::LinkOccupied",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Added at v1.2.0: true if any part of train on specific link, false otherwise, including no link prese..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TTrack::TrainOnLink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a12d4069a6a201e13a83347c555a465b2",tooltip="New at v1.2.0; checks whether a train present at input location and link and returns its ID if so."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TAllRoutes::DiagonalFouled\lByRouteOrTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#a2341a7e860e716e60b733f45814e4499",tooltip="The track geometry allows diagonals to cross without occupying the same track element,..."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TTrain::CallingOnAllowed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee",tooltip="True if the train can be called on at its current position - see detail in .cpp file."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TTrain::UpdateTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc",tooltip="Major function called at each clock tick for each train & handles all train movement & associated act..."];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::FlashingGraphics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59",tooltip="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..."];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node5 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node5 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TTrainController::Operate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481",tooltip="called every clock tick to introduce new trains and update existing trains"];
+  Node11 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TOneRoute::SearchForNonPreferred\lRoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a69c8690ba3aae40ff99a5d2a629ba321",tooltip="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..."];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TOneRoute::GetNextNonPreferred\lRouteElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a5ce1c3a064a656ca764b5ed98c63151a",tooltip="Try to find a set of linked tracks between the route start element and the one at HLoc & VLoc...."];
+  Node13 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="TOneRoute::SearchForPreferred\lRoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a3bbf0add5e8c2b88fb09cb1be158d9ad",tooltip="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..."];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="TOneRoute::GetNextPreferred\lRouteElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315",tooltip="Try to find a set of linked tracks that lie on preferred directions between the route start element a..."];
+  Node15 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TInterface::PresetAutoSig\lRoutesButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aa639148521a793641e694b15486b5055",tooltip=" "];
+  Node2 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="TTrack::DiagonalFouledBy\lTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819",tooltip="As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a rout..."];
+  Node17 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="TInterface::MovingTrainPresent\lOnFlashingRoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a1cd9f01bcbcc37fb31712b7007d04dac",tooltip="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..."];
+  Node18 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -1,0 +1,35 @@
+digraph "TTrainController::CalcDistanceToRedSignalandStopTime"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrainController::CalcDistance\lToRedSignalandStopTime",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal & exit,..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TTrain::CalcTimeToAct",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#af23c2a989fee528b3c87200dcd8c2c0b",tooltip="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::FlashingGraphics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59",tooltip="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..."];
+  Node5 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node2 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TTrain::UpdateTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc",tooltip="Major function called at each clock tick for each train & handles all train movement & associated act..."];
+  Node8 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TTrainController::Operate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481",tooltip="called every clock tick to introduce new trains and update existing trains"];
+  Node9 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TTrainController::Rebuild\lOpTimeToActMultimap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d",tooltip="new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2...."];
+  Node10 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

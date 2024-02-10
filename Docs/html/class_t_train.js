@@ -148,6 +148,7 @@ var class_t_train =
     [ "RemainHereLogNotSent", "class_t_train.html#a52721f222fff0b6e08fffe94d693ac65", null ],
     [ "RepeatNumber", "class_t_train.html#a459ae11b674cfdccb8872ef25c921fd9", null ],
     [ "RestoreTimetableLocation", "class_t_train.html#a2fe228470644e5b9bcc95b3e75f9bf36", null ],
+    [ "SelReminderString", "class_t_train.html#abee86ba8f178a1a7fdac11e93f8eb941", null ],
     [ "SelSkipString", "class_t_train.html#a81ce8c5ef67c55f2b2954ddddaf095f8", null ],
     [ "SignallerMaxSpeed", "class_t_train.html#ad11759e49fa6fcf8367090ef1db490b7", null ],
     [ "SignallerRemoved", "class_t_train.html#a4cd38ef44706b5ae6bf0c934e58b4b93", null ],

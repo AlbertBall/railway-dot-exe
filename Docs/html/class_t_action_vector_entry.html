@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.18.0</span>
+   &#160;<span id="projectnumber">v2.19.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -107,7 +107,7 @@ Collaboration diagram for TActionVectorEntry:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2f3969c630acb3f7a346ced7a601502f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a2f3969c630acb3f7a346ced7a601502f">TActionVectorEntry</a> ()</td></tr>
-<tr class="memdesc:a2f3969c630acb3f7a346ced7a601502f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, sets all values to default states.  <a href="class_t_action_vector_entry.html#a2f3969c630acb3f7a346ced7a601502f">More...</a><br /></td></tr>
+<tr class="memdesc:a2f3969c630acb3f7a346ced7a601502f"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; if set triggers a 'ping' + alert in the warning and perf log panels when the action is reached. Added at v2.19.0  <a href="class_t_action_vector_entry.html#a2f3969c630acb3f7a346ced7a601502f">More...</a><br /></td></tr>
 <tr class="separator:a2f3969c630acb3f7a346ced7a601502f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -128,7 +128,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a858aae4488b108f2e2771b1ef0e2905e"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; string values for timetabled event entries, null on creation  <a href="class_t_action_vector_entry.html#a858aae4488b108f2e2771b1ef0e2905e">More...</a><br /></td></tr>
 <tr class="separator:a858aae4488b108f2e2771b1ef0e2905e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43fd46452123d72efc2bd9d10008b6f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a43fd46452123d72efc2bd9d10008b6f1">Warning</a></td></tr>
-<tr class="memdesc:a43fd46452123d72efc2bd9d10008b6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">if set triggers an alert in the warning panel when the action is reached  <a href="class_t_action_vector_entry.html#a43fd46452123d72efc2bd9d10008b6f1">More...</a><br /></td></tr>
+<tr class="memdesc:a43fd46452123d72efc2bd9d10008b6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">if set triggers an alert in the warning and perf log panels when the action is reached  <a href="class_t_action_vector_entry.html#a43fd46452123d72efc2bd9d10008b6f1">More...</a><br /></td></tr>
 <tr class="separator:a43fd46452123d72efc2bd9d10008b6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f4a663fd91b104c7f93990d79c16d1d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d">NumberOfRepeats</a></td></tr>
 <tr class="memdesc:a5f4a663fd91b104c7f93990d79c16d1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the number of repeating services  <a href="class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d">More...</a><br /></td></tr>
@@ -166,6 +166,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a921897cd667dd8933de593e97e74a3a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7">NonRepeatingShuttleLinkEntryPtr</a></td></tr>
 <tr class="memdesc:a921897cd667dd8933de593e97e74a3a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer used by shuttles for the non-shuttle train links, in &amp; out, the corresponding non-shuttle linked trains use LinkedTrainEntryPtr  <a href="class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7">More...</a><br /></td></tr>
 <tr class="separator:a921897cd667dd8933de593e97e74a3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e2e9eacff85eaf055409a4505cd2b8b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a1e2e9eacff85eaf055409a4505cd2b8b">Reminder</a></td></tr>
+<tr class="separator:a1e2e9eacff85eaf055409a4505cd2b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains a single train action in a timetable - repeat entry is also of this class though no train action is taken for it. </p>
@@ -195,9 +197,10 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructor, sets all values to default states. </p>
+<p>&lt; if set triggers a 'ping' + alert in the warning and perf log panels when the action is reached. Added at v2.19.0 </p>
+<p>Constructor, sets all values to default states </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00153">153</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00155">155</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -474,6 +477,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a1e2e9eacff85eaf055409a4505cd2b8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e2e9eacff85eaf055409a4505cd2b8b">&#9670;&nbsp;</a></span>Reminder</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int TActionVectorEntry::Reminder</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00149">149</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+
+</div>
+</div>
 <a id="a67b29560b218e8b8ba854d326a630682"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67b29560b218e8b8ba854d326a630682">&#9670;&nbsp;</a></span>SequenceType</h2>
 
@@ -557,7 +576,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>if set triggers an alert in the warning panel when the action is reached </p>
+<p>if set triggers an alert in the warning and perf log panels when the action is reached </p>
 
 <p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00127">127</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 

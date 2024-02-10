@@ -34,6 +34,8 @@ digraph "TDisplay::PlotSignalBlank"
   Node16 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node15 [label="TTrain::UpdateTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc",tooltip="Major function called at each clock tick for each train & handles all train movement & associated act..."];
+  Node15 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

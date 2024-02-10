@@ -144,7 +144,7 @@
 				<param name="Local" value="html/5.34ptf.htm">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Timetable validation">
+				<param name="Name" value="Timetable validation &amp; restrictions on timetabling">
 				<param name="Local" value="html/5.44ptg.htm">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
@@ -250,6 +250,10 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Random delays, point and signal failures, and temporary speed restrictions">
 			<param name="Local" value="html/6.13.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Setting reminders">
+			<param name="Local" value="html\6.14.htm">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">

@@ -91,15 +91,12 @@ contains the service reference for the split-off service. The split-off service
 has code 'Sfs' (start from split) and also the service reference for the
 service that it splits from. </p>
 
-<p>One thing to beware of during operation is that the platform at which the
+<p>One thing to beware of during operation is that the platform (or non-station location) at which the
 split occurs must be long enough to allow it. The condition is that both trains
 must be at a platform after the split, although only one element of the train
-(half its length) need be at a platform. Additionally at least one of the final
-four elements that the two trains stand on must overlap one of the original
-train elements, and RailOS will maximise the number of train elements at
-platforms. This means that the original train may be repositioned during the
-split. Therefore the minimum platform length is two elements, providing there
-is a track element linked at each end. If one end is a buffer then the platform
+(half its length) need be at a platform. Additionally two of the final
+four elements that the two trains stand on must overlap the two elements of the original
+train. Within those conditions RailOS will try to ensure that the front of the front train doesn't exceed the end of the platform so as to remain protected by a signal that lies one element beyond the platform. These conditions mean that the original train may be (and usually is) repositioned during the split. Therefore the minimum platform length is two elements, providing there is a track element linked at each end. If one end is a buffer then the platform
 must be at least three elements long. When the timetable is first validated
 (either during editing or on loading for operation) a check is made that each
 location at which a split occurs has at least one platform that is long enough,

@@ -44,14 +44,13 @@ div.WordSection1
 <p>Any service event (except 'Frh' and 'Fjo' - see later) may be preceded by
 'W', e.g. <span style='color:blue'>W14:23;Moor Street</span>. This represents a
 'warning', and when the service reaches this point a warning message is given
-in red at the top of the display area. Warnings scroll up in two columns, ten
-in all, and may be erased by right clicking. Warnings are useful for example to
+in red at the top of the display area accompanied by three short beeps if sound is turned on.. Warnings scroll up in two columns, ten
+in all, and may be erased by right clicking. The latest is in red and bold text, and earlier ones in blue and regular text. Warnings are useful for example to
 indicate when a route will need to be set in the near future, say when a train
 is approaching a junction at the end of a route controlled by automatic
 signals. Warnings are also provided automatically in circumstances where the
 signaller may need to take some action, these include trains prevented from
-entering or being created by existing trains, locked routes, or on points set
-to diverge; trains unable to split because the platform is too short or another
+entering or being created because existing trains are obstructing them; equipment and train failures and restoration; random delays imposed; routes locked; trains unable to split because the platform is too short or another
 train is in the way; and trains waiting for another train to join or to be
 joined by.</p>
 
@@ -63,10 +62,9 @@ care of all warnings for the shuttle services themselves.</p>
 
 <p>If a warning is set for an arrival and departure event - <span
 style='color:blue'>HH:MM;HH:MM;Location</span> - the warning is given on
-arrival only, not departure. Warnings are not permitted for 'Frh' codes because
-these are not events as such, they just represent train termination and
-indicate that the timetable has finished for the relevant trains. Warnings are
-also not permitted for 'Fjo' codes. If a warning is required when trains join
+arrival only, not departure. </p>
+
+<p>Warnings are not permitted for 'Fjo' codes. If a warning is required when trains join
 (as opposed to when they are waiting to join - at which time an automatic
 warning is given) the 'W' should precede the 'jbo' event, not the 'Fjo' event.</p>
 

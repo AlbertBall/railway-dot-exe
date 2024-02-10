@@ -7,9 +7,10 @@ digraph "TInterface::HideTTActionsListBox"
   rankdir="RL";
   Node1 [label="TInterface::HideTTActions\lListBox",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="makes TTActionsListBox invisible (if it was visible)"];
   Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
-  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node3 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node2 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node4 [label="TInterface::SetLevel1Mode",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b",tooltip="Sets the Level1 user mode, using the Level1Mode variable to determine the mode."];
   Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -83,10 +84,10 @@ digraph "TInterface::HideTTActionsListBox"
   Node43 [label="TInterface::LocationName\lComboBoxClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a13fee6fa07e4a4e195e8b9c7dd303db0",tooltip=" "];
   Node4 -> Node44 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node44 [label="TInterface::LocationName\lKeyUp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ac666c9f62cdb68b29c2a7db123a43a28",tooltip=" "];
-  Node4 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node4 -> Node45 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node45 [label="TInterface::MainScreenMouse\lDown3",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b",tooltip="Called when mouse button clicked in zoom-out mode."];
-  Node45 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node45 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node4 -> Node46 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node46 [label="TInterface::MoveTextOrGraphic\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a13e8cd35a6f61caf6794791f1a4fe7f6",tooltip=" "];
   Node4 -> Node47 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

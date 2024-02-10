@@ -25,13 +25,20 @@ digraph "TPrefDirElement::GetRouteColour"
   Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node10 [label="TTrain::UpdateTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc",tooltip="Major function called at each clock tick for each train & handles all train movement & associated act..."];
   Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 [label="TTrainController::Operate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481",tooltip="called every clock tick to introduce new trains and update existing trains"];
+  Node11 [label="TInterface::FlashingGraphics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59",tooltip="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..."];
   Node11 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node8 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node8 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node12 [label="TTrain::RearTrainSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5",tooltip="Carry out the actions needed when a train is to split from the rear."];
-  Node12 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node10 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="TTrainController::Operate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481",tooltip="called every clock tick to introduce new trains and update existing trains"];
+  Node14 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="TTrain::RearTrainSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5",tooltip="Carry out the actions needed when a train is to split from the rear."];
+  Node15 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node7 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node13 [label="TOneRoute::TruncateRoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a431473ce9a2ef6c49781ab84c972a641",tooltip="Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFl..."];
+  Node2 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TOneRoute::TruncateRoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a431473ce9a2ef6c49781ab84c972a641",tooltip="Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFl..."];
 }

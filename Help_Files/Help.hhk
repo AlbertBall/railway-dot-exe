@@ -358,6 +358,11 @@
 		<param name="Local" value="html/5.2.1e41.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Descriptions">
+		<param name="Name" value="Simple (unlinked) service codes">
+		<param name="Local" value="html\5.2.1e41.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Development files">
 		<param name="Name" value="Files">
 		<param name="Local" value="html/2.34gc3.htm">
@@ -1028,6 +1033,11 @@
 		<param name="Local" value="html/6.34sz7.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Reminders">
+		<param name="Name" value="Setting reminders">
+		<param name="Local" value="html\6.14.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Remove train">
 		<param name="Name" value="Signaller control">
 		<param name="Local" value="html/6.84szc.htm">
@@ -1056,6 +1066,11 @@
 		<param name="Name" value="Restricted headcodes">
 		<param name="Name" value="Restricted and unrestricted headcodes">
 		<param name="Local" value="html/5.34ptf.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Restrictions (timetabling)">
+		<param name="Name" value="Timetable validation & restrictions on timetabling">
+		<param name="Local" value="html\5.44ptg.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Rotate">

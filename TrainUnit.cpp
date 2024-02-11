@@ -5570,7 +5570,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
         BaseLog = Utilities->Format96HHMMSS(ActualTime) + " WARNING: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
         WarningBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
     }
-    else
+    else //added at v2.19.0
     {
         if(TTEvent && ((ActionVectorEntryPtr->Reminder == 1) || (ActionVectorEntryPtr->Reminder == 4)))
         {
@@ -5663,9 +5663,11 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     {
         Display->WarningLog(0, WarningBaseLog);
     }
-    if(ReminderBaseLog != "")
+    if(ReminderBaseLog != "") //added at v2.19.0
     {
         Display->WarningLog(24, ReminderBaseLog);
+        ReminderBaseLog = "";               //reset to null
+        ActionVectorEntryPtr->Reminder = 0; //to prevent reminders for repeats
     }
     // update statistics
     if((ActionType == Arrive) && (IntMinsLate == 0))

@@ -37,7 +37,7 @@ the user to something that needs to be done when that event is reached. 
 Examples are when a train is running late and it is intended to skip some stops
 when the train reaches a certain location or to become a new service early; to
 hold a train at a location longer than normal because another train is running
-late but takes priority and will need to cross its path; a train is being
+late but takes priority and will need to cross its path; when a train is being
 routed into a wrong platform and will require signaller control to reposition
 it when it arrives; and so on.</p>
 
@@ -53,6 +53,8 @@ reminder can't be removed, if it isn't wanted then just ignore it.  When it
 triggers it appears in the warning log at the top of the display area and is
 accompanied by three short beeps if sound is turned on.  It is also listed in
 the performance log.</p>
+
+<p>Reminders don't repeat for repeating services, they relate only to the train for which they are set.  This differs from warnings, where each repeat repeats the warning(s).  Reminders can't be set where there is already a warning in place for a selected event because there is no need to do so, the notification will be given for the warning just as it would for a reminder.  If this is attempted a message will be given to inform the user.</p>
 
 </div>
 

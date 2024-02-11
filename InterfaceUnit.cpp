@@ -14525,6 +14525,13 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
             Utilities->CallLogPop(2695);
             return;
         }
+        if((Train.ActionVectorEntryPtr + AVPtrIncrement)->Warning)
+        {
+            ShowMessage("There is already a warning at this event, there is no need for a reminder where there is already a warning");
+            HideReminderListBox(2);
+            Utilities->CallLogPop(2696);
+            return;
+        }
         UnicodeString Msg;
         if(PosArDep > 0)
         {
@@ -14543,13 +14550,6 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
 //AnsiString DepTimeFromAVPtr = Utilities->Format96HHMM(Train.GetTrainTime(74, (AVPtr + AVPtrIncrement)->DepartureTime)); //diagnostics
 //AnsiString DepTimeFromLB = ReminderString.SubString(1, 5); //diagnostics
 
-            if((AVPtr + AVPtrIncrement)->Warning)
-            {
-                ShowMessage("There is already a warning at this event, can't set a reminder where there is already a warning");
-                HideReminderListBox(2);
-                Utilities->CallLogPop(2696);
-                return;
-            }
             if(PosArDep > 0)
             {
                 (AVPtr + AVPtrIncrement)->Reminder = 4; //both arr & dep

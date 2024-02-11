@@ -1,69 +1,3 @@
-/ Add - make sure that the latest version is being used - in all fail to load messages
-/ Railways
-/ Timetables
-/ Sessions
-/ and include if poss in tt error messaages
-
-/ changed facing directions in conflict analysis to ignore if cdt immediately after creation when facing buffers
-
-/added buttons enabled when select area and change lengths etc clicked, stayed in earlier state before
-
-X maybe look for cdt anytime before departure in analysis - leave as is, will be apparent on inspection if ok
-
-/ add hysteresis in actions due so don't change position so quickly, TimeToAct is in minutes (in CalcTimeToAct line 9141 in TrainUnit.cpp) so set this to nearest 10 second value & test - done this and didn't work, problem is the imprecise calculation, maybe try updating less frequently, say every 5 secs - but only when no routes set, want it to update at normal (1 sec) interval then - tried that, didn't update immediately - was because time calc in Train->Update only done when counter == 0. Later attempts successful!  Now updates immediately for route addition, truncation and calling on, otherwise every 5 seconds & seems to work fine, also counter reset to 1 after each immediate update so doesn't update again for 5 secs (1 so doesn't trigger another immediate update as would if reset to 0).
-
-/ Update manual & on-screen help to say that 'expand repeats' is only available if the tt has been saved and validated (Qwertytops pointed this out on discord in images-and-links on 23/01/24)
-
-/ add UpdateActionsDuePanel to caller checker
-
-/ remove UpdateOperatorActionPanel from caller checker (wrong name)
-
-/ add a reminder function if possible - give 'ping' and add warning in red + REMINDER in perf & warning logs, and give ping for warnings too
-
-Manual:  add section on reminders + mention beeps for warnings & held trains + check if anything else needs adding/changing
-
-/ corrected bug in both split functions where the returns for false outome from ThisLocationLongEnoughForSplit were inside the event reported block, so caused error when this block accessed for the second time as didn't return, corrected by putting outside this block but still inside the if(ThisLocationLongEnoughForSplit... block
-
-/ try to remove the restriction on zero power Fns/Sns combinations, work out the rules for drop-offs and pick-ups re run-arounds as per my discord post on 010224 to Commuterpop + try his method as on discord but with sero power: "I've just been having a play with taking out the restriction and although that was easy I ran into other problems.  Because the empty stock first splits from another train but stays at the same location when it changes to a new service, the timetable validator won't allow it.  It objects to an Fns command after an Sfs command without an action that explicitly defines the location (such as an arrival) before it.  I think this restriction had to be added when I reworked the timetable validation functions in order to allow stock drop-offs and pick-ups, and ran into difficulties in identifying locations.  In principle locations should always be known, but I have a dim and painful recollection of encountering problems relating to the order in which locations are identified.  For example if an Sns location is identified from the preceding Fns location, then the Fns location must be known, and if it follows an Sfs command then the Sfs location has to be identified from the preceding fsp or rsp command, and before long the location identifier is in danger of disappearing down a rabbit hole of multiple services, so a limit has to be set somewhere to avoid overcomplication.  
-
-/ But what's confusing me is that all that has nothing to do with zero power and you successfully changed the service reference of stock that stayed at the same location by having a jbo command immediately after the Sns command, so it should also be possible if the power is zero.  Clearly I need to think a lot more about this and work out some rules for run-arounds in terms of how to do it and what to avoid.  I don't want to change the validator functions any more as it was a complex job the last time, and I don't think it should be necessary just to allow zero power for drop-offs and pick-ups.  Leave it with me and I'll think a bit more!"
-
-/ Removed all zero power restrictions: while operating: jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh, sig join if both zero power, + in tt validation for jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh - if need to re-instate search on 'restriction removed at vx.x.x'.  In text say nervous about this, may have a reason that I've forgotten but will come to light soonish.
-
-Manual:  explain can set reminder for any train, only available in tt control
-
-/ Add reminders in session files
-
-/ Test session file reminders + check works ok with old sessions and try earlier versions with session reminders
-
-Manual:  more explanation is needed in the manual to make these things (splits & call-ons - esp wrt needing a free named element) clearer, especially the conditions necessary for splits and how the final positioning is arrived at.
-
-Manual: warnings/reminders/held trains/points failed/signal failed/TSR applied/delays/split fail - loc too short/split fail - other train/waiting to join/waiting to be joined by/points restored/signal restored/TSR lifted--> now bold red for latest & regular blue for earlier
-
-/ deal with 7777s
-
-Manual: change 5.2.3 Splits to say how splits now work
-
-Manual: Rules for run-arounds to avoid Sfs followed by Fns (not permitted by tt validator)
-	Have loco as the split-off train & loco uses Sfs/Fjo to rejoin, stock use Fns/Sns/jbo
-	or:
-	Have stock as split-off train & stock uses Sfs/Fjo to rejoin, loco use Fns/Sns/jbo
-	i.e. split-off train to use Fjo, original train to change to new service then jbo
-	Avoid split-off train changing to new service as not permitted - can't have Fns after Sfs
-
-/ Remove diagnostic entries for ReminderListBoxMouseUp
-
-/ Test Frh warnings & reminders + other finish events
-
-/ Test zero power timetable actions
-
-/ Corrected errors in skip & reminder functions - left off last event - now corrected
-
-Manual: New section Timetable validation, or add details of naming process in existing ection
-
-
-
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -809,6 +743,57 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.18.0 for v2.19.0
+
+New and changed features:
+
+This version adds the ability to set timetabled event reminders for any train under timetable control.  It was suggested indirectly by Flyin9 Scotsman and is such a useful feature that I don't know why it didn't occur to me before.  It works in the same way as timetabled and automatic warnings in that the event is repeated at the top of the display in the scrolling warning log and also in the performance log, and these are now accomanied by three short beeps to draw attention to the reminder/warning if sound is turned on.  The warning log has also been made more prominent in that the current warning is in bold red text, whereas earmier warnings are shown in regular blue text.
+
+***Please note that railways and sessions that have reminders and are saved in this version will fail to load in earlier program versions.***
+
+The 'actions due' panel behaviour has been modified to avoid the annoying rapid switching of trains in the list.  This was due to frequent updating of the list where times to act were recalculated and often changed order because the calculations weren't precise.  This was frustrating when clicking on a particular train, only to find that an update had changed the list and the wrong train was clicked.  Now the regular updates are much less frequent, but are immediate when a new route has been set or cancelled, so there is no delay for events that have a direct effect on the times.  It is still possible for an update to change the list order but it should be very much less noticeable.
+
+All timetable restrictions apart from movement for unpowered rolling stock have now been removed, e.g. direction changes, splits, description changes, change of service etc.  These were only in place (I think) because it didn't seem appropriate to allow such events, but on further thought I don't think that's a good reason.  I can't recall any more serious reason and hope there wasn't one, none has come to light during testing anyway.
+
+Bugs found:
+
+There was an error in the 'skip timetabled events' function where the last event was sometimes left off the list, this now works properly.
+
+Bugs have been corrected in both train split functions where an error could be triggered inappropriately after the split had taken place.
+
+Not for website:
+
+/ changed facing directions in conflict analysis to ignore if cdt immediately after creation when facing buffers
+
+/ added buttons enabled when select area and change lengths etc clicked, stayed in earlier state before
+
+/ add hysteresis in actions due so don't change position so quickly, TimeToAct is in minutes (in CalcTimeToAct line 9141 in TrainUnit.cpp) so set this to nearest 10 second value & test - done this and didn't work, problem is the imprecise calculation, maybe try updating less frequently, say every 5 secs - but only when no routes set, want it to update at normal (1 sec) interval then - tried that, didn't update immediately - was because time calc in Train->Update only done when counter == 0. Later attempts successful!  Now updates immediately for route addition, truncation and calling on, otherwise every 5 seconds & seems to work fine, also counter reset to 1 after each immediate update so doesn't update again for 5 secs (1 so doesn't trigger another immediate update as would if reset to 0).
+
+/ Update manual & on-screen help to say that 'expand repeats' is only available if the tt has been saved and validated (Qwertytops pointed this out on discord in images-and-links on 23/01/24)
+
+/ add a reminder function if possible - give 'ping' and add warning in red + REMINDER in perf & warning logs, and give ping for warnings too
+
+/ Manual:  add section on reminders + mention beeps for warnings & held trains + check if anything else needs adding/changing
+
+/ corrected bug in both split functions where the returns for false outome from ThisLocationLongEnoughForSplit were inside the event reported block, so caused error when this block accessed for the second time as didn't return, corrected by putting outside this block but still inside the if(ThisLocationLongEnoughForSplit... block
+
+/ Removed all zero power restrictions: while operating: jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh, sig join if both zero power, + in tt validation for jbo, fsp, rsp, cdt, Fns, F-nshs, Fns-sh, Frh-sh - if need to re-instate search on 'restriction removed at vx.x.x'.
+
+/ Add reminders in session files
+
+/ Test session file reminders + check works ok with old sessions and try earlier versions with session reminders
+
+/ Manual:  more explanation is needed in the manual to make these things (splits & call-ons - esp wrt needing a free named element) clearer, especially the conditions necessary for splits and how the final positioning is arrived at.
+
+/ Manual: add rules for run-arounds to avoid Sfs followed by Fns (not permitted by tt validator)
+	Have loco as the split-off train & loco uses Sfs/Fjo to rejoin, stock use Fns/Sns/jbo
+	or:
+	Have stock as split-off train & stock uses Sfs/Fjo to rejoin, loco use Fns/Sns/jbo
+	i.e. split-off train to use Fjo, original train to change to new service then jbo
+	Avoid split-off train changing to new service as not permitted - can't have Fns after Sfs
+
+/ Corrected errors in skip & reminder functions - left off last event - now corrected
 
 VERSION CHANGES AFTER v2.17.0 for v2.18.0
 

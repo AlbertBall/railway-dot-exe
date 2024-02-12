@@ -5837,8 +5837,8 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
             }
         }
         Utilities->CallLogPop(1009); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here at v2.19.0
-        return;
-    }
+        return;                      //this has been here for a very long time (at least from 2.0.0) but never reported! Either never reached this point or
+    }                                //found & not reported.  Same for RearTrainSplit
 
     if(TemporaryDelay)
     {
@@ -5996,8 +5996,8 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
             }
         }
         Utilities->CallLogPop(2686); //these were inside above bracket & caused own detected fault on second access as didn't return, moved here at v2.19.0
-        return;
-    }
+        return;                      //this has been here for a very long time (at least from 2.0.0) but never reported! Either never reached this point or
+    }                                //found & not reported.  Same for FrontTrainSplit
 
     if(TemporaryDelay)
     {

@@ -2971,9 +2971,9 @@ Include (for 10.4 compiler) 3 x .dll files and 5 x .bpl files from the Win64 rel
 	Manual vx.x.x .pdf (if updated)
 	Quick start.pdf (if updated)
      	Release notes for vx.x.x.txt
-	Railways>RailOS32.exe
-	Railway>Help.chm (if updated)
-	In Railway, check have appropriate dlls and bpls as above + GNU licence + session.ini + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
+	Railway\RailOS32.exe
+	Railway\Help.chm (if updated)
+	In Railway, check have appropriate dlls and bpls as above + GNU licence + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
 
 12 Zip the above as RailOS32-vx.x.x.zip & RailOS64-vx.x.x.zip
 
@@ -3039,19 +3039,13 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch, then merge with current development branch, and tag with release version.
+5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure branch is set to 'master'), then merge with current development branch, and tag with release version.
 
-6 Build & store to local Git repository tagged with latest release version
+6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
 
-7 Pull latest commit from GitHub into GitHub clone 
+7 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
 
-8 Update all files on GitHub clone, ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
-
-9  If on a development branch commit to that branch, then checkout last 'master' then merge the development branch into it, tag with release version & message 'Update for vx.x.x'
-
-10 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
-
-11 Create a new release on GitHub [USING CHROME} & include the new zip file(s)
+8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
 
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)

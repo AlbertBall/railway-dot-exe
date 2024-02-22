@@ -224,6 +224,7 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     ZeroPowerNoRepeatShuttleMessage = false;
     ZeroPowerNoRepeatShuttleOrNewServiceMessage = false;
     ZeroPowerDepartMessage = false;
+    TrainInFrontMessage = false;
     TrainFailurePending = false;
     SkippedDeparture = false;
     ActionsSkippedFlag = false;
@@ -1391,13 +1392,20 @@ void TTrain::UpdateTrain(int Caller)
 
     if(TrainMode == Timetable)
     {
+        bool Derail; //not used
+        int NextElementPosition = Track->TrackElementAt(199, LeadElement).Conn[Track->GetAnyElementOppositeLinkPos(8, LeadElement, LeadEntryPos, Derail)];
+        int NextEntryPos = Track->TrackElementAt(200, LeadElement).ConnLinkPos[Track->GetAnyElementOppositeLinkPos(9, LeadElement, LeadEntryPos, Derail)];
+                                  //above changed at 2.18.0 from GetNonPoints... to GetAnyElement... as had wrong
+                                  //element and link found with non-station names on points as can now stop on points
+
+        SetTrainMovementValues(25, NextElementPosition, NextEntryPos); //this is purely to set StoppedForTrainInFront as needed before formal call //added after v2.19.0
         if(RevisedStoppedAtLoc() && !StoppedAtBuffers && !Crashed && !Derailed && !HoldAtLocationInTTMode && !TrainFailed)
         {
 //            if(BeingCalledOn)   //dropped when added TrainInFront at v2.18.0
 //            {
 //                TrainInFront = true;
 //            }
-            if((TrainController->TTClockTime >= TRSTime) && (PowerAtRail >= 1)) //added later condition after v2.19.0
+            if((TrainController->TTClockTime >= TRSTime) && (PowerAtRail >= 1) && !StoppedForTrainInFront) //added later conditions after v2.19.0
             {
                 PlotTrainWithNewBackgroundColour(19, clTRSBackground, Display); // light pink
             }
@@ -1412,7 +1420,7 @@ void TTrain::UpdateTrain(int Caller)
                 {
                     StoppedWithoutPower = true;
                 }
-                if(!StoppedWithoutPower) //added after v2.19.0, don't change colour if no power
+                if(!StoppedWithoutPower && !StoppedForTrainInFront) //added after v2.19.0, don't change colour if no power or train in front
                 {
                     PlotTrainWithNewBackgroundColour(20, clNormalBackground, Display);
                 }
@@ -1430,16 +1438,11 @@ void TTrain::UpdateTrain(int Caller)
                     throw Exception("Error - Stopped at through station but neither lead nor mid elements have a name");
                 }
                 EntrySpeed = 0;
-                bool Derail; //not used
                 EntryTime = TrainController->TTClockTime;
-                int NextElementPosition = Track->TrackElementAt(199, LeadElement).Conn[Track->GetAnyElementOppositeLinkPos(8, LeadElement, LeadEntryPos, Derail)];
-                int NextEntryPos = Track->TrackElementAt(200, LeadElement).ConnLinkPos[Track->GetAnyElementOppositeLinkPos(9, LeadElement, LeadEntryPos, Derail)];
-                                          //above changed at 2.18.0 from GetNonPoints... to GetAnyElement... as had wrong
-                                          //element and link found with non-station names on points as can now stop on points
-
-                if(!StoppedWithoutPower) //added after v2.19.0 & all below put in conditional block - due to JasonB false departure log in email of 21/02/24
-                {
+                if(!StoppedWithoutPower && !StoppedForTrainInFront) //added after v2.19.0 & all below put in conditional block - due to JasonB false departure log in email of 21/02/24
+                {                                                   //= extended it to StoppedForTrainInFront as well for same reasons
                     ZeroPowerDepartMessage = false;
+                    TrainInFrontMessage = false;
                     FirstHalfMove = true;
                     StoppedAtLocation = false;
                     if((NextElementPosition > -1) && (NextEntryPos > -1))
@@ -1473,7 +1476,7 @@ void TTrain::UpdateTrain(int Caller)
                     //deal here with departure pointer change, increment if SkippedDeparture
                     CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //only add these after late mins added (in LogAction)
 
-                    if(SkippedDeparture) //only dweal with this when have power
+                    if(SkippedDeparture) //only deal with this when have power
                     {
                         TrainController->SkippedTTEvents += TrainSkippedEvents;
                         ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0)) + SkipPtrValue;
@@ -1516,14 +1519,23 @@ void TTrain::UpdateTrain(int Caller)
                         }
                     }
                 }
-                else // no power, don't advance AVPtr - added after v2.19.0
+                else if(StoppedForTrainInFront)  // StoppedForTrainInFront, don't advance AVPtr - added after v2.19.0
+                {
+                    if(!TrainInFrontMessage)
+                    {
+                        TrainController->LogActionError(67, HeadCode, "", FailTrainInFront, StationName);
+                        TrainInFrontMessage = true;
+                    }
+                }
+                else //no power
                 {
                     if(!ZeroPowerDepartMessage)
                     {
-                        TrainController->LogActionError(7777, HeadCode, "", FailNoPowerUnableToDepart, StationName);
+                        TrainController->LogActionError(68, HeadCode, "", FailNoPowerUnableToDepart, StationName);
                         ZeroPowerDepartMessage = true;
                     }
                 }
+
             }
         }
     }
@@ -16486,6 +16498,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 // WaitingForFJO:  06:00:10: WARNING: 2F43 waiting to be joined by 3F43 at Essex Road
 // FailEntryRouteSetAgainst:   06:00:10: WARNING: 2F43 can't enter railway, route set against it at entry position 57-N5         //added at v2.9.1
 // FailNoPowerUnableToDepart:   06:00:10: WARNING: 2F43 is without power so it can't depart from Essex Road // added after v2.19.0
+// FailTrainInFront   06:00:10: WARNING: 2F43 can't depart because there is a train in front at Essex Road // added after v2.19.0
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogActionError," + HeadCode + "," + OtherHeadCode + "," +
@@ -16679,6 +16692,13 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
         Prefix = " WARNING: ";
         ErrorLog = " is without power so it can't depart from ";
         WarningStr = " is without power so it can't depart from ";
+        Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
+    }
+    else if(ActionEventType == FailTrainInFront) //06:00:10: WARNING: 2F43 can't depart because there is a train in front at Essex Road // added after v2.19.0
+    {
+        Prefix = " WARNING: ";
+        ErrorLog = " can't depart because there is a train in front at ";
+        WarningStr = " can't depart because there is a train in front at ";
         Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
     }
 

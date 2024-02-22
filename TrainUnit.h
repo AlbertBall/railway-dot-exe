@@ -40,8 +40,8 @@ enum TActionEventType
     FailCrashed, FailDerailed, FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedDSC, FailMissedJoinOther,
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
-    RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart  //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart new after v2.19.0
-};  // FailEntryRouteSetAgainst added at v2.9.1
+    RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart, FailTrainInFront  //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart
+};  // FailEntryRouteSetAgainst added at v2.9.1                                                                         //& FailTrainInFront new after v2.19.0
     //if add to these remember to change the integer value in session file integrity check (33 total here)
     //Xeon notified error 07/01/22 when EventReported int value exceeded 30 (as it was in v2.11.0) for FailEntryRouteSetAgainst
 
@@ -352,6 +352,7 @@ private:
     bool ZeroPowerNoRepeatShuttleMessage;
     bool ZeroPowerNoRepeatShuttleOrNewServiceMessage;
     bool ZeroPowerDepartMessage;
+    bool TrainInFrontMessage;
 ///<flags to indicate whether the respective message has been sent
     bool TrainFailurePending;
 ///< set when failure due & takes effect when all PlotElements properly set, added at v2.4.0

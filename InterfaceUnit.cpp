@@ -15366,7 +15366,6 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
         {
             Train.SendMissedActionLogs(0, -1, Train.ActionVectorEntryPtr); // -1 is a marker for send messages for all remaining
         } // entries, including Fer if present
-
         Utilities->CallLogPop(1200);
     }
     catch(const Exception &e)

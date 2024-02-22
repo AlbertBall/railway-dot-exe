@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 Post " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -549,8 +549,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 
         const AnsiString TTLabelStr6 = "+ rear element ID - space - front element ID [+ optional ';S']" + NL + "+ ref. of the train that splits" + NL +
             "+ other service ref." + NL + "+ shuttle service ref." + NL + "+ rear element ID - space - front element ID ';' linked shuttle ref." + NL +
-            "+ linked shuttle service ref. ';' feeder service ref." + NL + "+ location" + NL + "+ joining train ref." + NL + "+ new service ref." + NL +
-            "+ new service ref." + NL + "    " + NL + "+ new description" + NL + "+ new service ref." + NL + "+ ref. of train to join" + NL +
+            "+ linked shuttle service ref. ';' feeder service ref." + NL + "+ location" + NL + "+ joining train ref." + NL + "+ new service ref. + [opt. "
+            "new service Mass%-Power% split]" + NL + "+ new service ref. + [opt. new service Mass%-Power% split]" + NL + "    " + NL +
+            "+ new description" + NL + "+ new service ref." + NL + "+ ref. of train to join" + NL +
             "+ list of valid exit element IDs (at least 1) separated by spaces" + NL + "+ linked shuttle service ref.";
 
         const AnsiString TTLabelStr7 = "Arrival OR departure time (program will determine which from the context) + location." + NL +
@@ -7685,14 +7686,15 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 PassRedSignalMenuItem->Visible = false;
                                 SignallerControlStopMenuItem->Enabled = false;
                                 SignallerControlStopMenuItem->Visible = false;
-                                if((Train.StoppedAtSignal || Train.StoppedAtLocation) && !Train.ActionsSkippedFlag) //Exclude TreatPassAsTimeLocDeparture, otherwise skipping
-                                {                                                                                   //events causes problems that are best avoided
+                                if((Train.StoppedAtSignal || Train.StoppedAtLocation) && !Train.ActionsSkippedFlag && !Train.StoppedWithoutPower)
+                                {   //Exclude TreatPassAsTimeLocDeparture, otherwise skipping events causes problems that are best avoided
+                                    //'!Train.StoppedWithoutPower' added after v2.19.0
                                     SkipTimetabledActionsMenuItem->Enabled = true;
                                     SkipTimetabledActionsMenuItem->Visible = true;
                                 }
                                 BecomeNewServiceMenuItem->Enabled = false;
                                 BecomeNewServiceMenuItem->Visible = false;
-                                if(IsBecomeNewServiceAvailable(0, SelectedTrainID, Train.FollowOnServiceRef))
+                                if(IsBecomeNewServiceAvailable(0, SelectedTrainID, Train.FollowOnServiceRef)) //allow this for an unpowered train
                                 {
                                     BecomeNewServiceMenuItem->Enabled = true;
                                     BecomeNewServiceMenuItem->Visible = true;

@@ -223,6 +223,7 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     ZeroPowerNoNewShuttleFromNonRepeatMessage = false;
     ZeroPowerNoRepeatShuttleMessage = false;
     ZeroPowerNoRepeatShuttleOrNewServiceMessage = false;
+    ZeroPowerDepartMessage = false;
     TrainFailurePending = false;
     SkippedDeparture = false;
     ActionsSkippedFlag = false;
@@ -1396,7 +1397,7 @@ void TTrain::UpdateTrain(int Caller)
 //            {
 //                TrainInFront = true;
 //            }
-            if(TrainController->TTClockTime >= TRSTime)
+            if((TrainController->TTClockTime >= TRSTime) && (PowerAtRail >= 1)) //added later condition after v2.19.0
             {
                 PlotTrainWithNewBackgroundColour(19, clTRSBackground, Display); // light pink
             }
@@ -1407,7 +1408,14 @@ void TTrain::UpdateTrain(int Caller)
             if(TrainController->TTClockTime >= ReleaseTime)
             {
                 // value updated at every scheduled departure & arrival
-                PlotTrainWithNewBackgroundColour(20, clNormalBackground, Display);
+                if((PowerAtRail < 1) && EntrySpeed < 1) // added at v2.4.0 moved here from after 'StoppedAtLocation = false' after v2.19.0
+                {
+                    StoppedWithoutPower = true;
+                }
+                if(!StoppedWithoutPower) //added after v2.19.0, don't change colour if no power
+                {
+                    PlotTrainWithNewBackgroundColour(20, clNormalBackground, Display);
+                }
                 AnsiString StationName;
                 if(Track->TrackElementAt(193, LeadElement).ActiveTrackElementName != "")
                 {
@@ -1426,88 +1434,94 @@ void TTrain::UpdateTrain(int Caller)
                 EntryTime = TrainController->TTClockTime;
                 int NextElementPosition = Track->TrackElementAt(199, LeadElement).Conn[Track->GetAnyElementOppositeLinkPos(8, LeadElement, LeadEntryPos, Derail)];
                 int NextEntryPos = Track->TrackElementAt(200, LeadElement).ConnLinkPos[Track->GetAnyElementOppositeLinkPos(9, LeadElement, LeadEntryPos, Derail)];
-                FirstHalfMove = true;                               //above changed at 2.18.0 from GetNonPoints... to GetAnyElement... as had wrong
-                StoppedAtLocation = false;                          //element and link found with non-station names on points as can now stop on points
+                                          //above changed at 2.18.0 from GetNonPoints... to GetAnyElement... as had wrong
+                                          //element and link found with non-station names on points as can now stop on points
 
-                if((PowerAtRail < 1) && EntrySpeed < 1) // added at v2.4.0
+                if(!StoppedWithoutPower) //added after v2.19.0 & all below put in conditional block - due to JasonB false departure log in email of 21/02/24
                 {
-                    StoppedWithoutPower = true;
-                }
-                if((NextElementPosition > -1) && (NextEntryPos > -1))
-                // condition check added for SloughIECC error reported by James U
-                {
-                    if((Track->TrackElementAt(720, NextElementPosition).Config[Track->GetNonPointsOppositeLinkPos(NextEntryPos)] == Signal) &&
-                       (Track->TrackElementAt(721, NextElementPosition).Attribute == 0))
+                    ZeroPowerDepartMessage = false;
+                    FirstHalfMove = true;
+                    StoppedAtLocation = false;
+                    if((NextElementPosition > -1) && (NextEntryPos > -1))
+                    // condition check added for SloughIECC error reported by James U
                     {
-                        StoppedAtSignal = true;
-                        if(!StoppedWithoutPower)
-                        // if stopped without power just keep existing background colour
+                        if((Track->TrackElementAt(720, NextElementPosition).Config[Track->GetNonPointsOppositeLinkPos(NextEntryPos)] == Signal) &&
+                           (Track->TrackElementAt(721, NextElementPosition).Attribute == 0))
                         {
+                            StoppedAtSignal = true;
                             PlotTrainWithNewBackgroundColour(41, clSignalStopBackground, Display);
                             // TrainController->LogActionError(40, HeadCode, "", SignalHold, Track->TrackElementAt(755, NextElementPosition).ElementID);
                         }
                     }
-                }
-                if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
-                {
-                    TimeTimeLocArrived = false;
-                    LogAction(27, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->DepartureTime, false);
-                    // no warning for TimeTimeLoc departure
-                }
-                else if(TreatPassAsTimeLocDeparture) //added at v2.12.0 so late/early/on time mins recorded accurately
-                {
-                    LogAction(36, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning); //EventTime because the real event is a pass
-                }
-                else //must be TimeLoc departure
-                {
-                    LogAction(6, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->DepartureTime, ActionVectorEntryPtr->Warning);
-                }
-                TreatPassAsTimeLocDeparture = false; //added at v2.12.0, reset after train departs
-                DepartureTimeSet = false;
-                // no need to set LastActionTime for a departure
-                //deal here with departure pointer change, increment if SkippedDeparture
-                CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //only add these after late mins added (in LogAction)
-
-                if(SkippedDeparture)
-                {
-                    TrainController->SkippedTTEvents += TrainSkippedEvents;
-                    ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0)) + SkipPtrValue;
-                    TrainSkippedEvents = 0;
-                    SkippedDeparture = false;
-                    SkipPtrValue = 0;
-                    ActionsSkippedFlag = false;
-                }
-                else
-                {
-                    ActionVectorEntryPtr++;
-                }
-                // advance pointer beyond departure action - (this line (& LogAction) used to be at the end -  see
-                // note
-/*
-                  Note:  If train stops at station after call on with a TimeTimeLoc loaded, and before the normal stop point, then when
-                  SetTrainMovementValues called it assumes a stop at the stop point because the ActionVectorEntryPtr points to a name
-                  when NameInTimetableBeforeCDT is called and the stop positions are valid.  So next element train movement is based on
-                  this calculation.  However, when the departure time check is made (it is during this function when SetTrainMovementValues
-                  is called), the ActionVectorEntryPtr is advanced at the end past the departure location, so at the next element when
-                  SetTrainMovementValues is called again, all is normal, i.e. the train doesn't stop again at the location.  But to cure
-                  the problem move the ActionVectorEntryPtr increment to before SetTrainMovementValues.
-*/
-                if((Track->TrackElementAt(201, LeadElement).TrackType == Buffers) && !StoppedWithoutPower)
-                {
-                    StoppedAtBuffers = true;
-                }
-                else if(!StoppedWithoutPower)
-                // if buffers or no power, don't set values
-                {
-                    if(Track->TrackElementAt(724, LeadElement).TrackType != Continuation)
+                    if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
                     {
-                        SetTrainMovementValues(12, NextElementPosition, NextEntryPos);
-                        // NextElement is the element to be entered
+                        TimeTimeLocArrived = false;
+                        LogAction(27, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->DepartureTime, false);
+                        // no warning for TimeTimeLoc departure
+                    }
+                    else if(TreatPassAsTimeLocDeparture) //added at v2.12.0 so late/early/on time mins recorded accurately
+                    {
+                        LogAction(36, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning); //EventTime because the real event is a pass
+                    }
+                    else //must be TimeLoc departure
+                    {
+                        LogAction(6, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->DepartureTime, ActionVectorEntryPtr->Warning);
+                    }
+                    TreatPassAsTimeLocDeparture = false; //added at v2.12.0, reset after train departs
+                    DepartureTimeSet = false;
+                    // no need to set LastActionTime for a departure
+                    //deal here with departure pointer change, increment if SkippedDeparture
+                    CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //only add these after late mins added (in LogAction)
+
+                    if(SkippedDeparture) //only dweal with this when have power
+                    {
+                        TrainController->SkippedTTEvents += TrainSkippedEvents;
+                        ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0)) + SkipPtrValue;
+                        TrainSkippedEvents = 0;
+                        SkippedDeparture = false;
+                        SkipPtrValue = 0;
+                        ActionsSkippedFlag = false;
                     }
                     else
                     {
-                        SetTrainMovementValues(13, LeadElement, LeadEntryPos);
-                        // use LeadElement for an exit continuation
+                        ActionVectorEntryPtr++;
+                    }
+                    // advance pointer beyond departure action - (this line (& LogAction) used to be at the end -  see
+                    // note
+/*
+                      Note:  If train stops at station after call on with a TimeTimeLoc loaded, and before the normal stop point, then when
+                      SetTrainMovementValues called it assumes a stop at the stop point because the ActionVectorEntryPtr points to a name
+                      when NameInTimetableBeforeCDT is called and the stop positions are valid.  So next element train movement is based on
+                      this calculation.  However, when the departure time check is made (it is during this function when SetTrainMovementValues
+                      is called), the ActionVectorEntryPtr is advanced at the end past the departure location, so at the next element when
+                      SetTrainMovementValues is called again, all is normal, i.e. the train doesn't stop again at the location.  But to cure
+                      the problem move the ActionVectorEntryPtr increment to before SetTrainMovementValues.
+*/
+                    if(Track->TrackElementAt(201, LeadElement).TrackType == Buffers)
+                    {
+                        StoppedAtBuffers = true;
+                    }
+                    else
+                    // if buffers or no power, don't set values
+                    {
+                        if(Track->TrackElementAt(724, LeadElement).TrackType != Continuation)
+                        {
+                            SetTrainMovementValues(12, NextElementPosition, NextEntryPos);
+                            // NextElement is the element to be entered
+                        }
+                        else
+                        {
+                            SetTrainMovementValues(13, LeadElement, LeadEntryPos);
+                            // use LeadElement for an exit continuation
+                        }
+                    }
+                }
+                else // no power, don't advance AVPtr - added after v2.19.0
+                {
+                    if(!ZeroPowerDepartMessage)
+                    {
+                        TrainController->LogActionError(7777, HeadCode, "", FailNoPowerUnableToDepart, StationName);
+                        ZeroPowerDepartMessage = true;
                     }
                 }
             }
@@ -16471,6 +16485,8 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 // WaitingForJBO:  06:00:10: WARNING: 2F43 waiting to join 3F43 at Essex Road
 // WaitingForFJO:  06:00:10: WARNING: 2F43 waiting to be joined by 3F43 at Essex Road
 // FailEntryRouteSetAgainst:   06:00:10: WARNING: 2F43 can't enter railway, route set against it at entry position 57-N5         //added at v2.9.1
+// FailNoPowerUnableToDepart:   06:00:10: WARNING: 2F43 is without power so it can't depart from Essex Road // added after v2.19.0
+
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogActionError," + HeadCode + "," + OtherHeadCode + "," +
                                  AnsiString(ActionEventType) + "," + LocationID);
@@ -16656,6 +16672,13 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
         Prefix = " WARNING: ";
         ErrorLog = " waiting to be joined by " + OtherHeadCode + " at ";
         WarningStr = " waiting to be joined by " + OtherHeadCode + " at ";
+        Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
+    }
+    else if(ActionEventType == FailNoPowerUnableToDepart) //06:00:10: WARNING: 2F43 is without power so it can't depart from Essex Road // added after v2.19.0
+    {
+        Prefix = " WARNING: ";
+        ErrorLog = " is without power so it can't depart from ";
+        WarningStr = " is without power so it can't depart from ";
         Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
     }
 

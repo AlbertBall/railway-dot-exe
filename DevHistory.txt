@@ -1,3 +1,16 @@
+Post-v2.19.0 development:
+
+/ If no power don't log departure or advance AVPtr, re JasonB email re Edinburgh (21/02/24).  All in UpdateTrain after 
+'if(TrainController->TTClockTime >= ReleaseTime)' at line 1407.  
+
+/ Maybe give warning message too saying can't depart as no power.
+
+/ Need to add split dist'n in tt editor list for fsp & rsp
+
+
+
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.

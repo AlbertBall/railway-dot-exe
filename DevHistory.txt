@@ -5,7 +5,18 @@ Post-v2.19.0 development:
 
 / Maybe give warning message too saying can't depart as no power.
 
+/ same as above for stopped for train in front
+
 / Need to add split dist'n in tt editor list for fsp & rsp
+
+/ Add version number to timetables - now first entry in tt before start time
+
+/ Correct error in TrainUnit.cpp where SetTrainMovementValues(25... fails for train leaving at a continuation - ok, now uses LeadElement & LeadEntryPos instead of Next... and these at a location so continuations not involved
+
+Check Jason's Scotland re problem with zero power join, see email of 22/02/24
+
+
+
 
 
 

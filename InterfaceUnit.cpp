@@ -4855,6 +4855,17 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         }
         if(TTBLFile.is_open())
         {
+            if(TimetableEditVector.front() != "Version = " + ProgramVersion) //added after v2.19.0 to add version as 1st line of file
+            {
+                if((TimetableEditVector.front().SubString(1, 10)) != "Version = ") //earlier version not recorded, so add at start
+                {
+                    TimetableEditVector.insert(TimetableEditVector.begin(), "Version = " + ProgramVersion);
+                }
+                else //an earlier version has been recorded so replace it
+                {
+                    TimetableEditVector.front() = "Version = " + ProgramVersion;
+                }
+            }
             for(TEVIterator = TimetableEditVector.begin(); TEVIterator != TimetableEditVector.end(); TEVIterator++)
             {
                 TTBLFile << (*TEVIterator).c_str() << '\0';
@@ -4866,6 +4877,8 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         {
             ShowMessage(CreateEditTTFileName + " failed to open, ensure not already open in another application");
         }
+        CompileAllEntriesMemoAndSetIterators(15); //added after v2.19.0 - this and next line highlight the first version name entry
+        TTCurrentEntryIterator = TimetableEditVector.begin();
         Level1Mode = TimetableMode;
         SetLevel1Mode(97);
         Utilities->CallLogPop(1623);
@@ -4918,6 +4931,18 @@ void __fastcall TInterface::SaveTTAsButtonClick(TObject *Sender)
             Utilities->CallLogPop(2206);
             return;
         }
+
+        if(TimetableEditVector.front() != "Version = " + ProgramVersion) //added after v2.19.0 to add version as 1st line of file
+        {
+            if((TimetableEditVector.front().SubString(1, 10)) != "Version = ") //earlier version not recorded, so add at start
+            {
+                TimetableEditVector.insert(TimetableEditVector.begin(), "Version = " + ProgramVersion);
+            }
+            else //an earlier version has been recorded so replace it
+            {
+                TimetableEditVector.front() = "Version = " + ProgramVersion;
+            }
+        }
         if(TTBLFile.is_open())
         {
             for(TEVIterator = TimetableEditVector.begin(); TEVIterator != TimetableEditVector.end(); TEVIterator++)
@@ -4931,6 +4956,8 @@ void __fastcall TInterface::SaveTTAsButtonClick(TObject *Sender)
         {
             ShowMessage(CreateEditTTFileName + " failed to open, ensure not already open in another application");
         }
+        CompileAllEntriesMemoAndSetIterators(16); //added after v2.19.0 - this and next line highlight the first version name entry
+        TTCurrentEntryIterator = TimetableEditVector.begin();
         Level1Mode = TimetableMode;
         SetLevel1Mode(117);
         Utilities->CallLogPop(1667);

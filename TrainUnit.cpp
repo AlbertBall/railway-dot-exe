@@ -1392,19 +1392,13 @@ void TTrain::UpdateTrain(int Caller)
 
     if(TrainMode == Timetable)
     {
-        bool Derail; //not used
-        int NextElementPosition = Track->TrackElementAt(199, LeadElement).Conn[Track->GetAnyElementOppositeLinkPos(8, LeadElement, LeadEntryPos, Derail)];
-        int NextEntryPos = Track->TrackElementAt(200, LeadElement).ConnLinkPos[Track->GetAnyElementOppositeLinkPos(9, LeadElement, LeadEntryPos, Derail)];
-                                  //above changed at 2.18.0 from GetNonPoints... to GetAnyElement... as had wrong
-                                  //element and link found with non-station names on points as can now stop on points
-
-        SetTrainMovementValues(25, NextElementPosition, NextEntryPos); //this is purely to set StoppedForTrainInFront as needed before formal call //added after v2.19.0
         if(RevisedStoppedAtLoc() && !StoppedAtBuffers && !Crashed && !Derailed && !HoldAtLocationInTTMode && !TrainFailed)
         {
 //            if(BeingCalledOn)   //dropped when added TrainInFront at v2.18.0
 //            {
 //                TrainInFront = true;
 //            }
+            SetTrainMovementValues(25, LeadElement, LeadEntryPos); //this is purely to set StoppedForTrainInFront as needed before formal call //added after v2.19.0
             if((TrainController->TTClockTime >= TRSTime) && (PowerAtRail >= 1) && !StoppedForTrainInFront) //added later conditions after v2.19.0
             {
                 PlotTrainWithNewBackgroundColour(19, clTRSBackground, Display); // light pink
@@ -1527,7 +1521,7 @@ void TTrain::UpdateTrain(int Caller)
                         TrainInFrontMessage = true;
                     }
                 }
-                else //no power
+                else //no power, don't advance AVPtr - added after v2.19.0
                 {
                     if(!ZeroPowerDepartMessage)
                     {

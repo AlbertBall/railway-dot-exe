@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post " + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -639,7 +639,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         MMoveTextGraphicUserGraphicFoundFlag = false;
         NumPlayers = 0; //Multiplayer integer
         MultiplayerMenu->Enabled = false;
-        MultiplayerMenu->Visible = false; //<-- only until multiplayer added (also temproarily false in designer)
+        MultiplayerMenu->Visible = false; //<-- only until multiplayer added (also temporarily false in designer)
         CouplingFileLoadedFlag = false;
         PlayerMakingInitialContactFlag = false;
         PlayerReadyToBeginFlag = false;
@@ -4856,7 +4856,7 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         if(TTBLFile.is_open())
         {
 /* dropped this as may cause confusion for users, can assume timetable built with same version as railway
-            if(TimetableEditVector.front() != "Version = " + ProgramVersion) //added after v2.19.0 to add version as 1st line of file
+            if(TimetableEditVector.front() != "Version = " + ProgramVersion) //added at v2.19.1 to add version as 1st line of file
             {
                 if((TimetableEditVector.front().SubString(1, 10)) != "Version = ") //earlier version not recorded, so add at start
                 {
@@ -4879,7 +4879,7 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         {
             ShowMessage(CreateEditTTFileName + " failed to open, ensure not already open in another application");
         }
-//        CompileAllEntriesMemoAndSetIterators(16); //added after v2.19.0 - this and next line highlight the first version name entry [dropped when
+//        CompileAllEntriesMemoAndSetIterators(); //added at v2.19.1 - this and next line highlight the first version name entry [dropped when
 //        TTCurrentEntryIterator = TimetableEditVector.begin();  version no. inclusion dropped]
         Level1Mode = TimetableMode;
         SetLevel1Mode(97);
@@ -4936,7 +4936,7 @@ void __fastcall TInterface::SaveTTAsButtonClick(TObject *Sender)
         if(TTBLFile.is_open())
         {
 /* dropped this as may cause confusion for users, can assume timetable built with same version as railway
-        if(TimetableEditVector.front() != "Version = " + ProgramVersion) //added after v2.19.0 to add version as 1st line of file
+        if(TimetableEditVector.front() != "Version = " + ProgramVersion) //added at v2.19.1 to add version as 1st line of file
         {
             if((TimetableEditVector.front().SubString(1, 10)) != "Version = ") //earlier version not recorded, so add at start
             {
@@ -4959,7 +4959,7 @@ void __fastcall TInterface::SaveTTAsButtonClick(TObject *Sender)
         {
             ShowMessage(CreateEditTTFileName + " failed to open, ensure not already open in another application");
         }
-//        CompileAllEntriesMemoAndSetIterators(16); //added after v2.19.0 - this and next line highlight the first version name entry [dropped when
+//        CompileAllEntriesMemoAndSetIterators(); //added at v2.19.1 - this and next line highlight the first version name entry [dropped when
 //        TTCurrentEntryIterator = TimetableEditVector.begin();  version no. inclusion dropped]
         Level1Mode = TimetableMode;
         SetLevel1Mode(117);
@@ -7718,7 +7718,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 SignallerControlStopMenuItem->Visible = false;
                                 if((Train.StoppedAtSignal || Train.StoppedAtLocation) && !Train.ActionsSkippedFlag && !Train.StoppedWithoutPower)
                                 {   //Exclude TreatPassAsTimeLocDeparture, otherwise skipping events causes problems that are best avoided
-                                    //'!Train.StoppedWithoutPower' added after v2.19.0
+                                    //'!Train.StoppedWithoutPower' added at v2.19.1
                                     SkipTimetabledActionsMenuItem->Enabled = true;
                                     SkipTimetabledActionsMenuItem->Visible = true;
                                 }

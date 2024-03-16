@@ -1,25 +1,4 @@
-Post-v2.19.0 development:
-
-/ If no power don't log departure or advance AVPtr, re JasonB email re Edinburgh (21/02/24).  All in UpdateTrain after 
-'if(TrainController->TTClockTime >= ReleaseTime)' at line 1407.  
-
-/ Maybe give warning message too saying can't depart as no power.
-
-/ same as above for stopped for train in front
-
-/ Need to add split dist'n in tt editor list for fsp & rsp
-
-/ Add version number to timetables - now first entry in tt before start time
-
-/ Correct error in TrainUnit.cpp where SetTrainMovementValues(25... fails for train leaving at a continuation - ok, now uses LeadElement & LeadEntryPos instead of Next... and these at a location so continuations not involved
-
-Check Jason's Scotland re problem with zero power join, see email of 22/02/24
-
-
-
-
-
-
+Note: Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
 
 Development History
@@ -767,6 +746,29 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.19.0 for v2.19.1
+
+Release notes:
+
+This version corrects a couple of issues relating to performance logging for zero powered rolling stock and trains prevented from departing due to another train in front.  Earlier versions gave a 'departed at' log message when the timetabled departure time was reached which was inappropriate in these circumstances.  In this version the message states that the train is unable to depart for whichever reason applies, and also gives a warning log to draw the users attention to the fact that the train can't comply with the timetable.  Thanks are due to JasonB for notifying me of this.
+
+The timetable editor has also been updated to include train split distribution information for 'fstp' and 'rsp' commands.
+
+Not for website:
+
+/ If no power don't log departure or advance AVPtr, re JasonB email re Edinburgh (21/02/24).  All in UpdateTrain after 
+'if(TrainController->TTClockTime >= ReleaseTime)' at line 1407.  
+
+/ Maybe give warning message too saying can't depart as no power.
+
+/ same as above for stopped for train in front
+
+/ Need to add split dist'n in tt editor list for fsp & rsp
+
+X Add version number to timetables - now first entry in tt before start time - no drop this as likely to be confusing
+
+/ Correct error in TrainUnit.cpp where SetTrainMovementValues(25... fails for train leaving at a continuation - ok, now uses LeadElement & LeadEntryPos instead of Next... and these at a location so continuations not involved
 
 VERSION CHANGES AFTER v2.18.0 for v2.19.0
 

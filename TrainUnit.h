@@ -41,7 +41,7 @@ enum TActionEventType
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
     RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart, FailTrainInFront  //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart
-};  // FailEntryRouteSetAgainst added at v2.9.1                                                                         //& FailTrainInFront new after v2.19.0
+};  // FailEntryRouteSetAgainst added at v2.9.1                                                                         //& FailTrainInFront new at v2.19.1
     //if add to these remember to change the integer value in session file integrity check (33 total here)
     //Xeon notified error 07/01/22 when EventReported int value exceeded 30 (as it was in v2.11.0) for FailEntryRouteSetAgainst
 

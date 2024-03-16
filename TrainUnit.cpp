@@ -1398,8 +1398,8 @@ void TTrain::UpdateTrain(int Caller)
 //            {
 //                TrainInFront = true;
 //            }
-            SetTrainMovementValues(25, LeadElement, LeadEntryPos); //this is purely to set StoppedForTrainInFront as needed before formal call //added after v2.19.0
-            if((TrainController->TTClockTime >= TRSTime) && (PowerAtRail >= 1) && !StoppedForTrainInFront) //added later conditions after v2.19.0
+            SetTrainMovementValues(25, LeadElement, LeadEntryPos); //this is purely to set StoppedForTrainInFront as needed before formal call //added at v2.19.1
+            if((TrainController->TTClockTime >= TRSTime) && (PowerAtRail >= 1) && !StoppedForTrainInFront) //added later conditions at v2.19.1
             {
                 PlotTrainWithNewBackgroundColour(19, clTRSBackground, Display); // light pink
             }
@@ -1410,11 +1410,11 @@ void TTrain::UpdateTrain(int Caller)
             if(TrainController->TTClockTime >= ReleaseTime)
             {
                 // value updated at every scheduled departure & arrival
-                if((PowerAtRail < 1) && EntrySpeed < 1) // added at v2.4.0 moved here from after 'StoppedAtLocation = false' after v2.19.0
+                if((PowerAtRail < 1) && EntrySpeed < 1) // added at v2.4.0 moved here from after 'StoppedAtLocation = false' at v2.19.1
                 {
                     StoppedWithoutPower = true;
                 }
-                if(!StoppedWithoutPower && !StoppedForTrainInFront) //added after v2.19.0, don't change colour if no power or train in front
+                if(!StoppedWithoutPower && !StoppedForTrainInFront) //added at v2.19.1, don't change colour if no power or train in front
                 {
                     PlotTrainWithNewBackgroundColour(20, clNormalBackground, Display);
                 }
@@ -1433,7 +1433,7 @@ void TTrain::UpdateTrain(int Caller)
                 }
                 EntrySpeed = 0;
                 EntryTime = TrainController->TTClockTime;
-                if(!StoppedWithoutPower && !StoppedForTrainInFront) //added after v2.19.0 & all below put in conditional block - due to JasonB false departure log in email of 21/02/24
+                if(!StoppedWithoutPower && !StoppedForTrainInFront) //added at v2.19.1 & all below put in conditional block - due to JasonB false departure log in email of 21/02/24
                 {                                                   //= extended it to StoppedForTrainInFront as well for same reasons
                     ZeroPowerDepartMessage = false;
                     TrainInFrontMessage = false;
@@ -1513,7 +1513,7 @@ void TTrain::UpdateTrain(int Caller)
                         }
                     }
                 }
-                else if(StoppedForTrainInFront)  // StoppedForTrainInFront, don't advance AVPtr - added after v2.19.0
+                else if(StoppedForTrainInFront)  // StoppedForTrainInFront, don't advance AVPtr - added at v2.19.1
                 {
                     if(!TrainInFrontMessage)
                     {
@@ -1521,7 +1521,7 @@ void TTrain::UpdateTrain(int Caller)
                         TrainInFrontMessage = true;
                     }
                 }
-                else //no power, don't advance AVPtr - added after v2.19.0
+                else //no power, don't advance AVPtr - added at v2.19.1
                 {
                     if(!ZeroPowerDepartMessage)
                     {
@@ -16491,8 +16491,8 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 // WaitingForJBO:  06:00:10: WARNING: 2F43 waiting to join 3F43 at Essex Road
 // WaitingForFJO:  06:00:10: WARNING: 2F43 waiting to be joined by 3F43 at Essex Road
 // FailEntryRouteSetAgainst:   06:00:10: WARNING: 2F43 can't enter railway, route set against it at entry position 57-N5         //added at v2.9.1
-// FailNoPowerUnableToDepart:   06:00:10: WARNING: 2F43 is without power so it can't depart from Essex Road // added after v2.19.0
-// FailTrainInFront   06:00:10: WARNING: 2F43 can't depart because there is a train in front at Essex Road // added after v2.19.0
+// FailNoPowerUnableToDepart:   06:00:10: WARNING: 2F43 is without power so it can't depart from Essex Road // added at v2.19.1
+// FailTrainInFront   06:00:10: WARNING: 2F43 can't depart because there is a train in front at Essex Road // added at v2.19.1
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogActionError," + HeadCode + "," + OtherHeadCode + "," +
@@ -16681,19 +16681,19 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
         WarningStr = " waiting to be joined by " + OtherHeadCode + " at ";
         Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
     }
-    else if(ActionEventType == FailNoPowerUnableToDepart) //06:00:10: WARNING: 2F43 is without power so it can't depart from Essex Road // added after v2.19.0
+    else if(ActionEventType == FailNoPowerUnableToDepart) //06:00:10: WARNING: 2F43 is without power so it can't depart from Essex Road // added at v2.19.1
     {
         Prefix = " WARNING: ";
         ErrorLog = " is without power so it can't depart from ";
         WarningStr = " is without power so it can't depart from ";
-        Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
+        Display->WarningLog(27, TimeAndHeadCode + WarningStr + LocationID);
     }
-    else if(ActionEventType == FailTrainInFront) //06:00:10: WARNING: 2F43 can't depart because there is a train in front at Essex Road // added after v2.19.0
+    else if(ActionEventType == FailTrainInFront) //06:00:10: WARNING: 2F43 can't depart because there is a train in front at Essex Road // added at v2.19.1
     {
         Prefix = " WARNING: ";
         ErrorLog = " can't depart because there is a train in front at ";
         WarningStr = " can't depart because there is a train in front at ";
-        Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
+        Display->WarningLog(28, TimeAndHeadCode + WarningStr + LocationID);
     }
 
     BaseLog = Utilities->Format96HHMMSS(ActualTime) + Prefix + HeadCode;

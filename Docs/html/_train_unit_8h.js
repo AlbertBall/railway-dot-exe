@@ -58,7 +58,9 @@ var _train_unit_8h =
       [ "FailIncorrectExit", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a4bf1b0c1cca4d915a79869ef17fb4223", null ],
       [ "ShuttleFinishedRemainingHere", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0acbd3308562e64bf578de0f7427d8fdf8", null ],
       [ "RouteForceCancelled", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a284d24f2574f4d967d1263b0b7f3236d", null ],
-      [ "FailEntryRouteSetAgainst", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0ae62a8d9303802a22384662cbe37c379f", null ]
+      [ "FailEntryRouteSetAgainst", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0ae62a8d9303802a22384662cbe37c379f", null ],
+      [ "FailNoPowerUnableToDepart", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a47a37c161bf2c304916a80485a533755", null ],
+      [ "FailTrainInFront", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a161e67446eff98c76ad5b848d101a9e2", null ]
     ] ],
     [ "TActionType", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119b", [
       [ "Arrive", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba7efb87fcab8284995a2f8111d0158d00", null ],

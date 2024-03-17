@@ -3006,6 +3006,25 @@ Include (for 10.4 compiler) 3 x .dll files and 5 x .bpl files from the Win64 rel
 13 copy these new zip files to E:\Archives\railway backups
 
 
+On GitHub:
+
+1 Ensure references to new version are included in source files (instead of 'after last version').
+
+2 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
+
+3 Make sure DevHistory.txt is up to date (include version change info [for web & internal] & drop any text before title)
+
+4 Update DevHistory.txt with relevant public information if not already done so & make read-only
+
+5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure branch is set to 'master'), then merge with current development branch, and tag with release version. Delete the development branch.
+
+6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
+
+7 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
+
+8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
+
+
 On website:
 
 1 Upload new release version zips for 32 & 64 bits to 'Media' + any other modified files - Manual, Quick Start, FileSpec etc.
@@ -3055,24 +3074,7 @@ On website:
 
 12 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
 
-On GitHub:
-
-1 Ensure references to new version are included in source files (instead of 'after last version').
-
-2 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
-
-3 Make sure DevHistory.txt is up to date (include version change info [for web & internal] & drop any text before title)
-
-4 Update DevHistory.txt with relevant public information if not already done so & make read-only
-
-5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure branch is set to 'master'), then merge with current development branch, and tag with release version.
-
-6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
-
-7 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
-
-8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
-
+13 Check that it's announced on Discord News, if not announce it manually.
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
 

@@ -1,5 +1,7 @@
 Note: Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
+Slight change made in skipping timetabled events - added message that nothing will be skipped after the departure if the next event is selected.  This was because of a query on discord (ticket 36).
+
 
 Development History
 

@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 Post-" + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -14393,6 +14393,12 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
             {
                 ShowMessage("This is already the next event, nothing will be skipped");
                 Utilities->CallLogPop(2437);
+                return;
+            }
+            if(SkipTTActionsListBox->ItemIndex == 1)
+            {
+                ShowMessage("This is already the next event after the departure, nothing will be skipped");
+                Utilities->CallLogPop(2703);
                 return;
             }
             for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < SkipTTActionsListBox->ItemIndex; AVEPtr++) //Count < rather than == because incremented at end

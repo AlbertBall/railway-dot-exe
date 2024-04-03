@@ -1,4 +1,10 @@
+'Beyound' on p28 of manual
+
+maybe say min element length is 10m, or reduce to 5m?
+
 Note: Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
+
+Slight change made in skipping timetabled events - added message that nothing will be skipped after the departure if the next event is selected.  This was because of a query on discord (ticket 36).
 
 
 Development History
@@ -18,6 +24,62 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#105 Robert Raymond — 23/03/24 at 13:49
+I've got one I'd really love to see - random trains! Yes, passengers run on prescribed timetables and are pretty predictable. But some trains just run "when ready". It would really throw a little interest in the railways you already know if these "extras" would suddenly show up and cause problems. For American railroad, most freights runs as extras, meaning you'll see them at different times during a day.
+
+Possibly you could define a train as random and put base times to cover its travels (starting at midnight). The program, when it loads up, takes these trains, figures out a random start time, and adds this offset to all that train's time, effectively moving it back into a new spot on the timetable.
+
+Of course, I haven't looked much into how to actually build a timetable. Just thinking out loud (or while typing). 
+
+Albert — 23/03/24 at 15:16
+Mmm...  something to think about.  I keep a wish list of requests and will add this one to it for a possible future release - thanks for the suggestion.  [own later thought: such trains won't be fully random because they will be inserted when paths are available, so they'll be 'extra' rather than random.  Maybe have such trains in the timetable annotated with 'E' or something, so that the operator can insert them when appropriate.]
+
+#104 [done at v2.19.0] Flyin9 Scotsman — 29/01/2024 17:33
+Bit of a random one, the terminating services feature is excellent, found many a time to use it with delays on timetables.
+Out of curiosity though would it be possible to get a train to terminate at a set station in advance of it's arrival?
+Fully understand if not!
+
+Albert — 30/01/2024 07:42
+I think what would be useful here is a facility to set a reminder for when a train does something - arrives at a location, splits, joins, terminates or whatever. Then it could be used as you suggest for terminating a service early, but could also be used for anything else where you intend to take some action. Bear in mind I haven't given this any thought yet so don't know if it's feasible, but it's worth thinking about I think. Would this be a useful feature do you think?. 
+
+#103 Matyáš Pilz - MatyasP — 19/01/2024 20:45
+Hello, I would ask you, are planned in RailOS in future these functions?
+Departure of a train conditional on the arrival of another train (garanted transfer)
+Train lenght for each train (for example: 100 m for eletric units trains and 30 m for diesel motor units...)
+2.1. Train lenght variable in range (for example: from 300 m to 450 m, generated randomly in whole numbers, for freight trains)
+Stack of train routes
+
+I am from Czech Republic and I know that functions 2, 2.1 and 3 are really used (2.1 - for example: onetime is NEx 41029 long 500 m, onetime is NEx with the same number long 520 m...).
+Functions 2, 2.1 and 3 are implemented in the Unisim (older names Gordikon and Multikon, only in Czech; web: http://softikon.wz.cz:8080/ )
+
+Albert - 20/01/24 at 07:57
+
+Hi Matyas, it's already possible to hold a train until another arrives by using signaller control of the train that is to be held - provided that it is stopped at a location.  Right click the train and select 'Take signaller control'.  When under signaller control it will remain where it is until timetable control is restored - provided that no other signaller command is given.  When the other train arrives and you are ready for the first train to depart, right click it again and select 'Restore timetable control', and if the departure time has already passed it will depart 30 seconds later (30 seconds is the minimum time that elapses before a timetabled action).
+
+Variable train lengths aren't really practicable on a sim of this type where the basis of design is for each train to occupy two track elements, regardless of track element length and train length.  Examples of problems are where a train stands on elements that are each 10m long, and the train is 500m long, it would have to occupy 50 elements.  Alternatively a train that is 40m long standing on elements that are each 100m long would occupy less than a single element.  Also, as the train travels along and track element lengths vary, the train would have to grow and shrink in order to remain compatible with those lengths.  Like all things I'm sure it can be done, but it would require a complete redesign of the program.
+
+I don't know what is meant by a 'stack of train routes', please explain what it is and what it does and I'll try to help.
+
+Commuterpop — 20/01/2024 10:32
+I would guess "stacking" could alwo be described as "qeued" (in swedish you "store" a train route). 
+
+As in if you have a train route and send an order of a conflicting route, it's stored in the system until the conditions are met.
+
+Would love that one too, but have never asked for it as I've guessed it would cause a qite large work effort...
+
+Albert — 20/01/2024 10:50
+I 'think' (and please correct me if I'm wrong) that in a real PSB routes are set from signal to next signal, so it can take quite a few mouse clicks to set a longish route.  I can see the benefit of storing such a route if it needs to be cancelled to avoid having to go through the process of setting it again, but as a convenience in RailOS routes can be set across multiple signals with just two mouse clicks, so resetting it again after cancelling is easy, and therefore storing it less of a benefit.  And yes, it would indeed take a lot of coding to implement!
+
+Kaelon — 20/01/2024 21:12
+Route stacking or Route queueing as I think both @Matyáš Pilz - MatyasP and @Commuterpop describe it, is not storing a route through multiple signals in memory to restore it on demand later, but rather being able to set a train path through track that's already reserved and locked for another train.
+
+This is a feature in a bunch of European systems, where if you try to set such a path, it is added to a queue, and when the locked track is cleared, the computer will automatically set that path from the queue - also moving points if necessary. This feature makes it easier to send multiple trains down a line in short succession as you don't need to "babysit" these trains and set the next path whenever the train in front clears a point or manually controlled signal. 
+I don't think this is a feature that exists in British PSBs, and I also agree with Commuterpop that I think such a feature would probably be a very large effort to implement in ROS. 
+
+Albert — 21/01/2024 07:00
+Many thanks for that explanation, I've learned something new, I wasn't aware of it at all until now. No wonder I got hold of the wrong end of the stick!
+
 #102 Qwertytops — 07/12/23 at 10:34
 Would it be doable to have a visualisation of speed limits? Like a gradient that shows the speed limits of each individual track component
 
@@ -3006,6 +3068,25 @@ Include (for 10.4 compiler) 3 x .dll files and 5 x .bpl files from the Win64 rel
 13 copy these new zip files to E:\Archives\railway backups
 
 
+On GitHub:
+
+1 Ensure references to new version are included in source files (instead of 'after last version').
+
+2 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
+
+3 Make sure DevHistory.txt is up to date (include version change info [for web & internal] & drop any text before title)
+
+4 Update DevHistory.txt with relevant public information if not already done so & make read-only
+
+5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure branch is set to 'master'), then merge with current development branch, and tag with release version. Delete the development branch.
+
+6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
+
+7 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
+
+8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
+
+
 On website:
 
 1 Upload new release version zips for 32 & 64 bits to 'Media' + any other modified files - Manual, Quick Start, FileSpec etc.
@@ -3055,24 +3136,7 @@ On website:
 
 12 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
 
-On GitHub:
-
-1 Ensure references to new version are included in source files (instead of 'after last version').
-
-2 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
-
-3 Make sure DevHistory.txt is up to date (include version change info [for web & internal] & drop any text before title)
-
-4 Update DevHistory.txt with relevant public information if not already done so & make read-only
-
-5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure branch is set to 'master'), then merge with current development branch, and tag with release version.
-
-6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
-
-7 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
-
-8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
-
+13 Check that it's announced on Discord News, if not announce it manually.
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
 

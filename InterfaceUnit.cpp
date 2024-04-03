@@ -2593,47 +2593,48 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
 // ---------------------------------------------------------------------------
 // Menu Interface (for items not already covered above)
 // ---------------------------------------------------------------------------
-void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
+void __fastcall TInterface::LoadRailwayMenuItemClick(TObject* Sender)
 {
-    try
-    {
-        TrainController->LogEvent("LoadRailwayMenuItemClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadRailwayMenuItemClick");
-        if(!ClearEverything(1))
-        {
-            Utilities->CallLogPop(1139);
-            return;
-        }
-        // LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly"; //as was
-        // changed at v2.0.0 (Embarcadero change) to show all files together
-        LoadRailwayDialog->Filter = "Railway file (*.rly or *.dev)|*.rly; *.dev";
-        if(LoadRailwayDialog->Execute())
-        {
-            if(LoadRailwayDialog->InitialDir != TPath::GetDirectoryName(LoadRailwayDialog->FileName)) // new at v2.6.0 to retain a new directory
+	try
+	{
+		TrainController->LogEvent("LoadRailwayMenuItemClick");
+		Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadRailwayMenuItemClick");
+		// LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly"; //as was
+		// changed at v2.0.0 (Embarcadero change) to show all files together
+		LoadRailwayDialog->Filter = "Railway file (*.rly or *.dev)|*.rly; *.dev";
+		if (LoadRailwayDialog->Execute())
+		{
+			if (LoadRailwayDialog->InitialDir != TPath::GetDirectoryName(LoadRailwayDialog->FileName)) // new at v2.6.0 to retain a new directory
             {
-                LoadRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
-                SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
+				LoadRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
+				SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
             }
-            TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
+			if (!ClearEverything(1))
+			{
+                Utilities->CallLogPop(1139);
+                return;
+			}
+			TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
             LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
-        }
-        // else ShowMessage("Load Aborted"); drop this
-        // Display->Update(); //display updated in ClearandRebuildRailway
-        Track->CalcHLocMinEtc(9);
-        Level1Mode = BaseMode;
-        TrainController->AvHoursIntValue = 0;
-        TrainController->MTBFHours = 0;
-        SetLevel1Mode(11); // calls Clearand... to plot the new railway
-        Utilities->CallLogPop(31);
-    }
-    catch(const Exception &e)  //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
+            Track->CalcHLocMinEtc(9);
+            Level1Mode = BaseMode;
+            TrainController->AvHoursIntValue = 0;
+            TrainController->MTBFHours = 0;
+            SetLevel1Mode(11); // calls Clearand... to plot the new railway
+            Utilities->CallLogPop(31);
+		}
+		else ShowMessage("Load Safely Aborted");
+	}
+	catch (const Exception &e) //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
     {
-        TrainController->StopTTClockMessage(134, "Railway file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " + e.Message);
+		TrainController->StopTTClockMessage(134, "Railway file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " +
+                e.Message);
         Screen->Cursor = TCursor(-2); // Arrow;
         Utilities->CallLogPop(2551);
-//        ErrorLog(17, e.Message);
+        //        ErrorLog(17, e.Message);
     }
 }
+
 // ---------------------------------------------------------------------------
 
 void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
@@ -11767,7 +11768,7 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
             Track->SelectVectorAt(26, x) = TE;
         }
 
-        int FlipLinkArray[10] = 
+        int FlipLinkArray[10] =
         {
             0, 7, 8, 9, 4, 5, 6, 1, 2, 3
         };                                                      //0 & 5 are never used
@@ -11885,7 +11886,7 @@ void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
 // Track->SelectVectorAt(, x).SpeedTag = Track->MirrorArray[Track->SelectVectorAt(, x).SpeedTag];
         }
 
-        int MirrorLinkArray[10] = 
+        int MirrorLinkArray[10] =
         {
             0, 3, 2, 1, 6, 5, 4, 9, 8, 7
         };                                                        //0 & 5 are never used
@@ -12593,7 +12594,7 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
             Track->SelectVectorAt(73, x) = TE;
         }
 
-        int RotLeftLinkArray[10] = 
+        int RotLeftLinkArray[10] =
         {
             0, 7, 4, 1, 8, 5, 2, 9, 6, 3
         };                                                         //0 & 5 are never used
@@ -28955,6 +28956,7 @@ void TInterface::PlayerHandshakingActions()
 */
 
 //---------------------------------------------------------------------------
+
 
 
 

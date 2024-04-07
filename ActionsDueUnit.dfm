@@ -11,8 +11,8 @@ object ActionsDueForm: TActionsDueForm
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = '   Actions Due'
-  ClientHeight = 295
-  ClientWidth = 100
+  ClientHeight = 286
+  ClientWidth = 94
   Color = clBtnFace
   Constraints.MinHeight = 10
   Constraints.MinWidth = 10
@@ -22,10 +22,8 @@ object ActionsDueForm: TActionsDueForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = [fsBold]
-  OldCreateOrder = False
   Visible = True
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object ActionsDuePanel: TPanel
     Left = 0

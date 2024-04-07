@@ -1,6 +1,7 @@
 object PerfLogForm: TPerfLogForm
   Left = 0
   Top = 0
+  HorzScrollBar.Visible = False
   BorderIcons = []
   BorderStyle = bsSingle
   BorderWidth = 1
@@ -14,9 +15,7 @@ object PerfLogForm: TPerfLogForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object PerformanceLogBox: TMemo
     Left = 0

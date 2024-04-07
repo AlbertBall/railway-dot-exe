@@ -20,12 +20,12 @@ void __fastcall TPerfLogForm::FormCreate(TObject *Sender)
     PerfLogForm->Visible = false;
     PerfLogForm->Top = 0; //modified when displayed
     PerfLogForm->Left = 0;
-    PerfLogForm->Width = 476;
-    PerfLogForm->Height = 296;
+    PerfLogForm->Width = 486;      //added 10 for c++Builder v11.3 from v10.4 to display correctly after v2.19.1
+    PerfLogForm->Height = 306;   //added 10 for c++Builder v11.3 from v10.4 to display correctly after v2.19.1
     PerformanceLogBox->Top = 0;
     PerformanceLogBox->Left = 0;
-    PerformanceLogBox->Width = PerfLogForm->Width - 8; //form has to be 8 wider than content to display content correctly
-    PerformanceLogBox->Height = PerfLogForm->Height - 33; //to allow for title bar
+    PerformanceLogBox->Width = PerfLogForm->Width - 18; //form has to be 8 wider than content to display content correctly + 10 added as above for c++Builder v11.3 after v2.19.1
+    PerformanceLogBox->Height = PerfLogForm->Height - 43; //to allow for title bar   + 10 added as above for c++Builder v11.3 after v2.19.1
 }
 //---------------------------------------------------------------------------
 

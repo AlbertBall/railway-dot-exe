@@ -2595,43 +2595,43 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
 // ---------------------------------------------------------------------------
 void __fastcall TInterface::LoadRailwayMenuItemClick(TObject* Sender)
 {
-	try
-	{
-		TrainController->LogEvent("LoadRailwayMenuItemClick");
-		Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadRailwayMenuItemClick");
-		// LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly"; //as was
-		// changed at v2.0.0 (Embarcadero change) to show all files together
-		LoadRailwayDialog->Filter = "Railway file (*.rly or *.dev)|*.rly; *.dev";
-		if (LoadRailwayDialog->Execute())
-		{
-			if (LoadRailwayDialog->InitialDir != TPath::GetDirectoryName(LoadRailwayDialog->FileName)) // new at v2.6.0 to retain a new directory
-			{
-				LoadRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
-				SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
-			}
-			if (!ClearEverything(1))
-			{
-				Utilities->CallLogPop(1139);
-				return;
-			}
-			TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
-			LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
-			Track->CalcHLocMinEtc(9);
-			Level1Mode = BaseMode;
-			TrainController->AvHoursIntValue = 0;
-			TrainController->MTBFHours = 0;
-			SetLevel1Mode(11); // calls Clearand... to plot the new railway
-			Utilities->CallLogPop(31);
-		}
-		else ShowMessage("Load Safely Aborted");
-	}
-	catch (const Exception &e) //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
-	{
-		TrainController->StopTTClockMessage(134, "Railway file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " + e.Message);
-		Screen->Cursor = TCursor(-2); // Arrow;
-		Utilities->CallLogPop(2551);
-		//        ErrorLog(17, e.Message);
-	}
+    try
+    {
+        TrainController->LogEvent("LoadRailwayMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadRailwayMenuItemClick");
+        // LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly"; //as was
+        // changed at v2.0.0 (Embarcadero change) to show all files together
+        LoadRailwayDialog->Filter = "Railway file (*.rly or *.dev)|*.rly; *.dev";
+        if (LoadRailwayDialog->Execute())
+        {
+            if (LoadRailwayDialog->InitialDir != TPath::GetDirectoryName(LoadRailwayDialog->FileName)) // new at v2.6.0 to retain a new directory
+            {
+                LoadRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
+                SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
+            }
+            if (!ClearEverything(1))  //moved here from above ...->Execute... after v2.19.1 so the loaded railway isn't removed if the load doesn't go ahead (Stephen Smith
+            {                         //pull requ merged 04/04/24)
+                Utilities->CallLogPop(1139);
+                return;
+            }
+            TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
+            LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
+            Track->CalcHLocMinEtc(9);
+            Level1Mode = BaseMode;
+            TrainController->AvHoursIntValue = 0;
+            TrainController->MTBFHours = 0;
+            SetLevel1Mode(11); // calls Clearand... to plot the new railway
+            Utilities->CallLogPop(31);
+        }
+//        else ShowMessage("Load Safely Aborted"); //dropped after v2.19.1, not needed
+    }
+    catch (const Exception &e) //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
+    {
+        TrainController->StopTTClockMessage(134, "Railway file failed to load - is the latest program version in use?\nIf so then the file may be corrupt.\n\nError message: " + e.Message);
+        Screen->Cursor = TCursor(-2); // Arrow;
+        Utilities->CallLogPop(2551);
+        //        ErrorLog(17, e.Message);
+    }
 }
 
 // ---------------------------------------------------------------------------

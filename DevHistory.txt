@@ -1,3 +1,7 @@
+Note: C++Builder 11 cropped ActionsDueForm & PerfLogForm by about 10 pixels in width & height.  Added 10 to each dimensions to correct & added 10 to perf log list box so scrollbar displayed correctly
+
+Stephen Smith code change - keep existing loaded railway if user starts to load another but cancels it, before the existing railway was cleared regardless
+
 'Beyound' on p28 of manual
 
 maybe say min element length is 10m, or reduce to 5m?

@@ -22,8 +22,8 @@ __fastcall TActionsDueForm::TActionsDueForm(TComponent* Owner)
 void __fastcall TActionsDueForm::FormCreate(TObject *Sender)
 {
     ActionsDueForm->Visible = false;
-    ActionsDueForm->Width = 106;
-    ActionsDueForm->Height = 324;
+    ActionsDueForm->Width = 116;    //added 10 for c++Builder v11.3 from v10.4 to display correctly
+    ActionsDueForm->Height = 334;   //added 10 for c++Builder v11.3 from v10.4 to display correctly
     ActionsDueForm->Top = Screen->Height - ActionsDueForm->Height - 32; //-32 to avoid overlapping taskbar;;
     ActionsDueForm->Left = Screen->Width - ActionsDueForm->Width;
     ActionsDuePanel->Top = 0; //relative to form

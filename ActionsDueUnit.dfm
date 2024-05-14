@@ -11,8 +11,8 @@ object ActionsDueForm: TActionsDueForm
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = '   Actions Due'
-  ClientHeight = 286
-  ClientWidth = 94
+  ClientHeight = 285
+  ClientWidth = 90
   Color = clBtnFace
   Constraints.MinHeight = 10
   Constraints.MinWidth = 10

@@ -281,10 +281,35 @@
                 <DeployFile LocalName="$(BDS)\Redist\Win32\vclimg260.bpl" Configuration="Release" Class="DependencyPackage"/>
                 <DeployFile LocalName="$(BDS)\Redist\Win32\vclimg270.bpl" Configuration="Debug" Class="DependencyPackage"/>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\IndyCore270.bpl" Configuration="Release" Class="DependencyPackage"/>
+                <DeployFile LocalName="$(BDS)\Redist\Win64\IndyCore280.bpl" Configuration="Release" Class="DependencyPackage">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\IndySystem270.bpl" Configuration="Release" Class="DependencyPackage"/>
+                <DeployFile LocalName="$(BDS)\Redist\Win64\IndySystem280.bpl" Configuration="Release" Class="DependencyPackage">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\rtl270.bpl" Configuration="Release" Class="DependencyPackage"/>
+                <DeployFile LocalName="$(BDS)\Redist\Win64\rtl280.bpl" Configuration="Release" Class="DependencyPackage">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\vcl270.bpl" Configuration="Release" Class="DependencyPackage"/>
+                <DeployFile LocalName="$(BDS)\Redist\Win64\vcl280.bpl" Configuration="Release" Class="DependencyPackage">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\vclimg270.bpl" Configuration="Release" Class="DependencyPackage"/>
+                <DeployFile LocalName="$(BDS)\Redist\Win64\vclimg280.bpl" Configuration="Release" Class="DependencyPackage">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx32\libcgcrtl.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
@@ -350,6 +375,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName=".\Win32\Debug\railway.exe" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName=".\Win32\Debug\railway.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>railway.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName=".\Win32\Release\railway.exe" Configuration="Release" Class="ProjectOutput"/>
                 <DeployFile LocalName=".\Win64\Release\railway.exe" Configuration="Release" Class="ProjectOutput"/>
                 <DeployFile LocalName=".\Win64\Release\railway.exe" Configuration="Release" Class="ProjectOutput">
@@ -359,6 +390,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Borland.res" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="Borland.res" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Borland.res" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="Borland.res" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win64">
@@ -367,6 +404,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="railway.res" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="railway.res" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="railway.res" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="railway.res" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win64">

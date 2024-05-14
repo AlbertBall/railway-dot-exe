@@ -6738,8 +6738,8 @@ void __fastcall TInterface::TimeOrderButtonClick(TObject *Sender)
                 }
                 else if(MainBody)
                 {
-                    if(*x == "") //end of MainBody
-                    {
+                    if((*x == "") || (*x == ',')) //end of MainBody, test for isolated comma added after 2.19.1 when Micke's Uppsala railway had spurious comma at end
+                    {                                                           //but it validated ok. Not clear how got there but it did so it could happen again
                         MainBody = false;
                         PostEnd = true;
                         *x = "::::;";

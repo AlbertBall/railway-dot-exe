@@ -1,6 +1,10 @@
-Note: C++Builder 11 cropped ActionsDueForm & PerfLogForm by about 10 pixels in width & height.  Added 10 to each dimensions to correct & added 10 to perf log list box so scrollbar displayed correctly
+Found spurious comma at end of Micke's Uppsala timetable that caused the time order function to give the error message not to save in this form as likely corrupted - not a fatal error
 
-Stephen Smith code change - keep existing loaded railway if user starts to load another but cancels it, before the existing railway was cleared regardless
+Manual:  for calling on say that applies to non-station locs too
+
+Note: C++Builder 11 cropped ActionsDueForm & PerfLogForm by about 10 pixels in width & height.  Added 10 to each dimensions to correct & added 10 to perf log list box so scrollbar displayed correctly - though don't understand why this happened
+
+Stephen Smith code change - keep existing loaded railway if user starts to load another but cancels it, before this change the existing railway was cleared regardless
 
 'Beyound' on p28 of manual
 

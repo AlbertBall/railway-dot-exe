@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post-" + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -2609,7 +2609,7 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject* Sender)
                 LoadRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
                 SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
             }
-            if (!ClearEverything(1))  //moved here from above ...->Execute... after v2.19.1 so the loaded railway isn't removed if the load doesn't go ahead (Stephen Smith
+            if (!ClearEverything(1))  //moved here from above ...->Execute... at v2.20.0 so the loaded railway isn't removed if the load doesn't go ahead (Stephen Smith
             {                         //pull requ merged 04/04/24)
                 Utilities->CallLogPop(1139);
                 return;
@@ -2623,7 +2623,7 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject* Sender)
             SetLevel1Mode(11); // calls Clearand... to plot the new railway
             Utilities->CallLogPop(31);
         }
-//        else ShowMessage("Load Safely Aborted"); //dropped after v2.19.1, not needed
+//        else ShowMessage("Load Safely Aborted"); //dropped at v2.20.0, not needed
     }
     catch (const Exception &e) //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
     {
@@ -6738,9 +6738,17 @@ void __fastcall TInterface::TimeOrderButtonClick(TObject *Sender)
                 }
                 else if(MainBody)
                 {
-                    if((*x == "") || (*x == ',')) //end of MainBody, test for isolated comma added after 2.19.1 when Micke's Uppsala railway had spurious comma at end
-                    {                                                           //but it validated ok. Not clear how got there but it did so it could happen again
-                        MainBody = false;
+                    bool AllCommas = true;
+                    for(int a = 1; a < (*x).Length() + 1; a++) // check for nothing but commas (may be all commas if created from Excel) or a blank line
+                    {
+                        if((*x)[a] != ',')
+                        {
+                            AllCommas = false;
+                        }
+                    }
+                    if((*x == "") || AllCommas) //end of MainBody, test for line with one or more commas, added after 2.19.1 when Micke's Uppsala railway had spurious
+                    {                                                //comma at end but it validated ok. Not clear how got there but it did so it could happen again
+                        MainBody = false;                            //may have all commas if used Excel (this also used on ProcessOneTimetableLine)
                         PostEnd = true;
                         *x = "::::;";
                         IteratorCount++;
@@ -6926,9 +6934,8 @@ void TInterface::ConvertCRLFsToCommas(int Caller, AnsiString &ConvStr)
     ConvStr = OutStr;
     if(ConvStr == "")
     {
-        ConvStr = ','; // don't return a null or will fail, OK to return a comma on its own as will be ignored during ProcessOneTimetableLine
+        ConvStr = ','; // don't return a null or will fail, OK to return a comma on its own as will be ignored during ProcessOneTimetableLine when AllCommas will be true
     }
-    // when AllCommas will be true
     Utilities->CallLogPop(1846);
 }
 
@@ -7037,8 +7044,9 @@ void TInterface::TimetableHandler()
         {
             RestoreTTButton->Enabled = true;
         }
-        if(!TimetableValidFlag && RlyFile && !TimetableChangedFlag && (CreateEditTTFileName != ""))
-        {
+        if(!TimetableValidFlag && RlyFile && !TimetableChangedFlag && (CreateEditTTFileName != "") && (AZOrderButton->Caption != "Original Order")
+            && (TimeOrderButton->Caption != "Original Order"))//added AZOrder & TimeOrder conditions at v2.20.0 to prevent Validate being offered when order changed
+        {                                                //because it validates the timetable text file which hasn't changed until saved so the message given is misleading
             // Need !TimetableChangedFlag because the changed TT must be saved before validation - it's the TT file that is checked
             // so if it is changed but not saved, the 'correct' file will check OK but the changed TT may well not be valid
             ValidateTimetableButton->Enabled = true;
@@ -7058,7 +7066,8 @@ void TInterface::TimetableHandler()
             CutTTEntryButton->Enabled = true;
             DeleteTTEntryButton->Enabled = true;
         }
-        if((TimetableChangedFlag) && !TimetableEditVector.empty())
+        if(!TimetableEditVector.empty() && (TimetableChangedFlag || (AZOrderButton->Caption == "Original Order")
+            || (TimeOrderButton->Caption == "Original Order"))) //added AZOrder & TimeOrder conditions at v2.20.0 to allow saving in new order - warning given if click
         {
             SaveTTButton->Enabled = true;
         }

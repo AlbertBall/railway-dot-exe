@@ -51,9 +51,9 @@ div.WordSection1
 
 <p><a name=6.6></a><b>6.6 Calling-on</b></p>
 
-<p>A train that is held outside a station by a signal, which is red because
+<p>A train that is held outside a station or non-station location by a signal, which is red because
 another train is preventing its entry on the track that the held train is
-directed towards, may be called-on by the signaller into the platform. Under
+directed towards, may be called-on by the signaller into the location. Under
 these circumstances the train speed is severely restricted (30km/h max), and
 the train will stop adjacent to the existing train providing it is not moving
 towards the called-on train. Call-on availability is indicated by the <img
@@ -63,41 +63,43 @@ the signaller wishes to call-on the train then the 'call-on' button is left
 clicked, then the signal that is holding the approaching train is left clicked.
 The position lights then illuminate on the signal and unless a route or
 part-route has already been set an unrestricted route is created into the
-platform and the train proceeds into the station.</p>
+location and the train enters it.</p>
 
 <p>The following conditions have to be met before a call-on is available:- </p>
 
-<p>a) the approaching train has stopped at a signal but not at a location; </p>
+<p>a) the approaching train has stopped at a signal but not at a stopping location; </p>
 
 <p>b) if the blocking train is facing the approaching train it is stopped
 awaiting a join or change of direction, has terminated, or is under signaller
 control - otherwise it might depart and crash into the called-on train;</p>
 
-<p>c) at least one platform element is free to accept the approaching train; </p>
+<p>c) at least one location element is free to accept the approaching train; </p>
 
-<p>d) points (if any) are set for a direct route into the platform; </p>
+<p>d) points (if any) are set for a direct route into the location; </p>
 
-<p>e) the approaching train is to stop at the station; </p>
+<p>e) the approaching train is to stop at the location; </p>
 
-<p>f) there are no more facing signals between the train and the platform;</p>
+<p>f) there are no more facing signals between the train and the location;</p>
 
 <p>g) the train in front is preventing the stop signal being released for the
 approaching train;</p>
 
 <p>h) the train in front is not exiting at a continuation;</p>
 
-<p>i) the signal is within 4km of the platform; and</p>
+<p>i) the signal is within 4km of the location; and</p>
 
-<p>j) the route into the platform does not conflict with any other route. </p>
+<p>j) the route into the location does not conflict with any other route; and </p>
+
+<p>k) the train to be called on  has power available. </p>
 
 <p>If one or more of these conditions cannot be met and the train has to enter
-the station then it will have to be taken under signaller control and allowed
+the location then it will have to be taken under signaller control and allowed
 to pass the red signal. Trains under signaller control will always stop for
 trains in front, providing they are not moving towards the called-on train.
 From v1.2.0 an unrestricted route may be set from the stop signal to the
 platform and this will set all the points appropriately to allow a call-on.</p>
 
-<p>After a train has been called-on and is stopped in the station, it can't depart
+<p>After a train has been called-on and is stopped at the location, it can't depart
 until the track is clear to the next signal in front.</p>
 
 </div>

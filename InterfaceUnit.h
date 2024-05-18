@@ -1246,7 +1246,7 @@ private:
     AnsiString TempTTFileName;
 ///< the name for the temporary file used to save loaded timetables for storage in session files & error logs
     AnsiString TTSelectedEntry;
-///< used to record the current timetable entry when changing to AZ order or back to original order
+///< used to record the current timetable entry when changing to AZ order, Time order or back to original order
     AnsiString SelectedGraphicFileName;
 ///< filename for selected graphic set during LoadGraphic
     bool AllSetUpFlag;

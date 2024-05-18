@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.19.1</span>
+   &#160;<span id="projectnumber">v2.20.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -110,12 +110,12 @@ $(document).ready(function(){initNavTree('_perf_log_unit_8cpp_source.html',''); 
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Visible = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Top = 0; <span class="comment">//modified when displayed</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Left = 0;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Width = 476;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Height = 296;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Width = 486;      <span class="comment">//added 10 for c++Builder v11.3 from v10.4 to display correctly at v2.20.0</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Height = 306;   <span class="comment">//added 10 for c++Builder v11.3 from v10.4 to display correctly at v2.20.0</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="class_t_perf_log_form.html#a4917557ea994bf5d5e2aa2e81c4afdc8">PerformanceLogBox</a>-&gt;Top = 0;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="class_t_perf_log_form.html#a4917557ea994bf5d5e2aa2e81c4afdc8">PerformanceLogBox</a>-&gt;Left = 0;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="class_t_perf_log_form.html#a4917557ea994bf5d5e2aa2e81c4afdc8">PerformanceLogBox</a>-&gt;Width = <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Width - 8; <span class="comment">//form has to be 8 wider than content to display content correctly</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="class_t_perf_log_form.html#a4917557ea994bf5d5e2aa2e81c4afdc8">PerformanceLogBox</a>-&gt;Height = <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Height - 33; <span class="comment">//to allow for title bar</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="class_t_perf_log_form.html#a4917557ea994bf5d5e2aa2e81c4afdc8">PerformanceLogBox</a>-&gt;Width = <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Width - 18; <span class="comment">//form has to be 8 wider than content to display content correctly + 10 added as above for c++Builder v11.3 at v2.20.0</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="class_t_perf_log_form.html#a4917557ea994bf5d5e2aa2e81c4afdc8">PerformanceLogBox</a>-&gt;Height = <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>-&gt;Height - 43; <span class="comment">//to allow for title bar   + 10 added as above for c++Builder v11.3 at v2.20.0</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//---------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>

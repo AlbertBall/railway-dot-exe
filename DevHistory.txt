@@ -1,19 +1,4 @@
-Found spurious comma at end of Micke's Uppsala timetable that caused the time order function to give the error message not to save in this form as likely corrupted - not a fatal error
-
-Manual:  for calling on say that applies to non-station locs too
-
-Note: C++Builder 11 cropped ActionsDueForm & PerfLogForm by about 10 pixels in width & height.  Added 10 to each dimensions to correct & added 10 to perf log list box so scrollbar displayed correctly - though don't understand why this happened
-
-Stephen Smith code change - keep existing loaded railway if user starts to load another but cancels it, before this change the existing railway was cleared regardless
-
-'Beyound' on p28 of manual
-
-maybe say min element length is 10m, or reduce to 5m?
-
 Note: Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
-
-Slight change made in skipping timetabled events - added message that nothing will be skipped after the departure if the next event is selected.  This was because of a query on discord (ticket 36).
-
 
 Development History
 
@@ -32,6 +17,16 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#107 [done at v2.20.0] Stephen Smith via GitHub - 03/04/24
+This update will enhance the Load Railway... menu item so that it does not clobber the existing loaded railway if the user cancels the operation before selecting a new railway to load.
+
+#106 Stephen Smith - via GitHub 02/04/24
+Consider adding a Check for Updates... option in the Help menu.
+The operation can query the releases page (on GitHub) and possibly provide a link to the latest version to download?
+
+Albert 03/04/24
+I have periodically wondered about this as it would be a very useful feature, but I had such a difficult time when working on a multi-player version (connections dropping and couldn't find out why) that I have resisted all things internet since. If you know of a way to implement this please go ahead. I suspect it's not all that complicated as most programs have it.
 
 #105 Robert Raymond — 23/03/24 at 13:49
 I've got one I'd really love to see - random trains! Yes, passengers run on prescribed timetables and are pretty predictable. But some trains just run "when ready". It would really throw a little interest in the railways you already know if these "extras" would suddenly show up and cause problems. For American railroad, most freights runs as extras, meaning you'll see them at different times during a day.
@@ -816,6 +811,34 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.19.1 for v2.20.0
+
+Release notes:
+
+The main change in this release is something that I hope won't be noticed at all - compilation using version 11.3 of C++Builder.  Although this shouldn't cause any changes I did see one peculiarity - the actions due and performance panels displayed slightly smaller than before.  I don't know why that happened but I could easily compensate by increasing their size.  I hope that's the only difference but please be on the lookout for any differences, especially in the display, and let me know if you find any - thanks.
+
+Stephen Smith suggested retaining the existing loaded railway when a user starts to load another railway but thinks better of it and cancels the load, rather than clearing the existing railway as before this release.  Not only did he suggest this but offered the code change as well - which I was happy to incorporate - how good is that!  I only wish that happened more often!
+
+I discovered an error in the timetable editor when changing the order of a timetable to alphabetical or time order.  The 'Validate timetable' button was available after changing the order, but instead of validating the revised order it validated the original order.  The reason was that the timetable is stored in two forms: the original .ttb file, and an array of entries that is used internally by the program.  When the order is changed only the array changes, not the .ttb file, but when 'Validate timetable' is clicked it validates the .ttb file, not the array.  In most cases this wouldn't matter, but in some cases it could, and a misleading result would be given.  Now that button is unavailable until the timetable is saved, which saves the array as a .ttb file (and warns the user that the change will be permanent).
+
+A small change was made in skipping timetabled events.  I added a message that nothing will be skipped after the departure if the next event is selected (nothing was skipped earlier but no message was given).  This was because of a query on discord (ticket 36).
+
+Not for website:
+
+/ Can validate a tt file when have changed it to AZ or time order, but it's the original being validated not the changed order file so the result is misleading.  Changed button enabling so validate not available in changed order but saveTT is available - though a warning is given if click saveTT with order changed
+
+/ Make next release 2.20.0 & say biggest change is the new compiler v11.3 from 10.4 & hopefully won't be noticed at all!  Mention actions due & perf panel anomalies: C++Builder 11 cropped ActionsDueForm & PerfLogForm by about 10 pixels in width & height.  Added 10 to each dimensions to correct & added 10 to perf log list box so scrollbar displayed correctly - though don't understand why this happened
+
+/Found spurious comma at end of Micke's Uppsala timetable that caused the time order function to give the error message not to save in this form as likely corrupted - not a fatal error
+
+/Manual:  for calling on say that applies to non-station locs too
+
+/ Stephen Smith code change - keep existing loaded railway if user starts to load another but cancels it, before this change the existing railway was cleared regardless
+
+/'Beyound' on p28 of manual (5.2.3 Splits)
+
+/ Slight change made in skipping timetabled events - added message that nothing will be skipped after the departure if the next event is selected.  This was because of a query on discord (ticket 36).
 
 VERSION CHANGES AFTER v2.19.0 for v2.19.1
 
@@ -3043,7 +3066,7 @@ Prior to uploading:
 
 2 Increment version number in Project>Options separately for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
 
-3 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version). Use Project Deployment to ensure correct versions.
+3 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version). Use Project Deployment to ensure correct versions (note that not all depndencies shown for debug version, use release version but only add the ones that expect and test on laptop).
 
 4 Do a final full build for each:
 32bit: use debug version, add 32 to version information in InterfaceUnit.cpp, copy railway.exe to RailOS32.exe for release & to RailOS32-vx.x.x for debug folder.

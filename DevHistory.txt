@@ -18,6 +18,12 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#108 Fly California/Silicon Airways — 08/06/24 at 01:50
+An undo button would be nice to have
+
+Albert — 08/06/24 at 07:09
+Indeed it would, and I've needed it myself many times! I've thought about it often but can't think of a way to do it with reasonable simplicity. It would need the program to save the state or the change in state between each button press for each mode that is selected, and that's just for a single undo, multiple undos would need multiple states or changes in state saving. A session file saves the state for the operating mode, and the functions needed to manage that are very complex. Having similar state saving functions for all modes is just too much to contemplate. Programs that allow undos generally need only save a single state, or save the state change between one state and the next, or multiple changes for multiple undos. I'm not saying it's easy for other programs, I'm sure it's not, but I suspect it's easier than it would be for RailOS. So, unless I or anyone else can think of a relatively simple way to do it it's not going to happen - sorry.
+
 #107 [done at v2.20.0] Stephen Smith via GitHub - 03/04/24
 This update will enhance the Load Railway... menu item so that it does not clobber the existing loaded railway if the user cancels the operation before selecting a new railway to load.
 
@@ -3080,8 +3086,8 @@ Prior to uploading:
 
 8 Update any other relevant files e.g. filespec & timetable errors
 
-9 Include (for 10.4 compiler) 5 x .dll files and 5 x .bpl files from the Win32 debug folder. 
-Include (for 10.4 compiler) 3 x .dll files and 5 x .bpl files from the Win64 release folder.
+9 Include (for 11.3 compiler) 5 x .dll files and 5 x .bpl files from the Win32 debug folder. 
+Include (for 11.3 compiler) 3 x .dll files and 5 x .bpl files from the Win64 release folder.
 
 10 Write release notes & include in DevHistory.txt for this release.
 
@@ -3109,7 +3115,7 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure branch is set to 'master'), then merge with current development branch, and tag with release version. Delete the development branch.
+5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch), then merge with current development branch, and tag with release version. Delete the development branch.
 
 6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
 
@@ -3117,8 +3123,10 @@ On GitHub:
 
 8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
 
+9 Create a new branch Post_vx.xx.xx_Dev on local repo and push to remote
 
-On website:
+
+On website (use Chrome - DiviBuilder seems to work better):
 
 1 Upload new release version zips for 32 & 64 bits to 'Media' + any other modified files - Manual, Quick Start, FileSpec etc.
 
@@ -3134,7 +3142,7 @@ On website:
 3 Under 'General' tab
 	Click 'Add File' & "Choose file" to enter url of each of the the new zips (32 & 64bits), give it the version number as its name
 	Move it to the top of the list (need full window to move)
-	Make latest release the current version & last one deprecated
+	Delete the earlier versions
 	'Virtual' & 'Downloadable' boxes should already be ticked
 	Price should be 0.00
 	Download limit should be 'Unlimited'
@@ -3157,11 +3165,11 @@ On website:
 
 7 Preview then update if all ok (best to select update first as otherwise preview shows last version), download & check correct
 
-8. add earlier versions to archived programs and delete from current page
+8. add earlier versions to archived programs and ensure deleted from current page
 
-9 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above (select correct category & search), SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.  Delete any earlier versions & add to 'Archived Documentation' 
+9 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above (select correct category & search), SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Delete any earlier versions.  Update & preview.  Add any earlier versions to 'Archived Documentation' 
 
-10 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
+10 Go to 'Version Information' page (usually last page, uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
 
 11 Download & check the new release & anything else that's changed
 

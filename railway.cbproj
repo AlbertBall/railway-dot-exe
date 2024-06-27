@@ -479,7 +479,6 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Borland.res" Configuration="Debug" Class="ProjectFile"/>
                 <DeployFile LocalName="Borland.res" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="Borland.res" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
@@ -500,7 +499,6 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="railway.res" Configuration="Debug" Class="ProjectFile"/>
                 <DeployFile LocalName="railway.res" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="railway.res" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">

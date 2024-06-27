@@ -1,5 +1,9 @@
 Note: Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
+Altered reminder message for arr & dep events to say notification for arrival only (earlier was both but notificatione only ever given for arrival)
+
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -17,6 +21,35 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#109 Commuterpop - 19/06/24 at 16:30
+Regarding session files:
+
+The naming of the files is to me less than optimal. Example:
+Session 03-01-2024 01.18.42; Timetable time 13.51.18; Crewe; Crewe May 2023.ssn
+The problem is when you're looking for a nice one to pick up just for a short run.
+I guess the most common way to choose a session file is by name, and then perhaps also time in the sim (If you save several of the same sim, at some interesting points).
+However, if you have a number of ssn files it is quite hard to find them, and also compare the times in the same sim, as their sorting order are:
+Date of saving
+Time of saving
+Timetable time
+Name
+
+At least to me, the time I ran and saved it isn't interesting, and makes the different saves of Crewe (as an example) get spread out in the directory.
+
+I realise that it is quite complicated to change a standard in an application, so here's a suggestion that (hopefully) won't mess up anything:
+If it's possible, replace "save" with "save as". If you want to save it by todays standard, you can just hit enter, otherwise rename it as you wish, without troubling the creator of Rail OS
+
+Albert — 20/06/2024 08:30
+Why not keep session files in 'Date modified' order, so that the last one saved is always at the top of the list?  Then if one is to be saved it can easily be renamed in Windows Explorer.
+
+Commuterpop — 22/06/24 at 21:55
+Because often I don't want to continue the last one played, but choose something, like a menue on a restaurant. Today I might want to play Crewe, and then I see that I have saved three different in-game times, tomorrow I might want to play S-bahn Berlin nord.
+I search by the names, not by date I played them.
+That's me. Others maybe choose differently.
+
+Albert — 23/06/24 at 08:52
+What you propose is not an easy change.  There isn't a built-in 'Save As' function.  Where the program offers it it has to be coded specially.  In the case of session files when the button is clicked the save isn't done immediately, instead a 'SaveSession' flag is set, and the actual saving is done at a subsequent clock cycle when there's no higher priority action required.  A new 'Save As' feature would probably best be added there, and subsequent actions like pressing Enter to use the standard name coded appropriately.  Often when things appear simple to the user there's a lot of code lying behind them.  Creating new code or changing existing code always carries the high risk of creating new bugs, so I try to avoid it as much as possible.  Nevertheless I'll add your request to the wish list, for future consideration, especially if other changes are needed to the session file functions. 
 
 #108 Fly California/Silicon Airways — 08/06/24 at 01:50
 An undo button would be nice to have
@@ -255,7 +288,7 @@ KR/ZAR — 21/03/2023 18:18
 Yh that is more if you have a smaller scale
 
 #93 from BWJM — 18/03/23 via discord at 09:17
-I wish there was a way to display a message to the user at a specified time.
+[partially done using reminders at v2.19.0] I wish there was a way to display a message to the user at a specified time.
 Attention! A traffic collision on King St. has caused a disruption in services. Trains are now returning north at Green crossover and returning south at Cameron.
 
 The timetable syntax could be easy - it would be its own "service", just like the initial starting time, and might look like this:

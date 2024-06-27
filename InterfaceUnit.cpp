@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 Post " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -14582,8 +14582,8 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
         UnicodeString Msg;
         if(PosArDep > 0)
         {
-            Msg = L"This will set a reminder at '" + ReminderString + L"'\n(two notifications, first for arrival then for departure).\n\nOK to proceed?";
-        }
+            Msg = L"This will set a reminder at '" + ReminderString + L"'\n(notifications given for arrival only).\n\nOK to proceed?";
+        } //above message changed after v2.20.0, earlier said would give notifications for both arr & dep, but doesn't
         else
         {
             Msg = L"This will set a reminder at '" + ReminderString + L"'.\n\nOK to proceed?";

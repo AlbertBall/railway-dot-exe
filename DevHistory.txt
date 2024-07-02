@@ -1,4 +1,6 @@
-Note: Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
+Post v2.20.0 notes:
+
+Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
 Altered reminder message for arr & dep events to say notification for arrival only (earlier was both but notificatione only ever given for arrival)
 

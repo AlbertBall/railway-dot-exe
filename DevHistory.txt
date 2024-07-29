@@ -4,6 +4,11 @@ Check JasonB's Scotland railway when submitted to see if there's a problem with 
 
 Altered reminder message for arr & dep events to say notification for arrival only (earlier was both but notificatione only ever given for arrival)
 
+Error corrected where terminate early - all passes were listed as departures in floating window, notified by Albie Vowles in email of 25/07/24
+
+Corrected terminate early follow on headcodes for repeat services, earlier just gave the first service headcode for all repeats
+
+
 
 
 Development History

@@ -14885,8 +14885,8 @@ bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString
             {
                 Condition4Met = true;
                 NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
-                NextServiceRef = NextServiceEntryPtr->ServiceReference;
-                break;
+                NextServiceRef = TrainController->GetRepeatHeadCode(7777, NextServiceEntryPtr->HeadCode, Train.RepeatNumber, Train.IncrementalDigits); //changed after v2.20.0 to give
+                break;                                                                                                   //correct headcode for repeats
             }
             if(AVEPtr->Command == "Fns-sh")
             {
@@ -14894,12 +14894,12 @@ bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString
                 if(Train.RepeatNumber >= (Train.TrainDataEntryPtr->NumberOfTrains - 1)) // finished all repeats
                 {
                     NextServiceEntryPtr = AVEPtr->NonRepeatingShuttleLinkEntryPtr;
-                    NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                    NextServiceRef = NextServiceEntryPtr->HeadCode; //no repeats for finishing service
                 }
                 else
                 {
                     NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
-                    NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                    NextServiceRef = TrainController->GetRepeatHeadCode(7777, NextServiceEntryPtr->HeadCode, Train.RepeatNumber + 1, Train.IncrementalDigits); //changed after v2.20.0 as above
                 }
                 break;
             }
@@ -14913,7 +14913,7 @@ bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString
                 {
                 Condition4Met = true;
                 NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
-                NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                NextServiceRef = TrainController->GetRepeatHeadCode(7777, NextServiceEntryPtr->HeadCode, Train.RepeatNumber + 1, Train.IncrementalDigits); //changed after v2.20.0 as above
                 break;
                 }
             }
@@ -14921,7 +14921,7 @@ bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString
             {
                 Condition4Met = true;
                 NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
-                NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                NextServiceRef = NextServiceEntryPtr->HeadCode; //no repeats for feeder service
                 break;
             }
         }

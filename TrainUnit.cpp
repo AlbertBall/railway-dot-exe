@@ -7841,14 +7841,14 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
     do
     {
         Ptr++;
-        AnsiString TrainLoc = ""; //moved to here from below after v2.20.0  when added last 2 conditions in first PassTime check below (see Albie Vowles' email of 25/07/24)
+        AnsiString TrainLoc = ""; //moved to here from below at v2.20.1  when added last 2 conditions in first PassTime check below (see Albie Vowles' email of 25/07/24)
         if((Ptr->FormatType == Repeat) || TimetableFinished)
         {
             break;
         }
         if((Ptr->FormatType == TimeTimeLoc) && FirstPass)
         {
-//            AnsiString TrainLoc = "";  moved from here after v2.20.0 - see above
+//            AnsiString TrainLoc = "";  moved from here at v2.20.1 - see above
             if(TrainMode == Timetable)
             {
                 if(TrainAtLocation(1, TrainLoc) && (TrainLoc == Ptr->LocationName) && (Ptr == EntryPtr)) //added '&& (Ptr == EntryPtr)' at v2.6.0 when allow multiple same location entries
@@ -7928,7 +7928,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         }
         else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture && (TrainAtLocation(5, TrainLoc)) && (TrainLoc == Ptr->LocationName)) //added at v2.12.0 for becoming new service early (see BecomeNewService)
         {                                                               //note that TreatPassAsTimeLocDeparture can't be set if have SkippedDeparture
-                                                                        //added last 2 condits after v2.20.0 as otherwise all later passes listed as departures (see Albie Vowles' email of 25/07/24)
+                                                                        //added last 2 condits at v2.20.1 as otherwise all later passes listed as departures (see Albie Vowles' email of 25/07/24)
             PartStr = Utilities->Format96HHMM(GetTrainTime(47, Ptr->EventTime)) + ": Depart from " + Ptr->LocationName;
         }
         else if(Ptr->FormatType == PassTime) //must come after 'else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture)'

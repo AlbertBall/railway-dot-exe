@@ -1,15 +1,6 @@
-Post v2.20.0 notes:
+Post v2.20.1 notes:
 
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
-
-Altered reminder message for arr & dep events to say notification for arrival only (earlier was both but notificatione only ever given for arrival)
-
-Error corrected where terminate early - all passes were listed as departures in floating window, notified by Albie Vowles in email of 25/07/24
-
-Corrected terminate early follow on headcodes for repeat services, earlier just gave the first service headcode for all repeats
-
-
-
 
 Development History
 
@@ -28,6 +19,12 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#110 Albie Vowles - 31/07/24 by email
+I keep thinking of things that might be useful for ROSim, would it be possible to (as an example), 1G01 get delayed by 40 minutes at kemble, so much so that 1G02 has to wait for 10 minutes behind it, would it be possible to add a 'timetable customiser' ish thing so during the simulation you can say, (if 1G01 -> 1L52 and 1G02 -> 1L53), it could be changed (mid simulation) to 1G01 -> 1L53 and 1G02 -> 1L52 at kemble, i realise now this is going to be difficult to do, but is there a possibility for something like this in the future??
+
+Albert - 31/07/24
+Trains can be delayed by taking signaller control for as long as you wish, then restoring timetable control.  A 'timetable customiser' is in effect an ability to reprogram the timetable during operation.  Not only would this be difficult, it would depart from real life practice where timetables are fixed in advance.  Unscheduled changes are made of course to respond to particular circumstances, and for this the 'skip' functions and signaller control are provided.  I don't intend to add the sort of functionality you suggest, but the program is open-source, so you or anyone else can make such changes.
 
 #109 Commuterpop - 19/06/24 at 16:30
 Regarding session files:
@@ -857,6 +854,18 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.20.0 for v2.20.1
+
+Release notes:
+
+This release fixes three relatively minor bugs:
+
+1.  The reminder message for events that included both arrivals and departures stated that notifications would be given at both the arrival time and departure time, whereas only a single norification is given at the arrival time.  The message has now been corrected.
+
+2.  When a train was selected to terminate early and become a follow-on service, all later location passes were listed as departures in the floating information window.  These are now listed correctly.  Thanks are due to Albie Vowles for notifying me of this by email.
+
+3.  When a shuttle train was selected to terminate early and become a follow-on service, the follow-on headcode was given as the first servicve headcode, rather than the repeat headcode as it should have been.  The correct headcode is now given.
 
 VERSION CHANGES AFTER v2.19.1 for v2.20.0
 

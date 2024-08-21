@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post " + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -14583,7 +14583,7 @@ void __fastcall TInterface::ReminderListBoxMouseUp(TObject *Sender, TMouseButton
         if(PosArDep > 0)
         {
             Msg = L"This will set a reminder at '" + ReminderString + L"'\n(notifications given for arrival only).\n\nOK to proceed?";
-        } //above message changed after v2.20.0, earlier said would give notifications for both arr & dep, but doesn't
+        } //above message changed at v2.20.1, earlier said would give notifications for both arr & dep, but doesn't
         else
         {
             Msg = L"This will set a reminder at '" + ReminderString + L"'.\n\nOK to proceed?";
@@ -14885,7 +14885,7 @@ bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString
             {
                 Condition4Met = true;
                 NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
-                NextServiceRef = TrainController->GetRepeatHeadCode(7777, NextServiceEntryPtr->HeadCode, Train.RepeatNumber, Train.IncrementalDigits); //changed after v2.20.0 to give
+                NextServiceRef = TrainController->GetRepeatHeadCode(72, NextServiceEntryPtr->HeadCode, Train.RepeatNumber, Train.IncrementalDigits); //changed at v2.20.1 to give
                 break;                                                                                                   //correct headcode for repeats
             }
             if(AVEPtr->Command == "Fns-sh")
@@ -14899,7 +14899,7 @@ bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString
                 else
                 {
                     NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
-                    NextServiceRef = TrainController->GetRepeatHeadCode(7777, NextServiceEntryPtr->HeadCode, Train.RepeatNumber + 1, Train.IncrementalDigits); //changed after v2.20.0 as above
+                    NextServiceRef = TrainController->GetRepeatHeadCode(73, NextServiceEntryPtr->HeadCode, Train.RepeatNumber + 1, Train.IncrementalDigits); //changed at v2.20.1 as above
                 }
                 break;
             }
@@ -14913,7 +14913,7 @@ bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString
                 {
                 Condition4Met = true;
                 NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
-                NextServiceRef = TrainController->GetRepeatHeadCode(7777, NextServiceEntryPtr->HeadCode, Train.RepeatNumber + 1, Train.IncrementalDigits); //changed after v2.20.0 as above
+                NextServiceRef = TrainController->GetRepeatHeadCode(74, NextServiceEntryPtr->HeadCode, Train.RepeatNumber + 1, Train.IncrementalDigits); //changed at v2.20.1 as above
                 break;
                 }
             }

@@ -1,4 +1,4 @@
-Post v2.20.1 notes:
+Post v2.21.0 notes:
 
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
@@ -859,7 +859,13 @@ VERSION CHANGES AFTER v2.20.0 for v2.20.1
 
 Release notes:
 
-This release fixes three relatively minor bugs:
+This release makes one minor improvement and fixes three relatively minor bugs.
+
+Improvement:
+
+When timetabling the add and subtract minutes ('Add mins' & 'Sub mins') features required the timetable to be saved before they could be applied.  This was never really necessary so the requirement has been dropped.  Minutes can now be added or subtracted provided that the current entry contains at least one time and the minutes box contains a number.  The reason for the earlier restriction was that many features do require the timetable to be saved, and this was just lumped in with the others without my giving it much thought.  It was a nuisance having to save the timetable every time before adding or subtracting minutes, and this modification should make timetabling a bit easier.
+
+Bugs fixed:
 
 1.  The reminder message for events that included both arrivals and departures stated that notifications would be given at both the arrival time and departure time, whereas only a single norification is given at the arrival time.  The message has now been corrected.
 

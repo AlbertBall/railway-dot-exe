@@ -7005,6 +7005,27 @@ void TInterface::TimetableHandler()
     }
 // start time now set & displayed
 
+    AnsiString AnsiAddSubText(AddSubMinsBox->Text);  //this section moved here from below at v2.20.1 so these buttons available most of the time
+    if((AnsiAddSubText != "") && AreAnyTimesInCurrentEntry())
+    {
+        bool ValidFlag = true;
+        for(int x = 1; x <= AnsiAddSubText.Length(); x++)
+        {
+            if((AnsiAddSubText[x] > '9') || (AnsiAddSubText[x] < '0'))
+            {
+                ValidFlag = false;
+                break;
+            }
+        }
+        if(ValidFlag)
+        {
+            if(AnsiAddSubText.ToInt() != 0)
+            {
+                AddMinsButton->Enabled = true;
+                SubMinsButton->Enabled = true;
+            }
+        }
+    }                                                //end of section moved
     if(!TTEntryChangedFlag && !NewEntryInPreparationFlag)
     {
         InfoPanel->Visible = true;
@@ -7019,27 +7040,27 @@ void TInterface::TimetableHandler()
         }
         ExitTTModeButton->Enabled = true;
         AllEntriesTTListBox->Enabled = true;
-        AnsiString AnsiAddSubText(AddSubMinsBox->Text);
-        if((AnsiAddSubText != "") && AreAnyTimesInCurrentEntry())
-        {
-            bool ValidFlag = true;
-            for(int x = 1; x <= AnsiAddSubText.Length(); x++)
-            {
-                if((AnsiAddSubText[x] > '9') || (AnsiAddSubText[x] < '0'))
-                {
-                    ValidFlag = false;
-                    break;
-                }
-            }
-            if(ValidFlag)
-            {
-                if(AnsiAddSubText.ToInt() != 0)
-                {
-                    AddMinsButton->Enabled = true;
-                    SubMinsButton->Enabled = true;
-                }
-            }
-        }
+//        AnsiString AnsiAddSubText(AddSubMinsBox->Text);     //moved to earlier at v2.20.1
+//        if((AnsiAddSubText != "") && AreAnyTimesInCurrentEntry())
+//        {
+//            bool ValidFlag = true;
+//            for(int x = 1; x <= AnsiAddSubText.Length(); x++)
+//            {
+//                if((AnsiAddSubText[x] > '9') || (AnsiAddSubText[x] < '0'))
+//                {
+//                    ValidFlag = false;
+//                    break;
+//                }
+//            }
+//            if(ValidFlag)
+//            {
+//                if(AnsiAddSubText.ToInt() != 0)
+//                {
+//                    AddMinsButton->Enabled = true;
+//                    SubMinsButton->Enabled = true;
+//                }
+//            }
+//        }
         if((CreateEditTTFileName != "") && TimetableChangedFlag)
         {
             RestoreTTButton->Enabled = true;

@@ -1,0 +1,31 @@
+digraph "TInterface::IsBecomeNewServiceAvailable"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TInterface::IsBecomeNewService\lAvailable",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Check to see if a BecomeNewService popup otion is available - i.e stopped at location,..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TTrainController::GetRepeat\lHeadCode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213",tooltip="Return the service headcode for the repeat service."];
+  Node3 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TTrainController::Last2Characters\lBothDigits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542",tooltip="Checks the last two characters in HeadCode and returns true if both are digits."];
+  Node4 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TTrain::RevisedStoppedAtLoc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab",tooltip=" "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TTrainController::TrainVector\lAtIdent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210",tooltip="Return a reference to the train with ID TrainID, carries out validity checking on TrainID."];
+  Node7 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TTrainController::TrainVectorAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d",tooltip="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..."];
+  Node8 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

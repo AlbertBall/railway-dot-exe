@@ -16522,8 +16522,8 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     else if(ActionEventType == FailCreateTrain)
     {
         Prefix = " HELD: ";
-        ErrorLog = " can't be created, train obstructing ";
-        WarningStr = " can't be created, train obstructing ";
+        ErrorLog = " can't be created, train obstructing at ";
+        WarningStr = " can't be created, train obstructing at ";
         Display->WarningLog(2, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailCreateLockedRoute)

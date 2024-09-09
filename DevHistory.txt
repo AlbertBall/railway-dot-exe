@@ -2,6 +2,12 @@ Post v2.21.0 notes:
 
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
+Error:  If a train is under signaller control and stopped by a signal, then given the command to pass the signal and a session file saved, when the session is loaded it passes the signal but reports a SPAD and turns yellow.  This is because 'AllowedToPassRedSignal' flag not saved in session file.  Need to save and reload it to correct the error.
+
+Error reported by Shotty_Gunny 9 Sep 2024 by discord ticket #53.  If a location name contains any of the commands Sns, Fns, rsp, fsp, Sfs, Fjo or jbo then when expanding repeats the program thinks these are commands and seeks the following service reference, which it doesn't find, and reports an error (it doesn't crash).  Correction needs to ensure that the command is bounded by semicolons to be sure it is a command.
+
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -19,6 +25,14 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#111 (3 suggestions) Xeon_HSU - 02/09/24 by email
+
+1)  AttributionLinkLabel4LinkClick (in the AboutUnit) should be Attribution4LinkLabelLinkClick for consistency with the other labels and links.  [My comment: this is for consistency only, the code works correctly so doesn't need to be changed.]
+
+2)  In InterfaceUnit.cpp for the invalid clipboard message MessageBoxW should be MessageBox.  [My comment: there is no difference in function between the two forms for the English language, the 'W' is for Unicode whereas without it's for Ansi.  Again it's for consistency with other messages but with no functional difference I don't propose to change it.]
+
+3) In InterfaceUnit.dfm the SkipListHeaderPanel (for skipping timetable events) shoud have its Visible attribute set to false.  [My comment: This is set to false in the interface constructor whenever the program is executed, so this is adequately covered already.]
 
 #110 Albie Vowles - 31/07/24 by email
 I keep thinking of things that might be useful for ROSim, would it be possible to (as an example), 1G01 get delayed by 40 minutes at kemble, so much so that 1G02 has to wait for 10 minutes behind it, would it be possible to add a 'timetable customiser' ish thing so during the simulation you can say, (if 1G01 -> 1L52 and 1G02 -> 1L53), it could be changed (mid simulation) to 1G01 -> 1L53 and 1G02 -> 1L52 at kemble, i realise now this is going to be difficult to do, but is there a possibility for something like this in the future??
@@ -867,11 +881,11 @@ When timetabling the add and subtract minutes ('Add mins' & 'Sub mins') features
 
 Bugs fixed:
 
-1.  The reminder message for events that included both arrivals and departures stated that notifications would be given at both the arrival time and departure time, whereas only a single norification is given at the arrival time.  The message has now been corrected.
+1.  The reminder message for events that included both arrivals and departures stated that notifications would be given at both the arrival time and departure time, whereas only a single notification is given at the arrival time.  The message has now been corrected.
 
 2.  When a train was selected to terminate early and become a follow-on service, all later location passes were listed as departures in the floating information window.  These are now listed correctly.  Thanks are due to Albie Vowles for notifying me of this by email.
 
-3.  When a shuttle train was selected to terminate early and become a follow-on service, the follow-on headcode was given as the first servicve headcode, rather than the repeat headcode as it should have been.  The correct headcode is now given.
+3.  When a shuttle train was selected to terminate early and become a follow-on service, the follow-on headcode was given as the first service headcode, rather than the repeat headcode as it should have been.  The correct headcode is now given.
 
 VERSION CHANGES AFTER v2.19.1 for v2.20.0
 
@@ -3170,15 +3184,19 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch), then merge with current development branch, and tag with release version. Delete the development branch.
+5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
 
 6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
 
-7 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
+7 Push master to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
 
 8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
 
-9 Create a new branch Post_vx.xx.xx_Dev on local repo and push to remote
+9 Make sure only have the master branch on local and remote (change default to master on remote in order to delete it if necessary)
+
+10 Create a new development branch on local to reflect the new version number & push it to GitHub
+
+11 Set new development branch to default
 
 
 On website (use Chrome - DiviBuilder seems to work better):
@@ -3186,7 +3204,7 @@ On website (use Chrome - DiviBuilder seems to work better):
 1 Upload new release version zips for 32 & 64 bits to 'Media' + any other modified files - Manual, Quick Start, FileSpec etc.
 
 2 Go to All Products, select category 'Base Program & Documentation' & click 'Filter', edit product 'Railway Operation Simulator (RailOS)'
-	Update full text of page iaw readme.txt [E:\Programming work\GitHub v2.15.1\railway-dot-exe\Readme for website download page.txt] & bold the important notes
+	Check the full text of the page to see if any changes are needed, check particularly that the number of pages in the user manual is correct and that the important notes are in bold.
 	Update short text if required  
 	Category should already be 'Base Program & Documentation'
 	Tag should already be 'Railway Operation Simulator'

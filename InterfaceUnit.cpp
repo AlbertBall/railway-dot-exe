@@ -6154,10 +6154,11 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                         {
                             FoundRef = true;
                         }
-                        else if((EntryCopy.SubString(Position, 3) == "Sns") || (EntryCopy.SubString(Position, 3) == "Fns") ||
-                                (EntryCopy.SubString(Position, 3) == "rsp") || (EntryCopy.SubString(Position, 3) == "fsp") ||
+                        else if((EntryCopy.SubString(Position - 1, 1) == ";") && (EntryCopy.SubString(Position + 3, 1) == ";") && //added ";" condits after v2.20.1 in response
+                                ((EntryCopy.SubString(Position, 3) == "Sns") || (EntryCopy.SubString(Position, 3) == "Fns") ||    //to error reported by Shotty_Gunny on 9/9/24
+                                (EntryCopy.SubString(Position, 3) == "rsp") || (EntryCopy.SubString(Position, 3) == "fsp") ||     //via Discord (ticket #53)
                                 (EntryCopy.SubString(Position, 3) == "Sfs") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
-                                (EntryCopy.SubString(Position, 3) == "jbo"))
+                                (EntryCopy.SubString(Position, 3) == "jbo")))
                         {
                             Position += 4; //any other referenced services
                             FoundRef = true;

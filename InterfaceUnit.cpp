@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 Post " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -6246,16 +6246,19 @@ void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &
 {//only used in ExpandRepeatsButtonClick function, errors caught in that function
     TrainController->LogEvent("AddRefDigits");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddRefDigits");
-    AnsiString AnsiLastDigits = AnsiServRef.SubString(AnsiServRef.Length() - 1, 2);
-    int LastDigits = AnsiLastDigits.ToInt();
-    int NewDigits = (LastDigits + Digits) % 100;
-    AnsiString AnsiNewDigits = AnsiString(NewDigits);
-    if(NewDigits < 10)
+    if(Digits > 0) //if Digits == 0 then don't change anything, if Digits > 0 but no digits in last 2 headcode places then wouldn't have validated //condition added after v2.20.1
     {
-        AnsiNewDigits = "0" + AnsiNewDigits;
+        AnsiString AnsiLastDigits = AnsiServRef.SubString(AnsiServRef.Length() - 1, 2);
+        int LastDigits = AnsiLastDigits.ToInt();
+        int NewDigits = (LastDigits + Digits) % 100;
+        AnsiString AnsiNewDigits = AnsiString(NewDigits);
+        if(NewDigits < 10)
+        {
+            AnsiNewDigits = "0" + AnsiNewDigits;
+        }
+        EntryCopy = EntryCopy.Delete(Position + AnsiServRef.Length() - 2, 2);
+        EntryCopy = EntryCopy.Insert(AnsiNewDigits, Position + AnsiServRef.Length() - 2);
     }
-    EntryCopy = EntryCopy.Delete(Position + AnsiServRef.Length() - 2, 2);
-    EntryCopy = EntryCopy.Insert(AnsiNewDigits, Position + AnsiServRef.Length() - 2);
     Utilities->CallLogPop(2639);
 }
 
@@ -10614,11 +10617,13 @@ pause or run and it cycled round the operate panel buttons
                 "Parapet", "NamedNonStationLocation", "Erase"
             };
 
+            int OffH = Display->DisplayOffsetH;  //added after v2.20.1 to help in converting Posx & y to equivalent offset values
+            int OffV = Display->DisplayOffsetV;
             int ScreenX = Mouse->CursorPos.x - MainScreen->ClientOrigin.x;
             int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;
             int HLoc, VLoc;
             AnsiString MouseStr = "Posx: " + AnsiString(ScreenX) + "; Posy: " + AnsiString(ScreenY);
-            DevelopmentPanel->Caption = CurDir + " " + MouseStr;
+            DevelopmentPanel->Caption = CurDir + " " + MouseStr + "; OffH " + OffH + ";OffV " + OffV;
             Track->GetTrackLocsFromScreenPos(7, HLoc, VLoc, ScreenX, ScreenY);
 
             AnsiString InARoute = "No";    //added at v2.15.0 for diagnostics
@@ -10644,8 +10649,8 @@ pause or run and it cycled round the operate panel buttons
                     COS = "Yes";
                 }
 
-                DevelopmentPanel->Caption = MouseStr + "; TVPos: " + AnsiString(Position) + "; H: " + AnsiString(HLoc) + "; V: " + AnsiString(VLoc) +
-                    "; SpTg: " + AnsiString(TrackElement.SpeedTag) + "; Type: " + Type[TrackElement.TrackType] + "; Att: " + AnsiString(TrackElement.Attribute)
+                DevelopmentPanel->Caption = MouseStr + "; OffH " + OffH + ";OffV " + OffV + "; TVPos: " + AnsiString(Position) + "; H: " + AnsiString(HLoc) + "; V: " +
+                    AnsiString(VLoc) + "; SpTg: " + AnsiString(TrackElement.SpeedTag) + "; Type: " + Type[TrackElement.TrackType] + "; Att: " + AnsiString(TrackElement.Attribute)
                     + "; COS: " + COS + "; SPos1: " + AnsiString(TrackElement.StationEntryStopLinkPos1) + "; SPos2: " + AnsiString(TrackElement.StationEntryStopLinkPos2)
                     + "; SPos3: " + AnsiString(TrackElement.StationEntryStopLinkPos3) + "; SPos4: " + AnsiString(TrackElement.StationEntryStopLinkPos4)
                     + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) +
@@ -22392,6 +22397,15 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.19.0");
 //end of v2.19.0 additions
 
+//additions at v2.20.2 - AllowedToPassRedSignal flag for each train - without this could save a session after permission given but when reloaded would give a SPAD
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                Utilities->SaveFileBool(SessionFile, TVIt->AllowedToPassRedSignal);
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.20.2");
+//end of v2.20.2 additions
+
+
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
             SessionFile.close();
@@ -23002,9 +23016,12 @@ void TInterface::LoadSession(int Caller)
                         //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\0' in TempChar
                         if(TempString == "End of file at v2.16.1") //added at v2.17.0, if TempString == 'End of file at v2.16.1' then without this
                         {                                          //load 'End of file at v2.16.1' into first description, and there is nothing after
-                            goto FINISHEDLOADING;                  //except '\n' at very end of file (after last NUL) so
+                            goto NEXTADDITION;                     //except '\n' at very end of file (after last NUL) so
                         }                                          //TVIt->Description = Utilities->LoadFileString(SessionFile); loops indefinitely
-                        if(!TrainController->TrainVector.empty())  //as never finds '\0'
+                                                                   //as never finds '\0'
+                             //changed FINISHEDLOADING to NEXTADDITION at v2.20.2 as may be more additions
+
+                        if(!TrainController->TrainVector.empty())
                         {
                             for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                             {
@@ -23021,10 +23038,11 @@ void TInterface::LoadSession(int Caller)
                         DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
 //end of v2.16.1 additions
 
+NEXTADDITION:
 //additions at v2.19.0 - reminders in form of AnsiString "x-y" where x = train vector position & y is action vector position
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st char of 1st reminder
-                        {
+                        {                                                                       //or 'E' for 'End of...'
                             SessionFile.get(TempChar);
                         }
                         if(SessionFile.eof()) // old session file
@@ -23034,7 +23052,7 @@ void TInterface::LoadSession(int Caller)
                             goto FINISHEDLOADING;
                         }
                         AnsiString ReminderEntry = "";
-                        //TempChar now contains the first digit of first train's description or 'E' for 'End of file at v2.19.0'
+                        //TempChar now contains the 1st char of 1st reminder or 'E' for 'End of file at v2.19.0'
                         TempString = "";
                         while((TempChar != '\n') && (TempChar != '\0'))
                         {
@@ -23045,7 +23063,7 @@ void TInterface::LoadSession(int Caller)
                         while(TempString != "End of file at v2.19.0")
                         {
                             int PosDash = TempString.Pos('-');
-                            if(PosDash == 0)  //can't find it, will create an erro as it shouldn't ever be
+                            if(PosDash == 0)  //can't find it, will create an error as it shouldn't ever be
                             {
                                 break;
                             }
@@ -23063,7 +23081,37 @@ void TInterface::LoadSession(int Caller)
                             }
                         }
 //                        Don't need to load DummyString = "End of file at v2.19.0" as it's already been loaded into TempString
-                    }
+
+//additions at v2.20.2 - AllowedToPassRedSignal flag for each train - without this could save a session after permission given but when reloaded would give a SPAD
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of AllowedToPassRedSignal
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) // old session file
+                        {
+                            //no initialisations needed as all 'AllowedToPassRedSignal' values initialised to false during program initialisation
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        if(!TrainController->TrainVector.empty())
+                        {//TempChar now contains 1st train's bool of AllowedToPassRedSignal ('End of file at v2.19.0' already loaded above)
+                            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+                            {
+                                if(TVIt == TrainController->TrainVector.begin())
+                                {
+                                    TVIt->AllowedToPassRedSignal = TempChar;
+                                }
+                                else
+                                {
+                                    TVIt->AllowedToPassRedSignal = Utilities->LoadFileBool(SessionFile);
+                                }
+                            }
+                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.2" discarded
+//end of v2.20.2 additions
+
+                    }   //this is the final block closure after all additions (enclosed in a block so goto doesn't bypass initialisation of a local variable (DummyStr, ID etc.))
 
 FINISHEDLOADING:
                     if(SessionFile.is_open())
@@ -25204,6 +25252,15 @@ void TInterface::SaveErrorFile()
             }
             Utilities->SaveFileString(ErrorFile, "End of file at v2.19.0");
 //end of v2.19.0 additions
+
+//additions at v2.20.2 - AllowedToPassRedSignal flag for each train - without this could save a session after permission given but when reloaded would give a SPAD
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                Utilities->SaveFileBool(ErrorFile, TVIt->AllowedToPassRedSignal);
+            }
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.20.2");
+//end of v2.20.2 additions
+
 
 //REMAINDER STAY AT END OF FILE
 // addition at v2.8.0 in case of clipboard

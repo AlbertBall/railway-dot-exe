@@ -1575,7 +1575,7 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     bool SessionFileIntegrityCheck(int Caller, AnsiString FileName);
 /// Add 'Name' to TextVector and display on screen at a position determined by the shape and size of the location if UseEnteredPosition false, or at HPos & VPos if UseEnteredPosition true
     void AddLocationNameText(int Caller, AnsiString Name, int HPos, int VPos, bool UseEnteredPosition);
-/// Used in ExpandRepeatsButtonClick function to add digits a service reference
+/// Used in ExpandRepeatsButtonClick function to add digits to a service reference
     void AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits); //added at v2.17.0
 /// Function that deals with approach locking during ClockTimer2 function
     void ApproachLocking(int Caller, TDateTime Now);

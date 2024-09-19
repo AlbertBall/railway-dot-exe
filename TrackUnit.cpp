@@ -15163,7 +15163,7 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
     }
     else if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
     {
-        TrainController->StopTTClockMessage(7, "Must select a valid signal, buffers or continuation");
+        TrainController->StopTTClockMessage(7, "Must select a valid signal, buffers or continuation to start or add to a route, or points to change them");
         Utilities->CallLogPop(200);
         return(false);
     }
@@ -15275,10 +15275,10 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
         if((RouteElement.Config[RouteElement.XLinkPos] != End) && (AllRoutes->TrackIsInARoute(9, RouteElement.Conn[RouteElement.XLinkPos],
                                                                                               RouteElement.ConnLinkPos[RouteElement.XLinkPos])))
         // last element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
-        {
-            TrainController->StopTTClockMessage(15, "Can't start a route at an element that links forward into an existing route");
-            Utilities->CallLogPop(208);
-            return(false);
+        {  //dropped at v2.20.2 as wouldn't allow a route to be built from here anyway
+//            TrainController->StopTTClockMessage(15, "Can't start a route at an element that links forward into an existing route");
+//            Utilities->CallLogPop(208);
+//            return(false);
         }
         StartSelectionRouteID = IDInt(AllRoutes->GetFixedRouteAt(158, RoutePair.first).RouteID);
         StartElement1 = AllRoutes->GetFixedRouteAt(3, RoutePair.first).GetFixedPrefDirElementAt(30,
@@ -16841,12 +16841,12 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
                                                                                               RouteElement.ConnLinkPos[RouteElement.XLinkPos])))
         // last element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
         {
-            if(!Callon)
-            {
-                TrainController->StopTTClockMessage(40, "Can't start a route at an element that links forward into an existing route");
-            }
-            Utilities->CallLogPop(265);
-            return(false);
+//            if(!Callon)       //dropped at v2.20.2 as wouldn't allow a route to be built from here anyway
+//            {
+//                TrainController->StopTTClockMessage(40, "Can't start a route at an element that links forward into an existing route");
+//            }
+//            Utilities->CallLogPop(265);
+//            return(false);
         }
         StartSelectionRouteID = IDInt(AllRoutes->GetFixedRouteAt(162, RoutePair.first).RouteID);
         StartElement1 = AllRoutes->GetFixedRouteAt(33, RoutePair.first).GetFixedPrefDirElementAt(57,

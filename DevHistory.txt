@@ -1,11 +1,21 @@
 Post v2.21.0 notes:
 
+
+Update railway map with Ipswich
+
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
-Error:  If a train is under signaller control and stopped by a signal, then given the command to pass the signal and a session file saved, when the session is loaded it passes the signal but reports a SPAD and turns yellow.  This is because 'AllowedToPassRedSignal' flag not saved in session file.  Need to save and reload it to correct the error.
+/ Error: If a train is under signaller control and stopped by a signal, then given the command to pass the signal and a session file saved, when the session is loaded it passes the signal but reports a SPAD and turns yellow.  This is because 'AllowedToPassRedSignal' flag not saved in session file.  Need to save and reload it to correct the error.
 
-Error reported by Shotty_Gunny 9 Sep 2024 by discord ticket #53.  If a location name contains any of the commands Sns, Fns, rsp, fsp, Sfs, Fjo or jbo then when expanding repeats the program thinks these are commands and seeks the following service reference, which it doesn't find, and reports an error (it doesn't crash).  Correction needs to ensure that the command is bounded by semicolons to be sure it is a command.
+/ Error reported by Shotty_Gunny 9 Sep 2024 by discord ticket #53.  If a location name contains any of the commands Sns, Fns, rsp, fsp, Sfs, Fjo or jbo then when expanding repeats the program thinks these are commands and seeks the following service reference, which it doesn't find, and reports an error (it doesn't crash).  Correction needs to ensure that the command is bounded by semicolons to be sure it is a command.
 
+/ Error - linked to above: If try to expand repeats when don't have digits in last 2 places & zero for increased repeating digits then should be able to expand, but fails as no last 2 digits.  Corrected by checking whether increasing digits is > 0 and if not then skip any changes
+
+/ Improvement: Route message 'Must select a valid signal, buffers or continuation' ok when a route is in course of creation but not for starting a route as should allow for changing points
+
+/ Improvement: Message about not extending a route at an element that links to an element that already contains a route isn't appropriate, drop it as wouldn't allow a route to be built from there anyway
+
+Incompatibility: actions due panel too small in windows 11
 
 
 Development History

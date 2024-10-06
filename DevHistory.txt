@@ -1,21 +1,8 @@
-Post v2.21.0 notes:
-
-
-Update railway map with Ipswich
+Post v2.20.2 notes:
 
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
-/ Error: If a train is under signaller control and stopped by a signal, then given the command to pass the signal and a session file saved, when the session is loaded it passes the signal but reports a SPAD and turns yellow.  This is because 'AllowedToPassRedSignal' flag not saved in session file.  Need to save and reload it to correct the error.
-
-/ Error reported by Shotty_Gunny 9 Sep 2024 by discord ticket #53.  If a location name contains any of the commands Sns, Fns, rsp, fsp, Sfs, Fjo or jbo then when expanding repeats the program thinks these are commands and seeks the following service reference, which it doesn't find, and reports an error (it doesn't crash).  Correction needs to ensure that the command is bounded by semicolons to be sure it is a command.
-
-/ Error - linked to above: If try to expand repeats when don't have digits in last 2 places & zero for increased repeating digits then should be able to expand, but fails as no last 2 digits.  Corrected by checking whether increasing digits is > 0 and if not then skip any changes
-
-/ Improvement: Route message 'Must select a valid signal, buffers or continuation' ok when a route is in course of creation but not for starting a route as should allow for changing points
-
-/ Improvement: Message about not extending a route at an element that links to an element that already contains a route isn't appropriate, drop it as wouldn't allow a route to be built from there anyway
-
-Incompatibility: actions due panel too small in windows 11
+Noticed that the actions due panel is cropped when program run under windows 11.  Need to investigate further.
 
 
 Development History
@@ -878,6 +865,24 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.20.1 for v2.20.2
+
+This a bug fix version that corrects two faults:
+
+If a train is under signaller control and stopped by a signal, then given the command to pass the signal and a session file saved, when the session is loaded it passes the signal but reports a SPAD and turns yellow.  This is because the train's 'AllowedToPassRedSignal' flag is not saved in the session file but should have been.  This version saves it.
+
+If a location name contains any of the following letter sequences: Sns, Fns, rsp, fsp, Sfs, Fjo or jbo, then when expanding repeats in the timetable editor the program thinks they are commands and seeks the following service reference, which it doesn't find and reports an error.  This has been corrected by checking whether these letter sequences are bounded by semicolons, and only if they are does the program interpret them as commands.  Thanks are due to Shotty_Gunny for reporting it via Discord.
+
+Not for website:
+
+/ Error - linked to Shotty_Gunny error: If try to expand repeats when don't have digits in last 2 places & zero for increased repeating digits then should be able to expand, but fails as no last 2 digits.  Corrected by checking whether increasing digits is > 0 and if not then skip any changes
+
+/ changed actions due & perf log form designs so height/width/top/bottom correspond to values in respective FormCreate functions - to see if affects geometry in windows 11
+
+/ Improvement: Route message 'Must select a valid signal, buffers or continuation' ok when a route is in course of creation but not for starting a route as should allow for changing points
+
+/ Improvement: Message about not extending a route at an element that links to an element that already contains a route isn't appropriate, drop it as wouldn't allow a route to be built from there anyway
 
 VERSION CHANGES AFTER v2.20.0 for v2.20.1
 

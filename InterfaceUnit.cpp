@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post " + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -6154,7 +6154,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                         {
                             FoundRef = true;
                         }
-                        else if((EntryCopy.SubString(Position - 1, 1) == ";") && (EntryCopy.SubString(Position + 3, 1) == ";") && //added ";" condits after v2.20.1 in response
+                        else if((EntryCopy.SubString(Position - 1, 1) == ";") && (EntryCopy.SubString(Position + 3, 1) == ";") && //added ";" condits at v2.20.2 in response
                                 ((EntryCopy.SubString(Position, 3) == "Sns") || (EntryCopy.SubString(Position, 3) == "Fns") ||    //to error reported by Shotty_Gunny on 9/9/24
                                 (EntryCopy.SubString(Position, 3) == "rsp") || (EntryCopy.SubString(Position, 3) == "fsp") ||     //via Discord (ticket #53)
                                 (EntryCopy.SubString(Position, 3) == "Sfs") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
@@ -6246,7 +6246,7 @@ void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &
 {//only used in ExpandRepeatsButtonClick function, errors caught in that function
     TrainController->LogEvent("AddRefDigits");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddRefDigits");
-    if(Digits > 0) //if Digits == 0 then don't change anything, if Digits > 0 but no digits in last 2 headcode places then wouldn't have validated //condition added after v2.20.1
+    if(Digits > 0) //if Digits == 0 then don't change anything, if Digits > 0 but no digits in last 2 headcode places then wouldn't have validated //condition added at v2.20.2
     {
         AnsiString AnsiLastDigits = AnsiServRef.SubString(AnsiServRef.Length() - 1, 2);
         int LastDigits = AnsiLastDigits.ToInt();
@@ -10617,7 +10617,7 @@ pause or run and it cycled round the operate panel buttons
                 "Parapet", "NamedNonStationLocation", "Erase"
             };
 
-            int OffH = Display->DisplayOffsetH;  //added after v2.20.1 to help in converting Posx & y to equivalent offset values
+            int OffH = Display->DisplayOffsetH;  //added at v2.20.2 to help in converting Posx & y to equivalent offset values
             int OffV = Display->DisplayOffsetV;
             int ScreenX = Mouse->CursorPos.x - MainScreen->ClientOrigin.x;
             int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;

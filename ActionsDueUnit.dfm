@@ -11,8 +11,8 @@ object ActionsDueForm: TActionsDueForm
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = '   Actions Due'
-  ClientHeight = 285
-  ClientWidth = 90
+  ClientHeight = 296
+  ClientWidth = 104
   Color = clBtnFace
   Constraints.MinHeight = 10
   Constraints.MinWidth = 10
@@ -28,16 +28,16 @@ object ActionsDueForm: TActionsDueForm
   object ActionsDuePanel: TPanel
     Left = 0
     Top = 0
-    Width = 100
-    Height = 298
+    Width = 110
+    Height = 308
     DragMode = dmAutomatic
     ParentBackground = False
     TabOrder = 0
     object ActionsDuePanelLabel: TLabel
       Left = 32
-      Top = 4
-      Width = 30
-      Height = 13
+      Top = 0
+      Width = 36
+      Height = 20
       Caption = '(mins) '
       DragMode = dmAutomatic
       Font.Charset = DEFAULT_CHARSET

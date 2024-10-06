@@ -7,7 +7,7 @@ digraph "TInterface::ExpandRepeatsButtonClick"
   rankdir="LR";
   Node1 [label="TInterface::ExpandRepeats\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="TInterface::AddRefDigits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a8cb5268489d4d56a8810d6eabe6a9440",tooltip="Used in ExpandRepeatsButtonClick function to add digits a service reference."];
+  Node2 [label="TInterface::AddRefDigits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a8cb5268489d4d56a8810d6eabe6a9440",tooltip="Used in ExpandRepeatsButtonClick function to add digits to a service reference."];
   Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
   Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

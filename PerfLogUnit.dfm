@@ -6,8 +6,8 @@ object PerfLogForm: TPerfLogForm
   BorderStyle = bsSingle
   BorderWidth = 1
   Caption = 'Performance log: left click here and hold button down to move'
-  ClientHeight = 264
-  ClientWidth = 464
+  ClientHeight = 266
+  ClientWidth = 472
   Color = clBtnFace
   DefaultMonitor = dmDesktop
   Font.Charset = DEFAULT_CHARSET
@@ -19,9 +19,9 @@ object PerfLogForm: TPerfLogForm
   TextHeight = 13
   object PerformanceLogBox: TMemo
     Left = 0
-    Top = 20
+    Top = 0
     Width = 468
-    Height = 443
+    Height = 263
     DragMode = dmAutomatic
     ReadOnly = True
     ScrollBars = ssVertical

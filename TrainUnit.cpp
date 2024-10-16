@@ -5083,10 +5083,10 @@ bool TTrain::CallingOnAllowed(int Caller)
         }
         // if find another train in front when there is a valid platform (keep searching after find a platform as train may still
         // be facing later on)
-        if((CurrentTrackElement.TrainIDOnElement > -1) && (CurrentTrackElement.TrainIDOnElement != TrainID) && PlatformFoundFlag)
-        {
-            // get LeadElement, if -1 return (could be exiting at continuation) (i)
-            TTrain OtherTrain = TrainController->TrainVectorAtIdent(12, CurrentTrackElement.TrainIDOnElement);
+        if((CurrentTrackElement.TrainIDOnElement > -1) && (CurrentTrackElement.TrainIDOnElement != TrainID) && PlatformFoundFlag) //<-can return true in error if other train on bridge
+        {                                                                                                                         //on other track, but leave in as shouldn't cause
+            // get LeadElement, if -1 return (could be exiting at continuation) (i)                                               //any problems - see if anyone reports it and if
+            TTrain OtherTrain = TrainController->TrainVectorAtIdent(12, CurrentTrackElement.TrainIDOnElement);                    //so try to correct
             if(OtherTrain.LeadElement == -1)
             {
                 Utilities->CallLogPop(714);

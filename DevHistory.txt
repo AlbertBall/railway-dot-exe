@@ -4,6 +4,14 @@ Check JasonB's Scotland railway when submitted to see if there's a problem with 
 
 Noticed that the actions due panel is cropped when program run under windows 11.  Need to investigate further.
 
+/ Position light signals remained showing on signal after were showing & program stopped & restarted - corrected by resetting CallingOnSet in ResetSignals
+
+X Had call-on into N-le-W where train stopped on bridge on other track after N-le-W station - leave as it is, it shouldn't cause any problems - note about this added in CallingOnAllowed function 
+
+/ Moved text plotting to after all else so always visible in RebuildTrackAndText
+
+/ Increased session check limits for number of routes (5000->10000) & RouteID (20000->1000000) because of Jason B's WCML railway where RouteID came to 22009.
+
 
 Development History
 
@@ -3199,7 +3207,7 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit current development branch, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
+5 Leave source code as 32bit debug, commit current development branch, select TortoiseGit->Show Log, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
 
 6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
 
@@ -3207,11 +3215,11 @@ On GitHub:
 
 8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
 
-9 Make sure only have the master branch on local and remote (change default to master on remote in order to delete it if necessary)
+9 Make sure only have the master branch on local and remote (change default to master on remote in order to delete the dev branch if necessary)
 
 10 Create a new development branch on local to reflect the new version number & push it to GitHub
 
-11 Set new development branch to default
+11 Set new development branch to default on GitHub
 
 
 On website (use Chrome - DiviBuilder seems to work better):
@@ -3229,7 +3237,6 @@ On website (use Chrome - DiviBuilder seems to work better):
 
 3 Under 'General' tab
 	Click 'Add File' & "Choose file" to enter url of each of the the new zips (32 & 64bits), give it the version number as its name
-	Move it to the top of the list (need full window to move)
 	Delete the earlier versions
 	'Virtual' & 'Downloadable' boxes should already be ticked
 	Price should be 0.00
@@ -3253,7 +3260,7 @@ On website (use Chrome - DiviBuilder seems to work better):
 
 7 Preview then update if all ok (best to select update first as otherwise preview shows last version), download & check correct
 
-8. add earlier versions to archived programs and ensure deleted from current page
+8. add earlier versions to archived programs and ensure deleted from current page, update.
 
 9 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above (select correct category & search), SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Delete any earlier versions.  Update & preview.  Add any earlier versions to 'Archived Documentation' 
 
@@ -3261,7 +3268,7 @@ On website (use Chrome - DiviBuilder seems to work better):
 
 11 Download & check the new release & anything else that's changed
 
-12 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
+12 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator (RailOS)'. TAutoPost set to yes. Save, preview & schedule release or release immediately.
 
 13 Check that it's announced on Discord News, if not announce it manually.
 

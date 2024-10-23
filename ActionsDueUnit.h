@@ -21,6 +21,7 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
     void __fastcall ActionsDueListBoxMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+    void __fastcall ADFResize(TObject *Sender);
 
 private:	// User declarations
 public:		// User declarations

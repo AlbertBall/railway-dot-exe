@@ -97,7 +97,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post " + GetVersion() + " Beta"; //Beta for Jason B's WCML railway where RouteID was 22009 so limite raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32 Post " + GetVersion() + " Beta2"; //Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+                                                                     //Beta2 for resizeable actions due form
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 

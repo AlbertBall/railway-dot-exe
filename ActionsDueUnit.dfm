@@ -9,7 +9,6 @@ object ActionsDueForm: TActionsDueForm
   VertScrollBar.Style = ssFlat
   VertScrollBar.Visible = False
   BorderIcons = []
-  BorderStyle = bsSingle
   Caption = '   Actions Due'
   ClientHeight = 296
   ClientWidth = 104
@@ -24,6 +23,7 @@ object ActionsDueForm: TActionsDueForm
   Font.Style = [fsBold]
   Visible = True
   OnCreate = FormCreate
+  OnResize = ADFResize
   TextHeight = 13
   object ActionsDuePanel: TPanel
     Left = 0
@@ -36,8 +36,8 @@ object ActionsDueForm: TActionsDueForm
     object ActionsDuePanelLabel: TLabel
       Left = 32
       Top = 0
-      Width = 36
-      Height = 20
+      Width = 30
+      Height = 13
       Caption = '(mins) '
       DragMode = dmAutomatic
       Font.Charset = DEFAULT_CHARSET

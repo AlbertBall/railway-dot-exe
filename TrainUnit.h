@@ -494,7 +494,7 @@ private:
          StoppedWithoutPower, TrainInFront, NotInService;  //TrainInFront added at v2.18.0 to distinguish from StoppedForTrainInFront as need both,
                                                            //TrainInFront when there is a train but no action necessarily needed and StoppedForTrainInFront
                                                            //when would move but for the train in front
-														   //No need to save it in session files as set during UpdateTrain
+                                                           //No need to save it in session files as set during UpdateTrain
     int HOffset[4], VOffset[4];
 ///< each headcode character is an 8x8 pixel graphic and must be placed within a 16x16 pixel element, these values set the horizontal & vertical offsets of the top left hand corner character graphic relative to the 16x16 element
     int OldZoomOutElement[3];

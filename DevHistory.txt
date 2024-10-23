@@ -2,7 +2,7 @@ Post v2.20.2 notes:
 
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
-Noticed that the actions due panel is cropped when program run under windows 11.  Need to investigate further.
+/ The actions due panel is cropped when program run under windows 11.  Made resizeable in v2.20.2 Beta2.  OK on Win 10 & OK on Win 11 but all text bigger than on Win 10. CaptainPotato reported it and is happy with the resizeable form.
 
 / Position light signals remained showing on signal after were showing & program stopped & restarted - corrected by resetting CallingOnSet in ResetSignals
 

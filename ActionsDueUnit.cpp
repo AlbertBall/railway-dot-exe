@@ -151,4 +151,21 @@ void __fastcall TActionsDueForm::ActionsDueListBoxMouseUp(TObject *Sender, TMous
 
 //---------------------------------------------------------------------------
 
+void __fastcall TActionsDueForm::ADFResize(TObject *Sender)
+{
+    ActionsDuePanel->Top = 0; //relative to form
+    ActionsDuePanel->Left = 0;
+    ActionsDuePanel->Width = ActionsDueForm->Width - 6; //form has to be 6 wider than content to display content correctly
+    ActionsDuePanel->Height = ActionsDueForm->Height - 26; //to allow for title bar
+    ActionsDuePanel->Color = TColor(0xCCCCCC); // new v2.2.0 as above
+    ActionsDueListBox->Width = ActionsDuePanel->Width - 32;//was 78;
+    ActionsDueListBox->Height = ActionsDuePanel->Height - 38;//was 270;
+    ActionsDueListBox->Left = 11; //relative to panel
+    ActionsDueListBox->Top = 13;  //relative to panel
+    ActionsDuePanelLabel->Width = 36;
+    ActionsDuePanelLabel->Height = 20;
+    ActionsDuePanelLabel->Left = 32; //relative to panel
+    ActionsDuePanelLabel->Top = 0;   //relative to panel
+}
+//---------------------------------------------------------------------------
 

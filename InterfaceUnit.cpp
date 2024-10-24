@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post " + GetVersion() + " Beta2"; //Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32 Post " + GetVersion(); //Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
                                                                      //Beta2 for resizeable actions due form
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
@@ -22406,6 +22406,53 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.20.2");
 //end of v2.20.2 additions
 
+//additions at v2.20.3 - remaining train values
+
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                TTrain TempTrain = *TVIt; //for diagnostics as debugger can't handle iterators
+                Utilities->SaveFileBool(SessionFile, TVIt->RemainHereLogNotSent);
+                Utilities->SaveFileString(SessionFile, TVIt->HeadCode);
+                Utilities->SaveFileBool(SessionFile, TVIt->FinishJoinLogSent);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoFrontSplitMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoRearSplitMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->FailedTrainNoFinishJoinMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoJoinedByMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoCDTMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoNewServiceMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoNewShuttleFromNonRepeatMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoRepeatShuttleMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerNoRepeatShuttleOrNewServiceMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->ZeroPowerDepartMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->TrainInFrontMessage);
+                Utilities->SaveFileBool(SessionFile, TVIt->TrainFailurePending);
+                Utilities->SaveFileBool(SessionFile, TVIt->BufferZoomOutFlashRequired);
+                Utilities->SaveFileBool(SessionFile, TVIt->JoinedOtherTrainFlag);
+                Utilities->SaveFileBool(SessionFile, TVIt->LastSigPassedFailed);
+                Utilities->SaveFileBool(SessionFile, TVIt->LeavingUnderSigControlAtContinuation);
+                Utilities->SaveFileBool(SessionFile, TVIt->SignallerStoppingFlag);
+                Utilities->SaveFileBool(SessionFile, TVIt->StationStopCalculated);
+                Utilities->SaveFileBool(SessionFile, TVIt->StepForwardFlag);
+                Utilities->SaveFileDouble(SessionFile, TVIt->SignallerStopBrakeRate);
+                Utilities->SaveFileDouble(SessionFile, TVIt->MinsDelayed);
+                Utilities->SaveFileDouble(SessionFile, TVIt->OpTimeToAct);
+                Utilities->SaveFileDouble(SessionFile, TVIt->TimeToExit);
+                Utilities->SaveFileDouble(SessionFile, TVIt->FirstLaterStopRecoverableTime);
+                Utilities->SaveFileInt(SessionFile, TVIt->DistanceToStationStop);
+                Utilities->SaveFileInt(SessionFile, TVIt->UpdateCounter);
+                Utilities->SaveFileInt(SessionFile, TVIt->ExitPair.first);
+                Utilities->SaveFileInt(SessionFile, TVIt->ExitPair.second);
+                Utilities->SaveFileBool(SessionFile, TVIt->StoppedWithoutPower);
+                Utilities->SaveFileBool(SessionFile, TVIt->TrainInFront);
+                Utilities->SaveFileInt(SessionFile, TVIt->OldZoomOutElement[0]);
+                Utilities->SaveFileInt(SessionFile, TVIt->OldZoomOutElement[1]);
+                Utilities->SaveFileInt(SessionFile, TVIt->OldZoomOutElement[2]);
+                Utilities->SaveFileString(SessionFile, TVIt->SelReminderString);
+                Utilities->SaveFileString(SessionFile, TVIt->SelSkipString);
+                Utilities->SaveFileString(SessionFile, "****"); //end of train marker
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.20.3");
+//end of v2.20.3 additions
 
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
@@ -23060,7 +23107,7 @@ NEXTADDITION:
                             TempString = TempString + TempChar;
                             SessionFile.get(TempChar);
                         }
-                        //here have first train's description as an AnsiString in TempString or 'End of file at v2.19.0' & '\0' in TempChar
+                        //here have first train's reminder as an AnsiString in TempString or 'End of file at v2.19.0' & '\0' in TempChar
                         while(TempString != "End of file at v2.19.0")
                         {
                             int PosDash = TempString.Pos('-');
@@ -23096,7 +23143,7 @@ NEXTADDITION:
                             goto FINISHEDLOADING;
                         }
                         if(!TrainController->TrainVector.empty())
-                        {//TempChar now contains 1st train's bool of AllowedToPassRedSignal ('End of file at v2.19.0' already loaded above)
+                        {//TempChar now contains 1st train's bool of AllowedToPassRedSignal ('End of file at v2.19.0' already loaded above)'
                             for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                             {
                                 if(TVIt == TrainController->TrainVector.begin())
@@ -23112,6 +23159,83 @@ NEXTADDITION:
                         DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.2" discarded
 //end of v2.20.2 additions
 
+//additions at 2.20.3 to load all remaining train values
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of AllowedToPassRedSignal
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) // old session file
+                        {
+                            //no initialisations needed as no new varianles introduced
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        if(!TrainController->TrainVector.empty())
+                        {//TempChar now contains 1st train's bool of RemainHereLogNotSent or 'E' from  'End of file at 2.20.3'
+                            if((TempChar == '0') || (TempChar == '1')) //should be a bool as there are trains present
+                            {
+                                for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+                                {
+                                    TTrain TempTrain = *TVIt;  //for diagnosics, debugger can't handle iterators
+                                    if(TVIt == TrainController->TrainVector.begin())
+                                    {
+                                        TVIt->RemainHereLogNotSent = TempChar;
+                                    }
+                                    else
+                                    {
+                                        TVIt->RemainHereLogNotSent = Utilities->LoadFileBool(SessionFile);
+                                    }
+                                    AnsiString HeadCode = Utilities->LoadFileString(SessionFile); //included for diagnostics
+                                    TVIt->FinishJoinLogSent = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoFrontSplitMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoRearSplitMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->FailedTrainNoFinishJoinMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoJoinedByMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoCDTMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoNewServiceMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoNewShuttleFromNonRepeatMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoRepeatShuttleMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerNoRepeatShuttleOrNewServiceMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->ZeroPowerDepartMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->TrainInFrontMessage = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->TrainFailurePending = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->BufferZoomOutFlashRequired = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->JoinedOtherTrainFlag = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->LastSigPassedFailed = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->LeavingUnderSigControlAtContinuation = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->SignallerStoppingFlag = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->StationStopCalculated = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->StepForwardFlag = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->SignallerStopBrakeRate = Utilities->LoadFileDouble(SessionFile);
+                                    double MD = Utilities->LoadFileDouble(SessionFile);
+                                    double OTTA = Utilities->LoadFileDouble(SessionFile);
+                                    double TTE = Utilities->LoadFileDouble(SessionFile);
+                                    double FLSRT = Utilities->LoadFileDouble(SessionFile);
+                                    TVIt->MinsDelayed = (float)MD;
+                                    TVIt->OpTimeToAct = (float)OTTA;
+                                    TVIt->TimeToExit = (float)TTE;
+                                    TVIt->FirstLaterStopRecoverableTime = (float)FLSRT;
+                                    TVIt->DistanceToStationStop = Utilities->LoadFileInt(SessionFile);
+                                    int UD = Utilities->LoadFileInt(SessionFile);
+                                    TVIt->UpdateCounter = (unsigned int)UD;
+                                    int EP1 = Utilities->LoadFileInt(SessionFile);
+                                    int EP2 = Utilities->LoadFileInt(SessionFile);
+                                    TVIt->ExitPair.first = EP1;
+                                    TVIt->ExitPair.second = EP2;
+                                    TVIt->StoppedWithoutPower = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->TrainInFront = Utilities->LoadFileBool(SessionFile);
+                                    TVIt->OldZoomOutElement[0] = Utilities->LoadFileInt(SessionFile);
+                                    TVIt->OldZoomOutElement[1] = Utilities->LoadFileInt(SessionFile);
+                                    TVIt->OldZoomOutElement[2] = Utilities->LoadFileInt(SessionFile);
+                                    TVIt->SelReminderString = Utilities->LoadFileString(SessionFile); //this and the next are UnicodeStrings but will convert from AnsiString for non-complex characters
+                                    TVIt->SelSkipString = Utilities->LoadFileString(SessionFile);
+                                    AnsiString Marker = Utilities->LoadFileString(SessionFile); //'****'
+                                }
+                            }
+                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.3" discarded 'E' may have been loaded earlier
+//end of v2.20.3 additions
                     }   //this is the final block closure after all additions (enclosed in a block so goto doesn't bypass initialisation of a local variable (DummyStr, ID etc.))
 
 FINISHEDLOADING:

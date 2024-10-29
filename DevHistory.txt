@@ -4,6 +4,8 @@ Check JasonB's Scotland railway when submitted to see if there's a problem with 
 
 / Added remaining train variables to session file after noticing that a signaller controlled train that had been set to stop failed to stop when reloaded from a session file.  It was because the flag 'SignallerStoppingFlag' hadn't been saved.  All others that hadn't already been saved were included to avoid similar problems in future.
 
+/ Noticed error in earlier v2.20.2 session file loading for AllowedToPassRedSignal - loaded a char into a bool (silly mistake)!  Hence always true.  Added this flag as an extra after all the remaining train values in v2.20.3 session file.  More details in comments in SaveSession & LoadSession functions.
+
 / The actions due panel is cropped when program run under windows 11.  Made resizeable in v2.20.2 Beta2.  OK on Win 10 & OK on Win 11 but all text bigger than on Win 10. CaptainPotato reported it and is happy with the resizeable form.
 
 / Position light signals remained showing on signal after were showing & program stopped & restarted - corrected by resetting CallingOnSet in ResetSignals

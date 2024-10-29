@@ -22401,7 +22401,7 @@ In each case need to ensure that the following points are considered and dealt w
 //additions at v2.20.2 - AllowedToPassRedSignal flag for each train - without this could save a session after permission given but when reloaded would give a SPAD
             for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
             {
-                Utilities->SaveFileBool(SessionFile, TVIt->AllowedToPassRedSignal);
+                Utilities->SaveFileBool(SessionFile, TVIt->AllowedToPassRedSignal); //correct here but loaded incorrectly for 1st train. see LoadSession for v2.20.2
             }
             Utilities->SaveFileString(SessionFile, "End of file at v2.20.2");
 //end of v2.20.2 additions
@@ -22449,6 +22449,7 @@ In each case need to ensure that the following points are considered and dealt w
                 Utilities->SaveFileInt(SessionFile, TVIt->OldZoomOutElement[2]);
                 Utilities->SaveFileString(SessionFile, TVIt->SelReminderString);
                 Utilities->SaveFileString(SessionFile, TVIt->SelSkipString);
+                Utilities->SaveFileBool(SessionFile, TVIt->AllowedToPassRedSignal); //corrected earlier error in v2.20.2 LoadSession, see above
                 Utilities->SaveFileString(SessionFile, "****"); //end of train marker
             }
             Utilities->SaveFileString(SessionFile, "End of file at v2.20.3");
@@ -23143,12 +23144,12 @@ NEXTADDITION:
                             goto FINISHEDLOADING;
                         }
                         if(!TrainController->TrainVector.empty())
-                        {//TempChar now contains 1st train's bool of AllowedToPassRedSignal ('End of file at v2.19.0' already loaded above)'
+                        {//TempChar now contains 1st train's bool of AllowedToPassRedSignal ('End of file at v2.19.0' already loaded above)' <--WRONG - see below!
                             for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                             {
                                 if(TVIt == TrainController->TrainVector.begin())
                                 {
-                                    TVIt->AllowedToPassRedSignal = TempChar;
+                                    TVIt->AllowedToPassRedSignal = TempChar;   //<---this isn't a boolean, '0' or '1' will load as true for the first train!!!
                                 }
                                 else
                                 {
@@ -23161,7 +23162,7 @@ NEXTADDITION:
 
 //additions at 2.20.3 to load all remaining train values
                         SessionFile.get(TempChar);
-                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of AllowedToPassRedSignal
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of RemainHereLogNotSent
                         {
                             SessionFile.get(TempChar);
                         }
@@ -23172,15 +23173,19 @@ NEXTADDITION:
                             goto FINISHEDLOADING;
                         }
                         if(!TrainController->TrainVector.empty())
-                        {//TempChar now contains 1st train's bool of RemainHereLogNotSent or 'E' from  'End of file at 2.20.3'
+                        {//TempChar now contains 1st train's char of RemainHereLogNotSent or 'E' from  'End of file at 2.20.3'
                             if((TempChar == '0') || (TempChar == '1')) //should be a bool as there are trains present
                             {
                                 for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                                 {
-                                    TTrain TempTrain = *TVIt;  //for diagnosics, debugger can't handle iterators
+//                                    TTrain &TempTrain = *TVIt;  //for diagnosics, debugger can't handle iterators, reference so it updates as *TVIt updates
                                     if(TVIt == TrainController->TrainVector.begin())
                                     {
-                                        TVIt->RemainHereLogNotSent = TempChar;
+                                        TVIt->RemainHereLogNotSent = true;
+                                        if(TempChar == '0')
+                                        {
+                                            TVIt->RemainHereLogNotSent = false;
+                                        }
                                     }
                                     else
                                     {
@@ -23230,6 +23235,7 @@ NEXTADDITION:
                                     TVIt->OldZoomOutElement[2] = Utilities->LoadFileInt(SessionFile);
                                     TVIt->SelReminderString = Utilities->LoadFileString(SessionFile); //this and the next are UnicodeStrings but will convert from AnsiString for non-complex characters
                                     TVIt->SelSkipString = Utilities->LoadFileString(SessionFile);
+                                    TVIt->AllowedToPassRedSignal = Utilities->LoadFileBool(SessionFile); //corrected earlier error in v2.20.2, see above
                                     AnsiString Marker = Utilities->LoadFileString(SessionFile); //'****'
                                 }
                             }

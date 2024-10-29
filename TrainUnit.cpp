@@ -2067,7 +2067,7 @@ void TTrain::UpdateTrain(int Caller)
         }
     }
     // straddle ONLY changed here, check if 'LeadMid' first & if so ready for updating Elements
-    if(Straddle == LeadMid)
+    if(Straddle == LeadMid)  //about to move half onto next element
     {
         AllowedToPassRedSignal = false;
         // if had been allowed to pass then at this point it will move half onto signal so can be reset

@@ -16,6 +16,8 @@ X Had call-on into N-le-W where train stopped on bridge on other track after N-l
 
 / Increased session check limits for number of routes (5000->10000) & RouteID (20000->1000000) because of Jason B's WCML railway where RouteID came to 22009.
 
+/ Noticed that the conflict analysis file excluded 'Fer' locations.  It was because exits use EventTime rather than ArrivalTime and only arrival times are used for the arrival analysis.  Corrected by setting the arrival time in LocServiceTimes to the TrainDataVectorCopy EventTime for Fer entries.  Departures and AtLocs ok because continuation entries use dep. time and AtLoc times set to EventTimes.
+
 
 Development History
 

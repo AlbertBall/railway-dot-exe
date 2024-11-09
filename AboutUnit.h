@@ -40,7 +40,6 @@ __published:               // IDE-managed Components
     TButton * AboutFormButton; ///< The OK button
     TImage *ImageAppIcon;
     TLabel *AboutLabelCaption; ///< Version info displayed here
-    TLabel *AboutLabelTitle;
     TLinkLabel *WebsiteLinkLabel;
     TLinkLabel *Attribution1LinkLabel;
     TLinkLabel *Attribution2LinkLabel;

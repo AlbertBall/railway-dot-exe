@@ -23150,7 +23150,7 @@ NEXTADDITION:
                                 if(TVIt == TrainController->TrainVector.begin())
                                 {
                                     TVIt->AllowedToPassRedSignal = TempChar;   //<---this isn't a boolean, '0' or '1' will load as true for the first train!!!
-                                }
+                                }                                              //corrected in later addition - see below
                                 else
                                 {
                                     TVIt->AllowedToPassRedSignal = Utilities->LoadFileBool(SessionFile);
@@ -23174,7 +23174,7 @@ NEXTADDITION:
                         }
                         if(!TrainController->TrainVector.empty())
                         {//TempChar now contains 1st train's char of RemainHereLogNotSent or 'E' from  'End of file after v2.20.2'
-                            if((TempChar == '0') || (TempChar == '1')) //should be a bool as there are trains present
+                            if((TempChar == '0') || (TempChar == '1')) //should be as there are trains present
                             {
                                 for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                                 {

@@ -4,7 +4,7 @@ Check JasonB's Scotland railway when submitted to see if there's a problem with 
 
 / Added remaining train variables to session file after noticing that a signaller controlled train that had been set to stop failed to stop when reloaded from a session file.  It was because the flag 'SignallerStoppingFlag' hadn't been saved.  All others that hadn't already been saved were included to avoid similar problems in future.  Incorporated in commit 8515e24...
 
-/ Noticed error in earlier v2.20.2 session file loading for AllowedToPassRedSignal - loaded a char into a bool (silly mistake)!  Hence always true.  Added this flag as an extra after all the remaining train values in commit dcb009...  More details in comments in SaveSession & LoadSession functions.
+/ Noticed error in earlier v2.20.2 session file loading for AllowedToPassRedSignal - loaded a char into a bool (stupid mistake!)  Hence always true.  Added this flag as an extra after all the remaining train values in commit dcb009...  More details in comments in SaveSession & LoadSession functions.
 
 / The actions due panel is cropped when program run under windows 11.  Made resizeable in v2.20.2 Beta2.  OK on Win 10 & OK on Win 11 but all text bigger than on Win 10. CaptainPotato reported it and is happy with the resizeable form. Incorporated in RailOS64_v2.20.2_Beta2.
 
@@ -18,7 +18,18 @@ X Had call-on into N-le-W where train stopped on bridge on other track after N-l
 
 / Noticed that the conflict analysis file excluded 'Fer' locations.  It was because exits use EventTime rather than ArrivalTime and only arrival times are used for the arrival analysis.  Corrected by setting the arrival time in LocServiceTimes to the TrainDataVectorCopy EventTime for Fer entries.  Departures and AtLocs ok because continuation entries use dep. time and AtLoc times set to EventTimes.  Incorporated in commit d2f1fe...
 
-/Unused field removed from AboutUnit.h, incorporated in commit f4c286...
+/ Unused field removed from AboutUnit.h, incorporated in commit f4c286...
+
+/ Made performance panel resizeable similar to actions due panel because on Win 11 the bottom is cropped at first load
+
+
+Website information:
+
+For some unknown reason Windows 11 reduces the size of the 'Actions Due' panel so the text is cropped.  This panel is now resizeable and can be enlarged by grabbing a corner with the mouse and expanding it.  It should be made tall enough to prevent a vertical scrollbar appearing which obscures some of the text.
+
+It was noticed that the position light signals remained showing on a signal after a call-on when a session was saved then reloaded.  It was due to a flag not being reset on loading a session.
+
+On examining a conflict analysis file it was found that exit locations were excluded from the arrival analysis.  It was because train exits don't use arrival times which are used for the arrival analysis - they use an 'event time' instead.  It was corrected by setting the arrival time to the event time for exits.
 
 
 Development History

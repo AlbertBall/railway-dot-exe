@@ -3,7 +3,6 @@ object PerfLogForm: TPerfLogForm
   Top = 0
   HorzScrollBar.Visible = False
   BorderIcons = []
-  BorderStyle = bsSingle
   BorderWidth = 1
   Caption = 'Performance log: left click here and hold button down to move'
   ClientHeight = 266
@@ -16,12 +15,14 @@ object PerfLogForm: TPerfLogForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OnCreate = FormCreate
+  OnResize = FormResize
   TextHeight = 13
   object PerformanceLogBox: TMemo
     Left = 0
     Top = 0
     Width = 468
     Height = 263
+    BorderStyle = bsNone
     DragMode = dmAutomatic
     ReadOnly = True
     ScrollBars = ssVertical

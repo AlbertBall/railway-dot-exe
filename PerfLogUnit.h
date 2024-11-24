@@ -15,6 +15,7 @@ class TPerfLogForm : public TForm
 __published:	// IDE-managed Components
     TMemo *PerformanceLogBox;
     void __fastcall FormCreate(TObject *Sender);
+    void __fastcall FormResize(TObject *Sender);
 ///< the performance log displayed during operation
 private:	// User declarations
 public:		// User declarations

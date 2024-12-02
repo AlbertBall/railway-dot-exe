@@ -3188,7 +3188,7 @@ Prior to uploading:
 
 2 Increment version number in Project>Options separately for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
 
-3 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version). Use Project Deployment to ensure correct versions (note that not all depndencies shown for debug version, use release version but only add the ones that expect and test on laptop).
+3 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version). Use Project Deployment to ensure correct versions (note that not all dependencies shown for debug version, use release version but only add the ones that expect and test on laptop).
 
 4 Do a final full build for each:
 32bit: use debug version, add 32 to version information in InterfaceUnit.cpp, copy railway.exe to RailOS32.exe for release & to RailOS32-vx.x.x for debug folder.
@@ -3231,13 +3231,13 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit current development branch, select TortoiseGit->Show Log, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
+5 Leave source code as 32bit debug, commit current development branch locally & on remote, select TortoiseGit->Show Log, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
 
 6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
 
 7 Push master to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
 
-8 Create a new release on GitHub [USING CHROME] & include the new zip file(s)
+8 Create a new release on GitHub & include the new zip file(s) [if Firefox fails on upload use Chrome]
 
 9 Make sure only have the master branch on local and remote (change default to master on remote in order to delete the dev branch if necessary)
 

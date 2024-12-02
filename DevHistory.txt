@@ -2,6 +2,8 @@ Post v2.20.3 notes:
 
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 
+For future releases add "If Windows Defender cautions against using the program (this is because it doesn't recognise it), click 'allow program to run' or equivalent wording." to the important notes.
+
 
 Development History
 

@@ -1766,6 +1766,16 @@
 		<param name="Local" value="html/2.54gc5.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Windows 10">
+		<param name="Name" value="Notes for Windows 10 and 11 users">
+		<param name="Local" value="html\1.1d.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Windows 11">
+		<param name="Name" value="Notes for Windows 10 and 11 users">
+		<param name="Local" value="html\1.1d.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Wrong direction entry">
 		<param name="Name" value="Route setting and cancelling">
 		<param name="Local" value="html/6.14sz5.htm">

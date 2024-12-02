@@ -13,7 +13,6 @@ var class_t_about_form =
     [ "WebsiteLinkLabelLinkClick", "class_t_about_form.html#a6c7cc55bc67691c15901fdeac8bec954", null ],
     [ "AboutFormButton", "class_t_about_form.html#add3f256ba4f1ed42204c0e77c0d71552", null ],
     [ "AboutLabelCaption", "class_t_about_form.html#aa188b96e0810fb8944b8e7fd7a2deea4", null ],
-    [ "AboutLabelTitle", "class_t_about_form.html#a0d1afa81071159368263c6a1d1ed0c7d", null ],
     [ "Attribution1Label", "class_t_about_form.html#a0ff4e741e1c1c280733c3a9ccde35413", null ],
     [ "Attribution1LinkLabel", "class_t_about_form.html#ab5ff9a28b7aa8db5c5723c8e48c4f2e1", null ],
     [ "Attribution2Label", "class_t_about_form.html#adfcb216e6b70a6369dd33837e8875503", null ],

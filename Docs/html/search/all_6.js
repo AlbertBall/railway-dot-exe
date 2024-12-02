@@ -123,7 +123,7 @@ var searchData=
   ['formcreate_1168',['FormCreate',['../class_t_about_form.html#ad2cb3d318c91018ed8986c8315ccd52b',1,'TAboutForm::FormCreate()'],['../class_t_actions_due_form.html#ae324a76ba66a02fa0f127366b35bd1ca',1,'TActionsDueForm::FormCreate()'],['../class_t_interface.html#a9cef18571e29b70d02ba9a92a830b3b8',1,'TInterface::FormCreate()'],['../class_t_perf_log_form.html#af0b59165ef1dd98e5631a54905dbfa1a',1,'TPerfLogForm::FormCreate()']]],
   ['formkeydown_1169',['FormKeyDown',['../class_t_interface.html#acc63cfe8eb8e41508e32c7f7681e7e03',1,'TInterface']]],
   ['formkeyup_1170',['FormKeyUp',['../class_t_interface.html#a84a1627edee1954b3938f45473c09bfd',1,'TInterface']]],
-  ['formresize_1171',['FormResize',['../class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b',1,'TInterface']]],
+  ['formresize_1171',['FormResize',['../class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b',1,'TInterface::FormResize()'],['../class_t_perf_log_form.html#a7b46c43456a2b9ecdadcb5434746f70b',1,'TPerfLogForm::FormResize()']]],
   ['fouraspect_1172',['FourAspect',['../class_t_track_element.html#abbbcaeb3e062e962d53337965d4fcaada32c2bcb262cbd1148629097dd629d0f7',1,'TTrackElement']]],
   ['fouraspectbuild_1173',['FourAspectBuild',['../class_t_track.html#a05bacf165698f9502dc7287b01ece848a359004de637fbf8e7f14beddd581700c',1,'TTrack']]],
   ['frh_5fshbutton_1174',['Frh_shButton',['../class_t_interface.html#a830590d15ee0581538752a98753c97cf',1,'TInterface']]],

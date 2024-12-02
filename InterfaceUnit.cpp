@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post " + GetVersion(); //Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32 " + GetVersion(); //Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
                                                                      //Beta2 for resizeable actions due form
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
@@ -22406,7 +22406,7 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.20.2");
 //end of v2.20.2 additions
 
-//additions after v2.20.2 - remaining train values
+//additions at v2.20.3 - remaining train values
 
             for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
             {
@@ -22452,8 +22452,8 @@ In each case need to ensure that the following points are considered and dealt w
                 Utilities->SaveFileBool(SessionFile, TVIt->AllowedToPassRedSignal); //corrected earlier error in v2.20.2 LoadSession, see above
                 Utilities->SaveFileString(SessionFile, "****"); //end of train marker
             }
-            Utilities->SaveFileString(SessionFile, "End of file after v2.20.2");
-//end of after v2.20.2 additions
+            Utilities->SaveFileString(SessionFile, "End of file at v2.20.3");
+//end of v2.20.3 additions
 
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
@@ -23160,7 +23160,7 @@ NEXTADDITION:
                         DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.2" discarded
 //end of v2.20.2 additions
 
-//additions after v2.20.2 to load all remaining train values
+//additions at v2.20.3 to load all remaining train values
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of RemainHereLogNotSent
                         {
@@ -23173,7 +23173,7 @@ NEXTADDITION:
                             goto FINISHEDLOADING;
                         }
                         if(!TrainController->TrainVector.empty())
-                        {//TempChar now contains 1st train's char of RemainHereLogNotSent or 'E' from  'End of file after v2.20.2'
+                        {//TempChar now contains 1st train's char of RemainHereLogNotSent or 'E' from  'End of file at v2.20.3'
                             if((TempChar == '0') || (TempChar == '1')) //should be as there are trains present
                             {
                                 for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
@@ -23240,8 +23240,8 @@ NEXTADDITION:
                                 }
                             }
                         }
-                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file after v2.20.2" discarded 'E' may have been loaded earlier
-//end of after v2.20.2 additions
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.3" discarded 'E' may have been loaded earlier
+//end of v2.20.3 additions
                     }   //this is the final block closure after all additions (enclosed in a block so goto doesn't bypass initialisation of a local variable (DummyStr, ID etc.))
 
 FINISHEDLOADING:

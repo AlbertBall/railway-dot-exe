@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"functions_vars_f.html":[2,3,2,5],
 "functions_vars_g.html":[2,3,2,6],
 "functions_vars_h.html":[2,3,2,7],
 "functions_vars_i.html":[2,3,2,8],
@@ -31,8 +32,8 @@ var NAVTREEINDEX15 =
 "globals_b.html":[3,1,0,2],
 "globals_c.html":[3,1,0,3],
 "globals_d.html":[3,1,0,4],
-"globals_defs.html":[3,1,6,0],
 "globals_defs.html":[3,1,6],
+"globals_defs.html":[3,1,6,0],
 "globals_defs_f.html":[3,1,6,1],
 "globals_e.html":[3,1,0,5],
 "globals_enum.html":[3,1,4],

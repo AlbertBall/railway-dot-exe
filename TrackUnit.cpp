@@ -3825,7 +3825,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
         }
     }
 
-//    TextHandler->RebuildFromTextVector(, Disp); // plot text after inactives so can have text on stations etc //moved below after v2.20.2
+//    TextHandler->RebuildFromTextVector(, Disp); // plot text after inactives so can have text on stations etc //moved below at v2.20.3
 
     NextTrackElementPtr = TrackVector.begin();
     while(ReturnNextTrackElement(0, Next))
@@ -3886,7 +3886,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
         }
     }
 
-    TextHandler->RebuildFromTextVector(1, Disp); // plot text after all else so visible over stations/track etc.  //moved from above after v2.20.2
+    TextHandler->RebuildFromTextVector(1, Disp); // plot text after all else so visible over stations/track etc.  //moved from above at v2.20.3
     Disp->Update();
     Utilities->CallLogPop(468);
 }
@@ -4763,7 +4763,7 @@ void TTrack::ResetSignals(int Caller)
         {
             TrackElementAt(1124, x).Attribute = 0;
             TrackElementAt(1514, x).Failed = false;
-            TrackElementAt(1682, x).CallingOnSet = false; //added after v2.20.2 to clear position light signals
+            TrackElementAt(1682, x).CallingOnSet = false; //added at v2.20.3 to clear position light signals
         }
     }
     FailedSignalsVector.clear();
@@ -20978,7 +20978,7 @@ bool TAllRoutes::CheckRoutes(int Caller, int NumberOfActiveElements, std::ifstre
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckRoutes," + AnsiString(NumberOfActiveElements));
     int NumberOfRoutes = Utilities->LoadFileInt(InFile);
 
-    if((NumberOfRoutes < 0) || (NumberOfRoutes > 10000)) //increased from 5000 to 10000 after v2.20.2 because of Jason B's WCML railway (was 304 but could get higher)
+    if((NumberOfRoutes < 0) || (NumberOfRoutes > 10000)) //increased from 5000 to 10000 at v2.20.3 because of Jason B's WCML railway (was 304 but could get higher)
     {
         Utilities->CallLogPop(1445);
         return(false);
@@ -20993,7 +20993,7 @@ bool TAllRoutes::CheckRoutes(int Caller, int NumberOfActiveElements, std::ifstre
     for(int x = 0; x < NumberOfRoutes; x++)
     {
         int RouteID = Utilities->LoadFileInt(InFile);
-        if((RouteID < 0) || (RouteID > 1000000))    //increased from 20000 t0 1000000 after v2.20.2 because of Jason B's WCML railway where RouteID was 22009
+        if((RouteID < 0) || (RouteID > 1000000))    //increased from 20000 t0 1000000 at v2.20.3 because of Jason B's WCML railway where RouteID was 22009
         {
             Utilities->CallLogPop(1447);
             return(false);

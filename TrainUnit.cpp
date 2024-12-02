@@ -18587,7 +18587,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                     {
                         TLSTEntry.ArrTime = Utilities->Format96HHMM(GetRepeatTime(77, AVE.EventTime, y, IncMinutes)); //need this as arrival time so arrival analysis works
                                                                                                                         //properly for exits (continuation entries use dep time so ok)
-                                                                                                                        //added afer v2.20.2
+                                                                                                                        //added at v2.20.3
                         TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(55, AVE.EventTime, y, IncMinutes));
                         //don't know which exit will be used during operation so use the first in ExitList, if several with different names then will
                         //be wrong, but can't guess from here & most will have same name

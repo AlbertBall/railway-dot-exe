@@ -97,8 +97,11 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion(); //Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32 Post" + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
                                                                      //Beta2 for resizeable actions due form
+                                                          //Post v2.20.3 Beta for Jason B's WCML where limits raised for NumberOfTrainEntries & EventReported
+                                                          //in CheckTimetableFromSessionFile as part of SessionFileIntegrityCheck
+
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -24025,8 +24028,8 @@ bool TInterface::CheckTimetableFromSessionFile(int Caller, std::ifstream &Sessio
     }
     int NumberOfTrainEntries;
 
-    if(!Utilities->CheckAndReadFileInt(SessionFile, 0, 10000, NumberOfTrainEntries))
-    {
+    if(!Utilities->CheckAndReadFileInt(SessionFile, 0, 100000, NumberOfTrainEntries))  //increased from 10000 to 100000 after v2.20.3 because of JasonB's WCML which
+    {                                                                                  //reached 9346 in the middle of day 2 out of a 4 day timetable
         Utilities->CallLogPop(1232);
         return(false);
     }
@@ -24045,9 +24048,9 @@ bool TInterface::CheckTimetableFromSessionFile(int Caller, std::ifstream &Sessio
                 Utilities->CallLogPop(1234);
                 return(false);
             }
-            if(!Utilities->CheckFileInt(SessionFile, 0, 32)) // EventReported //increased to 32 at v2.11.1 due to Xeon error report 07/01/22 as there are 33
+            if(!Utilities->CheckFileInt(SessionFile, 0, 35)) // EventReported //increased to 32 at v2.11.1 due to Xeon error report 07/01/22 as there are 33
                                                                               //event reports now (increased at v2.9.1)
-            {
+            {                                                                 //increased again to 35 after v2.20.3 as there are now (at v2.20.3) 36 events in all
                 Utilities->CallLogPop(1235);
                 return(false);
             }

@@ -34,19 +34,21 @@
 /// Predeclared to allow access, full declaration in DisplayUnit
 class TDisplay;
 /// Used for reporting error conditions & warnings
-enum TActionEventType
+enum TActionEventType  //36 in total
 {
     NoEvent, FailTrainEntry, FailCreateTrain, FailCreateOnRoute, FailCreatePoints, FailSPAD, FailLockedRoute, FailLocTooShort, FailSplitDueToOtherTrain,
     FailCrashed, FailDerailed, FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedDSC, FailMissedJoinOther,
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
-    RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart, FailTrainInFront  //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart
-};  // FailEntryRouteSetAgainst added at v2.9.1                                                                         //& FailTrainInFront new at v2.19.1
+    RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart, FailTrainInFront //IF ADD ANY ENSURE ADD AT END AS NUMBER USED IN SESSION FILES (failed to do this up to 2.20.3
+    //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart
+};  // FailEntryRouteSetAgainst added at v2.9.1
+    //& FailTrainInFront new at v2.19.1
     //if add to these remember to change the integer value in session file integrity check (33 total here)
     //Xeon notified error 07/01/22 when EventReported int value exceeded 30 (as it was in v2.11.0) for FailEntryRouteSetAgainst
 
 /// Used in LogAction when reporting a train action to the performance log & file
-enum TActionType
+enum TActionType //26 in total
 {
     Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, RearSplit, JoinedByOther, ChangeDirection, NewService, TakeSignallerControl,
     RestoreTimetableControl, RemoveTrain, SignallerMoveForwards, SignallerJoin, TrainFailure, // SignallerJoin, TrainFailure & RepairFailedTrain new at v2.4.0

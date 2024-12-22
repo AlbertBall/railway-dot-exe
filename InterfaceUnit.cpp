@@ -4133,7 +4133,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
                         {
                             continue;
                         }
-                        if((Second == "jbo") || (Second == "fsp") || (Second == "rsp") || (Second == "cdt") || (Second == "dsc"))
+                        if((Second == "jbo") || (Second == "fsp") || (Second == "rsp") || (Second == "cdt") || (Second == "dsc") || (Second == "cms"))
                         {
                             continue;
                         }
@@ -14146,7 +14146,7 @@ void __fastcall TInterface::SkipTimetabledActionsMenuItemClick(TObject *Sender)
 
 If stopped at signal then next action will be TimeLoc arrival, TimeTimeLoc, Pass or Fer.
 
-If stopped at a location then next action will be TimeTimeLoc dep/TimeLoc dep/jbo/fsp/rsp/cdt/dsc/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs.
+If stopped at a location then next action will be TimeTimeLoc dep/TimeLoc dep/jbo/fsp/rsp/cdt/dsc/cms/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs.
 
 FormatType:  NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle,
 SNSNonRepeatFromShuttle, FSHNewService, Repeat, PassTime, ExitRailway
@@ -14385,8 +14385,8 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
                     Count++;
                 }
                 PassNum++;
-                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
-                //don't count cdts, dscs, passes or departures as missed events (note that can't be a finish)
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "cms") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
+                //don't count cdts, dscs, cmss, passes or departures as missed events (note that can't be a finish)
                 {
                     continue;
                 }
@@ -14459,10 +14459,10 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
                     Count++;
                 }
                 PassNum++;
-                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") ||
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "cms") || (AVEPtr->Command == "pas") ||
                     ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime > TDateTime(0))) ||
                     (Train.SkippedDeparture && (AVEPtr == Train.ActionVectorEntryPtr)))
-                //don't count cdts, dscs, passes or departures as missed events (note that can't be a finish), or first departure if SkippedDeparture is true
+                //don't count cdts, dscs, cmss, passes or departures as missed events (note that can't be a finish), or first departure if SkippedDeparture is true
                 {
                     continue;
                 }
@@ -14990,9 +14990,9 @@ void TInterface::SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrA
         int  SkippedEvents = 0;
         for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; AVEPtr < NewServiceActionEntryPtr; AVEPtr++)
         {
-            if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") || (AVEPtr->SequenceType == FinishSequence) ||
+            if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "cms") || (AVEPtr->Command == "pas") || (AVEPtr->SequenceType == FinishSequence) ||
                     ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
-            //don't count cdts, dscs, passes, finishes or departures as missed events (finish will be the new service and becomes new service at diff loc so it isn't missed)
+            //don't count cdts, dscs, cmss, passes, finishes or departures as missed events (finish will be the new service and becomes new service at diff loc so it isn't missed)
             {
                 continue;
             }
@@ -15041,8 +15041,8 @@ void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString Loc
         {
             if(AVEPtr->LocationName != LocationName)
             {
-                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
-                //don't count cdts, dscs, passes or departures as missed events (can't be a finish)
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "cms") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
+                //don't count cdts, dscs, cmss, passes or departures as missed events (can't be a finish)
                 {
                     continue;
                 }
@@ -15062,8 +15062,8 @@ void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString Loc
                 LocFound = true;
                 break;
             }
-            else if(((AVEPtr->FormatType == TimeLoc) && (AVEPtr->ArrivalTime > TDateTime(-1))) || (AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc"))
-            {                                                                              //increment past arrival, cdt & dsc events, no skipped event as stops here
+            else if(((AVEPtr->FormatType == TimeLoc) && (AVEPtr->ArrivalTime > TDateTime(-1))) || (AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "cms"))
+            {                                                                              //increment past arrival, cdt, dsc & Cms events, no skipped event as stops here
                 continue;
             }
             else
@@ -24048,9 +24048,10 @@ bool TInterface::CheckTimetableFromSessionFile(int Caller, std::ifstream &Sessio
                 Utilities->CallLogPop(1234);
                 return(false);
             }
-            if(!Utilities->CheckFileInt(SessionFile, 0, 35)) // EventReported //increased to 32 at v2.11.1 due to Xeon error report 07/01/22 as there are 33
+            if(!Utilities->CheckFileInt(SessionFile, 0, 36)) // EventReported //increased to 32 at v2.11.1 due to Xeon error report 07/01/22 as there are 33
                                                                               //event reports now (increased at v2.9.1)
             {                                                                 //increased again to 35 after v2.20.3 as there are now (at v2.20.3) 36 events in all
+                                                                              //increased again to 36 after v2.20.3 for FailMissedCMS
                 Utilities->CallLogPop(1235);
                 return(false);
             }

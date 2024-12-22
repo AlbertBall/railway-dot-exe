@@ -1129,6 +1129,13 @@ void TTrain::UpdateTrain(int Caller)
                     LastActionTime = TrainController->TTClockTime;
                     ActionVectorEntryPtr++;
                 }
+                else if(ActionVectorEntryPtr->Command == "cms") //added after v2.20.3 for change of max speed
+                {
+                    MaxRunningSpeed = ActionVectorEntryPtr->NewMaxSpeed.ToInt();
+                    LogAction(7777, HeadCode, "", ChangeMaxSpeed, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+                    LastActionTime = TrainController->TTClockTime;
+                    ActionVectorEntryPtr++;
+                }
                 else if(ActionVectorEntryPtr->Command == "Fns")
                 {
                     NewTrainService(0, false);
@@ -6484,6 +6491,11 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
             {
                 TrainController->LogActionError(64, HeadCode, "", FailMissedDSC, Ptr->LocationName);
             }
+            //cms
+            else if(Ptr->Command == "cms") //new after v2.20.3
+            {
+                TrainController->LogActionError(7777, HeadCode, "", FailMissedCMS, Ptr->LocationName);
+            }
             // Errors - have reached a station stop point (before a cdt) during Train->Update() so intervening actions can't
             // be starts, finishes or cdt
             else if((Ptr->Command == "Fns") || (Ptr->Command == "Frh") || (Ptr->Command == "Fer") || (Ptr->Command == "Fjo") || (Ptr->Command == "Snt") ||
@@ -6596,6 +6608,11 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
             else if(Ptr->Command == "dsc") //new at v2.15.0
             {
 //                TrainController->LogActionError(65, HeadCode, "", FailMissedDSC, Ptr->LocationName); don't count as a missed event
+            }
+            // cms
+            else if(Ptr->Command == "cms") //new after v2.20.3
+            {
+//                TrainController->LogActionError(, HeadCode, "", FailMissedCMS, Ptr->LocationName); don't count as a missed event
             }
             // cdt
             else if(Ptr->Command == "cdt")
@@ -7214,6 +7231,10 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         {
             RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(65, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
+        else if(Ptr->Command == "cms")
+        {
+            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
     }
     else if(TrainController->TTClockTime > ActionTime) //condition added at v2.13.2 for trains that are delayed other than suffering a random delay
     {
@@ -7339,6 +7360,10 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         {
             RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
         }
+        else if(Ptr->Command == "cms")
+        {
+            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
+        }
     }
     else //train not delayed
     {
@@ -7463,6 +7488,10 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         else if(Ptr->Command == "dsc")
         {
             RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(66, Ptr->EventTime));
+        }
+        else if(Ptr->Command == "cms")
+        {
+            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime));
         }
     }
     Utilities->CallLogPop(1124);
@@ -8026,6 +8055,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         else if(Ptr->Command == "dsc")
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(67, Ptr->EventTime)) + ": Change description at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "cms")
+        {
+            PartStr = Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime)) + ": Change maximum speed at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -10651,6 +10684,10 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(27, Ptr->EventTime, RepNum, IncMins)) + ": Change description at " + Ptr->LocationName;
         }
+        else if(Ptr->Command == "cms")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7777, Ptr->EventTime, RepNum, IncMins)) + ": Change Maximum speed at " + Ptr->LocationName;
+        }
         if(RetStr != "")
         {
             RetStr = RetStr + '\n' + PartStr;
@@ -10816,6 +10853,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
 
   HH:MM;Command (cdt)                                         }TimeCmd                 }
   HH:MM;Command;Description (dsc)                             }TimeCmdDescription      }
+  HH:MM;Command;NewMaxSpeed (cms)                             }TimeCmdMaxSpeed         }
   HH:MM;Location (arr & dep)                                  }TimeLoc                 }
   HH:MM;HH:MM;Location                                        }TimeTimeLoc             }
   HH:MM;pas;Location                                          }PassTime                }
@@ -10830,6 +10868,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   Command only:                               Frh
   Time;Command:                               cdt
   Time;Command;Description                    dsc
+  Time;Command;MaxSpeed                       msc
   Time;Command;Headcode:                      Sfs Sns jbo fsp rsp Fns Fjo Frh-sh F-nshs Sns-fsh
   Time;Command;2 Element IDs:                 Snt
   Time;Comand;n Element IDs:                  Fer
@@ -10839,7 +10878,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   Time;Location                               Arr Dep
   Time;Time;Location                          Arr & dep together
 
-  10  Non-linked entries:    Snt (located or unlocated); pas; cdt; dsc; TimeLoc arr & dep; TimeTimeLoc; Fer; Frh
+  11  Non-linked entries:    Snt (located & unlocated); pas; cdt; dsc; msc; TimeLoc arr & dep; TimeTimeLoc; Fer; Frh
 
   9  1x Linked entries: Non-shuttle:  fsp or rsp -> Sfs; Fns -> Sns; Fjo -> jbo; times must match, headcodes must match
   Shuttle: F-nshs -> Sns-sh: times match, F-nshs HeadCode matches Sns-sh 2nd Headcode;
@@ -10857,7 +10896,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
 
   Successor state     Type
 
-  Snt located         AtLoc         )          Snt AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
+  Snt located         AtLoc         )          Snt AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/msc/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
   Snt Unlocated       Moving        )          Snt Moving successors: TimeLoc arr/TimeTimeLoc/pas/Fer;
   Sfs                 AtLoc         )
   Sns                 AtLoc         ) Start
@@ -10871,6 +10910,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   rsp                 AtLoc                       ) Intermediate
   cdt                 AtLoc                       )
   dsc                 AtLoc                       )
+  msc                 AtLoc                       )
   TimeLoc arr         Moving (bef), AtLoc (aft)   )
   TimeLoc dep         AtLoc  (bef), Moving (aft)  )
   TimeTimeLoc         Moving                      )
@@ -10897,6 +10937,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   rsp                 Rear split
   cdt                 Change direction of train
   dsc                 Change description of train
+  msc                 Change max speed of train
   TimeLoc arr         Arrival
   TimeLoc dep         Departure
   TimeTimeLoc         Arrival and departure
@@ -11066,6 +11107,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
           Format                                                       FormatType
           [W]HH:MM;Command (cdt)                                         }TimeCmd                 }
           [W]HH:MM;dsc;new description                                   }TimeCmdDescription      }
+          [W]HH:MM;cms;new max speed                                     }TimeCmdMaxSpeed         }
           [W]HH:MM;Fer;set of allowable IDs                              }ExitRailway             }
           [W]HH:MM;pas;Location                                          }PassTime                }
           [W]HH:MM;Snt;RearStartIdent FrontStartIdent                    }StartNew                }
@@ -11129,6 +11171,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
           new train - that train's starting information must correspond)
           cdt (TimeCmd) = Change Direction of Train = change direction, no details needed & no train creation
           dsc (TimeCmdDescription) = Change description of train = new description only, no train creation
+          cms (TimeCmdMaxSpeed) = Change maximum speed of train = new max speed only, no train creation
 
           Finish commands:-
           Fns (TimeCmdHeadCode) = Finish New Service = finish, form new service in same direction, details = new headcode (no train
@@ -11631,6 +11674,15 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         }
                         ActionVectorEntry.Command = Second;
                         ActionVectorEntry.NewDescription = Third;
+                    }
+                    else if(FormatType == TimeCmdMaxSpeed) //new after v2.20.3
+                    {
+                        if(CheckTimeValidity(7777, First, ActionVectorEntry.EventTime))
+                        {
+                            ;
+                        }
+                        ActionVectorEntry.Command = Second;
+                        ActionVectorEntry.NewMaxSpeed = Third;
                     }
                     TempTrainDataEntry.ActionVector.push_back(ActionVectorEntry);
                 }
@@ -12152,6 +12204,44 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         SequenceType = IntermediateSequence;
         ShuttleLinkType = NotAShuttleLink;
         Utilities->CallLogPop(2604);
+        return(true);
+    }
+    if(Second == "cms") //new after v2.20.3 - change max speed
+    {
+        for(int x = 1; x < Third.Length() + 1; x++)
+        {
+            if((Third[x] < '0') || (Third[x] > '9'))
+            {
+                TimetableMessage(GiveMessages, "Train maximum speed must be a number in '" + Third + "'");
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
+        }
+        int MaxRunningSpeed = Third.ToInt(); //must be a whole positive number here
+        if(MaxRunningSpeed > TTrain::MaximumSpeedLimit) // 400kph = 250mph
+        {
+            MaxRunningSpeed = TTrain::MaximumSpeedLimit;
+            if(!MRSHigh) // added at v2.4.0
+            {
+                TimetableMessage(GiveMessages, "Train maximum running speed > 400km/h in '" + Third + "'.  Setting it to 400km/h");
+                MRSHigh = true;
+            }
+        }
+        if(MaxRunningSpeed < 10)
+        // changed at v0.6 to prevent low max speeds - can cause problems in SetTrainMovementValues
+        {
+            MaxRunningSpeed = 10;
+            if(!MRSLow) // added at v2.4.0
+            {
+                TimetableMessage(GiveMessages, "Train maximum running speed can't be less than 10km/h in '" + Third + "', it will be set to 10km/h");
+                MRSLow = true;
+            }
+        }
+        FormatType = TimeCmdMaxSpeed;
+        LocationType = AtLocation;
+        SequenceType = IntermediateSequence;
+        ShuttleLinkType = NotAShuttleLink;
+        Utilities->CallLogPop(7777);
         return(true);
     }
 
@@ -12998,7 +13088,7 @@ Set remaining AtLoc Command locations from preceding named event
 All location names should now be set
 
 Final detailed check of names for all AtLoc Commands.  If find any without a name give an error message:-
-If jbo, fsp, rsp, cdt or dsc say must be preceded by a named event at same location, normally an arrival
+If jbo, fsp, rsp, cdt dsc or cms say must be preceded by a named event at same location, normally an arrival
 If Sns or Sfs say to make sure the linked finish event is preceded by a named event at same location, normally an arrival
 If Snt-sh say to make sure that the service starts with zero speed and is at a named location
 If Sns-fsh or Sns-sh say to make sure that the event is followed (not necessarily immediately) by a departure
@@ -13134,6 +13224,7 @@ fsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other 
 rsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
 cdt ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
 dsc ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
+cms ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
 TimeLoc (arr) ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
 TimeLoc (dep) ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
 TimeTimeLoc ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
@@ -13924,7 +14015,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
             if((AVEntry.LocationType == AtLocation) && (AVEntry.LocationName == "") && (AVEntry.Command != ""))
             {
-                if((AVEntry.Command == "jbo") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "cdt") || (AVEntry.Command == "dsc"))
+                if((AVEntry.Command == "jbo") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "cdt") || (AVEntry.Command == "dsc") || (AVEntry.Command == "cms"))
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - '" + AVEntry.Command + "' must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
                     TrainDataVector.clear();
@@ -14082,6 +14173,25 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                                       ". The event isn't valid for a stationary train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(2603);
+                    return(false);
+                }
+            }
+            if(AVEntry.Command == "cms")
+            {
+                if(y >= (TrainDataVector.at(x).ActionVector.size() - 1))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - a 'cms' can't be the last event for: " + TDEntry.HeadCode);
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+                const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
+                if(!AtLocSuccessor(AVEntry2))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - a 'cms' is followed by an illegal event for: " + TDEntry.HeadCode +
+                                      ". The event isn't valid for a stationary train.");
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(7777);
                     return(false);
                 }
             }
@@ -14416,8 +14526,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         return(false);
                     }
                 }
-                else if((AVEntry.FormatType == TimeCmd) || (AVEntry.FormatType == TimeCmdDescription))
-                // cdt is the only TimeCmd & dsc is the only TimeCmdDescription
+                else if((AVEntry.FormatType == TimeCmd) || (AVEntry.FormatType == TimeCmdDescription) || (AVEntry.FormatType == TimeCmdMaxSpeed))
+                // cdt is the only TimeCmd, dsc is the only TimeCmdDescription &  cms is the only TimeCmdMaxSpeed
                 {
                     if(AVEntry.LocationName != LastLocationName)
                     {
@@ -14906,12 +15016,12 @@ bool TTrainController::MovingSuccessor(const TActionVectorEntry &AVEntry)
 }
 
 // ---------------------------------------------------------------------------
-// AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
+// AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/cms/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
 bool TTrainController::AtLocSuccessor(const TActionVectorEntry &AVEntry)
 {
     return ((AVEntry.FormatType == TimeLoc) || (AVEntry.Command == "jbo") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") ||
             (AVEntry.Command == "cdt") || (AVEntry.Command == "dsc") || (AVEntry.Command == "Frh") || (AVEntry.Command == "Fns") || (AVEntry.Command == "Fjo") || (AVEntry.Command == "Frh-sh") ||
-            (AVEntry.Command == "Fns-sh") || (AVEntry.Command == "F-nshs"));
+            (AVEntry.Command == "Fns-sh") || (AVEntry.Command == "F-nshs") || (AVEntry.Command == "cms"));
 }
 
 // ---------------------------------------------------------------------------
@@ -15656,7 +15766,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
 //Frh if Snt                  Frh-sh          cdt
 //Fns if Snt                  Fns-sh          fsp or rsp
 //Fjo if Snt                  TimeTimeLoc     jbo
-//F-nshs if Snt               pas             dsc
+//F-nshs if Snt               pas             dsc or cms
 //TimeLoc dep                 Fer
 //                            TimeLoc arr
 
@@ -15683,7 +15793,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
             Utilities->CallLogPop(854);
             return(false);
         }
-        if((AVEntry.Command == "cdt") || (AVEntry.Command == "dsc") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "jbo"))
+        if((AVEntry.Command == "cdt") || (AVEntry.Command == "dsc") || (AVEntry.Command == "cms") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "jbo"))
         {
             continue;
         }
@@ -16480,6 +16590,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 // FailMissedSplit: 06:00:10: ERROR: 2F43 failed to split at Essex Road
 // FailMissedJBO: 06:00:10: ERROR: 2F43 failed to be joined by join other train at Essex Road
 // FailMissedDSC: 06:00:10: ERROR: 2F43 failed to change its description at Essex Road
+// FailMissedCMS: 06:00:10: ERROR: 2F43 failed to change its maximum speed at Essex Road
 // FailMissedJoinOther:  06:00:10: ERROR: 2F43 failed to join other train at Essex Road
 // FailMissedTerminate:  06:00:10: ERROR: 2F43 failed to terminate at Essex Road
 // FailMissedNewService:  06:00:10: ERROR: 2F43 failed to form new service at Essex Road
@@ -16592,6 +16703,11 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     else if(ActionEventType == FailMissedDSC) //new at v2.15.0
     {
         ErrorLog = " failed to change its description at ";
+//        OtherMissedEvents++;    shouldn't count
+    }
+    else if(ActionEventType == FailMissedCMS) //new after v2.20.3
+    {
+        ErrorLog = " failed to change its maximum speed at ";
 //        OtherMissedEvents++;    shouldn't count
     }
     else if(ActionEventType == FailMissedJoinOther)
@@ -17642,6 +17758,11 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                     {
                         PartStr = "Changes description at " + ActionVectorEntry.LocationName;
                         TimeStr = Utilities->Format96HHMM(GetRepeatTime(76, ActionVectorEntry.EventTime, y, IncMinutes));
+                    }
+                    else if(ActionVectorEntry.Command == "cms")
+                    {
+                        PartStr = "Changes maximum speed at " + ActionVectorEntry.LocationName;
+                        TimeStr = Utilities->Format96HHMM(GetRepeatTime(7777, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                 }
                 else if(ActionVectorEntry.SequenceType == FinishSequence)
@@ -19738,6 +19859,7 @@ First create a new TrainDataVector from earlier copy as above with single servic
 
       HH:MM;Command (cdt)                                         }TimeCmd                 }
       HH:MM;Command;new description (dsc)                         }TimeCmdDescription      }
+      HH:MM;Command;new maximum speed (cms)                       }TimeCmdMaxSpeed         }
       HH:MM;Location (arr & dep)                                  }TimeLoc                 }
       HH:MM;HH:MM;Location                                        }TimeTimeLoc             }
       HH:MM;pas;Location                                          }PassTime                }
@@ -19752,6 +19874,7 @@ First create a new TrainDataVector from earlier copy as above with single servic
       Command only:                               Frh
       Time;Command:                               cdt
       Time;Command;new description:               dsc
+      Time;Command;new max speed:                 cms
       Time;Command;Headcode:                      Sfs Sns jbo fsp rsp Fns Fjo Frh-sh F-nshs Sns-fsh
       Time;Command;2 Element IDs:                 Snt
       Time;Comand;n Element IDs:                  Fer
@@ -21966,18 +22089,19 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                 Utilities->CallLogPop(2082);
                 return(-1); // no action needed
             }
-            else if(!((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)))
+            else if(!((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription) || (Train.ActionVectorEntryPtr->FormatType == TimeCmdMaxSpeed)))
             {     //added '|| (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)' at v2.16.1 so description ignored in calculating action due time
+                  //added TimeCmdMaxSpeed after v2.20.3
                 Utilities->CallLogPop(2083);
-                return(-1); // not due a departure or a description change so no action needed
+                return(-1); // not due a departure, description change or a max speed change so no action needed
             }
-            else if(((Train.ActionVectorEntryPtr + 1)->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)) // due a departure immediately after change of description
-            { //added at v2.16.1 to cover description change due next then a departure
+            else if(((Train.ActionVectorEntryPtr + 1)->FormatType == TimeLoc) && ((Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription) || Train.ActionVectorEntryPtr->FormatType == TimeCmdMaxSpeed)) // due a departure immediately after change of description or change of max speed
+            { //added at v2.16.1 to cover description change due next then a departure   //added TimeCmsMaxSpeed after v2.20.3
                 double TimeToDepart = double((Train.GetTrainTime(68, (Train.ActionVectorEntryPtr + 1)->DepartureTime)) - TrainController->TTClockTime) * 86400 / 60; // mins to depart excluding possible 30sec allowance from LastActionTime
                 //need repeat time for the above
                 if((Train.ActionVectorEntryPtr + 1)->DepartureTime == Train.ActionVectorEntryPtr->EventTime) //don't need repeat time here
                 {
-                    TimeToDepart+= 0.5;  //add in the 30 secs if depature time same as description change time
+                    TimeToDepart+= 0.5;  //add in the 30 secs if depature time same as description or max speed change time
                 }
                 if(TimeToDepart < 0.5)
                 {
@@ -22233,8 +22357,8 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                         AVPtr++;
                         AVPtr++;
                     }
-                    else if(((AVPtr + 1)->FormatType == TimeCmdDescription) && ((AVPtr + 2)->FormatType == TimeLoc))  //change of description then departure
-                    { //added at v2.16.1 so description changes ignored in calculating time to act
+                    else if((((AVPtr + 1)->FormatType == TimeCmdDescription) || ((AVPtr + 1)->FormatType == TimeCmdMaxSpeed)) && ((AVPtr + 2)->FormatType == TimeLoc))  //change of description or max speed then departure
+                    { //added at v2.16.1 so description changes ignored in calculating time to act //added TimeCmdMaxSpeed after v2.20.3
                         LaterStopNumber++;
                         StopTimeDouble = double((AVPtr + 2)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
                         // can't convert a TDateTime to a float directly                                           //so repeat times not required

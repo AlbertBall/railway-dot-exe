@@ -34,26 +34,26 @@
 /// Predeclared to allow access, full declaration in DisplayUnit
 class TDisplay;
 /// Used for reporting error conditions & warnings
-enum TActionEventType  //36 in total
+enum TActionEventType  //37 in total
 {
     NoEvent, FailTrainEntry, FailCreateTrain, FailCreateOnRoute, FailCreatePoints, FailSPAD, FailLockedRoute, FailLocTooShort, FailSplitDueToOtherTrain,
     FailCrashed, FailDerailed, FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedDSC, FailMissedJoinOther,
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
-    RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart, FailTrainInFront //IF ADD ANY ENSURE ADD AT END AS NUMBER USED IN SESSION FILES (failed to do this up to 2.20.3
-    //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart
+    RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart, FailTrainInFront, FailMissedCMS //IF ADD ANY ENSURE ADD AT END AS NUMBER USED IN SESSION FILES (failed to do this up to 2.20.3
+    //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart  //FailMissedCMS added after v2.20.3
 };  // FailEntryRouteSetAgainst added at v2.9.1
     //& FailTrainInFront new at v2.19.1
     //if add to these remember to change the integer value in session file integrity check (33 total here)
     //Xeon notified error 07/01/22 when EventReported int value exceeded 30 (as it was in v2.11.0) for FailEntryRouteSetAgainst
 
 /// Used in LogAction when reporting a train action to the performance log & file
-enum TActionType //26 in total
+enum TActionType //27 in total
 {
     Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, RearSplit, JoinedByOther, ChangeDirection, NewService, TakeSignallerControl,
     RestoreTimetableControl, RemoveTrain, SignallerMoveForwards, SignallerJoin, TrainFailure, // SignallerJoin, TrainFailure & RepairFailedTrain new at v2.4.0
     RepairFailedTrain, SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward,
-    ChangeDescription
+    ChangeDescription, ChangeMaxSpeed //ChangeMaxSpeed added after v2.20.3
 };
 
 /// indicates train operating mode, 'None' for not in use
@@ -66,7 +66,7 @@ enum TTrainMode
 enum TTimetableFormatType
 {
     NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle, SNSNonRepeatFromShuttle,
-    FSHNewService, Repeat, PassTime, ExitRailway, TimeCmdDescription //TimeCmdDescription new at v2.15.0 for change of description
+    FSHNewService, Repeat, PassTime, ExitRailway, TimeCmdDescription, TimeCmdMaxSpeed //TimeCmdDescription new at v2.15.0 for change of description, TimeCmdMaxSpeed added after 2.20.3
 };
 
 enum TTimetableLocationType
@@ -120,8 +120,8 @@ typedef std::pair<THVShortPair, TExitInfo> TTimeToExitMultiMapEntry;
 class TActionVectorEntry
 {
 public:
-    AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode, SplitDistribution, NewDescription; //SplitDistribution & NewDescription new at v2.15.0
-///< string values for timetabled event entries, null on creation
+    AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode, SplitDistribution, NewDescription, NewMaxSpeed; //SplitDistribution & NewDescription new at v2.15.0
+///< string values for timetabled event entries, null on creation                                                                     //NewMaxSpeed added after v2.20.3
 //Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableLine but these are
 //changed back to basic HeadCodes as almost the final action in SecondPassActions (uses StripExcessFromHeadCode)
     bool SignallerControl;

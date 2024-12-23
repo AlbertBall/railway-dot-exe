@@ -5430,6 +5430,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
           JoinedByOther:  06:05:40: 2F46 joined by 3D54 at Old Street 1 minute late
           ChangeDirection:  06:05:40: 2F46 changed direction at Old Street 1 minute late
           ChangeDescription:  06:05:40: 2F46 changed its description to 'NewDescription' at Old Street 1 minute late
+          ChangeMaxSpeed:  06:05:40: 2F46 changed its maximum speed to 'NewMaxSpeed' at Old Street 1 minute late
           NewService:  06:05:40: 2F46 became new service 3D54 at Old Street 1 minute late
           TakeManualControl:  06:05:40: 2F46 taken under signaller control at Old Street
           RestoreTimetableControl:  06:05:40: 2F46 restored to timetable control at Old Street
@@ -5490,7 +5491,12 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     if(ActionType == ChangeDescription)
     {
-        ActionLog = " changed its description to '" + Description + "' at "; //changed to train description at v2.16.1
+        ActionLog = " changed its description to '" + Description + "' at "; //change to train description at v2.16.1
+        TTEvent = true;
+    }
+    if(ActionType == ChangeMaxSpeed)
+    {
+        ActionLog = " changed its maximum speed to " + ActionVectorEntryPtr->NewMaxSpeed + " at "; //change to train max speed after v2.20.3
         TTEvent = true;
     }
     if(ActionType == Leave)
@@ -9747,8 +9753,8 @@ TTrainController::TTrainController()
     OpActionPanelVisible = false; // new v2.2.0
     // reset all message flags, stops them being given twice (shouldn't be needed here but add for safety) //new at v2.4.0
     SSHigh = false;
-    MRSHigh = false;
-    MRSLow = false;
+//        MRSHigh = false; removed after v2.20.3
+//        MRSLow = false;
     MassHigh = false;
     BFHigh = false;
     BFLow = false;
@@ -10686,7 +10692,7 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         }
         else if(Ptr->Command == "cms")
         {
-            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7777, Ptr->EventTime, RepNum, IncMins)) + ": Change Maximum speed at " + Ptr->LocationName;
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7777, Ptr->EventTime, RepNum, IncMins)) + ": Change maximum speed at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -12208,6 +12214,12 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     }
     if(Second == "cms") //new after v2.20.3 - change max speed
     {
+        if(Third == "")
+        {
+            TimetableMessage(GiveMessages, "New maximum speed value missing");
+            Utilities->CallLogPop(7777);
+            return(false);
+        }
         for(int x = 1; x < Third.Length() + 1; x++)
         {
             if((Third[x] < '0') || (Third[x] > '9'))
@@ -12220,22 +12232,16 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         int MaxRunningSpeed = Third.ToInt(); //must be a whole positive number here
         if(MaxRunningSpeed > TTrain::MaximumSpeedLimit) // 400kph = 250mph
         {
-            MaxRunningSpeed = TTrain::MaximumSpeedLimit;
-            if(!MRSHigh) // added at v2.4.0
-            {
-                TimetableMessage(GiveMessages, "Train maximum running speed > 400km/h in '" + Third + "'.  Setting it to 400km/h");
-                MRSHigh = true;
-            }
+            TimetableMessage(GiveMessages, "Train maximum running speed [" + Third + "km/h] can't be greater than 400km/h");
+            Utilities->CallLogPop(7777);
+            return(false);
         }
         if(MaxRunningSpeed < 10)
         // changed at v0.6 to prevent low max speeds - can cause problems in SetTrainMovementValues
         {
-            MaxRunningSpeed = 10;
-            if(!MRSLow) // added at v2.4.0
-            {
-                TimetableMessage(GiveMessages, "Train maximum running speed can't be less than 10km/h in '" + Third + "', it will be set to 10km/h");
-                MRSLow = true;
-            }
+            TimetableMessage(GiveMessages, "Train maximum running speed [" + Third + "km/h] can't be less than 10km/h.");
+            Utilities->CallLogPop(7777);
+            return(false);
         }
         FormatType = TimeCmdMaxSpeed;
         LocationType = AtLocation;
@@ -12689,22 +12695,16 @@ bool TTrainController::SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiS
     MaxRunningSpeed = MaxRunningSpeedStr.ToInt();
     if(MaxRunningSpeed > TTrain::MaximumSpeedLimit) // 400kph = 250mph
     {
-        MaxRunningSpeed = TTrain::MaximumSpeedLimit;
-        if(!MRSHigh) // added at v2.4.0
-        {
-            TimetableMessage(GiveMessages, "Train maximum running speed > 400km/h in '" + TrainInfoStr + "'.  Setting it to 400km/h");
-            MRSHigh = true;
-        }
+        TimetableMessage(GiveMessages, "Train maximum running speed [" + MaxRunningSpeedStr + "km/h] can't be greater than 400km/h");
+        Utilities->CallLogPop(7777);
+        return(false);
     }
     if(MaxRunningSpeed < 10)
     // changed at v0.6 to prevent low max speeds - can cause problems in SetTrainMovementValues
     {
-        MaxRunningSpeed = 10;
-        if(!MRSLow) // added at v2.4.0
-        {
-            TimetableMessage(GiveMessages, "Train maximum running speed can't be less than 10km/h in '" + TrainInfoStr + "', it will be set to 10km/h");
-            MRSLow = true;
-        }
+        TimetableMessage(GiveMessages, "Train maximum running speed [" + MaxRunningSpeedStr + "km/h] can't be less than 10km/h.");
+        Utilities->CallLogPop(7777);
+        return(false);
     }
     Pos = Remainder.Pos(';'); // 5th delimiter
     AnsiString MassStr = Remainder.SubString(1, Pos - 1);
@@ -15009,14 +15009,14 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
 }
 
 // ---------------------------------------------------------------------------
-// Moving successors: TimeLoc arr/TimeTimeLoc/pas/Fer;
+// Moving successors: TimeLoc arr/TimeTimeLoc/pas/Fer;  Only call this when moving so if TimeLoc found it must be a departure
 bool TTrainController::MovingSuccessor(const TActionVectorEntry &AVEntry)
 {
     return ((AVEntry.FormatType == TimeLoc) || (AVEntry.FormatType == TimeTimeLoc) || (AVEntry.Command == "pas") || (AVEntry.Command == "Fer"));
 }
 
 // ---------------------------------------------------------------------------
-// AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/cms/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
+// AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/cms/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;  Only call this when stationary so if TimeLoc found it must be an arrival
 bool TTrainController::AtLocSuccessor(const TActionVectorEntry &AVEntry)
 {
     return ((AVEntry.FormatType == TimeLoc) || (AVEntry.Command == "jbo") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") ||

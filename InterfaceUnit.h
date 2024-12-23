@@ -427,8 +427,6 @@ __published: // IDE-managed Components
     TMemo *ErrorMessageStoreImage;
 ///< the text of the error message for failure to draw trains in SaveOperatingImage
     TMemo *OneEntryTimetableMemo;
-///< the single service editing and display area on the right hand side of the timetable edit screen
-    TMemo *TTInfoMemo;
 ///< timetable help text displayed on the timetable edit screen
 
     TListBox *AllEntriesTTListBox;
@@ -751,7 +749,7 @@ __published: // IDE-managed Components
     TMenuItem *MajorFailuresMenuItem;
     TBitBtn *SigAutoNonConsecButton;
     TButton *InvertTTEntryButton;
-    TButton *Button1;
+    TButton *dscButton;
     TBitBtn *FlashControlButton;
     TButton *ExpandRepeatsButton;
     TButton *TimeOrderButton;
@@ -760,7 +758,9 @@ __published: // IDE-managed Components
     TPanel *ReminderHeaderPanel;
     TImage *ReminderExitImage;
     TLabel *ReminderLabel1;
-    TLabel *ReminderLabel2;  //added at v2.15.0
+    TLabel *ReminderLabel2;
+    TButton *cmsButton;
+    TMemo *TTInfoMemo;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);

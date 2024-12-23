@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post" + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32 " + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
                                                                      //Beta2 for resizeable actions due form
                                                           //Post v2.20.3 Beta for Jason B's WCML where limits raised for NumberOfTrainEntries & EventReported
                                                           //in CheckTimetableFromSessionFile as part of SessionFileIntegrityCheck
@@ -539,14 +539,14 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
             "Start new shuttle service from a feeder";
 
         const AnsiString TTLabelStr2 = "Pass" + NL + "Be joined by another train" + NL + "Front split" + NL + "Rear split" + NL + "Change direction of train" +
-            NL + "Change service description";
+            NL + "Change service description" + NL + "Change service maximum speed";
 
         const AnsiString TTLabelStr3 = "Finish && form a new service" + NL + "Finish && join another train" + NL + "Finish && exit railway" + NL +
             "Finish && repeat shuttle, finally remain here" + NL + "Finish && repeat shuttle, finally form a finishing service" + NL +
             "Finish non-repeating shuttle feeder service" + NL + "Finish && remain here";
 
         const AnsiString TTLabelStr4 = "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL +
-            "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "     " +
+            "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "     " +
             NL + "R";
 
         const AnsiString TTLabelStr5 = "HH:MM ';' Location" + NL + "HH:MM ';' HH:MM ';' Location";
@@ -555,11 +555,11 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
             "+ other service ref." + NL + "+ shuttle service ref." + NL + "+ rear element ID - space - front element ID ';' linked shuttle ref." + NL +
             "+ linked shuttle service ref. ';' feeder service ref." + NL + "+ location" + NL + "+ joining train ref." + NL + "+ new service ref. + [opt. "
             "new service Mass%-Power% split]" + NL + "+ new service ref. + [opt. new service Mass%-Power% split]" + NL + "    " + NL +
-            "+ new description" + NL + "+ new service ref." + NL + "+ ref. of train to join" + NL +
+            "+ new description" + NL + "+ new maximum speed" + NL + "+ new service ref." + NL + "+ ref. of train to join" + NL +
             "+ list of valid exit element IDs (at least 1) separated by spaces" + NL + "+ linked shuttle service ref.";
 
-        const AnsiString TTLabelStr7 = "Arrival OR departure time (program will determine which from the context) + location." + NL +
-            "Arrival time, departure time (with no events between) + location";
+        const AnsiString TTLabelStr7 = "Arrival OR departure time (program will determine which from the context) ';' location." + NL +
+            "Arrival time ';' departure time (with no events between) ';' location";
 
         const AnsiString TTLabelStr9 = "Timetable entries" + NL + "(service references etc.)";
         const AnsiString TTLabelStr11 = "Timetable" + NL + "start time";
@@ -4385,7 +4385,8 @@ PasteTTEntryButton->Click(); //paste it after the current entry
                     "Train data, transit and dwell times match the current entry but the start time is 00:00, ready to be adjusted using the 'Add mins' function "
                     "with a value corresponding to the required start time in minutes.\n\nService reference, description, start, finish and repeat "
                     "commands and linked service references remain to be added (indicated by '<...>'), and if this is to be a follow-on service then "
-                    "the train data must be removed.\n\nThis message will not be shown again.");
+                    "the train data must be removed.\n\nIf train descriptions or maximum speeds have been changed then the values will probably need to be "
+                    "amended to suit the inverted timetable.\n\nThis message will not be shown again.");
                 InvertTTEntryMessageSent = true;
             }
 
@@ -5017,8 +5018,8 @@ void __fastcall TInterface::ValidateTimetableButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ValidateTimetableButtonClick");
         // reset all message flags, stops them being given twice   new at v2.4.0
         TrainController->SSHigh = false;
-        TrainController->MRSHigh = false;
-        TrainController->MRSLow = false;
+//        TrainController->MRSHigh = false; removed after v2.20.3
+//        TrainController->MRSLow = false;
         TrainController->MassHigh = false;
         TrainController->BFHigh = false;
         TrainController->BFLow = false;
@@ -13553,8 +13554,8 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
         TimetableDialog->Filter = "Timetable file (*.ttb)|*.ttb";
         // reset all message flags, stops them being given twice  new at v2.4.0
         TrainController->SSHigh = false;
-        TrainController->MRSHigh = false;
-        TrainController->MRSLow = false;
+//        TrainController->MRSHigh = false; removed after v2.20.3
+//        TrainController->MRSLow = false;
         TrainController->MassHigh = false;
         TrainController->BFHigh = false;
         TrainController->BFLow = false;
@@ -15063,7 +15064,7 @@ void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString Loc
                 break;
             }
             else if(((AVEPtr->FormatType == TimeLoc) && (AVEPtr->ArrivalTime > TDateTime(-1))) || (AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "cms"))
-            {                                                                              //increment past arrival, cdt, dsc & Cms events, no skipped event as stops here
+            {                                                                              //increment past arrival, cdt, dsc & cms events, no skipped event as stops here
                 continue;
             }
             else
@@ -23852,8 +23853,8 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadTimetableFromSessionFile");
     // reset all message flags, stops them being given twice (shouldn't be needed here but add for safety) //new at v2.4.0
     TrainController->SSHigh = false;
-    TrainController->MRSHigh = false;
-    TrainController->MRSLow = false;
+//        TrainController->MRSHigh = false; removed after v2.20.3
+//        TrainController->MRSLow = false;
     TrainController->MassHigh = false;
     TrainController->BFHigh = false;
     TrainController->BFLow = false;

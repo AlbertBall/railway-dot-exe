@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32" + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
                                                                      //Beta2 for resizeable actions due form
                                                           //Post v2.20.3 Beta for Jason B's WCML where limits raised for NumberOfTrainEntries & EventReported
                                                           //in CheckTimetableFromSessionFile as part of SessionFileIntegrityCheck
@@ -5018,7 +5018,7 @@ void __fastcall TInterface::ValidateTimetableButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ValidateTimetableButtonClick");
         // reset all message flags, stops them being given twice   new at v2.4.0
         TrainController->SSHigh = false;
-//        TrainController->MRSHigh = false; removed after v2.20.3
+//        TrainController->MRSHigh = false; removed at v2.21.0
 //        TrainController->MRSLow = false;
         TrainController->MassHigh = false;
         TrainController->BFHigh = false;
@@ -13554,7 +13554,7 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
         TimetableDialog->Filter = "Timetable file (*.ttb)|*.ttb";
         // reset all message flags, stops them being given twice  new at v2.4.0
         TrainController->SSHigh = false;
-//        TrainController->MRSHigh = false; removed after v2.20.3
+//        TrainController->MRSHigh = false; removed at v2.21.0
 //        TrainController->MRSLow = false;
         TrainController->MassHigh = false;
         TrainController->BFHigh = false;
@@ -23853,7 +23853,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadTimetableFromSessionFile");
     // reset all message flags, stops them being given twice (shouldn't be needed here but add for safety) //new at v2.4.0
     TrainController->SSHigh = false;
-//        TrainController->MRSHigh = false; removed after v2.20.3
+//        TrainController->MRSHigh = false; removed at v2.21.0
 //        TrainController->MRSLow = false;
     TrainController->MassHigh = false;
     TrainController->BFHigh = false;
@@ -24029,7 +24029,7 @@ bool TInterface::CheckTimetableFromSessionFile(int Caller, std::ifstream &Sessio
     }
     int NumberOfTrainEntries;
 
-    if(!Utilities->CheckAndReadFileInt(SessionFile, 0, 100000, NumberOfTrainEntries))  //increased from 10000 to 100000 after v2.20.3 because of JasonB's WCML which
+    if(!Utilities->CheckAndReadFileInt(SessionFile, 0, 100000, NumberOfTrainEntries))  //increased from 10000 to 100000 at v2.21.0 because of JasonB's WCML which
     {                                                                                  //reached 9346 in the middle of day 2 out of a 4 day timetable
         Utilities->CallLogPop(1232);
         return(false);
@@ -24051,8 +24051,8 @@ bool TInterface::CheckTimetableFromSessionFile(int Caller, std::ifstream &Sessio
             }
             if(!Utilities->CheckFileInt(SessionFile, 0, 36)) // EventReported //increased to 32 at v2.11.1 due to Xeon error report 07/01/22 as there are 33
                                                                               //event reports now (increased at v2.9.1)
-            {                                                                 //increased again to 35 after v2.20.3 as there are now (at v2.20.3) 36 events in all
-                                                                              //increased again to 36 after v2.20.3 for FailMissedCMS
+            {                                                                 //increased again to 35 at v2.20.3 as there are now (at v2.20.3) 36 events in all
+                                                                              //increased again to 36 at v2.21.0 for FailMissedCMS
                 Utilities->CallLogPop(1235);
                 return(false);
             }

@@ -1129,10 +1129,10 @@ void TTrain::UpdateTrain(int Caller)
                     LastActionTime = TrainController->TTClockTime;
                     ActionVectorEntryPtr++;
                 }
-                else if(ActionVectorEntryPtr->Command == "cms") //added after v2.20.3 for change of max speed
+                else if(ActionVectorEntryPtr->Command == "cms") //added at v2.21.0 for change of max speed
                 {
                     MaxRunningSpeed = ActionVectorEntryPtr->NewMaxSpeed.ToInt();
-                    LogAction(7777, HeadCode, "", ChangeMaxSpeed, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+                    LogAction(39, HeadCode, "", ChangeMaxSpeed, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
                     LastActionTime = TrainController->TTClockTime;
                     ActionVectorEntryPtr++;
                 }
@@ -5496,7 +5496,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     if(ActionType == ChangeMaxSpeed)
     {
-        ActionLog = " changed its maximum speed to " + ActionVectorEntryPtr->NewMaxSpeed + " at "; //change to train max speed after v2.20.3
+        ActionLog = " changed its maximum speed to " + ActionVectorEntryPtr->NewMaxSpeed + " at "; //change to train max speed at v2.21.0
         TTEvent = true;
     }
     if(ActionType == Leave)
@@ -6498,9 +6498,9 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
                 TrainController->LogActionError(64, HeadCode, "", FailMissedDSC, Ptr->LocationName);
             }
             //cms
-            else if(Ptr->Command == "cms") //new after v2.20.3
+            else if(Ptr->Command == "cms") //new at v2.21.0
             {
-                TrainController->LogActionError(7777, HeadCode, "", FailMissedCMS, Ptr->LocationName);
+                TrainController->LogActionError(69, HeadCode, "", FailMissedCMS, Ptr->LocationName);
             }
             // Errors - have reached a station stop point (before a cdt) during Train->Update() so intervening actions can't
             // be starts, finishes or cdt
@@ -6616,7 +6616,7 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
 //                TrainController->LogActionError(65, HeadCode, "", FailMissedDSC, Ptr->LocationName); don't count as a missed event
             }
             // cms
-            else if(Ptr->Command == "cms") //new after v2.20.3
+            else if(Ptr->Command == "cms") //new at v2.21.0
             {
 //                TrainController->LogActionError(, HeadCode, "", FailMissedCMS, Ptr->LocationName); don't count as a missed event
             }
@@ -7239,7 +7239,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "cms")
         {
-            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(75, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
     }
     else if(TrainController->TTClockTime > ActionTime) //condition added at v2.13.2 for trains that are delayed other than suffering a random delay
@@ -7497,7 +7497,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "cms")
         {
-            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime));
+            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(76, Ptr->EventTime));
         }
     }
     Utilities->CallLogPop(1124);
@@ -8064,7 +8064,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "cms")
         {
-            PartStr = Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime)) + ": Change maximum speed at " + Ptr->LocationName;
+            PartStr = Utilities->Format96HHMM(GetTrainTime(77, Ptr->EventTime)) + ": Change maximum speed at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -9753,7 +9753,7 @@ TTrainController::TTrainController()
     OpActionPanelVisible = false; // new v2.2.0
     // reset all message flags, stops them being given twice (shouldn't be needed here but add for safety) //new at v2.4.0
     SSHigh = false;
-//        MRSHigh = false; removed after v2.20.3
+//        MRSHigh = false; removed at v2.21.0
 //        MRSLow = false;
     MassHigh = false;
     BFHigh = false;
@@ -10692,7 +10692,7 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         }
         else if(Ptr->Command == "cms")
         {
-            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7777, Ptr->EventTime, RepNum, IncMins)) + ": Change maximum speed at " + Ptr->LocationName;
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(32, Ptr->EventTime, RepNum, IncMins)) + ": Change maximum speed at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -11681,9 +11681,9 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         ActionVectorEntry.Command = Second;
                         ActionVectorEntry.NewDescription = Third;
                     }
-                    else if(FormatType == TimeCmdMaxSpeed) //new after v2.20.3
+                    else if(FormatType == TimeCmdMaxSpeed) //new at v2.21.0
                     {
-                        if(CheckTimeValidity(7777, First, ActionVectorEntry.EventTime))
+                        if(CheckTimeValidity(45, First, ActionVectorEntry.EventTime))
                         {
                             ;
                         }
@@ -12212,12 +12212,12 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         Utilities->CallLogPop(2604);
         return(true);
     }
-    if(Second == "cms") //new after v2.20.3 - change max speed
+    if(Second == "cms") //new at v2.21.0 - change max speed
     {
         if(Third == "")
         {
             TimetableMessage(GiveMessages, "New maximum speed value missing");
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2704);
             return(false);
         }
         for(int x = 1; x < Third.Length() + 1; x++)
@@ -12225,7 +12225,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             if((Third[x] < '0') || (Third[x] > '9'))
             {
                 TimetableMessage(GiveMessages, "Train maximum speed must be a number in '" + Third + "'");
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2705);
                 return(false);
             }
         }
@@ -12233,21 +12233,21 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         if(MaxRunningSpeed > TTrain::MaximumSpeedLimit) // 400kph = 250mph
         {
             TimetableMessage(GiveMessages, "Train maximum running speed [" + Third + "km/h] can't be greater than 400km/h");
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2706);
             return(false);
         }
         if(MaxRunningSpeed < 10)
         // changed at v0.6 to prevent low max speeds - can cause problems in SetTrainMovementValues
         {
             TimetableMessage(GiveMessages, "Train maximum running speed [" + Third + "km/h] can't be less than 10km/h.");
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2707);
             return(false);
         }
         FormatType = TimeCmdMaxSpeed;
         LocationType = AtLocation;
         SequenceType = IntermediateSequence;
         ShuttleLinkType = NotAShuttleLink;
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2708);
         return(true);
     }
 
@@ -12696,14 +12696,14 @@ bool TTrainController::SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiS
     if(MaxRunningSpeed > TTrain::MaximumSpeedLimit) // 400kph = 250mph
     {
         TimetableMessage(GiveMessages, "Train maximum running speed [" + MaxRunningSpeedStr + "km/h] can't be greater than 400km/h");
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2709);
         return(false);
     }
     if(MaxRunningSpeed < 10)
     // changed at v0.6 to prevent low max speeds - can cause problems in SetTrainMovementValues
     {
         TimetableMessage(GiveMessages, "Train maximum running speed [" + MaxRunningSpeedStr + "km/h] can't be less than 10km/h.");
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2710);
         return(false);
     }
     Pos = Remainder.Pos(';'); // 5th delimiter
@@ -14182,7 +14182,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - a 'cms' can't be the last event for: " + TDEntry.HeadCode);
                     TrainDataVector.clear();
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2711);
                     return(false);
                 }
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
@@ -14191,7 +14191,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     SecondPassMessage(GiveMessages, "Error in timetable - a 'cms' is followed by an illegal event for: " + TDEntry.HeadCode +
                                       ". The event isn't valid for a stationary train.");
                     TrainDataVector.clear();
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2712);
                     return(false);
                 }
             }
@@ -16705,7 +16705,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
         ErrorLog = " failed to change its description at ";
 //        OtherMissedEvents++;    shouldn't count
     }
-    else if(ActionEventType == FailMissedCMS) //new after v2.20.3
+    else if(ActionEventType == FailMissedCMS) //new at v2.21.0
     {
         ErrorLog = " failed to change its maximum speed at ";
 //        OtherMissedEvents++;    shouldn't count
@@ -17762,7 +17762,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                     else if(ActionVectorEntry.Command == "cms")
                     {
                         PartStr = "Changes maximum speed at " + ActionVectorEntry.LocationName;
-                        TimeStr = Utilities->Format96HHMM(GetRepeatTime(7777, ActionVectorEntry.EventTime, y, IncMinutes));
+                        TimeStr = Utilities->Format96HHMM(GetRepeatTime(78, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                 }
                 else if(ActionVectorEntry.SequenceType == FinishSequence)
@@ -22091,12 +22091,12 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
             }
             else if(!((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription) || (Train.ActionVectorEntryPtr->FormatType == TimeCmdMaxSpeed)))
             {     //added '|| (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)' at v2.16.1 so description ignored in calculating action due time
-                  //added TimeCmdMaxSpeed after v2.20.3
+                  //added TimeCmdMaxSpeed at v2.21.0
                 Utilities->CallLogPop(2083);
                 return(-1); // not due a departure, description change or a max speed change so no action needed
             }
             else if(((Train.ActionVectorEntryPtr + 1)->FormatType == TimeLoc) && ((Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription) || Train.ActionVectorEntryPtr->FormatType == TimeCmdMaxSpeed)) // due a departure immediately after change of description or change of max speed
-            { //added at v2.16.1 to cover description change due next then a departure   //added TimeCmsMaxSpeed after v2.20.3
+            { //added at v2.16.1 to cover description change due next then a departure   //added TimeCmsMaxSpeed at v2.21.0
                 double TimeToDepart = double((Train.GetTrainTime(68, (Train.ActionVectorEntryPtr + 1)->DepartureTime)) - TrainController->TTClockTime) * 86400 / 60; // mins to depart excluding possible 30sec allowance from LastActionTime
                 //need repeat time for the above
                 if((Train.ActionVectorEntryPtr + 1)->DepartureTime == Train.ActionVectorEntryPtr->EventTime) //don't need repeat time here
@@ -22358,7 +22358,7 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                         AVPtr++;
                     }
                     else if((((AVPtr + 1)->FormatType == TimeCmdDescription) || ((AVPtr + 1)->FormatType == TimeCmdMaxSpeed)) && ((AVPtr + 2)->FormatType == TimeLoc))  //change of description or max speed then departure
-                    { //added at v2.16.1 so description changes ignored in calculating time to act //added TimeCmdMaxSpeed after v2.20.3
+                    { //added at v2.16.1 so description changes ignored in calculating time to act //added TimeCmdMaxSpeed at v2.21.0
                         LaterStopNumber++;
                         StopTimeDouble = double((AVPtr + 2)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
                         // can't convert a TDateTime to a float directly                                           //so repeat times not required

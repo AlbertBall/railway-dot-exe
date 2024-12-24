@@ -41,7 +41,7 @@ enum TActionEventType  //37 in total
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
     RouteForceCancelled, FailEntryRouteSetAgainst, FailNoPowerUnableToDepart, FailTrainInFront, FailMissedCMS //IF ADD ANY ENSURE ADD AT END AS NUMBER USED IN SESSION FILES (failed to do this up to 2.20.3
-    //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart  //FailMissedCMS added after v2.20.3
+    //FailMissedDSC new at v2.15.0, FailNoPowerUnableToDepart  //FailMissedCMS added at v2.21.0
 };  // FailEntryRouteSetAgainst added at v2.9.1
     //& FailTrainInFront new at v2.19.1
     //if add to these remember to change the integer value in session file integrity check (33 total here)
@@ -53,7 +53,7 @@ enum TActionType //27 in total
     Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, RearSplit, JoinedByOther, ChangeDirection, NewService, TakeSignallerControl,
     RestoreTimetableControl, RemoveTrain, SignallerMoveForwards, SignallerJoin, TrainFailure, // SignallerJoin, TrainFailure & RepairFailedTrain new at v2.4.0
     RepairFailedTrain, SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward,
-    ChangeDescription, ChangeMaxSpeed //ChangeMaxSpeed added after v2.20.3
+    ChangeDescription, ChangeMaxSpeed //ChangeMaxSpeed added at v2.21.0
 };
 
 /// indicates train operating mode, 'None' for not in use
@@ -66,7 +66,7 @@ enum TTrainMode
 enum TTimetableFormatType
 {
     NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle, SNSNonRepeatFromShuttle,
-    FSHNewService, Repeat, PassTime, ExitRailway, TimeCmdDescription, TimeCmdMaxSpeed //TimeCmdDescription new at v2.15.0 for change of description, TimeCmdMaxSpeed added after 2.20.3
+    FSHNewService, Repeat, PassTime, ExitRailway, TimeCmdDescription, TimeCmdMaxSpeed //TimeCmdDescription new at v2.15.0 for change of description, TimeCmdMaxSpeed added at v2.21.0
 };
 
 enum TTimetableLocationType
@@ -121,7 +121,7 @@ class TActionVectorEntry
 {
 public:
     AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode, SplitDistribution, NewDescription, NewMaxSpeed; //SplitDistribution & NewDescription new at v2.15.0
-///< string values for timetabled event entries, null on creation                                                                     //NewMaxSpeed added after v2.20.3
+///< string values for timetabled event entries, null on creation                                                                     //NewMaxSpeed added at v2.21.0
 //Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableLine but these are
 //changed back to basic HeadCodes as almost the final action in SecondPassActions (uses StripExcessFromHeadCode)
     bool SignallerControl;
@@ -821,7 +821,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///<new at v2.6.0 to allow loops
     bool TTEditPanelVisible;
 ///<new at v2.6.0 so potential error message only shows in TTEdit mode
-    bool SSHigh, MassHigh, BFHigh, BFLow, PwrHigh, SigSHigh, SigSLow;  //MRSHigh & MRSLow removed after v2.20.3
+    bool SSHigh, MassHigh, BFHigh, BFLow, PwrHigh, SigSHigh, SigSLow;  //MRSHigh & MRSLow removed at v2.21.0
 //        TrainController->MRSLow = false;
 
 ///<Message flags in TT checks to stop being given twice

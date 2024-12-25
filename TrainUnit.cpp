@@ -7239,7 +7239,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "cms")
         {
-            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(75, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Change maximum speed to " + Ptr->NewMaxSpeed + " at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(75, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
     }
     else if(TrainController->TTClockTime > ActionTime) //condition added at v2.13.2 for trains that are delayed other than suffering a random delay
@@ -7368,7 +7368,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "cms")
         {
-            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
+            RetStr = "Change maximum speed to " + Ptr->NewMaxSpeed + " at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
         }
     }
     else //train not delayed
@@ -7497,7 +7497,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "cms")
         {
-            RetStr = "Change maximum speed at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(76, Ptr->EventTime));
+            RetStr = "Change maximum speed to " + Ptr->NewMaxSpeed + " at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(76, Ptr->EventTime));
         }
     }
     Utilities->CallLogPop(1124);
@@ -8064,7 +8064,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "cms")
         {
-            PartStr = Utilities->Format96HHMM(GetTrainTime(77, Ptr->EventTime)) + ": Change maximum speed at " + Ptr->LocationName;
+            PartStr = Utilities->Format96HHMM(GetTrainTime(77, Ptr->EventTime)) + ": Change maximum speed to " + Ptr->NewMaxSpeed + " at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -10692,7 +10692,7 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         }
         else if(Ptr->Command == "cms")
         {
-            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(32, Ptr->EventTime, RepNum, IncMins)) + ": Change maximum speed at " + Ptr->LocationName;
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(32, Ptr->EventTime, RepNum, IncMins)) + ": Change maximum speed to " + Ptr->NewMaxSpeed + " at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -17761,7 +17761,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                     }
                     else if(ActionVectorEntry.Command == "cms")
                     {
-                        PartStr = "Changes maximum speed at " + ActionVectorEntry.LocationName;
+                        PartStr = "Change maximum speed to " + ActionVectorEntry.NewMaxSpeed + " at " + ActionVectorEntry.LocationName;
                         TimeStr = Utilities->Format96HHMM(GetRepeatTime(78, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                 }

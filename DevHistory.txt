@@ -1,6 +1,8 @@
 Post v2.20.3 notes:
 
-add a 'change max speed' timetable command if possible in response to fitzburger69 request
+/ added actual max speed change in floating window
+
+/ add a 'change max speed' timetable command if possible in response to fitzburger69 request
 
 /Expand limits so Jason B's railway passes session file check.  Requires TEventReported increase to 36 and number of trains from timetable file (excluding repeats) to increase from 10000 to 100000 (Jason's was 9346 so near the earlier limit) - done after v2.20.3
 

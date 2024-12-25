@@ -97,7 +97,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32" + GetVersion() + " Post Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
                                                                      //Beta2 for resizeable actions due form
                                                           //Post v2.20.3 Beta for Jason B's WCML where limits raised for NumberOfTrainEntries & EventReported
                                                           //in CheckTimetableFromSessionFile as part of SessionFileIntegrityCheck

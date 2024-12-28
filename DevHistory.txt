@@ -1,5 +1,9 @@
 Post v2.20.3 notes:
 
+in new version info mention that need v2.21.0 for ttb's & sessions that use cms
+
+/ updated manual & on-screen help for cms addition (manual still to be dated)
+
 / added actual max speed change in floating window
 
 / add a 'change max speed' timetable command if possible in response to fitzburger69 request

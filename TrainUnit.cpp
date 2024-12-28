@@ -11228,14 +11228,20 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
     {
         if(OneLine[1] != '*')
         {
-            int SCPos = OneLine.Pos(';');
-            if(SCPos == 0)
+            int DelimPos = OneLine.Pos(';');
+            int CPos = OneLine.Pos(',');      //added at v2.21.0 as Sns entries without a description have comma instead of semicolon but service ref. still valid
+            if((CPos > 0) && (CPos < DelimPos))
+            {
+                DelimPos = CPos;
+            }
+
+            if(DelimPos == 0)
             {
                 ServiceReference = OneLine.SubString(1, 8);
             }
             else
             {
-                ServiceReference = OneLine.SubString(1, (SCPos - 1));
+                ServiceReference = OneLine.SubString(1, (DelimPos - 1));
             }
         }
     }
@@ -16521,7 +16527,7 @@ void TTrainController::TimetableMessage(bool GiveMessages, AnsiString Message)
     // if(ServiceReference == "") ShowMessage(Message);
     if(!CheckHeadCodeValidity(12, false, ServiceReference))
     {
-        ShowMessage(ServiceReference + " (not a valid service ref.): " + Message); //amended at v2.15.1 to give information on 'service' so can find it in lh list
+        ShowMessage(ServiceReference + " (not a valid service ref.): " + Message); //amended at v2.15.1 to give information on 'service' so can find it in the list
     }
     // changed from above at v2.3.0 as a meaningless value for 'Timetable invalid - unable to find a valid start time on its own line' (uses last entry text)
     // false means don't give messages within the function

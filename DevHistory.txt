@@ -2,6 +2,8 @@ Post v2.20.3 notes:
 
 in new version info mention that need v2.21.0 for ttb's & sessions that use cms
 
+/ found error in ProcessOneTimetableLine where ServiceReference only looks for semicolon, but an Sns service without a description has a comma after the service ref so it reports an error in the reference but there isn't one, now looks for comma or semicolon & if comma comes first then it uses that as the delimiter
+
 / updated manual & on-screen help for cms addition (manual still to be dated)
 
 / added actual max speed change in floating window

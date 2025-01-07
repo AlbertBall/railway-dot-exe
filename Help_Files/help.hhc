@@ -138,6 +138,10 @@
 				<param name="Name" value="Shuttle services">
 				<param name="Local" value="html/5.2.1e45.htm">
 				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="A simple shuttle example">
+				<param name="Local" value="html\5.2.5.1.htm">
+				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Other timetable features">

@@ -1232,6 +1232,8 @@
 		<param name="Name" value="Shuttle services">
 		<param name="Name" value="Shuttle services">
 		<param name="Local" value="html/5.2.1e45.htm">
+		<param name="Name" value="A simple shuttle example">
+		<param name="Local" value="html\5.2.5.1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signal passed at danger">

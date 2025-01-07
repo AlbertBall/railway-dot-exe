@@ -1,0 +1,207 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>A simple shuttle example</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Helvetica;
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:Helvetica;
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:inherit;
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:1.0cm 1.0cm 1.0cm 1.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB>
+
+<div class=WordSection1>
+
+<p class=MsoNormal style='vertical-align:baseline'><b><span style='font-family:
+"inherit","serif";color:black'>5.2.5.1             A simple shuttle example:</span></b></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='font-family:
+"inherit","serif";color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='font-family:
+"inherit","serif";color:black'>This was created by contributor BWJM who has
+kindly given permission for its inclusion.</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='font-family:
+"inherit","serif";color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>It
+consists of a depot, where the train starts and ends its day, and two stations,
+West Station and East Station, where the train shuttles back and forth between.
+All track is bidirectional.</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='font-family:
+"inherit","serif";color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal align-center style='text-align:center;vertical-align:baseline'><span style='color:black'><img width=269 height=59 src="5.2.5.1_files/image001.png"></span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='font-family:
+"inherit","serif";color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>The
+timetable starts off simply: </span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:00</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>Next
+we define a &quot;shuttle feeder service&quot;, XX00, which brings the train
+from the depot into service at West station. </span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>XX00;Shuttle Depot to Station;0;100;500;500;500;100</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:00;Snt;15-13 16-13</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:01;West Depot</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:02;West Station</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:05;F-nshs;S001</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>Then
+we have the &quot;outbound&quot; service, S001, from West Station to East
+Station. </span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>S001;Eastbound Shuttle</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:05;Sns-sh;S002;XX00</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:06;West Station</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:07;East Station</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:08;cdt</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:10;Fns;S002</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>R;10;2;10</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>Then
+it returns back to West Station as S002. </span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>S002;Westbound Shuttle</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:10;Sns;S001</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:11;East Station</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:12;West Station</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:13;cdt</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>06:15;Fns-sh;S001;XX99</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>R;10;2;10</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>The
+above shuttle operation repeats 10 times and each loop takes 10 minutes to
+complete. It incrementally uses headcodes <b>S003</b> through <b>S022</b> in
+the process, with odd for eastbound and even for westbound.</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='vertical-align:baseline'><span style='color:black'>Once
+rush hour is over, the train goes out of service and returns to West Depot as <b>XX99</b>.
+Note that this service is timed to start after S022 is done: 07:55. You need to
+count up all the repeats of the shuttle to figure out the correct start time!</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:4.0pt;
+font-family:"Arial","sans-serif";color:blue'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>XX99;Shuttle Station to Depot</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>07:55;Sns-fsh;S002</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>07:56;cdt</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>07:57;West Station</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>07:58;West Depot</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:blue'>Frh</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

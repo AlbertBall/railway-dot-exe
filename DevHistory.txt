@@ -1,5 +1,8 @@
 Post v2.20.3 notes:
 
+try to allow route truncation to next & from last signal (BWJM request 09/01/25), allow for forwards cancellation only, for full truncate and from last signal
+/if a signal is the last element then erase that too
+
 in new version info mention that need v2.21.0 for ttb's & sessions that use cms
 
 / add BWJM's shuttle to manual & onscreen help if he's ok to use it
@@ -36,6 +39,16 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#112 from BWJM 09/01/25 via discord
+When cancelling a blue (automatic) route, the entire remaining portion of the route is cancelled.  This could be a long portion with multiple trains on it.  If I wanted to just break the route by cancelling it between two signals, I can't do that.  I have to cancel the entire route and rebuild the remaining portion.
+
+I'm wondering if it would be possible to add an ability to cancel a route, but only from the selected point to the next signal.
+
+My use case is this... Imagine a long route between two stations... We'll call them Westover and Easterville. (Very creative, I know!) This route is traversed by a frequent service all day long shuttling between the two stations.  A couple signals east of Westover is a junction to access the depot. There are a few switches in order for trains in any direction to go any other direction.  With the exception of the very early hours and the end of the day, all trains simply run straight through this junction.  Normally, I would prefer to set up blue routes on both the up and down lines and not worry about it throughout the day.  However, at quitting time when the first train is heading to the depot, I need to break that blue route so that I can instead use green routes for the terminating trains.  I can't do that without cancelling the entire blue route all the way to Easterville and affecting three other trains presently on the line. [diagram illustrating the problem given]
+
+Albert - 09/01/25
+This is requested periodically and for good reason, but having given it quite a lot of consideration I have resisted it because of severe difficulties.  My reasoning is set out here: https://discord.com/channels/419206597424709655/424631233444577281/1001843935301337158
 
 #111 (3 suggestions) Xeon_HSU - 02/09/24 by email
 
@@ -368,6 +381,7 @@ Another feature request:
 Automatic Level Crossings
 In North America and many other locations worldwide, level crossings do not close when a route is laid across them.  They are fully automatic and close just before an oncoming train arrives.  Manual level crossings are still useful for historic recreations, or mimicking lines that still use them, but automatic crossings are more relevant in modern simulations. 
 One might ask, "what's the point of them then?"  In RailOS, probably nothing, except perhaps the visual aspect of mimicking an actual route.
+
 Albert — 28/02/23 at 09:02
 I'll add it to the list but I wouldn't be willing to spend time on a purely visual feature.  IRL saving manpower is important hence automatic level crossings and automatic train control.  It definitely isn't required in RailOS as it's meant to be a challenge.  Tedious work is cut down as far as possible but to have the user just sit back and watch things happen is definitely not an objective!
 
@@ -405,7 +419,6 @@ Desired point-and-clicks: The cancel route button would be split like the automa
 
 Albert — 17/02/2023 08:42
 This request has been made a number of times and I understand the wish to have it.  In version 2.15.0 to be released in due course there will be the ability to cancel a route either from the start (this is new) by right clicking the element immediately in advance of a facing signal, or from the end (as now)  by right clicking the element immediately in rear of a facing signal.  This will hopefully go some way to improve the situation you describe.  In fact you already have a beta2 version of 2.15.0 with this feature - try it and see if it helps.  The explanation as to why it's difficult to split a route into two separate segments is given here: https://discord.com/channels/419206597424709655/424631233444577281/1001843935301337158
-
 
 #87 from BWJM via discord 18/02/23
 [can already be done for located Snts] Another question... Can I have a Snt command immediately followed by a rsp command?  In other words, can brand new train be split right away where it starts?

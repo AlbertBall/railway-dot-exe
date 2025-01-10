@@ -1332,7 +1332,7 @@ enum TPrefDirRoute
 /// The basic preferred direction class, consisting of any number of elements with preferred directions set. Used during setting up preferred directions and track lengths (ConstructPrefDir), and for all completed preferred directions in the railway (EveryPrefDir)
 class TOnePrefDir
 {
-public: // don't want descendant (TOneRoute) to access the PrefDir4MultiMap
+public:
 
     typedef std::multimap<THVPair, unsigned int, TMapComp>TPrefDir4MultiMap;
 ///< HLoc&VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&V

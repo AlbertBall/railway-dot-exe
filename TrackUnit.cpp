@@ -18509,7 +18509,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                                  "," + AnsiString((short)PrefDirRoute));
     bool ElementInRoute = false;
     bool MovingTrainOccupyingRoute = false;
-    unsigned int TruncatePDElementPos; //the selected PD position to truncate to (could be from the back or the front)//added at v2.15.0
+    unsigned int TruncatePDElementPos; //the selected PD position to truncate to & include in the truncation (could be from the back or the front)//added at v2.15.0
     enum {NoTruncate, BackTruncate, FrontTruncate, FullTruncate} TruncateType;
     TruncateType = NoTruncate;
     AllRoutes->RouteBackTruncateFlag = false;
@@ -18530,7 +18530,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         return;
     }
 
-    //now find whether back, front or full truncate //added at v2.15.0
+    //now find whether back, front or full truncate //added at v2.15.0, backtrucate = from truncate position to the end of the route (i.e. the original truncate function)
     if(TruncatePDElementPos < (PrefDirSize() - 1)) //if last position then can't be a front truncate
     {
         if(TruncatePDElementPos == 0)
@@ -18560,7 +18560,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
 
 // it is in the route so continue, first look for a train or a flashing level crossing in the part to be removed
 
-    if(TruncateType == BackTruncate) //added at v2.15.0
+    if((TruncateType == BackTruncate) && !Utilities->UtilityShiftKey) //added at v2.15.0, shift key test added at v2.21.0
     {
         for(int b = PrefDirSize() - 1; b >= 0; b--)
         {
@@ -18580,7 +18580,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 if(!TrainController->TrainVectorAtIdent(64, TrainID).Stopped())
                 {
-                    MovingTrainOccupyingRoute = true;  // train is behind the truncate point & moving
+                    MovingTrainOccupyingRoute = true;  // train is on the route to be truncated & moving
                 }
             }
             if(Track->IsLCBarrierFlashingAtHV(3, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
@@ -18595,6 +18595,81 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 break; // OK found truncate element & no flashing LC in front
             }
+        }
+    }
+    else if((TruncateType == BackTruncate) && Utilities->UtilityShiftKey) //added at v2.15.0, shift key test added at v2.21.0  This block is new
+    {
+        //first look forward from truncate point to the next facing signal, if the signal is the end of the route set that to be truncated too
+        TPrefDirElement TempElement;
+        int LastElementToBeTruncated = -1;
+        for(unsigned int b = TruncatePDElementPos; b < PrefDirSize(); b++)
+        {
+            TempElement = PrefDirVector.at(b);
+            if(TempElement.Config[TempElement.XLinkPos] == Signal) //found it
+            {
+                LastElementToBeTruncated = int(b) - 1;
+                if(b == PrefDirSize() - 1) //signal is last element to be truncated
+                {
+                    LastElementToBeTruncated = -1; //to force truncate to end
+                }
+                break;
+            }
+        }
+        if(LastElementToBeTruncated == -1) //failed to find a signal, backtruncate to end of route (shift key has no effect)
+        {
+            for(int b = PrefDirSize() - 1; b >= 0; b--) //same as above
+            {
+                int TrainID = Track->TrackElementAt(117, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
+                if(PrefDirVector.at(b).TrackType == Bridge)
+                {
+                    if(PrefDirVector.at(b).XLinkPos < 2)
+                    {
+                        TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+                    }
+                    else
+                    {
+                        TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
+                    }
+                }
+                if(TrainID != -1)
+                {
+                    if(!TrainController->TrainVectorAtIdent(64, TrainID).Stopped())
+                    {
+                        MovingTrainOccupyingRoute = true;  // train is on the route to be truncated & moving
+                    }
+                }
+                if(Track->IsLCBarrierFlashingAtHV(3, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
+                {
+                    TrainController->StopTTClockMessage(79, "Can't cancel a route containing a level crossing that is changing state");
+                    ReturnFlag = InRouteFalse;
+                    AllRoutes->RouteBackTruncateFlag = false;
+                    Utilities->CallLogPop(1941);
+                    return;
+                }
+                if(b == int(TruncatePDElementPos))
+                {
+                    break; // OK found truncate element & no flashing LC in front
+                }
+            }
+        }
+        else //have found a signal & LastElementToBeTruncated is > -1, i.e. has a legitimate value & signal isn't end of route
+        {
+            //create a new route from the signal forwards to re-instate
+            TOneRoute ReinstatementRoute = *this;
+            ReinstatementRoute.RouteID = AllRoutes->NextRouteID;
+            AllRoutes->NextRouteID++;
+            ReinstatementRoute.StartRoutePosition = PrefDirVector.at(LastElementToBeTruncated + 1).TrackVectorPosition;
+            ReinstatementRoute.StartElement1 = PrefDirVector.at(LastElementToBeTruncated + 1);
+            ReinstatementRoute.StartElement2 = PrefDirVector.at(LastElementToBeTruncated + 1);
+            ReinstatementRoute.PrefDirVector.erase(ReinstatementRoute.PrefDirVector.begin(), ReinstatementRoute.PrefDirVector.begin() + LastElementToBeTruncated + 1);
+            //truncate to end prior to re-instatement
+            for(int c = int(PrefDirSize()) - 1; c >= int(TruncatePDElementPos); c--) //truncate the whole route to end
+            {
+                AllRoutes->RemoveRouteElement(5, PrefDirVector.at(c).HLoc, PrefDirVector.at(c).VLoc, PrefDirVector.at(c).ELink);
+            }
+            //now re-instate the route from the next signal
+            AllRoutes->StoreOneRoute(7777, &ReinstatementRoute);
+            ReturnFlag = InRouteTrue;
         }
     }
     else if(TruncateType == FrontTruncate)//front/full truncate //added at v2.15.0
@@ -18617,7 +18692,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 if(!TrainController->TrainVectorAtIdent(65, TrainID).Stopped())
                 {
-                    MovingTrainOccupyingRoute = true;  // train is behind the truncate point & moving
+                    MovingTrainOccupyingRoute = true;  // train is on the route to be truncated & moving
                 }
             }
             if(Track->IsLCBarrierFlashingAtHV(4, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
@@ -18634,7 +18709,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             }
         }
     }
-    else //FullTruncate) //added at v2.15.0
+    else if(!Utilities->UtilityShiftKey)  //FullTruncate with shift key not pressed //added at v2.15.0, shift added at v2.21.0
     {
         for(unsigned int b = 0; b < PrefDirSize(); b++) //search the entire route forwards
         {
@@ -18654,7 +18729,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 if(!TrainController->TrainVectorAtIdent(66, TrainID).Stopped())
                 {
-                    MovingTrainOccupyingRoute = true;  // train is behind the truncate point & moving
+                    MovingTrainOccupyingRoute = true;  // train is on the route to be truncated & moving
                 }
             }
             if(Track->IsLCBarrierFlashingAtHV(5, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
@@ -18665,6 +18740,81 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                 Utilities->CallLogPop(2572);
                 return;
             }
+        }
+    }
+    else //FullTruncate with shift pressed  // added at v2.21.0
+    {
+        //first look forward from truncate point to the next facing signal, if the signal is the end of the route set that to be truncated too
+        TPrefDirElement TempElement;
+        int LastElementToBeTruncated = -1;
+        for(unsigned int b = TruncatePDElementPos; b < PrefDirSize(); b++)
+        {
+            TempElement = PrefDirVector.at(b);
+            if(TempElement.Config[TempElement.XLinkPos] == Signal) //found it
+            {
+                LastElementToBeTruncated = int(b) - 1;
+                if(b == PrefDirSize() - 1) //signal is last element to be truncated
+                {
+                    LastElementToBeTruncated = -1; //to force truncate to end
+                }
+                break;
+            }
+        }
+        if(LastElementToBeTruncated == -1) //failed to find a signal, backtruncate to end of route (shift key has no effect)
+        {
+            for(int b = PrefDirSize() - 1; b >= 0; b--) //same as above
+            {
+                int TrainID = Track->TrackElementAt(117, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
+                if(PrefDirVector.at(b).TrackType == Bridge)
+                {
+                    if(PrefDirVector.at(b).XLinkPos < 2)
+                    {
+                        TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+                    }
+                    else
+                    {
+                        TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
+                    }
+                }
+                if(TrainID != -1)
+                {
+                    if(!TrainController->TrainVectorAtIdent(64, TrainID).Stopped())
+                    {
+                        MovingTrainOccupyingRoute = true;  // train is on the route to be truncated & moving
+                    }
+                }
+                if(Track->IsLCBarrierFlashingAtHV(3, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
+                {
+                    TrainController->StopTTClockMessage(79, "Can't cancel a route containing a level crossing that is changing state");
+                    ReturnFlag = InRouteFalse;
+                    AllRoutes->RouteBackTruncateFlag = false;
+                    Utilities->CallLogPop(1941);
+                    return;
+                }
+                if(b == int(TruncatePDElementPos))
+                {
+                    break; // OK found truncate element & no flashing LC in front
+                }
+            }
+        }
+        else //have found a signal & LastElementToBeTruncated is > -1, i.e. has a legitimate value & signal isn't end of route
+        {
+            //create a new route from the signal forwards to re-instate
+            TOneRoute ReinstatementRoute = *this;
+            ReinstatementRoute.RouteID = AllRoutes->NextRouteID;
+            AllRoutes->NextRouteID++;
+            ReinstatementRoute.StartRoutePosition = PrefDirVector.at(LastElementToBeTruncated + 1).TrackVectorPosition;
+            ReinstatementRoute.StartElement1 = PrefDirVector.at(LastElementToBeTruncated + 1);
+            ReinstatementRoute.StartElement2 = PrefDirVector.at(LastElementToBeTruncated + 1);
+            ReinstatementRoute.PrefDirVector.erase(ReinstatementRoute.PrefDirVector.begin(), ReinstatementRoute.PrefDirVector.begin() + LastElementToBeTruncated + 1);
+            //truncate to end prior to re-instatement
+            for(int c = int(PrefDirSize()) - 1; c >= int(TruncatePDElementPos); c--) //truncate the whole route to end
+            {
+                AllRoutes->RemoveRouteElement(5, PrefDirVector.at(c).HLoc, PrefDirVector.at(c).VLoc, PrefDirVector.at(c).ELink);
+            }
+            //now re-instate the route from the next signal
+            AllRoutes->StoreOneRoute(7777, &ReinstatementRoute);
+            ReturnFlag = InRouteTrue;
         }
     }
 
@@ -18808,7 +18958,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     int FrontPosition;
 
     if(AllRoutes->RouteLockingRequired(0, ThisRouteNumber, LookBackwardsFromHere) || MovingTrainOccupyingRoute) // added MovingTrainOccupyingRoute  at v2.1.0,
-    // RouteLockingRequired only checks for trains approaching
+    // before v2.1.0 RouteLockingRequired only checked for trains approaching
     {
         TrainController->StopTTClockFlag = true;
         TrainController->RestartTime = TrainController->TTClockTime;

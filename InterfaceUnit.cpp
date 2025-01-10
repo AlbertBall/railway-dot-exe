@@ -15599,6 +15599,7 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
         else if(Shift.Contains(ssShift) && !Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt))
         {
             ShiftKey = true;
+            Utilities->UtilityShiftKey = true;
         }
 // below added at v1.3.0 to allow keyboard scrolling as well as mouse button scrolling - see user suggestion on Features & Requests forum 30/09/12
 // the NonCTRLOrSHIFTKeyUpFlag prevents repeated viewpoint movements without keys being re-pressed
@@ -16064,6 +16065,7 @@ void __fastcall TInterface::FormKeyUp(TObject *Sender, WORD &Key, TShiftState Sh
     }
     CtrlKey = false;
     ShiftKey = false;
+    Utilities->UtilityShiftKey = false; //added at v2.21.0
     SaveMenuItem->ShortCut = 16467; // restore Ctrl S for save menu in case set to 0 in FormKeyDown
 }
 
@@ -22020,6 +22022,7 @@ void TInterface::ResetAll(int Caller)
     delete TempFont;
     CtrlKey = false;
     ShiftKey = false;
+    Utilities->UtilityShiftKey = false; //added at v2.21.0
     ClipboardChecked = false;
     session_api_->reset_all(); // API v1.2
     session_api_->dump();   // update session INI file  //added at v2.10.0

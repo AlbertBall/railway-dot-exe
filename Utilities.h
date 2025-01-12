@@ -78,8 +78,6 @@ public:
     ///< new at v2.3.0   false=LH signals
     bool SetLocaleResultOK;
     ///< flag to indicate whether the call to setlocale() in InterfaceUnit.cpp succeeded or not
-    bool UtilityShiftKey; //added at v2.21.0
-    ///< used so TrackUnit can access the shift key state for truncating forwards to the next signal //added at v2.21.0
     char DecimalPoint;
     ///< added at v2.4.0 so can use the local value in loaded session files
 

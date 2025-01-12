@@ -10635,7 +10635,8 @@ pause or run and it cycled round the operate panel buttons
             THVPair HVPair;
             HVPair.first = HLoc;
             HVPair.second = VLoc;
-            int RouteNumber = 0;
+            int RouteNumber = 9999;
+            int RouteID = 9999;
             unsigned int RoutePrefDirPos = 0;
             TAllRoutes::TRoute2MultiMapIterator R2It;
             AnsiString COS = "No";
@@ -10648,6 +10649,7 @@ pause or run and it cycled round the operate panel buttons
                     R2It = AllRoutes->Route2MultiMap.find(HVPair);
                     RouteNumber = R2It->second.first;
                     RoutePrefDirPos = R2It->second.second;
+                    RouteID = AllRoutes->GetFixedRouteAt(7777, RouteNumber).RouteID;
                 }
                 if(TrackElement.CallingOnSet)
                 {
@@ -10660,7 +10662,7 @@ pause or run and it cycled round the operate panel buttons
                     + "; SPos3: " + AnsiString(TrackElement.StationEntryStopLinkPos3) + "; SPos4: " + AnsiString(TrackElement.StationEntryStopLinkPos4)
                     + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) +
                     "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + "; Locname: " + TrackElement.LocationName + "; Activename: " +
-                    TrackElement.ActiveTrackElementName + "; InRoute " + InARoute + "; RtNum " + RouteNumber + "; PDVecPos " + RoutePrefDirPos + " Links: " +
+                    TrackElement.ActiveTrackElementName + "; InRoute " + InARoute + "; RtNum " + RouteNumber + "; RtID " + RouteID + "; PDVecPos " + RoutePrefDirPos + " Links: " +
                     TrackElement.Link[0] + "," + TrackElement.Link[1] + "," + TrackElement.Link[2] + "," + TrackElement.Link[3] + " CLPos " +
                     TrackElement.ConnLinkPos[0] + "," +TrackElement.ConnLinkPos[1] + "," +TrackElement.ConnLinkPos[2] + "," +TrackElement.ConnLinkPos[3];
                     // + "; OAHintCtr: " + TrainController->OpActionPanelHintDelayCounter;
@@ -15599,7 +15601,6 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
         else if(Shift.Contains(ssShift) && !Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt))
         {
             ShiftKey = true;
-            Utilities->UtilityShiftKey = true;
         }
 // below added at v1.3.0 to allow keyboard scrolling as well as mouse button scrolling - see user suggestion on Features & Requests forum 30/09/12
 // the NonCTRLOrSHIFTKeyUpFlag prevents repeated viewpoint movements without keys being re-pressed
@@ -16065,7 +16066,6 @@ void __fastcall TInterface::FormKeyUp(TObject *Sender, WORD &Key, TShiftState Sh
     }
     CtrlKey = false;
     ShiftKey = false;
-    Utilities->UtilityShiftKey = false; //added at v2.21.0
     SaveMenuItem->ShortCut = 16467; // restore Ctrl S for save menu in case set to 0 in FormKeyDown
 }
 
@@ -22022,7 +22022,6 @@ void TInterface::ResetAll(int Caller)
     delete TempFont;
     CtrlKey = false;
     ShiftKey = false;
-    Utilities->UtilityShiftKey = false; //added at v2.21.0
     ClipboardChecked = false;
     session_api_->reset_all(); // API v1.2
     session_api_->dump();   // update session INI file  //added at v2.10.0

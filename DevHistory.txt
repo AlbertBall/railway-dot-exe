@@ -1,6 +1,7 @@
 Post v2.20.3 notes:
 
-try to allow route truncation to next & from last signal (BWJM request 09/01/25), allow for forwards cancellation only, for full truncate and from last signal
+/ [out at v2.21.0 Beta2] try to allow route truncation to next & from last signal (BWJM request 09/01/25), allow for forwards cancellation only
+
 /if a signal is the last element then erase that too
 
 in new version info mention that need v2.21.0 for ttb's & sessions that use cms

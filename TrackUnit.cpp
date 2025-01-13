@@ -18572,17 +18572,17 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                 TempElement = PrefDirVector.at(TruncatePDElementPos);
                 if(TempElement.Config[TempElement.XLinkPos] == Signal) //possibly next sig truncate
                 {
-                   TruncatePDElementPos++; //need to add one as in all cases don't want to truncate the signal itself, also there is a +1 because of the first condition
+                   TruncatePDElementPos++; //need to add one as in all cases don't want to truncate the signal itself, also there esists a +1 because of the first condition
                     //now look forwards to next signal, if it's the end or no signal then it's BackTruncate
                     int b;
                     for(b = int(TruncatePDElementPos); b < int(PrefDirSize()); b++)
                     {
                         TempElement = PrefDirVector.at(b);
-                        if((TempElement.Config[TempElement.XLinkPos] == Signal) && (b < int(PrefDirSize() - 1)))
+                        if((TempElement.Config[TempElement.XLinkPos] == Signal) && (b < int(PrefDirSize() - 1)))  //if met then it's a mid-route signal
                         {
                             TruncateType = NextSignalTruncate;
-                            AllRoutes->RouteBackTruncateFlag = true; //to set signals properly rearwards of truncate point
-                            break;
+                            AllRoutes->RouteBackTruncateFlag = true; //to set signals properly rearwards of truncate point - relies on rearwards sig setting before re-instatement route sig setting
+                            break;                                   //re-instatement route sig setting
                         }
                     }
                     if(b == int(PrefDirSize())) //i.e. haven't found a mid-route signal
@@ -18599,7 +18599,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             }
         }
     }
-    else // == PrefDirSize() - 1
+    else // == PrefDirSize() - 1, i.e. end of route
     {
         TruncateType = BackTruncate;
         AllRoutes->RouteBackTruncateFlag = true;
@@ -18646,7 +18646,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     }
     else if(TruncateType == NextSignalTruncate) //added at v2.15.0
     {
-        //first look forward from truncate point to the next facing signal, which has to be mid-route
+        //first look forward from truncate point to the next facing signal, which must be mid-route or wouldn't reach here
         TPrefDirElement TempElement;
         LastElementToBeTruncated = -1;
         for(unsigned int b = TruncatePDElementPos; b < PrefDirSize(); b++)
@@ -18660,31 +18660,31 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         }
         for(int b = LastElementToBeTruncated; b >= 0; b--) //just look for train in section to be erased
         {
-            int TrainID = Track->TrackElementAt(117, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
+            int TrainID = Track->TrackElementAt(1683, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
             if(PrefDirVector.at(b).TrackType == Bridge)
             {
                 if(PrefDirVector.at(b).XLinkPos < 2)
                 {
-                    TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+                    TrainID = Track->TrackElementAt(1684, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
                 }
                 else
                 {
-                    TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
+                    TrainID = Track->TrackElementAt(1685, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                 }
             }
             if(TrainID != -1)
             {
-                if(!TrainController->TrainVectorAtIdent(64, TrainID).Stopped())
+                if(!TrainController->TrainVectorAtIdent(72, TrainID).Stopped())
                 {
                     MovingTrainOccupyingRoute = true;  // train is on the route to be truncated & moving
                 }
             }
-            if(Track->IsLCBarrierFlashingAtHV(3, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
+            if(Track->IsLCBarrierFlashingAtHV(6, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
             {
-                TrainController->StopTTClockMessage(79, "Can't cancel a route containing a level crossing that is changing state");
+                TrainController->StopTTClockMessage(178, "Can't cancel a route containing a level crossing that is changing state");
                 ReturnFlag = InRouteFalse;
                 AllRoutes->RouteBackTruncateFlag = false;
-                Utilities->CallLogPop(1941);
+                Utilities->CallLogPop(2713);
                 return;
             }
             if(b == int(TruncatePDElementPos))
@@ -18694,7 +18694,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         }
         //create a new route from the signal forwards to re-instate later
         ReinstatementRoute = *this;
-//        ReinstatementRoute.RouteID = AllRoutes->NextRouteID;    //this is allocated when store
+//        ReinstatementRoute.RouteID = AllRoutes->NextRouteID;    //this is allocated when store  the route later on
 //        AllRoutes->NextRouteID++;
         ReinstatementRoute.StartRoutePosition = PrefDirVector.at(LastElementToBeTruncated + 1).TrackVectorPosition;
         ReinstatementRoute.StartElement1 = PrefDirVector.at(LastElementToBeTruncated + 1);
@@ -18806,7 +18806,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                 return;
             }
         }
-        else
+        else       //this isn't appropriate for front truncate
         {
             if((TempElement.TrackType == Points) || (TempElement.TrackType == Crossover) || (TempElement.TrackType == Bridge))
             {
@@ -18836,8 +18836,9 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                 return;
             }
         }
-        else //red route
-        {
+/*
+        else //red route     //not appropriate for front truncate because the position in advance of the truncation position is to be truncated, it won't be left
+        {                    // deleted at v2.21.0
             if(TruncatePDElementPos > 0)
             {
                 TPrefDirElement TempElement = PrefDirVector.at(TruncatePDElementPos - 1); //element behind truncation point
@@ -18851,6 +18852,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                 }
             }
         }
+*/
     }
 
     else if(TruncatePDElementPos == 0) //full truncate
@@ -18905,7 +18907,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     }
 
     unsigned int LookBackwardsFromHere = 0; //added at v2.15.0 - covers front & full truncate & search starts here and looks backwards to see if a train
-    if(TruncateType == BackTruncate)   //is within 3 running signals on this or linked rearwards routes
+    if((TruncateType == BackTruncate) || (TruncateType == NextSignalTruncate))   //is within 3 running signals on this or linked rearwards routes, NextSigTruncate added at v2.21.0
     {
         LookBackwardsFromHere = TruncatePDElementPos;
     }
@@ -18919,10 +18921,10 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     {
         if(TruncateType == NextSignalTruncate) //added at v2.21.0 - don't allow trucation as would likely need to lock route further forwards than next signal
         {
-            TrainController->StopTTClockMessage(148, "Unable to truncate to next signal as route locking would required, which would probably include route sections further forwards.");
+            TrainController->StopTTClockMessage(179, "Unable to truncate to next signal when route locking is required.");
             ReturnFlag = InRouteFalse;
             AllRoutes->RouteBackTruncateFlag = false;
-            Utilities->CallLogPop(749);
+            Utilities->CallLogPop(2714);
             return;
         }
         else
@@ -19056,10 +19058,10 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
 
         if(TruncateType == NextSignalTruncate) //re-instate the saved route
         {
-            AllRoutes->StoreOneRoute(7777, &ReinstatementRoute);
-            int RouteID = AllRoutes->GetFixedRouteAt(7777, AllRoutes->AllRoutesSize() - 1).RouteID;
-            int RouteNumber = AllRoutes->GetRouteVectorNumber(7777, IDInt(RouteID));
-            AllRoutes->SetAllRearwardsSignals(21, 0, RouteNumber, ReinstatementRoute.PrefDirSize() - 1);
+            AllRoutes->StoreOneRoute(3, &ReinstatementRoute);
+            int RouteID = AllRoutes->GetFixedRouteAt(231, AllRoutes->AllRoutesSize() - 1).RouteID;
+            int RouteNumber = AllRoutes->GetRouteVectorNumber(8, IDInt(RouteID));
+            AllRoutes->SetAllRearwardsSignals(22, 0, RouteNumber, ReinstatementRoute.PrefDirSize() - 1); //sets signals for the re-instated route
         }
         if(LastPDElement.AutoSignals)
         {

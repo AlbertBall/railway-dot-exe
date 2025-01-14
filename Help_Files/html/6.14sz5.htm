@@ -99,8 +99,14 @@ takes too long, then set one or more facing points for the desired route beginni
 
 <p>When selected, routes may be truncated or cancelled, by left clicking the
 'route cancel' <img width=24 height=24 src="../images/RailSim2_ROUTECANCEL.gif"> button
-and then right clicking the track element to truncate to, or the start element
-of the route to cancel it completely. Routes can be truncated from the start, by right clicking the element immediately in advance of a facing signal, or from the end, by right clicking the element immediately in rear of a facing signal.  For unrestricted routes right clicking any element except one immediately in advance of a facing signal will truncate it from the end.</p>
+and then right clicking an appropriate track element as follows:</p>
+
+<p>Start of a route - cancels the entire route (but see the next paragraph);<br>
+For automatic signal and preferred direction routes there are three options<br>
+1.  element immediately before a facing signal - truncates the route from the start to the signal;<br>
+2.  a mid-route signal - truncates the route to the next facing signal;<br>
+3.  element immediately after a signal - truncates the route from the signal to the end.<br>
+For unrestricted routes behaviour is similar for 1 and 2 above, but clicking any other element truncates the route from that point to the end of the route.</p>
 
 <p>Routes that consist of a mixture of preferred direction and unrestricted route sections are
 regarded by RailOS as a single route, which may be cancelled as a whole.

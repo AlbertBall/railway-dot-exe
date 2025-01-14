@@ -4,8 +4,6 @@ Post v2.20.3 notes:
 
 /if a signal is the last element then erase that too
 
-in new version info mention that need v2.21.0 for ttb's & sessions that use cms
-
 / add BWJM's shuttle to manual & onscreen help if he's ok to use it
 
 / found error in ProcessOneTimetableLine where ServiceReference only looks for semicolon, but an Sns service without a description has a comma after the service ref so it reports an error in the reference but there isn't one, now looks for comma or semicolon & if comma comes first then it uses that as the delimiter
@@ -17,6 +15,14 @@ in new version info mention that need v2.21.0 for ttb's & sessions that use cms
 / add a 'change max speed' timetable command if possible in response to fitzburger69 request
 
 /Expand limits so Jason B's railway passes session file check.  Requires TEventReported increase to 36 and number of trains from timetable file (excluding repeats) to increase from 10000 to 100000 (Jason's was 9346 so near the earlier limit) - done after v2.20.3
+
+/ add to manual & onscreen help about new truncation rules
+
+change copyright notice to 2025
+
+mark all sig to sig truncation requests as [done]
+
+in new version info mention that need v2.21.0 for ttb's & sessions that use cms
 
 Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
 

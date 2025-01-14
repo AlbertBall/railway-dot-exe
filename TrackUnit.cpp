@@ -18921,7 +18921,8 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     {
         if(TruncateType == NextSignalTruncate) //added at v2.21.0 - don't allow trucation as would likely need to lock route further forwards than next signal
         {
-            TrainController->StopTTClockMessage(179, "Unable to truncate to next signal when route locking is required.");
+            TrainController->StopTTClockMessage(179, "Unable to truncate to next signal when route locking is required.  To apply locking truncate from the element "
+                                                     "immediately after the signal, this will lock the remainder of the route ");
             ReturnFlag = InRouteFalse;
             AllRoutes->RouteBackTruncateFlag = false;
             Utilities->CallLogPop(2714);

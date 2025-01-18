@@ -12,6 +12,7 @@ var class_t_action_vector_entry =
     [ "LocationName", "class_t_action_vector_entry.html#afdc4364c8698998b3689039a32b8c148", null ],
     [ "LocationType", "class_t_action_vector_entry.html#a5de0c970525a897f8ac2cdf66004dab9", null ],
     [ "NewDescription", "class_t_action_vector_entry.html#a22085a457659bb34e55849555d5a31c8", null ],
+    [ "NewMaxSpeed", "class_t_action_vector_entry.html#af1e488ca8a9b20a153172d78e979e88e", null ],
     [ "NonRepeatingShuttleLinkEntryPtr", "class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7", null ],
     [ "NonRepeatingShuttleLinkHeadCode", "class_t_action_vector_entry.html#ae142e8e9d3a842c9b1d81bcd4e93e291", null ],
     [ "NumberOfRepeats", "class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d", null ],

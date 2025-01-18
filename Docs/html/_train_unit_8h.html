@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.20.3</span>
+   &#160;<span id="projectnumber">v2.21.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -232,7 +232,9 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a284d24f2574f4d967d1263b0b7f3236d">RouteForceCancelled</a>, 
 <a class="el" href="_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0ae62a8d9303802a22384662cbe37c379f">FailEntryRouteSetAgainst</a>, 
 <a class="el" href="_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a47a37c161bf2c304916a80485a533755">FailNoPowerUnableToDepart</a>, 
-<a class="el" href="_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a161e67446eff98c76ad5b848d101a9e2">FailTrainInFront</a>
+<a class="el" href="_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a161e67446eff98c76ad5b848d101a9e2">FailTrainInFront</a>, 
+<br />
+&#160;&#160;<a class="el" href="_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a342c421d388eac40aca2243b154b9ec8">FailMissedCMS</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a104a5f74e30e41accec915e67effa5c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for reporting error conditions &amp; warnings.  <a href="_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0">More...</a><br /></td></tr>
@@ -269,7 +271,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba002e867717d56b4bdf893cf64c678e82">SignallerLeave</a>, 
 <br />
 &#160;&#160;<a class="el" href="_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119bada1ac6cff1decf4dd20d5a646f122e46">SignallerStepForward</a>, 
-<a class="el" href="_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119baf68333138ec628faeecc4d352dff5389">ChangeDescription</a>
+<a class="el" href="_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119baf68333138ec628faeecc4d352dff5389">ChangeDescription</a>, 
+<a class="el" href="_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119baadc2496908cf7810a1576c61b75aedc1">ChangeMaxSpeed</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a7c5b1b115c43502bc514202b4bf3119b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used in LogAction when reporting a train action to the performance log &amp; file.  <a href="_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119b">More...</a><br /></td></tr>
@@ -299,7 +302,9 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba93634d32da4cb8f0204b4f8929fda514">Repeat</a>, 
 <a class="el" href="_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba455a425a4b32988e6dd1ba4ee357156c">PassTime</a>, 
 <a class="el" href="_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bab8813fc229828841b4d8a49de8285fb2">ExitRailway</a>, 
-<a class="el" href="_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bafcc2feb76bb58ad016c91a2ebc2b9d59">TimeCmdDescription</a>
+<a class="el" href="_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bafcc2feb76bb58ad016c91a2ebc2b9d59">TimeCmdDescription</a>, 
+<br />
+&#160;&#160;<a class="el" href="_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba436e0b9b44d3bbd96d3d6b1384fa873b">TimeCmdMaxSpeed</a>
 <br />
  }</td></tr>
 <tr class="memdesc:ae4bb5438f82cb1de18a0bcb5bef8500b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timetable entry types.  <a href="_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500b">More...</a><br /></td></tr>
@@ -360,7 +365,7 @@ Variables</h2></td></tr>
 
 <p>contains all actions for a single train </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00174">174</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00176">176</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -378,7 +383,7 @@ Variables</h2></td></tr>
 
 <p>iterator </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00176">176</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00178">178</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -396,7 +401,7 @@ Variables</h2></td></tr>
 
 <p>vector of all timetabled trains for use in the formatted timetable </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00287">287</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00289">289</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -414,7 +419,7 @@ Variables</h2></td></tr>
 
 <p>these added for multiplayer </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00100">100</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00102">102</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -432,7 +437,7 @@ Variables</h2></td></tr>
 
 <p>a list of valid train exit TrackVector positions for 'Fer' entries </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00093">93</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00095">95</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -448,7 +453,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00095">95</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00097">97</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -466,7 +471,7 @@ Variables</h2></td></tr>
 
 <p>vector of a timetabled train with all its repeats for use in the formatted timetable </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00271">271</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00273">273</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -484,7 +489,7 @@ Variables</h2></td></tr>
 
 <p>vector of formatted timetable actions for a single train </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00258">258</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00260">260</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -500,7 +505,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00112">112</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00114">114</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -516,7 +521,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00113">113</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00115">115</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -534,7 +539,7 @@ Variables</h2></td></tr>
 
 <p>vector class for containing the whole timetable - one entry per timetable service entry (the object is a member of <a class="el" href="class_t_train_controller.html" title="Handles all train and timetable activities, only one object created.">TTrainController</a>) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00242">242</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00244">244</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +557,7 @@ Variables</h2></td></tr>
 
 <p>vector containing operational data for each timetabled train including all repeats </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00200">200</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00202">202</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -607,6 +612,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a104a5f74e30e41accec915e67effa5c0ae62a8d9303802a22384662cbe37c379f"></a>FailEntryRouteSetAgainst&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a104a5f74e30e41accec915e67effa5c0a47a37c161bf2c304916a80485a533755"></a>FailNoPowerUnableToDepart&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a104a5f74e30e41accec915e67effa5c0a161e67446eff98c76ad5b848d101a9e2"></a>FailTrainInFront&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a104a5f74e30e41accec915e67effa5c0a342c421d388eac40aca2243b154b9ec8"></a>FailMissedCMS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00037">37</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
@@ -653,9 +659,10 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a7c5b1b115c43502bc514202b4bf3119ba002e867717d56b4bdf893cf64c678e82"></a>SignallerLeave&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a7c5b1b115c43502bc514202b4bf3119bada1ac6cff1decf4dd20d5a646f122e46"></a>SignallerStepForward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a7c5b1b115c43502bc514202b4bf3119baf68333138ec628faeecc4d352dff5389"></a>ChangeDescription&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7c5b1b115c43502bc514202b4bf3119baadc2496908cf7810a1576c61b75aedc1"></a>ChangeMaxSpeed&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00049">49</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00051">51</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -678,7 +685,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="aaf2c83bd41bf67311ac0a35578586703af5be4604da9be40fc65b5dae1fc67ef9"></a>Exited&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00086">86</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00088">88</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +708,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a5cda232d9d09241685280b2cb9c8a389a2a00a8f6233eee2eb16869e3965f35b2"></a>LeadMid&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00298">298</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00300">300</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -735,9 +742,10 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ae4bb5438f82cb1de18a0bcb5bef8500ba455a425a4b32988e6dd1ba4ee357156c"></a>PassTime&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae4bb5438f82cb1de18a0bcb5bef8500bab8813fc229828841b4d8a49de8285fb2"></a>ExitRailway&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae4bb5438f82cb1de18a0bcb5bef8500bafcc2feb76bb58ad016c91a2ebc2b9d59"></a>TimeCmdDescription&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae4bb5438f82cb1de18a0bcb5bef8500ba436e0b9b44d3bbd96d3d6b1384fa873b"></a>TimeCmdMaxSpeed&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00064">64</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00066">66</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -759,7 +767,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a8a7a7be0e192ee77b9403a0c4a0f4faeac2419cc913690fb85971e39e5e31812c"></a>LocTypeForRepeatEntry&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00070">70</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00072">72</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -782,7 +790,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ab78fef54d64b11053299bdb3da1a014dab74b821f1ff392a1a1828f0dc10657d9"></a>SequTypeForRepeatEntry&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00075">75</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00077">77</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -804,7 +812,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a0ca2bd84884a11b19393757fcd5f5b7ba222f395b9d097764aea47c5de904efd0"></a>ShuttleLinkTypeForRepeatEntry&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00080">80</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00082">82</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -827,7 +835,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="af38491203ad41db1903e77c9caf37562a35ae9667cca3c8cfe2e6c6b83ec1eea8"></a>Signaller&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00058">58</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00060">60</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>

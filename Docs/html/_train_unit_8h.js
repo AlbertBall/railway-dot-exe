@@ -60,7 +60,8 @@ var _train_unit_8h =
       [ "RouteForceCancelled", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a284d24f2574f4d967d1263b0b7f3236d", null ],
       [ "FailEntryRouteSetAgainst", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0ae62a8d9303802a22384662cbe37c379f", null ],
       [ "FailNoPowerUnableToDepart", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a47a37c161bf2c304916a80485a533755", null ],
-      [ "FailTrainInFront", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a161e67446eff98c76ad5b848d101a9e2", null ]
+      [ "FailTrainInFront", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a161e67446eff98c76ad5b848d101a9e2", null ],
+      [ "FailMissedCMS", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a342c421d388eac40aca2243b154b9ec8", null ]
     ] ],
     [ "TActionType", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119b", [
       [ "Arrive", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba7efb87fcab8284995a2f8111d0158d00", null ],
@@ -88,7 +89,8 @@ var _train_unit_8h =
       [ "SignallerStop", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba545fc7f1fad74b135feaf4b8372d9d10", null ],
       [ "SignallerLeave", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba002e867717d56b4bdf893cf64c678e82", null ],
       [ "SignallerStepForward", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119bada1ac6cff1decf4dd20d5a646f122e46", null ],
-      [ "ChangeDescription", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119baf68333138ec628faeecc4d352dff5389", null ]
+      [ "ChangeDescription", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119baf68333138ec628faeecc4d352dff5389", null ],
+      [ "ChangeMaxSpeed", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119baadc2496908cf7810a1576c61b75aedc1", null ]
     ] ],
     [ "TRunningEntry", "_train_unit_8h.html#aaf2c83bd41bf67311ac0a35578586703", [
       [ "NotStarted", "_train_unit_8h.html#aaf2c83bd41bf67311ac0a35578586703a4f19a59941d30ed46801ad82c37d19ba", null ],
@@ -116,7 +118,8 @@ var _train_unit_8h =
       [ "Repeat", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba93634d32da4cb8f0204b4f8929fda514", null ],
       [ "PassTime", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba455a425a4b32988e6dd1ba4ee357156c", null ],
       [ "ExitRailway", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bab8813fc229828841b4d8a49de8285fb2", null ],
-      [ "TimeCmdDescription", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bafcc2feb76bb58ad016c91a2ebc2b9d59", null ]
+      [ "TimeCmdDescription", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bafcc2feb76bb58ad016c91a2ebc2b9d59", null ],
+      [ "TimeCmdMaxSpeed", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba436e0b9b44d3bbd96d3d6b1384fa873b", null ]
     ] ],
     [ "TTimetableLocationType", "_train_unit_8h.html#a8a7a7be0e192ee77b9403a0c4a0f4fae", [
       [ "NoLocation", "_train_unit_8h.html#a8a7a7be0e192ee77b9403a0c4a0f4faead3d310ae3daecfa3b63062e90e1b8e3f", null ],

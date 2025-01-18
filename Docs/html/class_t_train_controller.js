@@ -123,8 +123,6 @@ var class_t_train_controller =
     [ "LatePasses", "class_t_train_controller.html#a3b50d0e6c319f8f2c263a446766bcfa1", null ],
     [ "MassHigh", "class_t_train_controller.html#a6bdcf950588202576f7c761d50f8bed1", null ],
     [ "MissedStops", "class_t_train_controller.html#a2c6b57b95b0cc74283154eacc0d12818", null ],
-    [ "MRSHigh", "class_t_train_controller.html#a27205ca4924c18e16f7ced47e1b3c5bc", null ],
-    [ "MRSLow", "class_t_train_controller.html#a81f09b0b168d0c6037c8f4ea1318d297", null ],
     [ "MTBFHours", "class_t_train_controller.html#a4ca462343181d491ff9f068821afe31e", null ],
     [ "NotStartedTrainLateArr", "class_t_train_controller.html#a0e42d6682cb50bae02e006f195649066", null ],
     [ "NotStartedTrainLateMins", "class_t_train_controller.html#a095d7c99ffc21a6939a044bbad4fa18f", null ],

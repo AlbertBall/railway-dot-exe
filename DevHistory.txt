@@ -1,34 +1,3 @@
-Post v2.20.3 notes:
-
-/ [out at v2.21.0 Beta2] try to allow route truncation to next & from last signal (BWJM request 09/01/25), allow for forwards cancellation only
-
-/if a signal is the last element then erase that too
-
-/ add BWJM's shuttle to manual & onscreen help if he's ok to use it
-
-/ found error in ProcessOneTimetableLine where ServiceReference only looks for semicolon, but an Sns service without a description has a comma after the service ref so it reports an error in the reference but there isn't one, now looks for comma or semicolon & if comma comes first then it uses that as the delimiter
-
-/ updated manual & on-screen help for cms addition (manual still to be dated)
-
-/ added actual max speed change in floating window
-
-/ add a 'change max speed' timetable command if possible in response to fitzburger69 request
-
-/Expand limits so Jason B's railway passes session file check.  Requires TEventReported increase to 36 and number of trains from timetable file (excluding repeats) to increase from 10000 to 100000 (Jason's was 9346 so near the earlier limit) - done after v2.20.3
-
-/ add to manual & onscreen help about new truncation rules
-
-change copyright notice to 2025
-
-mark all sig to sig truncation requests as [done]
-
-in new version info mention that need v2.21.0 for ttb's & sessions that use cms
-
-Check JasonB's Scotland railway when submitted to see if there's a problem with zero power join, see email of 22/02/24
-
-For future releases add "If Windows Defender cautions against using the program (this is because it doesn't recognise it), click 'allow program to run' or equivalent wording." to the important notes.
-
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -47,7 +16,7 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
-#112 from BWJM 09/01/25 via discord
+#112 [done at v2.21.0] from BWJM 09/01/25 via discord
 When cancelling a blue (automatic) route, the entire remaining portion of the route is cancelled.  This could be a long portion with multiple trains on it.  If I wanted to just break the route by cancelling it between two signals, I can't do that.  I have to cancel the entire route and rebuild the remaining portion.
 
 I'm wondering if it would be possible to add an ability to cancel a route, but only from the selected point to the next signal.
@@ -419,7 +388,7 @@ Albert — 27/02/23
 For the purpose you mention I don't think this is needed, as windows explorer already allows sorting on date and time using 'Date created' or 'Date modified'.  I tend to focus on things that improve functionality (and bug correction of course).  If there's an easy way to achieve what's wanted without program changes then for me that's good enough, though in due course I expect KR/ZAR to drag the program kicking and screaming into the 21st century :-)
 
 #88  from BWJM 17/02/23 via discord
-[partially done at 2.15.0] I would like the ability to cancel a route only to the next signal, not the entire remainder of the route.
+[done at v2.21.0] I would like the ability to cancel a route only to the next signal, not the entire remainder of the route.
 Use case: I have a long automatic route that goes through an interlocking. This is fine for 95% of the day, but there's this one pesky train mid-way through that needs to cross that route.  I would like to be able to break the automatic route through the interlocking while leaving the rest of the route intact.
 Yes, I know I could simply reestablish the whole automatic route, but let's just hand-wavey say that it's a complicated route and annoying to do.  Additionally, there will very likely be at least one other train somewhere on that remaining route due to the frequency of traffic on the line, and cancelling the route would throw the whole area into chaos with emergency braking and SPADs and who needs that? So much paperwork for those train crews!
 Desired point-and-clicks: The cancel route button would be split like the automatic and preferred route buttons.  One would work as it does today: right-click after the signal where you want to cancel the route from. The new button would work similarly: right-click after the signal where you want to break the route and it will cancel from there to the next signal only. 
@@ -542,7 +511,7 @@ Some requests appear to be quite simple, and requestors sometimes tell me how si
 I always deal with errors and program faults as soon as possible, so when these occur any improvements have to be put on hold, sometimes for weeks at a time.
 
 
-#76[improved in v2.14.0 - see #72 & #74] from Benjwri via discord 27/07/22
+#76[done at v2.21.0] from Benjwri via discord 27/07/22
 On the subject of ASR's, is there anything that can be done to stop the entire ASR past a signal being deleted when you cancel a route at it, or some way that could be come up with  to only cancel an ASR between 2 signals?
 
 Albert 27/07/22
@@ -586,7 +555,7 @@ With regard to noise, I understand what you are saying and as an engineer can we
 
 For now I'd prefer to keep 'noise faults' on the wish-list for possible future consideration rather than try to incorporate them in the next release, which already includes a lot of new stuff that might well throw up several new errors when used much more widely and require early attention - the more additions the more likely such errors will be.
 
-#72[now allow blue route creation across several signals so this helps in recreating a route after it has been truncated] from FinsburyPark via discord 30/06/22: 
+#72[done at v2.21.0] from FinsburyPark via discord 30/06/22: 
 On a seperate note may I please request a feature as just had a situation where it would come useful, that being said I believe there would be a few other uses as well.
 Essentially when you truncate a routing is it possible to have a version that takes out just a single signal block rather than following a whole routing?
 Couple main reasons, firstly being for example a quad mainline with several crossovers between fasts and slows, however normally always have the automatic signals on due to the rare usage of them. However in the case of (for example) signal failure it would be useful to be able to truncate the routing over just the junctions so that one can let trains go from slow to fast (or vice versa) and not have to truncate a large amount of the route. Attached a diagram to hopefully show this better ??
@@ -899,6 +868,58 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.20.3 for v2.21.0
+
+This version adds two new features, corrects one bug and updates the session file check function.
+
+The main new feature is the ability to truncate a route between two signals.  After left clicking the 'Route cancel' button the route will be truncated as follows by right clicking the appropriate track element:
+
+1  start of a route - cancels the route (a blue route followed by a non-blue route only cancels the blue route, and a non-blue route followed by a blue route only cancels the non-blue route);
+2  element immediately before a facing signal - truncates the route from the start to the signal;
+3  a mid-route signal - truncates the route to the next facing signal (this is the new feature);
+4  element immediately after a signal - truncates the route from the signal to the end;
+5  any other element in a green or blue route gives an error message;
+6  any element other than points, crossover or bridge in a red route truncates the route from the element to the end.
+
+The other feature is the ability to change the maximum speed of a train using the timetable.  The new command is 'cms' (for change maximum speed) along with the new maximum speed, e.g. '06:25;cms;50' changes the maximum speed to 50km/h.  It can only be used when the train is stopped at a location.  Please note that any timetable or session file containing this new command will fail to load in any program version prior to this one - v2.21.0.
+
+Bug correction:
+
+When a follow-on service has a headcode but no description, and there is an error in the timetable for that service, the error message reports an error in the headcode (which there isn't) as well as the true error.  This was traced to an error in the timetable parser and has now been corrected.
+
+Session check function update:
+
+This was needed because of a contributor's railway that is still in development and incorporates the entire West Coast Main Line from Euston to Glasgow along with a four-day timetable.  The railway and timetable are so big that they exceeded some of the check function limits that I had thought would never be exceeded!  These limits have been raised accordingly.  I had intended to delay release of the next version in case other limits were exceeded, but it is likely to be some time before the railway is complete so I have released it now and if further changes are needed they will have to be be incorporated in a further release.
+
+Not for website:
+
+/ [out at v2.21.0 Beta2] try to allow route truncation to next & from last signal (BWJM request 09/01/25), allow for forwards cancellation only
+
+/if a signal is the last element then erase that too
+
+/ add BWJM's shuttle to manual & onscreen help if he's ok to use it
+
+/ found error in ProcessOneTimetableLine where ServiceReference only looks for semicolon, but an Sns service without a description has a comma after the service ref so it reports an error in the reference but there isn't one, now looks for comma or semicolon & if comma comes first then it uses that as the delimiter
+
+/ updated manual & on-screen help for cms addition
+
+/ added actual max speed change in floating window
+
+/ add a 'change max speed' timetable command if possible in response to fitzburger69 request
+
+/ Expand limits so Jason B's railway passes session file check.  Requires TEventReported increase to 36 and number of trains from timetable file (excluding repeats) to increase from 10000 to 100000 (Jason's was 9346 so near the earlier limit) - done after v2.20.3
+
+/ add to manual & onscreen help about new truncation rules
+
+/ change copyright notice to 2025
+
+/ mark all sig to sig truncation requests as [done]
+
+/ in new version info mention that need v2.21.0 for ttb's & sessions that use cms
+
+
+
 
 VERSION CHANGES AFTER v2.20.2 for v2.20.3
 

@@ -3349,7 +3349,7 @@ On website (use Chrome - DiviBuilder seems to work better):
 
 11 Download & check the new release & anything else that's changed
 
-12 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator (RailOS)'. TAutoPost set to yes. Save, preview & schedule release or release immediately.
+12 Add a new post for the release with title 'New Program Version Released – vx.xx.x', Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, vx.xx.x.  Add 'Download it here' with link to 'Railway Operation Simulator (RailOS)'. TAutoPost set to yes. Save, preview & schedule release or release immediately.
 
 13 Check that it's announced on Discord News, if not announce it manually.
 

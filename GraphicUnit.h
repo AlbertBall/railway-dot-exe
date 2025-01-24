@@ -1029,8 +1029,11 @@ public:
     Graphics::TBitmap *bmPointBlank;
     Graphics::TBitmap *bmStraightEWSignalBlank;
     Graphics::TBitmap *bmStraightNSSignalBlank;
+//below new after v2.21.0 for length & speed heatmaps, copies existing track graphic prior to being coloured
 
-// graphics below created from existing graphics
+    Graphics::TBitmap *HeatMapGraphic;
+
+// graphics below derived from existing graphics
 // 1st group is for underbridge graphic segements - i.e. the lower single track segment (the overbridge segment is the normal track
 // segment, 12 bridges
     Graphics::TBitmap *BridgeGraphicsPtr[12];
@@ -1140,6 +1143,12 @@ public:
 /// Used when changing the background from dark to light and vice versa.  The derived graphics are the preferred direction
 /// and route graphics for tracks, underbridges, direction markers and all the point fillets.
     void SetUpAllDerivitiveGraphics(TColor TransparentColour);
+
+///function to generate RGB heatmap values from an input value between 0 and 1 using 7 colours
+///derived from code created by Dr Andrew Noske (https://www.andrewnoske.com/wiki/Code_-_heatmaps_and_color_gradients) with
+///his permission to use or modify.
+    void getHeatMapColor(float value, int *red, int *green, int *blue);
+
 };
 
 // ---------------------------------------------------------------------------

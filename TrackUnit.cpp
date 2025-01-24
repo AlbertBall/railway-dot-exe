@@ -3824,8 +3824,6 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
         }
     }
 
-//    TextHandler->RebuildFromTextVector(, Disp); // plot text after inactives so can have text on stations etc //moved below at v2.20.3
-
     NextTrackElementPtr = TrackVector.begin();
     while(ReturnNextTrackElement(0, Next))
     {
@@ -3837,22 +3835,52 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                 if(Next.TrackType == Points)
                 {
                     PlotPoints(5, Next, Disp, BothPointFilletsAndBasicLCs);
+                    if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
+                    {
+                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(7777, Next, false, Disp); //false for 23 length
+                    }
                 }
                 else if(Next.TrackType == SignalPost)
                 {
                     PlotSignal(9, Next, Disp);
+                    if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
+                    {
+                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                    }
                 }
                 else if(Next.TrackType == GapJump)
                 {
                     PlotGap(0, Next, Disp);
+                    if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
+                    {
+                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                    }
                 }
                 else if(Next.TrackType == Continuation) //added for multiplayer graphic overlays
                 {
                     PlotContinuation(0, Next, Disp);
+                    if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
+                    {
+                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                    }
+                }
+                else if(Next.TrackType == Crossover || Next.TrackType == Bridge)
+                {
+                    Next.PlotVariableTrackElement(3, Disp); // for footcrossings, may be striped or not
+                    if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
+                    {
+                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(7777, Next, false, Disp); //false for 23 length
+                    }
                 }
                 else
                 {
                     Next.PlotVariableTrackElement(3, Disp); // for footcrossings, may be striped or not
+                    if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
+                    {
+                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                    }
                 }
             }
         }
@@ -9829,20 +9857,45 @@ void TTrack::SetAllDefaultLengthsAndSpeedLimits(int Caller)
 
 // ---------------------------------------------------------------------------
 
-void TTrack::LengthMarker(int Caller, TDisplay *Disp)
-// Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLength.
+void TTrack::LengthandSpeedMarker(int Caller, TDisplay *Disp)
+// Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLengthandSpeed.
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthMarker");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthandSpeedMarker");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         TTrackElement TempElement = TrackElementAt(1377, x);
         if(TempElement.Length01 > -1)
         {
-            MarkOneLength(1, TempElement, true, Disp); // need Length01 test in case there are erase elements (but shouldn't be after LinkTrack)
+            MarkOneLengthandSpeed(1, TempElement, true, Disp); // need Length01 test in case there are erase elements (but shouldn't be after LinkTrack)
         }
         if(TempElement.Length23 > -1)
         {
-            MarkOneLength(2, TempElement, false, Disp);
+            MarkOneLengthandSpeed(2, TempElement, false, Disp);
+        }
+    }
+    Disp->Update();
+    Utilities->CallLogPop(618);
+}
+
+// ---------------------------------------------------------------------------
+void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Length false -> speed heatmap
+// Examine all elements in the TrackVector and if have a valid length mark the relevant track using OneLengthOrSpeedHeatMapColour
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthandSpeedMarker");
+    for(unsigned int x = 0; x < TrackVector.size(); x++)
+    {
+        TTrackElement TempElement = TrackElementAt(1377, x);
+        if(((TempElement.HLoc - Display->DisplayOffsetH) >= 0) && ((TempElement.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+                   ((TempElement.VLoc - Display->DisplayOffsetV) >= 0) && ((TempElement.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+        {//only plot if onscreen as takes quite a long time
+            if(TempElement.Length01 > -1)
+            {
+                OneLengthOrSpeedHeatMapColour(1, TempElement, true, Disp); // need Length01 test in case there are erase elements (but shouldn't be after LinkTrack)
+            }
+            if(TempElement.Length23 > -1)
+            {
+                OneLengthOrSpeedHeatMapColour(2, TempElement, false, Disp);
+            }
         }
     }
     Disp->Update();
@@ -9851,7 +9904,200 @@ void TTrack::LengthMarker(int Caller, TDisplay *Disp)
 
 // ---------------------------------------------------------------------------
 
-void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)
+void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)
+
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",OneLengthOrSpeedHeatMapColour," + TrackElement.LogTrack(8) + "," +
+                                 AnsiString((short)FirstTrack));
+
+    int EXArray[16][2] =
+    {{4, 6}, {2, 8}, // horizontal & vertical
+     {2, 4}, {6, 2}, {8, 6}, {4, 8},    // sharp curves
+     {1, 6}, {3, 8}, {9, 4}, {7, 2}, {1, 8}, {3, 4}, {9, 2}, {7, 6},    // loose curves
+     {1, 9}, {3, 7}};    // forward & reverse diagonals
+
+    int Index = -1, BrNum = -1, GrNum = -1, InLink, OutLink;  //BrNum = bridge number, GrNum = graphic number
+    Graphics::TBitmap *Bitmap;  //existing plain bitmap
+
+    if(FirstTrack)
+    {
+        InLink = TrackElement.Link[0];
+        OutLink = TrackElement.Link[1];
+    }
+    else
+    {
+        InLink = TrackElement.Link[2];
+        OutLink = TrackElement.Link[3];
+    }
+    for(int x = 0; x < 16; x++)
+    {
+        if((InLink == EXArray[x][0] && OutLink == EXArray[x][1]) || (InLink == EXArray[x][1] && OutLink == EXArray[x][0]))
+        {
+            Index = x;
+        }
+    }
+    if(Index == -1)
+    {
+        throw Exception("Error, failed to find Index in TTrack::MarkOneLengthandSpeed");
+    }
+/* The order for bridge entries & exits is as below.  Note that there are 3 of each type,
+      the graphic for each of which is different because of the shape of the overbridge.  The basic
+      entry/exit value is computed above, and this used to select only from elements with that entry/exit
+      value that is an underbridge, i.e overbridges ignored as the normal graphic is OK for them.
+      Note that the underbridge track always uses links 2 & 3
+      int BrEXArray[24][2] = {
+      {4,6},{2,8},{1,9},{3,7},
+      {1,9},{3,7},{1,9},{3,7},
+      {2,8},{4,6},{2,8},{4,6}
+*/
+
+    if(!FirstTrack && (TrackElement.TrackType == Bridge))  //underbridge track always uses links 2 & 3 so never FirstTrack
+    {
+        if(Index == 1)
+        {
+            if(TrackElement.SpeedTag == 49)
+            {
+                BrNum = 1 + 16;
+            }
+            else if(TrackElement.SpeedTag == 54)
+            {
+                BrNum = 8 + 16;
+            }
+            else if(TrackElement.SpeedTag == 55)
+            {
+                BrNum = 10 + 16;
+            }
+        }
+        else if(Index == 0)
+        {
+            if(TrackElement.SpeedTag == 48)
+            {
+                BrNum = 0 + 16;
+            }
+            else if(TrackElement.SpeedTag == 58)
+            {
+                BrNum = 11 + 16;
+            }
+            else if(TrackElement.SpeedTag == 59)
+            {
+                BrNum = 9 + 16;
+            }
+        }
+        else if(Index == 14)
+        {
+            if(TrackElement.SpeedTag == 50)
+            {
+                BrNum = 2 + 16;
+            }
+            else if(TrackElement.SpeedTag == 52)
+            {
+                BrNum = 4 + 16;
+            }
+            else if(TrackElement.SpeedTag == 57)
+            {
+                BrNum = 6 + 16;
+            }
+        }
+        else if(Index == 15)
+        {
+            if(TrackElement.SpeedTag == 51)
+            {
+                BrNum = 3 + 16;
+            }
+            else if(TrackElement.SpeedTag == 53)
+            {
+                BrNum = 7 + 16;
+            }
+            else if(TrackElement.SpeedTag == 56)
+            {
+                BrNum = 5 + 16;
+            }
+        }
+    }
+    if(!FirstTrack && (TrackElement.TrackType == Bridge))
+    {
+        GrNum = BrNum;
+    }
+    else
+    {
+        GrNum = Index;
+    }
+
+//get basic track bitmap
+    if(GrNum > 15) // underbridge
+    {
+        Bitmap = RailGraphics->BridgeGraphicsPtr[GrNum - 16];
+    }
+    else
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[GrNum];
+    }
+    if(TrackElement.SpeedTag == 64)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[16]; // intercept diagonal buffers to show the buffer
+    }
+    if(TrackElement.SpeedTag == 65)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[17];
+    }
+    if(TrackElement.SpeedTag == 66)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[18];
+    }
+    if(TrackElement.SpeedTag == 67)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[19];
+    }
+    if(TrackElement.SpeedTag == 80)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[20]; // intercept continuations to show the dots
+    }
+    if(TrackElement.SpeedTag == 81)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[21];
+    }
+    if(TrackElement.SpeedTag == 82)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[22];
+    }
+    if(TrackElement.SpeedTag == 83)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[23];
+    }
+    if(TrackElement.SpeedTag == 84)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[24];
+    }
+    if(TrackElement.SpeedTag == 85)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[25];
+    }
+    if(TrackElement.SpeedTag == 86)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[26];
+    }
+    if(TrackElement.SpeedTag == 87)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[27];
+    }
+    if(TrackElement.SpeedTag == 129)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[28]; // intercept under footbridges
+    }
+    if(TrackElement.SpeedTag == 130)
+    {
+        Bitmap = RailGraphics->LinkGraphicsPtr[29];
+    }
+
+    RailGraphics->HeatMapGraphic->Assign(Bitmap); //make a copy prior to colouring
+    RailGraphics->ChangeForegroundColour(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, clB0G3R5, Utilities->clTransparent);
+    Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, RailGraphics->HeatMapGraphic);
+    Utilities->CallLogPop(620);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::MarkOneLengthandSpeed(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)
 /*
       Rule:  Only marked if different in any way from the default values - length 100m and speed limit 200km/h normally but can be changed in Config.txt
       First check using IsElementTrackDefaultLength whether the relevant track is already set to the default values, and if so
@@ -9860,11 +10106,11 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
       track as indicated by FirstTrack (true for track01 & false for track23).
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MarkOneLength," + TrackElement.LogTrack(8) + "," +
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MarkOneLengthandSpeed," + TrackElement.LogTrack(8) + "," +
                                  AnsiString((short)FirstTrack));
-    bool LengthDifferent = false, SpeedDifferent = false;
+    bool LengthDifferent = false, SpeedDifferent = false; //BrNum = bridge number, GrNum = graphic number
 
-    if(IsElementDefaultLength(1, TrackElement, FirstTrack, LengthDifferent, SpeedDifferent))
+    if(IsElementDefaultLengthAndSpeed(1, TrackElement, FirstTrack, LengthDifferent, SpeedDifferent))
     {
         Utilities->CallLogPop(619);
         return;
@@ -9897,18 +10143,19 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
     }
     if(Index == -1)
     {
-        throw Exception("Error, failed to find Index in TTrack::MarkOneLength");
+        throw Exception("Error, failed to find Index in TTrack::MarkOneLengthandSpeed");
     }
 /* The order for bridge entries & exits is as below.  Note that there are 3 of each type,
       the graphic for each of which is different because of the shape of the overbridge.  The basic
       entry/exit value is computed above, and this used to select only from elements with that entry/exit
       value that is an underbridge, i.e overbridges ignored as the normal graphic is OK for them.
+      Note that the underbridge track always uses links 2 & 3
       int BrEXArray[24][2] = {
       {4,6},{2,8},{1,9},{3,7},
       {1,9},{3,7},{1,9},{3,7},
       {2,8},{4,6},{2,8},{4,6}
 */
-    if(!FirstTrack && (TrackElement.TrackType == Bridge))
+    if(!FirstTrack && (TrackElement.TrackType == Bridge))  //underbridge track always uses links 2 & 3 so never FirstTrack
     {
         if(Index == 1)
         {
@@ -10188,12 +10435,12 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
 
 // ---------------------------------------------------------------------------
 
-bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, bool FirstTrack, bool &LengthDifferent, bool &SpeedDifferent)
+bool TTrack::IsElementDefaultLengthAndSpeed(int Caller, TTrackElement &TrackElement, bool FirstTrack, bool &LengthDifferent, bool &SpeedDifferent)
 /* FirstTrack = LinkPos's 0 & 1
       Examine track within TrackElement & check whether it has the default length and speed limit, return true if so
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsElementTrackDefaultLength," + TrackElement.LogTrack(10) + "," +
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsElementDefaultLengthAndSpeed," + TrackElement.LogTrack(10) + "," +
                                  AnsiString((short)FirstTrack));
     LengthDifferent = false;
     SpeedDifferent = false;

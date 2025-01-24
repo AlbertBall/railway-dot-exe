@@ -747,6 +747,7 @@ can't have a route set while changing; can't be opened while a route is set; and
 
     AnsiString RouteFailMessage;
 
+
     bool ActiveTrackElementNameMapCompiledFlag;
 ///< indicates that the ActiveTrackElementNameMap has been compiled
     bool CopyFlag;
@@ -759,8 +760,12 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< true when LCs changing
     bool LCFoundInAutoSigsRoute;
 ///< true if found an LC during an automatic route search
+    bool LengthHeatMapFlag;
+///< true when plotting a length heatmap
     bool NoPlatsMessageSent;
 ///< used to send no platforms warning once only
+    bool SpeedHeatMapFlag;
+///< true when plotting a speed heatmap
     bool SuppressRouteFailMessage;
 ///< true if a message has been given in the search routine, to avoid giving multiple times and to avoid other failure messages being given
 //    bool LCFoundInRouteBuildingFlag; {dropped at v2.17.0 as not used)
@@ -1027,9 +1032,8 @@ can't have a route set while changing; can't be opened while a route is set; and
     bool IsATrackElementAdjacentToLink(int Caller, int HLocIn, int VLocIn, int LinkIn);
 /// True if there is a vector entry at H & V that is set to manual (TypeOfRoute == 2) and returns the vector position in BDVectorPos
     bool IsBarrierDownVectorAtHVManual(int Caller, int HLoc, int VLoc, int &BDVectorPos);
-/// True if track at link positions [0] & [1] if FirstTrack true, else that at [2] & [3] in TrackElement has the default length
-/// and speed limit, return true if so
-    bool IsElementDefaultLength(int Caller, TTrackElement &TrackElement, bool FirstTrack, bool &LengthDifferent, bool &SpeedDifferent);
+/// True if track at link positions [0] & [1] if FirstTrack true, else that at [2] & [3] in TrackElement has the default length and speed limit, return true if so
+    bool IsElementDefaultLengthAndSpeed(int Caller, TTrackElement &TrackElement, bool FirstTrack, bool &LengthDifferent, bool &SpeedDifferent);
 /// True if a non-station named location at HLoc & VLoc
     bool IsNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc);
 /// True if a level crossing is found at H & V
@@ -1180,7 +1184,9 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
 /// Converse of GetScreenPositionsFromTruePos
     void GetTruePositionsFromScreenPos(int Caller, int &HPos, int &VPos, int ScreenPosH, int ScreenPosV);
 /// Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLength
-    void LengthMarker(int Caller, TDisplay *Disp);
+    void LengthandSpeedMarker(int Caller, TDisplay *Disp);
+/// Heatmap function for all track elements
+    void LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp); //Length false -> speed heatmap
 /// Load all BarriersDownVector values from SessionFile
     void LoadBarriersDownVector(int Caller, std::ifstream &VecFile);
 /// new at v2.4.0, load user graphics
@@ -1188,7 +1194,9 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
 /// Load track elements (active & inactive) from the file into the relevant vectors and maps, and try to link the resulting track
     void LoadTrack(int Caller, std::ifstream &VecFile, bool &GraphicsFollow);
 /// Mark on screen a track element according to its length and speed limit if either of these differ from their default values
-    void MarkOneLength(int Caller, TTrackElement TE, bool FirstTrack, TDisplay *Disp);
+    void MarkOneLengthandSpeed(int Caller, TTrackElement TE, bool FirstTrack, TDisplay *Disp);
+/// Heatmap function for a single trackelement
+    void OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp);
 /// Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at position HLocInput & VLocInput.  If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to LocationNameMultiMap. At v2.2.0 'Aspect' added so can distinguish between adding and pasting track
     void PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks, bool PerformNameSearch); //PerformNameSearch added at v2.18.0
 /// Plots a continuation on screen, may have overlays if a multiplayer session

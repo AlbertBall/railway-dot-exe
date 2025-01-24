@@ -17848,7 +17848,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     }
     if(Level2TrackMode == DistanceStart)
     {
-        Track->LengthMarker(0, HiddenDisplay);
+        Track->LengthandSpeedMarker(0, HiddenDisplay);
         DistanceKey->Visible = true;
         DistancesMarked = true;
         LengthConversionPanel->Visible = true;
@@ -17858,7 +17858,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     {
         if(ConstructPrefDir->PrefDirSize() > 0)
         {
-            Track->LengthMarker(2, HiddenDisplay);
+            Track->LengthandSpeedMarker(2, HiddenDisplay);
 // this line was after the next line until v2.5.1, changed so magenta not overrridden after PrefDirMarker called
             ConstructPrefDir->PrefDirMarker(11, PrefDirCall, true, HiddenDisplay);
             DistanceKey->Visible = true;
@@ -17871,7 +17871,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     // this is to keep the distance markers if they are already present when Select is chosen, in case user wishes to choose SelectLengths,
     // don't need to display ConstructPrefDir marker as that only needed in DistanceContinuing mode
     {
-        Track->LengthMarker(1, HiddenDisplay);
+        Track->LengthandSpeedMarker(1, HiddenDisplay);
         DistanceKey->Visible = true;
     }
     if((Level2TrackMode != TrackSelecting) && (Level2TrackMode != DistanceContinuing) && (Level2TrackMode != DistanceStart))
@@ -25998,6 +25998,38 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
 
+int R;
+int G;
+int B;
+int *Red = &R;
+int *Green = &G;
+int *Blue = &B;
+//for(float x = 0; x <= 1;x = x + 0.01)
+{
+//    RailGraphics->getHeatMapColor(x, Red, Green, Blue);
+//    TColor Col = TColor((*Blue * 65536) + (*Green * 256) + *Red);
+
+    Track->LengthHeatMapFlag = true;
+    ClearandRebuildRailway(7777);
+
+//Mapping now built into RebuildTrackAndText.  Have 2 flags in TTrack LengthHeatMapFlag and SpeedHeatMapFlag
+//build these into OneLengthOrSpeedHeatMapColour so correct map is plotted
+//set the appropriate one when the button is clicked, and reset when click any other button on
+//distance panel and when exit build mode
+//only need LengthOrSpeedHeatMap when first click a map button (or maybe not even then if call Clearand... when button clicked as above)
+//Have a table of values to use for the colours instead of calculating on the fly to save time
+//and try to save time during OneLengthOrSpeedHeatMapColour
+
+
+
+//  Track->LengthOrSpeedHeatMap(7777, true, Display);
+
+
+//    MainScreen->Canvas->Brush->Color = Col;
+//    MainScreen->Canvas->FillRect(MainScreen->ClientRect);
+//    ShowMessage(AnsiString(x).FormatFloat("0.00", x) + "   " + AnsiString(*Red)  + "   " + AnsiString(*Green) + "   " + AnsiString(*Blue));
+    //red corresponds to shorter lengths
+}
 
 //end of test code
         Utilities->CallLogPop(2376);

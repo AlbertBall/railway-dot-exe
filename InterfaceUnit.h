@@ -307,6 +307,9 @@ __published: // IDE-managed Components
 
     TImage *DistanceKey;
 ///< information panel displayed when setting distances & speed limits
+    TImage *LengthHeatMap;
+    TImage *SpeedHeatMap;
+///< Heatmap images
     TImage *PrefDirKey;
 ///< information panel displayed when setting preferred directions
 
@@ -760,7 +763,10 @@ __published: // IDE-managed Components
     TLabel *ReminderLabel1;
     TLabel *ReminderLabel2;
     TButton *cmsButton;
-    TMemo *TTInfoMemo;  //added at v2.15.0
+    TMemo *TTInfoMemo;
+    TSpeedButton *SpeedButton17;
+    TBitBtn *LengthHeatmapBitBtn;
+    TBitBtn *SpeedHeatmapBitBtn;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -992,7 +998,9 @@ __published: // IDE-managed Components
     void __fastcall SetReminderMenuItemClick(TObject *Sender);
     void __fastcall ReminderExitImageClick(TObject *Sender);
     void __fastcall ReminderListBoxMouseUp(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y); //added at v2.17.0
+          TShiftState Shift, int X, int Y);
+    void __fastcall LengthsHeatmapButtonClick(TObject *Sender);
+    void __fastcall SpeedsHeatmapButtonClick(TObject *Sender); //added at v2.17.0
 
 public: // AboutForm needs access to these
 

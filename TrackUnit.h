@@ -1185,7 +1185,7 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void GetTruePositionsFromScreenPos(int Caller, int &HPos, int &VPos, int ScreenPosH, int ScreenPosV);
 /// Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLength
     void LengthandSpeedMarker(int Caller, TDisplay *Disp);
-/// Heatmap function for all track elements
+/// Heatmap function for all track elements - unused
     void LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp); //Length false -> speed heatmap
 /// Load all BarriersDownVector values from SessionFile
     void LoadBarriersDownVector(int Caller, std::ifstream &VecFile);

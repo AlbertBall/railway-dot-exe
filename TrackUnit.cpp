@@ -1172,6 +1172,8 @@ TTrack::TTrack()
     GapFlashRed = new TGraphicElement;
     GapFlashGreen->LoadOverlayGraphic(1, RailGraphics->bmGreenEllipse);
     GapFlashRed->LoadOverlayGraphic(2, RailGraphics->bmRedEllipse);
+    LengthHeatMapFlag = false;
+    SpeedHeatMapFlag = false;
 
     int InternalLinkCheckArray[9][2] =
     {{1, 9}, {4, 6}, {7, 3}, {2, 8}, {0, 0}, {8, 2}, {3, 7}, {6, 4}, {9, 1}};
@@ -9878,10 +9880,10 @@ void TTrack::LengthandSpeedMarker(int Caller, TDisplay *Disp)
 }
 
 // ---------------------------------------------------------------------------
-void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Length false -> speed heatmap
+void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Length false -> speed heatmap  //unused  //added after v2.21.0
 // Examine all elements in the TrackVector and if have a valid length mark the relevant track using OneLengthOrSpeedHeatMapColour
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthandSpeedMarker");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthOrSpeedHeatMap");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         TTrackElement TempElement = TrackElementAt(1377, x);
@@ -9904,7 +9906,7 @@ void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Len
 
 // ---------------------------------------------------------------------------
 
-void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)
+void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)   //added after v2.21.0
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",OneLengthOrSpeedHeatMapColour," + TrackElement.LogTrack(8) + "," +
@@ -9917,17 +9919,23 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
      {1, 9}, {3, 7}};    // forward & reverse diagonals
 
     int Index = -1, BrNum = -1, GrNum = -1, InLink, OutLink;  //BrNum = bridge number, GrNum = graphic number
-    Graphics::TBitmap *Bitmap;  //existing plain bitmap
+    Graphics::TBitmap *Bitmap;
+    int Length;
+    int Speed;
 
     if(FirstTrack)
     {
         InLink = TrackElement.Link[0];
         OutLink = TrackElement.Link[1];
+        Length = TrackElement.Length01;
+        Speed = TrackElement.SpeedLimit01;
     }
     else
     {
         InLink = TrackElement.Link[2];
         OutLink = TrackElement.Link[3];
+        Length = TrackElement.Length23;
+        Speed = TrackElement.SpeedLimit23;
     }
     for(int x = 0; x < 16; x++)
     {
@@ -10090,7 +10098,24 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
     }
 
     RailGraphics->HeatMapGraphic->Assign(Bitmap); //make a copy prior to colouring
-    RailGraphics->ChangeForegroundColour(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, clB0G3R5, Utilities->clTransparent);
+    //determine color required
+    int Red, Green, Blue; //int values will be between 0 & 255
+    int *R = &Red, *G = &Green, *B = &Blue;
+    TColor Col;
+    if(LengthHeatMapFlag)
+    {
+        float Len = Length;
+        RailGraphics->getHeatMapColor((Ln(Len/10))/6.2146, R, G, B); //Len/10 makes range 1 to limit of 500, representing 5000km per element
+        Col = TColor((65536 * Blue) + (256 * Green) + Red);          //6.2146 normalises Ln range to between 0 & 1
+        RailGraphics->ChangeForegroundColour(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
+    }
+    else if (SpeedHeatMapFlag)
+    {
+        float Spd = Speed;
+        RailGraphics->getHeatMapColor((Ln(Spd/10))/3.691, R, G, B); //Spd/10 makes range 1 to limit of 40, representing 400km/h
+        Col = TColor((65536 * Blue) + (256 * Green) + Red);         //3.691 normalises Ln range to between 0 & 1
+        RailGraphics->ChangeForegroundColour(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
+    }
     Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, RailGraphics->HeatMapGraphic);
     Utilities->CallLogPop(620);
 }

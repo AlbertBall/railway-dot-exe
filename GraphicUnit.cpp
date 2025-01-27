@@ -4798,31 +4798,33 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
 //derived from code created by Dr Andrew Noske (https://www.andrewnoske.com/wiki/Code_-_heatmaps_and_color_gradients) with
 //his permission to use or adapt.
 
-void TRailGraphics::getHeatMapColor(float value, int *red, int *green, int *blue)
+void TRailGraphics::GetHeatMapColor(int Caller, float value, int *red, int *green, int *blue)
 {
-  const int NUM_COLORS = 7;
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(value) + ", GetHeatMapColor");
+    const int NUM_COLORS = 7;
 //  static int color[NUM_COLORS][3] = { {0,0,255}, {0,255,255}, {0,255,0}, {255,255,0}, {255,0,255}, {255,0,0} };
     // A static array of 6 colors:  (blue, cyan, green, yellow, magenta, red) using {r,g,b} for each.
-  static int color[NUM_COLORS][3] = { {255,0,0}, {255,127,0}, {255,255,0}, {0,255,0}, {0,255,255}, {0,0,255}, {127,0,255} };
+    static int color[NUM_COLORS][3] = { {255,0,0}, {255,127,0}, {255,255,0}, {0,255,0}, {0,255,255}, {0,0,255}, {127,0,255} };
     // A static array of 7 (rainbow) colors:  (red, orange, yellow, green, cyan, blue, voilet) using {r,g,b} for each.
 
-  int idx1;        // |-- Our desired color will be between these two indexes in "color".
-  int idx2;        // |
-  float fractBetween = 0;  // Fraction between "idx1" and "idx2" where our value is.
+    int idx1;        // |-- Our desired color will be between these two indexes in "color".
+    int idx2;        // |
+    float fractBetween = 0;  // Fraction between "idx1" and "idx2" where our value is.
 
-  if(value <= 0)       {  idx1 = idx2 = 0;            }    // accounts for an input <=0
-  else if(value >= 1)  {  idx1 = idx2 = NUM_COLORS-1; }    // accounts for an input >=1
-  else
-  {
-    value = value * (NUM_COLORS-1);        // Will multiply value by 5.
-    idx1  = floor(value);                  // Our desired color will be after this index.
-    idx2  = idx1 + 1;                        // ... and before this index (inclusive).
-    fractBetween = value - float(idx1);           // Distance between the two indexes (0-1).
-  }
+    if(value <= 0)       {  idx1 = idx2 = 0;            }    // accounts for an input <=0
+    else if(value >= 1)  {  idx1 = idx2 = NUM_COLORS-1; }    // accounts for an input >=1
+    else
+    {
+        value = value * (NUM_COLORS-1);        // Will multiply value by 5.
+        idx1  = floor(value);                  // Our desired color will be after this index.
+        idx2  = idx1 + 1;                        // ... and before this index (inclusive).
+        fractBetween = value - float(idx1);           // Distance between the two indexes (0-1).
+    }
 
-  *red   = (color[idx2][0] - color[idx1][0])*fractBetween + color[idx1][0];
-  *green = (color[idx2][1] - color[idx1][1])*fractBetween + color[idx1][1];
-  *blue  = (color[idx2][2] - color[idx1][2])*fractBetween + color[idx1][2];
+    *red   = (color[idx2][0] - color[idx1][0])*fractBetween + color[idx1][0];
+    *green = (color[idx2][1] - color[idx1][1])*fractBetween + color[idx1][1];
+    *blue  = (color[idx2][2] - color[idx1][2])*fractBetween + color[idx1][2];
+    Utilities->CallLogPop(7777);
 }
 
 // ---------------------------------------------------------------------------

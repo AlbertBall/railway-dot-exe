@@ -10105,17 +10105,17 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
     if(LengthHeatMapFlag)
     {
         float Len = Length;
-        RailGraphics->getHeatMapColor((Ln(Len/10))/6.2146, R, G, B); //Len/10 makes range 1 to limit of 500, representing 5000km per element
+        RailGraphics->GetHeatMapColor(0, (Ln(Len/10))/6.2146, R, G, B); //Len/10 makes range 1 to limit of 500, representing 5000km per element
         Col = TColor((65536 * Blue) + (256 * Green) + Red);          //6.2146 normalises Ln range to between 0 & 1
-        RailGraphics->ChangeForegroundColour(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
-    }
+        RailGraphics->ChangeForegroundColour2(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
+    }                               //use ChangeForegroundColour2 as faster
     else if (SpeedHeatMapFlag)
     {
         float Spd = Speed;
-        RailGraphics->getHeatMapColor((Ln(Spd/10))/3.691, R, G, B); //Spd/10 makes range 1 to limit of 40, representing 400km/h
+        RailGraphics->GetHeatMapColor(1, (Ln(Spd/10))/3.691, R, G, B); //Spd/10 makes range 1 to limit of 40, representing 400km/h
         Col = TColor((65536 * Blue) + (256 * Green) + Red);         //3.691 normalises Ln range to between 0 & 1
-        RailGraphics->ChangeForegroundColour(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
-    }
+        RailGraphics->ChangeForegroundColour2(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
+    }                               //use ChangeForegroundColour2 as faster
     Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, RailGraphics->HeatMapGraphic);
     Utilities->CallLogPop(620);
 }

@@ -248,8 +248,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LengthHeatmapBitBtn->Visible = false;
         SpeedHeatmapBitBtn->Visible = false;
         DistanceKey->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        LengthHeatMapImage->Visible = false;
+        SpeedHeatMapImage->Visible = false;
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -519,8 +519,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         ManualLCDownImage->Picture->Bitmap->LoadFromResourceName(0, "ManualLCDownImage"); // new at v2.9.0
 
         DistanceKey->Picture->Bitmap->LoadFromResourceName(0, "DistanceKey");
-        LengthHeatMap->Picture->Bitmap->LoadFromResourceName(0, "LengthHeatMap");
-//        SpeedHeatMap->Picture->Bitmap->LoadFromResourceName(0, "SpeedHeatMap");
+        LengthHeatMapImage->Picture->Bitmap->LoadFromResourceName(0, "LengthHeatMapImage");
+        SpeedHeatMapImage->Picture->Bitmap->LoadFromResourceName(0, "SpeedHeatMapImage");
         PrefDirKey->Picture->Bitmap->LoadFromResourceName(0, "PrefDirKey");
 
         TrackLinkedImage->Picture->Bitmap->LoadFromResourceName(0, "TrackLinkedGraphic");
@@ -690,6 +690,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         struct lconv *conv = &Locale;
         // read the locality conversion structure
         conv = localeconv(); // this is what updates the structure
+        ExitHeatmaps(); //to set up initial parameters
         Utilities->DecimalPoint = conv->decimal_point[0];
     }
 
@@ -888,6 +889,7 @@ void __fastcall TInterface::AddTrackButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("AddTrackButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddTrackButtonClick");
+        ExitHeatmaps();
         Level1Mode = TrackMode;
         SetLevel1Mode(38);
         Level2TrackMode = AddTrack;
@@ -1075,14 +1077,7 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
         int HLoc, VLoc;
         // erase any corrupted PrefDirs then rebuild track & PrefDir vectors
 // EveryPrefDir->EraseCorruptedElementsAfterTrackBuild();  not needed after dispensed with blank track elements for erased elements
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         if(!(Track->TryToConnectTrack(0, LocError, HLoc, VLoc, true))) // true for give messages
         // if successful repositions TrackVector & builds TrackMap
         {
@@ -1167,14 +1162,7 @@ void __fastcall TInterface::SetGapsButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetGapsButtonClick");
         SelectionValid = false;
         ReselectMenuItem->Enabled = false;
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         Level1Mode = TrackMode;
         SetLevel1Mode(42);
         Level2TrackMode = GapSetting;
@@ -1194,14 +1182,7 @@ void __fastcall TInterface::AddTextButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("AddTextButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddTextButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         Level1Mode = TrackMode;
         SetLevel1Mode(43);
         Level2TrackMode = AddText;
@@ -1221,14 +1202,7 @@ void __fastcall TInterface::MoveTextOrGraphicButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("MoveTextOrGraphicButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTextOrGraphicButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         Level1Mode = TrackMode;
         SetLevel1Mode(44);
         Level2TrackMode = MoveTextOrGraphic;
@@ -1293,14 +1267,7 @@ void __fastcall TInterface::LocationNameButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("LocationNameButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LocationNameButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         Level1Mode = TrackMode;
         SetLevel1Mode(45);
         Level2TrackMode = AddLocationName;
@@ -1533,10 +1500,6 @@ void __fastcall TInterface::SetLengthsButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("SetLengthsButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetLengthsButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
         SelectLengthsFlag = false;
         ConstructPrefDir->ExternalClearPrefDirAnd4MultiMap(); // added for extended distances
         Level1Mode = TrackMode;
@@ -1558,10 +1521,6 @@ void __fastcall TInterface::LengthOKButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("LengthOKButtonClick," + DistanceBox->Text + "," + SpeedLimitBox->Text);
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LengthOKButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
         ResetChangedFileDataAndCaption(4, true); // moved here after 2.7.0 so only need to save if something changed
         int Dist = 0, SpeedLimit = 0;
         AnsiString DistanceStr = DistanceBox->Text;
@@ -1769,10 +1728,6 @@ void __fastcall TInterface::LengthCancelButtonClick(TObject * Sender)
     {
         TrainController->LogEvent("LengthCancelButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LengthCancelButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
         DistanceBox->Text = "";
         SpeedLimitBox->Text = "";
         TrackLengthPanel->Visible = false;
@@ -1795,10 +1750,6 @@ void __fastcall TInterface::ResetDefaultLengthButtonClick(TObject *Sender)
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ResetDefaultLengthButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
         TMsgDlgButtons Buttons;
         Buttons << mbYes << mbNo;
         if(MessageDlg("This will reset the selected elements to default lengths & speed limits.  Proceed?", mtWarning, Buttons, 0) == mrNo)
@@ -1905,12 +1856,6 @@ void __fastcall TInterface::RestoreAllDefaultLengthsButtonClick(TObject *Sender)
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RestoreAllDefaultLengthsButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
         TMsgDlgButtons Buttons;
         Buttons << mbYes << mbNo;
         if(MessageDlg("This will reset ALL track elements to default lengths & speed limits.  Proceed?", mtWarning, Buttons, 0) == mrNo)
@@ -1948,14 +1893,7 @@ void __fastcall TInterface::ExitTrackButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("ExitTrackButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitTrackButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         if(Level2TrackMode == CutMoving)
         {
             Level2TrackMode = Pasting; // to paste the selection
@@ -2011,14 +1949,6 @@ void __fastcall TInterface::TextOrUserGraphicGridButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("TextOrUserGraphicGridButtonClick," + AnsiString(TextOrUserGraphicGridVal));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TextOrUserGraphicGridButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
         if(TextOrUserGraphicGridVal == 1)
         {
             TextOrUserGraphicGridVal = 2;
@@ -2059,14 +1989,6 @@ void __fastcall TInterface::SigAspectButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("SigAspectButtonClick," + AnsiString(Track->SignalAspectBuildMode));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigAspectButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
         if(Track->SignalAspectBuildMode == TTrack::FourAspectBuild)
         {
             Track->SignalAspectBuildMode = TTrack::ThreeAspectBuild;
@@ -2106,14 +2028,6 @@ void __fastcall TInterface::FontButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("FontButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FontButtonClick");
-        Track->LengthHeatMapFlag = false;
-        Track->SpeedHeatMapFlag = false;
-        LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-        SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
         FontDialog->Font = Display->GetFont(); // sets the dialog box font to the currently used font
         FontDialog->Execute(); // this displays the dialog box
         if(FontDialog->Font->Color == clB5G5R5) // white
@@ -3356,6 +3270,7 @@ void __fastcall TInterface::SaveHeaderMenu1Click(TObject *Sender)
     {
         TrainController->LogEvent("SaveHeaderMenu1Click");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveHeaderMenu1Click");
+        ExitHeatmaps();
         if(Sender == SaveSessionButton)
         {
             SaveSessionFlag = true;
@@ -7632,6 +7547,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 Utilities->CallLogPop(34);
                 return;
             }
+
             else if(Level2TrackMode == AddGraphic)
             {
                 TrainController->LogEvent("mbRight + AddGraphic");
@@ -7704,6 +7620,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 Utilities->CallLogPop(35);
                 return;
             }
+
             else if(Level2TrackMode == DistanceContinuing) // new for extended distances (similar to PrefDirContinuing)
             {
                 TrainController->LogEvent("mbRight + DistanceContinuing");
@@ -17386,12 +17303,7 @@ void __fastcall TInterface::UserGraphicButtonClick(TObject *Sender)
         LengthConversionPanel->Visible = false;
         SpeedConversionPanel->Visible = false;
         DistanceKey->Visible = false;
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
-        TrackElementPanel->Visible = false;
-        SigAspectButton->Enabled = false;
+        ExitHeatmaps();
         Level2TrackMode = SelectGraphic;
         SetLevel2TrackMode(63);
         Display->Update();
@@ -17979,10 +17891,6 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
             DistanceKey->Visible = true;
             DistancesMarked = true;
         }
-        LengthHeatmapBitBtn->Visible = true;
-        SpeedHeatmapBitBtn->Visible = true;
-        LengthHeatmapBitBtn->Enabled = true;
-        SpeedHeatmapBitBtn->Enabled = true;
         LengthConversionPanel->Visible = true;
         SpeedConversionPanel->Visible = true;
     }
@@ -17992,19 +17900,11 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
         {
 // this line was after the next line until v2.5.1, changed so magenta not overrridden after PrefDirMarker called
             ConstructPrefDir->PrefDirMarker(11, PrefDirCall, true, HiddenDisplay);
-            LengthHeatMapFlag = false;
-            SpeedHeatMapFlag =  false;
-            LengthHeatmapBitBtn->Visible = true;
-            LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-            SpeedHeatmapBitBtn->Visible = true;
-            SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-            LengthHeatmapBitBtn->Enabled = false;
-            SpeedHeatmapBitBtn->Enabled = false;
             LengthConversionPanel->Visible = true;
             SpeedConversionPanel->Visible = true;
             Track->LengthandSpeedMarker(2, HiddenDisplay);
-            LengthHeatMap->Visible = false;
-            SpeedHeatMap->Visible = false;
+            LengthHeatMapImage->Visible = false;
+            SpeedHeatMapImage->Visible = false;
             DistanceKey->Visible = true;
             DistancesMarked = true;
         }
@@ -18013,12 +17913,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     // this is to keep the distance markers if they are already present when Select is chosen, in case user wishes to choose SelectLengths,
     // don't need to display ConstructPrefDir marker as that only needed in DistanceContinuing mode
     {
-        LengthHeatMapFlag =  false;
-        SpeedHeatMapFlag =  false;
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         Track->LengthandSpeedMarker(1, HiddenDisplay);
         DistanceKey->Visible = true;
     }
@@ -18027,10 +17922,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     {
         DistancesMarked = false;
         DistanceKey->Visible = false;
-        LengthHeatmapBitBtn->Visible = false;
-        SpeedHeatmapBitBtn->Visible = false;
-        LengthHeatMap->Visible = false;
-        SpeedHeatMap->Visible = false;
+        ExitHeatmaps();
         LengthConversionPanel->Visible = false; // added at v1.3.1 to remove when distance/speed setting exited
         SpeedConversionPanel->Visible = false; // added at v1.3.1 to remove when distance/speed setting exited
     }
@@ -19259,11 +19151,12 @@ void TInterface::SetLevel2TrackMode(int Caller)
         case DistanceStart:
             InfoPanel->Visible = true;
             InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select first location (only non-default elements marked)";
-            LengthHeatMap->Visible = false;
-            SpeedHeatMap->Visible = false;
+            ExitHeatmaps(); //to initialise all parameters
             DistanceKey->Visible = true;
             LengthHeatmapBitBtn->Visible = true;
             SpeedHeatmapBitBtn->Visible = true;
+            LengthHeatmapBitBtn->Enabled = true;
+            SpeedHeatmapBitBtn->Enabled = true;
             LengthConversionPanel->Visible = true;
             SpeedConversionPanel->Visible = true;
             UserGraphicReselectPanel->Visible = false;
@@ -19272,12 +19165,11 @@ void TInterface::SetLevel2TrackMode(int Caller)
 
         case DistanceContinuing:
             InfoPanel->Visible = true;
+            ExitHeatmaps(); //to initialise all parameters
             LengthHeatmapBitBtn->Visible = true;
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatmapBitBtn->Enabled = false;
             SpeedHeatmapBitBtn->Enabled = false;
-            LengthHeatMap->Visible = false;
-            SpeedHeatMap->Visible = false;
             if(ConstructPrefDir->PrefDirSize() == 1)
             {
                 InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select next location";
@@ -21982,8 +21874,8 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
     DistanceKey->Visible = false;
     LengthHeatmapBitBtn->Visible = false;
     SpeedHeatmapBitBtn->Visible = false;
-    LengthHeatMap->Visible = false;
-    SpeedHeatMap->Visible = false;
+    LengthHeatMapImage->Visible = false;
+    SpeedHeatMapImage->Visible = false;
     RecoverClipboardMessageSent = true; // to stop paste message being given if recover clipboard error
     OutputLog1->Caption = "";
     OutputLog2->Caption = "";
@@ -29305,32 +29197,28 @@ void __fastcall TInterface::LengthsHeatmapButtonClick(TObject *Sender) //only av
     {
         if(!Track->LengthHeatMapFlag)
         {
-            Track->LengthHeatMapFlag = true;
-            Track->SpeedHeatMapFlag = false;
-            SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
             InfoPanel->Visible = true;
             Screen->Cursor = TCursor(-11); // Hourglass
             InfoPanel->Caption = "Please wait - element length heatmap being generated";
             Display->Update();
-            LengthHeatmapBitBtn->Caption = "Hide Element Length Heatmap";
-            SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-            SpeedHeatMap->Visible = false;
-            LengthHeatMap->Visible = true;
+            ExitHeatmaps(); //initialise
+            Track->LengthHeatMapFlag = true; //shows heatmap when call Clearand...
+            LengthHeatmapBitBtn->Caption = "Hide Track Length Heatmap";
+            LengthHeatmapBitBtn->Visible = true;
+            LengthHeatmapBitBtn->Enabled = true;
+            SpeedHeatmapBitBtn->Visible = true;
+            LengthHeatMapImage->Visible = true;
             DistanceKey->Visible = false;
             DistancesMarked = false;
+            Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
             ClearandRebuildRailway(7777);
-            InfoPanel->Caption = "Element length heatmap";
+            InfoPanel->Caption = "Track element length heatmap";
             Screen->Cursor = TCursor(-2); // Arrow
         }
         else
         {
-            Track->LengthHeatMapFlag = false;
-            Track->SpeedHeatMapFlag = false;
+            ExitHeatmaps(); //initialise, all heatmap settings catered for in DistanceStart
             Screen->Cursor = TCursor(-11); // Hourglass
-            LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-            SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-            LengthHeatMap->Visible = false;
-            SpeedHeatMap->Visible = false;
             DistanceKey->Visible = true;
             Level2TrackMode == DistanceStart;
             SetLevel2TrackMode(7777);
@@ -29347,38 +29235,109 @@ void __fastcall TInterface::LengthsHeatmapButtonClick(TObject *Sender) //only av
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting   //added after v2.21.0
+
+/*
+Heatmap functions:
+
+Use a small utility function in InterfaceUnit to initialise all heatmap parameters
+
+ExitHeatmaps()
+{
+    Track->LengthHeatMapFlag = false;
+    Track->SpeedHeatMapFlag = false;
+    LengthHeatmapBitBtn->Caption = "Show Track Length Heatmap";
+    SpeedHeatmapBitBtn->Caption = "Show Speed Limit Heatmap";
+    LengthHeatmapBitBtn->Visible = false;
+    SpeedHeatmapBitBtn->Visible = false;
+    LengthHeatmapBitBtn->Enabled = false;
+    SpeedHeatmapBitBtn->Enabled = false;
+    LengthHeatMapImage->Visible = false;
+    SpeedHeatMapImage->Visible = false;
+}
+
+ExitHeatmaps() used for the following TrackBuild buttons
+    AddTrackButton;
+    SetGapsButton;
+    TrackOKButton;
+    AddTextButton;
+    MoveTextOrGraphicButton;
+    LocationNameButton;
+    SaveRailwayTBPButton; (SaveHeaderMeni1Click)
+    ExitTrackButton;
+    UserGraphicButton;
+
+No action needed for the following
+    FontButton;
+    TextOrUserGraphicGridButton;
+    ScreenGridButton;
+    SigAspectButton;
+    RestoreAllDefaultLengthsButton; heatmap buttons disabled when this is available
+    ResetDefaultLengthButton;       heatmap buttons disabled when this is available
+    LengthCancelButton;             heatmap buttons disabled when this is available
+    LengthOKButton;                 heatmap buttons disabled when this is available
+
+Actions needed for the following
+    SetLengthsButton;
+        when first invoke enter case DistanceStart, here both buttons visible & enabled
+        when enter Distance continuing (for extending selection for length or speed setting)
+        buttons become disabled, re-enabled when exit DistanceContinuing when re-enter
+        DistanceStart
+
+        click LengthHeatMapBitBtn (with LengthheatMapFlag true)
+
+            ... non heatmap code
+            ExitHeatmaps(); //initialise
+            Track->LengthHeatMapFlag = true //shows heatmap when call Clearand... (in RebuildTrackAndtext)
+            LengthHeatmapBitBtn->Caption = "Hide Track Length Heatmap";
+            LengthHeatmapBitBtn->Visible = true
+            LengthHeatmapBitBtn->Enabled = true
+            SpeedHeatmapBitBtn->Visible = true;
+            LengthHeatMapImage->Visible = true;
+            DistanceKey->Visible = false
+            ... non heatmap code
+
+        click LengthHeatMapBitBtn (with LengthheatMapFlag false)
+
+            ExitHeatmaps(); //initialise
+            DistanceKey->Visible = true;
+            ... non heatmap code (all heatmap requirements catered for when DistanceStart called)
+
+        click SpeedHeatMapBitBtn - as above with Length->Speed & vice versa
+
+
+     ClearandRebuildRailway
+        Calls RebuildTrackAndText and this calls Track->OneLengthOrSpeedHeatMapColour which handles the appropriate
+        heatmap depending on the HeatMapFlag settings.  The colour generation is done in GraphicsUnit in function 		GetHeatMapColor
+*/
+
+
 {
     try
     {
         if(!Track->SpeedHeatMapFlag)
         {
-            Track->LengthHeatMapFlag = false;
-            Track->SpeedHeatMapFlag = true;
             InfoPanel->Visible = true;
             Screen->Cursor = TCursor(-11); // Hourglass
-            InfoPanel->Caption = "Please wait - element speed heatmap being generated";
+            InfoPanel->Caption = "Please wait - element speed limit heatmap being generated";
             Display->Update();
-            SpeedHeatmapBitBtn->Caption = "Hide Element Speed Heatmap";
-            LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
+            ExitHeatmaps(); //initialise
+            Track->SpeedHeatMapFlag = true; //shows heatmap when call Clearand...
+            SpeedHeatmapBitBtn->Caption = "Hide Speed Limit Heatmap";
+            SpeedHeatmapBitBtn->Visible = true;
+            SpeedHeatmapBitBtn->Enabled = true;
+            LengthHeatmapBitBtn->Visible = true;
+            SpeedHeatMapImage->Visible = true;
             DistanceKey->Visible = false;
-            SpeedHeatMap->Visible = true;
-            LengthHeatMap->Visible = false;
-            //add speed heatmap image here
             DistancesMarked = false;
+            Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
             ClearandRebuildRailway(7777);
-            InfoPanel->Caption = "Element speed heatmap";
+            InfoPanel->Caption = "Track element speed limit heatmap";
             Screen->Cursor = TCursor(-2); // Arrow
         }
         else
         {
-            Track->LengthHeatMapFlag = false;
-            Track->SpeedHeatMapFlag = false;
+            ExitHeatmaps(); //initialise
             Screen->Cursor = TCursor(-11); // Hourglass
-            LengthHeatmapBitBtn->Caption = "Show Element Length Heatmap";
-            SpeedHeatmapBitBtn->Caption = "Show Element Speed Heatmap";
-            //make speed heatmap image invisible
-            LengthHeatMap->Visible = false;
-            SpeedHeatMap->Visible = false;
             DistanceKey->Visible = true;
             Level2TrackMode == DistanceStart;
             SetLevel2TrackMode(7777);
@@ -29390,6 +29349,22 @@ void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only ava
     {
         ErrorLog(7777, e.Message);
     }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::ExitHeatmaps()
+{
+    Track->LengthHeatMapFlag = false;
+    Track->SpeedHeatMapFlag = false;
+    LengthHeatmapBitBtn->Caption = "Show Track Length Heatmap";
+    SpeedHeatmapBitBtn->Caption = "Show Speed Limit Heatmap";
+    LengthHeatmapBitBtn->Visible = false;
+    SpeedHeatmapBitBtn->Visible = false;
+    LengthHeatmapBitBtn->Enabled = false;
+    SpeedHeatmapBitBtn->Enabled = false;
+    LengthHeatMapImage->Visible = false;
+    SpeedHeatMapImage->Visible = false;
 }
 
 //---------------------------------------------------------------------------

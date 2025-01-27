@@ -307,8 +307,8 @@ __published: // IDE-managed Components
 
     TImage *DistanceKey;
 ///< information panel displayed when setting distances & speed limits
-    TImage *LengthHeatMap;
-    TImage *SpeedHeatMap;
+    TImage *LengthHeatMapImage;
+    TImage *SpeedHeatMapImage;
 ///< Heatmap images
     TImage *PrefDirKey;
 ///< information panel displayed when setting preferred directions
@@ -1603,6 +1603,8 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     void DisplayOneTTLineInPanel(int Caller, AnsiString Data, bool ServiceEntry);
 /// The error logging routine, called when an error is detected
     void ErrorLog(int Caller, AnsiString Message);
+/// utility function to set all heatmap values to normal (i.e. unused)
+    void ExitHeatmaps();
 /// Deal with any warning graphics that need to flash (call on, signal stop, crash etc), called during the ClockTimer function
     void FlashingGraphics(int Caller, TDateTime Now);
 /// Called when floating train info needed and train hasn't entered yet

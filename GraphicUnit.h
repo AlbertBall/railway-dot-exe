@@ -1147,7 +1147,7 @@ public:
 ///function to generate RGB heatmap values from an input value between 0 and 1 using 7 colours
 ///derived from code created by Dr Andrew Noske (https://www.andrewnoske.com/wiki/Code_-_heatmaps_and_color_gradients) with
 ///his permission to use or modify.
-    void getHeatMapColor(float value, int *red, int *green, int *blue);
+    void GetHeatMapColor(int Caller, float value, int *red, int *green, int *blue);
 
 };
 

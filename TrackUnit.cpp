@@ -10097,7 +10097,10 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
         Bitmap = RailGraphics->LinkGraphicsPtr[29];
     }
 
-    RailGraphics->HeatMapGraphic->Assign(Bitmap); //make a copy prior to colouring
+//    RailGraphics->HeatMapGraphic->Assign(Bitmap); //make a copy prior to colouring <- no good, copies bits per pixel too
+    TRect Rect(0,0,16,16);
+    RailGraphics->HeatMapGraphic->Canvas->CopyRect(Rect, Bitmap->Canvas, Rect); //this is better, high colour resolution retained
+    RailGraphics->HeatMapGraphic->TransparentColor = Utilities->clTransparent;
     //determine color required
     int Red, Green, Blue; //int values will be between 0 & 255
     int *R = &Red, *G = &Green, *B = &Blue;
@@ -10105,8 +10108,8 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
     if(LengthHeatMapFlag)
     {
         float Len = Length;
-        RailGraphics->GetHeatMapColor(0, (Ln(Len/10))/6.2146, R, G, B); //Len/10 makes range 1 to limit of 500, representing 5000km per element
-        Col = TColor((65536 * Blue) + (256 * Green) + Red);          //6.2146 normalises Ln range to between 0 & 1
+        RailGraphics->GetHeatMapColor(0, (Ln(Len/10))/5.704, R, G, B); //Len/10 makes range 1 to limit of 300, representing 3000km per element
+        Col = TColor((65536 * Blue) + (256 * Green) + Red);            //5.704 normalises Ln range to between 0 & 1
         RailGraphics->ChangeForegroundColour2(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
     }                               //use ChangeForegroundColour2 as faster
     else if (SpeedHeatMapFlag)

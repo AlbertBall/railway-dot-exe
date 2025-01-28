@@ -91,13 +91,14 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 //        TestFunctionCount = 0; //used only in test function
 //        TestFunctionFirstPass = true;  //used only in test function
 
+
         Screen->Cursor = TCursor(-11); // Hourglass
         DirOpenError = false;
         AllSetUpFlag = false; //flag to prevent MasterClock from being enabled when application activates if there has been an error during
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post" + GetVersion(); //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
+        ProgramVersion = "RailOS32" + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
                                                                      //Beta2 for resizeable actions due form
                                                           //Post v2.20.3 Beta for Jason B's WCML where limits raised for NumberOfTrainEntries & EventReported
                                                           //v2.21.0 Beta2 includes truncation from a signal to next signal
@@ -7518,7 +7519,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 WholeRailwayMoving = true;
                 Screen->Cursor = TCursor(-22); // Four arrows;
                 AnsiString OldInfo = InfoPanel->Caption;      //added after v2.21.0
-                InfoPanel->Caption  = "Railway moving, move but don't click the mouse"; //added after v2.21.0
+                InfoPanel->Caption  = "Railway moving, please don't click the mouse"; //added after v2.21.0
                 InfoPanel->Visible = true;
                 Display->Update();  //to make the InfoPanel visible
             }
@@ -9294,7 +9295,7 @@ void TInterface::MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftSta
             WholeRailwayMoving = true;
             Screen->Cursor = TCursor(-22); // Four arrows;
             AnsiString OldInfo = InfoPanel->Caption;      //added after v2.21.0
-            InfoPanel->Caption  = "Railway moving, move but don't click the mouse"; //added after v2.21.0
+            InfoPanel->Caption  = "Railway moving, please don't click the mouse"; //added after v2.21.0
             InfoPanel->Visible = true;
             Display->Update(); //to show InfoPanel
         }
@@ -26059,8 +26060,6 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
 
 
 
-
-
 //end of test code
 
         Utilities->CallLogPop(2376);
@@ -29192,50 +29191,6 @@ void TInterface::PlayerHandshakingActions()
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::LengthsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting  //added after v2.21.0
-{
-    try
-    {
-        if(!Track->LengthHeatMapFlag)
-        {
-            InfoPanel->Visible = true;
-            Screen->Cursor = TCursor(-11); // Hourglass
-            InfoPanel->Caption = "Please wait - element length heatmap being generated";
-            Display->Update();
-            ExitHeatmaps(); //initialise
-            Track->LengthHeatMapFlag = true; //shows heatmap when call Clearand...
-            LengthHeatmapBitBtn->Caption = "Hide Track Length Heatmap";
-            LengthHeatmapBitBtn->Visible = true;
-            LengthHeatmapBitBtn->Enabled = true;
-            SpeedHeatmapBitBtn->Visible = true;
-            LengthHeatMapImage->Visible = true;
-            DistanceKey->Visible = false;
-            DistancesMarked = false;
-            Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
-            ClearandRebuildRailway(7777);
-            InfoPanel->Caption = "Track element length heatmap";
-            Screen->Cursor = TCursor(-2); // Arrow
-        }
-        else
-        {
-            ExitHeatmaps(); //initialise, all heatmap settings catered for in DistanceStart
-            Screen->Cursor = TCursor(-11); // Hourglass
-            DistanceKey->Visible = true;
-            Level2TrackMode == DistanceStart;
-            SetLevel2TrackMode(7777);
-            ClearandRebuildRailway(7777);
-            Screen->Cursor = TCursor(-2); // Arrow
-        }
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(7777, e.Message);
-    }
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting   //added after v2.21.0
-
 /*
 Heatmap functions:
 
@@ -29309,8 +29264,49 @@ Actions needed for the following
         Calls RebuildTrackAndText and this calls Track->OneLengthOrSpeedHeatMapColour which handles the appropriate
         heatmap depending on the HeatMapFlag settings.  The colour generation is done in GraphicsUnit in function 		GetHeatMapColor
 */
+{
+    try
+    {
+        if(!Track->LengthHeatMapFlag)
+        {
+            InfoPanel->Visible = true;
+            Screen->Cursor = TCursor(-11); // Hourglass
+            InfoPanel->Caption = "Please wait - element length heatmap being generated";
+            Display->Update();
+            ExitHeatmaps(); //initialise
+            Track->LengthHeatMapFlag = true; //shows heatmap when call Clearand...
+            LengthHeatmapBitBtn->Caption = "Hide Track Length Heatmap";
+            LengthHeatmapBitBtn->Visible = true;
+            LengthHeatmapBitBtn->Enabled = true;
+            SpeedHeatmapBitBtn->Visible = true;
+            LengthHeatMapImage->Visible = true;
+            DistanceKey->Visible = false;
+            DistancesMarked = false;
+            Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
+            ClearandRebuildRailway(7777);
+            InfoPanel->Caption = "Track element length heatmap";
+            Screen->Cursor = TCursor(-2); // Arrow
+        }
+        else
+        {
+            ExitHeatmaps(); //initialise, all heatmap settings catered for in DistanceStart
+            Screen->Cursor = TCursor(-11); // Hourglass
+            DistanceKey->Visible = true;
+            Level2TrackMode = DistanceStart;
+            SetLevel2TrackMode(7777);
+            ClearandRebuildRailway(7777);
+            Screen->Cursor = TCursor(-2); // Arrow
+        }
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(7777, e.Message);
+    }
+}
 
+//---------------------------------------------------------------------------
 
+void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting   //added after v2.21.0
 {
     try
     {
@@ -29339,7 +29335,7 @@ Actions needed for the following
             ExitHeatmaps(); //initialise
             Screen->Cursor = TCursor(-11); // Hourglass
             DistanceKey->Visible = true;
-            Level2TrackMode == DistanceStart;
+            Level2TrackMode = DistanceStart;
             SetLevel2TrackMode(7777);
             ClearandRebuildRailway(7777);
             Screen->Cursor = TCursor(-2); // Arrow

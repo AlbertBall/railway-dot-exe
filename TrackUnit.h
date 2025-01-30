@@ -772,6 +772,8 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< true if a route set through an LC that is closed to trains (& therefore needs to be opened)
     bool PointFlashFlag;
 ///< true when points are flashing during manual change
+    bool RedLowFlag;
+///< true for heatmap colour where red = low speed limit & length
     bool RouteFlashFlag;
 ///< true while a route is flashing prior to being set
     bool SkipLocationNameMultiMapCheck;

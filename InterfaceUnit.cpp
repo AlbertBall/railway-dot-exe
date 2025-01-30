@@ -254,6 +254,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LengthHeatMapImage->Visible = false;
         SpeedHeatMapImage = SpeedHeatMapImageRedLow;
         SpeedHeatMapImage->Visible = false;
+        Track->RedLowFlag = true;
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -29282,6 +29283,7 @@ Actions needed for the following
 {
     try
     {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LengthsHeatmapButtonClick");
         if(!Track->LengthHeatMapFlag)
         {
             InfoPanel->Visible = true;
@@ -29313,6 +29315,7 @@ Actions needed for the following
             ClearandRebuildRailway(7777);
             Screen->Cursor = TCursor(-2); // Arrow
         }
+        Utilities->CallLogPop(7777);
     }
     catch(const Exception &e)
     {
@@ -29326,6 +29329,7 @@ void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only ava
 {
     try
     {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SpeedsHeatmapButtonClick");
         if(!Track->SpeedHeatMapFlag)
         {
             InfoPanel->Visible = true;
@@ -29357,6 +29361,7 @@ void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only ava
             ClearandRebuildRailway(7777);
             Screen->Cursor = TCursor(-2); // Arrow
         }
+            Utilities->CallLogPop(7777);
     }
     catch(const Exception &e)
     {
@@ -29380,6 +29385,26 @@ void TInterface::ExitHeatmaps()
     ReverseColoursBitBtn->Enabled = false;
     LengthHeatMapImage->Visible = false;
     SpeedHeatMapImage->Visible = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ReverseColoursBitBtnClick(TObject *Sender)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReverseColoursBitBtnClick");
+    if(Track->RedLowFlag)
+    {
+        LengthHeatMapImage = LengthHeatMapImageRedHigh;
+        SpeedHeatMapImage = SpeedHeatMapImageRedHigh;
+        Track->RedLowFlag = false;
+    }
+    else
+    {
+        LengthHeatMapImage = LengthHeatMapImageRedLow;
+        SpeedHeatMapImage = SpeedHeatMapImageRedLow;
+        Track->RedLowFlag = true;
+    }
+    Utilities->CallLogPop(7777);
 }
 
 //---------------------------------------------------------------------------

@@ -1005,6 +1005,7 @@ __published: // IDE-managed Components
           TShiftState Shift, int X, int Y);
     void __fastcall LengthsHeatmapButtonClick(TObject *Sender);
     void __fastcall SpeedsHeatmapButtonClick(TObject *Sender);
+    void __fastcall ReverseColoursBitBtnClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 

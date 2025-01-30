@@ -118,6 +118,9 @@ __published: // IDE-managed Components
     TBitBtn *LengthOKButton;
 ///< distance/speed setting buttons - left to right & top to bottom
     TBitBtn *UserGraphicButton; // new at v2.4.0
+    TBitBtn *LengthHeatmapBitBtn; //added after v2.21.0
+    TBitBtn *SpeedHeatmapBitBtn;
+    TBitBtn *ReverseColoursBitBtn;
 
 // user graphic selection buttons
     TButton *ReselectUserGraphic;
@@ -306,9 +309,12 @@ __published: // IDE-managed Components
     TImage *ManualLCDownImage;                //8th 335 new 1t v2.9.0
 
     TImage *DistanceKey;
-///< information panel displayed when setting distances & speed limits
     TImage *LengthHeatMapImage;
     TImage *SpeedHeatMapImage;
+    TImage *LengthHeatMapImageRedLow;
+    TImage *LengthHeatMapImageRedHigh;
+    TImage *SpeedHeatMapImageRedLow;
+    TImage *SpeedHeatMapImageRedHigh;
 ///< Heatmap images
     TImage *PrefDirKey;
 ///< information panel displayed when setting preferred directions
@@ -765,8 +771,6 @@ __published: // IDE-managed Components
     TButton *cmsButton;
     TMemo *TTInfoMemo;
     TSpeedButton *SpeedButton17;
-    TBitBtn *LengthHeatmapBitBtn;
-    TBitBtn *SpeedHeatmapBitBtn;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -1000,7 +1004,7 @@ __published: // IDE-managed Components
     void __fastcall ReminderListBoxMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
     void __fastcall LengthsHeatmapButtonClick(TObject *Sender);
-    void __fastcall SpeedsHeatmapButtonClick(TObject *Sender); //added at v2.17.0
+    void __fastcall SpeedsHeatmapButtonClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 

@@ -248,8 +248,11 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TTTimeSaveWarningNotRequired = false; //added at v2.18.0
         LengthHeatmapBitBtn->Visible = false;
         SpeedHeatmapBitBtn->Visible = false;
+        ReverseColoursBitBtn->Visible = false;
         DistanceKey->Visible = false;
+        LengthHeatMapImage = LengthHeatMapImageRedLow;
         LengthHeatMapImage->Visible = false;
+        SpeedHeatMapImage = SpeedHeatMapImageRedLow;
         SpeedHeatMapImage->Visible = false;
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
@@ -520,8 +523,10 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         ManualLCDownImage->Picture->Bitmap->LoadFromResourceName(0, "ManualLCDownImage"); // new at v2.9.0
 
         DistanceKey->Picture->Bitmap->LoadFromResourceName(0, "DistanceKey");
-        LengthHeatMapImage->Picture->Bitmap->LoadFromResourceName(0, "LengthHeatMapImage");
-        SpeedHeatMapImage->Picture->Bitmap->LoadFromResourceName(0, "SpeedHeatMapImage");
+        LengthHeatMapImageRedLow->Picture->Bitmap->LoadFromResourceName(0, "LengthHeatMapImageRedLow");
+        LengthHeatMapImageRedHigh->Picture->Bitmap->LoadFromResourceName(0, "LengthHeatMapImageRedHigh");
+        SpeedHeatMapImageRedLow->Picture->Bitmap->LoadFromResourceName(0, "SpeedHeatMapImageRedLow");
+        SpeedHeatMapImageRedHigh->Picture->Bitmap->LoadFromResourceName(0, "SpeedHeatMapImageRedHigh");
         PrefDirKey->Picture->Bitmap->LoadFromResourceName(0, "PrefDirKey");
 
         TrackLinkedImage->Picture->Bitmap->LoadFromResourceName(0, "TrackLinkedGraphic");
@@ -11695,6 +11700,7 @@ void __fastcall TInterface::SelectMenuItemClick(TObject *Sender)
         if(Level1Mode == TrackMode)
         {
             SelectionValid = false;
+            ExitHeatmaps(); //added after v2.21.0 to avoid spectrum image showing with track element panel after selection made
             Level2TrackMode = TrackSelecting;
             SetLevel2TrackMode(34);
             if(!PasteWarningSentFlag)
@@ -17510,7 +17516,7 @@ void __fastcall TInterface::ReloadConfigMenuItemClick(TObject *Sender) //new for
 
 // ---------------------------------------------------------------------------
 
-void TInterface::LoadConfigFile(int Caller, bool FirstLoad, bool &NoConfigFile)
+void TInterface::LoadConfigFile(int Caller, bool FirstLoad, bool &NoConfigFile) //reads each line in isolation, order doesn't matter
 {
     try
     {
@@ -19158,6 +19164,8 @@ void TInterface::SetLevel2TrackMode(int Caller)
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatmapBitBtn->Enabled = true;
             SpeedHeatmapBitBtn->Enabled = true;
+            ReverseColoursBitBtn->Visible = true;
+            ReverseColoursBitBtn->Enabled = true;
             LengthConversionPanel->Visible = true;
             SpeedConversionPanel->Visible = true;
             UserGraphicReselectPanel->Visible = false;
@@ -19171,6 +19179,8 @@ void TInterface::SetLevel2TrackMode(int Caller)
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatmapBitBtn->Enabled = false;
             SpeedHeatmapBitBtn->Enabled = false;
+            ReverseColoursBitBtn->Visible = true;
+            ReverseColoursBitBtn->Enabled = false;
             if(ConstructPrefDir->PrefDirSize() == 1)
             {
                 InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select next location";
@@ -21875,6 +21885,7 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
     DistanceKey->Visible = false;
     LengthHeatmapBitBtn->Visible = false;
     SpeedHeatmapBitBtn->Visible = false;
+    ReverseColoursBitBtn->Visible = false;
     LengthHeatMapImage->Visible = false;
     SpeedHeatMapImage->Visible = false;
     RecoverClipboardMessageSent = true; // to stop paste message being given if recover clipboard error
@@ -29204,6 +29215,8 @@ ExitHeatmaps()
     SpeedHeatmapBitBtn->Caption = "Show Speed Limit Heatmap";
     LengthHeatmapBitBtn->Visible = false;
     SpeedHeatmapBitBtn->Visible = false;
+    ReverseColoursBitBtn->Visible = false;
+    ReverseColoursBitBtn->Enabled = false;
     LengthHeatmapBitBtn->Enabled = false;
     SpeedHeatmapBitBtn->Enabled = false;
     LengthHeatMapImage->Visible = false;
@@ -29248,6 +29261,8 @@ Actions needed for the following
             LengthHeatmapBitBtn->Enabled = true
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatMapImage->Visible = true;
+            ReverseColoursBitBtn->Visible = true;
+            ReverseColoursBitBtn->Enabled = true;
             DistanceKey->Visible = false
             ... non heatmap code
 
@@ -29280,6 +29295,7 @@ Actions needed for the following
             LengthHeatmapBitBtn->Enabled = true;
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatMapImage->Visible = true;
+            ReverseColoursBitBtn->Visible = true;
             DistanceKey->Visible = false;
             DistancesMarked = false;
             Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
@@ -29323,6 +29339,7 @@ void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only ava
             SpeedHeatmapBitBtn->Enabled = true;
             LengthHeatmapBitBtn->Visible = true;
             SpeedHeatMapImage->Visible = true;
+            ReverseColoursBitBtn->Visible = true;
             DistanceKey->Visible = false;
             DistancesMarked = false;
             Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
@@ -29359,6 +29376,8 @@ void TInterface::ExitHeatmaps()
     SpeedHeatmapBitBtn->Visible = false;
     LengthHeatmapBitBtn->Enabled = false;
     SpeedHeatmapBitBtn->Enabled = false;
+    ReverseColoursBitBtn->Visible = false;
+    ReverseColoursBitBtn->Enabled = false;
     LengthHeatMapImage->Visible = false;
     SpeedHeatMapImage->Visible = false;
 }

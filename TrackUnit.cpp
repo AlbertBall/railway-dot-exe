@@ -10108,14 +10108,14 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
     if(LengthHeatMapFlag)
     {
         float Len = Length;
-        RailGraphics->GetHeatMapColor(0, (Ln(Len/10))/5.704, R, G, B); //Len/10 makes range 1 to limit of 300, representing 3000km per element
+        RailGraphics->GetHeatMapColor(0, (Ln(Len/10))/5.704, R, G, B); //Len/10 makes range 1 to limit of 300, representing 3000km per element {3000/Len] for reverse spectrum
         Col = TColor((65536 * Blue) + (256 * Green) + Red);            //5.704 normalises Ln range to between 0 & 1
         RailGraphics->ChangeForegroundColour2(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
     }                               //use ChangeForegroundColour2 as faster
     else if (SpeedHeatMapFlag)
     {
         float Spd = Speed;
-        RailGraphics->GetHeatMapColor(1, (Ln(Spd/10))/3.691, R, G, B); //Spd/10 makes range 1 to limit of 40, representing 400km/h
+        RailGraphics->GetHeatMapColor(1, (Ln(Spd/10))/3.691, R, G, B); //Spd/10 makes range 1 to limit of 40, representing 400km/h [400/Spd] for reverse spectrum
         Col = TColor((65536 * Blue) + (256 * Green) + Red);         //3.691 normalises Ln range to between 0 & 1
         RailGraphics->ChangeForegroundColour2(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
     }                               //use ChangeForegroundColour2 as faster

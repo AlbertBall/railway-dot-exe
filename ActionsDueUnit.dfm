@@ -10,8 +10,8 @@ object ActionsDueForm: TActionsDueForm
   VertScrollBar.Visible = False
   BorderIcons = []
   Caption = '   Actions Due'
-  ClientHeight = 293
-  ClientWidth = 92
+  ClientHeight = 294
+  ClientWidth = 96
   Color = clBtnFace
   Constraints.MinHeight = 10
   Constraints.MinWidth = 10

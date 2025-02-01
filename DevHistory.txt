@@ -16,6 +16,33 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#114 from RysuiLmann 31/01/25 via discord
+1)  up to 6 digit headcode displaying, variable signal side, more signal types (Blue+White for shunt, Green+Orange+Red+Orange+White for main signal), subsidue signals, signals for unproper direction movement etc etc (polish pack)
+2)  all i ask for is signals being able to be placed ont he right/left and 6 digit headcode display
+and shunt signals having an option to look like normals but with diff colours
+
+Albert 01/02/25
+6 digit headcodes:  Up to 8 characters are permitted with the last 4 shown on the display as the moving train.  Up to the full 8 characters can be seen when the mouse hovers over the train with train status information turned on - which it is by default.  All this is explained in the user manual section 5.1.
+
+More signal types:  Fixed signals can be displayed using the user graphics feature explained in the user manual section 6.1.
+Additional variable signals:  These are needed on real railways because drivers are human and need to be made aware of situations that call for special action, whereas they aren't necessary in the simulation as train behaviour is controlled by the program.
+
+Signals on the right hand side:  Yes this is possible, you asked about this earlier and I answered here [link to earlier answer]
+
+Shunt signals looking like normal signals but with different colours:  Again this isn't necessary, it would merely be a cosmetic change that would require different options for every country.
+
+#113 from Fly California/Silicon Airways 30/01/25 via discord
+An ability to add arrows to an existing track without having to delete any elements (which also deletes their speed limit and length)
+
+Albert 30/01/25
+Sadly not as the elements with arrows are separate elements. If you forget to replace speed limits and lengths (as I often do) the heatmap should remind you! Also don't forget to replace preferred directions too!
+
+Fly California/Silicon Airways 31/01/25
+the issue is not remembering whether to replace the data, it is making it not necessary to manually replace the data. Of course this does not work for every combination of 2 different track elements, but for at least arrows and signals, this should be easier.
+
+Albert 31/01/25
+Believe me, to do what you ask would certainly not be an easy task.  The program doesn't know that an element is to be replaced since the first element has to be deleted before the new one is placed.  Therefore a button or other form of user interface would be needed to inform the program of the replacement intention, then the parameters stored for the element that is deleted, then a check made to ensure that the replacement element is a suitable replacement and a message given if it is rejected, then the parameters stored for the replacement element.  I'd guess it would take several days to develop the code and test it thoroughly.
+
 #112 [done at v2.21.0] from BWJM 09/01/25 via discord
 When cancelling a blue (automatic) route, the entire remaining portion of the route is cancelled.  This could be a long portion with multiple trains on it.  If I wanted to just break the route by cancelling it between two signals, I can't do that.  I have to cancel the entire route and rebuild the remaining portion.
 

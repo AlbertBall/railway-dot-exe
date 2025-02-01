@@ -120,7 +120,6 @@ __published: // IDE-managed Components
     TBitBtn *UserGraphicButton; // new at v2.4.0
     TBitBtn *LengthHeatmapBitBtn; //added after v2.21.0
     TBitBtn *SpeedHeatmapBitBtn;
-    TBitBtn *ReverseColoursBitBtn;
 
 // user graphic selection buttons
     TButton *ReselectUserGraphic;
@@ -771,6 +770,8 @@ __published: // IDE-managed Components
     TButton *cmsButton;
     TMemo *TTInfoMemo;
     TSpeedButton *SpeedButton17;
+    TMenuItem *HeatmapsRedlowvaluesMenuItem;
+    TMenuItem *N7;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -1005,7 +1006,7 @@ __published: // IDE-managed Components
           TShiftState Shift, int X, int Y);
     void __fastcall LengthsHeatmapButtonClick(TObject *Sender);
     void __fastcall SpeedsHeatmapButtonClick(TObject *Sender);
-    void __fastcall ReverseColoursBitBtnClick(TObject *Sender);
+    void __fastcall HeatmapsRedlowvaluesMenuItemClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 

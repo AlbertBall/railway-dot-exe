@@ -98,12 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion() + " Beta"; //v2.20.2 Beta for Jason B's WCML railway where RouteID was 22009 so limit raised in SessionFileIntegrityCheck
-                                                                     //Beta2 for resizeable actions due form
-                                                          //Post v2.20.3 Beta for Jason B's WCML where limits raised for NumberOfTrainEntries & EventReported
-                                                          //v2.21.0 Beta2 includes truncation from a signal to next signal
-                                                          //in CheckTimetableFromSessionFile as part of SessionFileIntegrityCheck
-
+        ProgramVersion = "RailOS32" + GetVersion() + " Beta";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -248,13 +243,14 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TTTimeSaveWarningNotRequired = false; //added at v2.18.0
         LengthHeatmapBitBtn->Visible = false;
         SpeedHeatmapBitBtn->Visible = false;
-        ReverseColoursBitBtn->Visible = false;
+        HeatmapsRedlowvaluesMenuItem->Enabled = false;
         DistanceKey->Visible = false;
         LengthHeatMapImage = LengthHeatMapImageRedLow;
         LengthHeatMapImage->Visible = false;
         SpeedHeatMapImage = SpeedHeatMapImageRedLow;
         SpeedHeatMapImage->Visible = false;
         Track->RedLowFlag = true;
+        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = high values";
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -17624,6 +17620,28 @@ void TInterface::LoadConfigFile(int Caller, bool FirstLoad, bool &NoConfigFile) 
                             SigsOnRightImage2->Visible = false;
                         }  //if not either of these then sigs already set as should be
                     }
+                    if((ConfigStr.SubString(1, 8) == "Heatmap=") && FirstLoad)
+                    {
+                        //get rid of all spaces & tabs at beginning of text
+                        while((ConfigValue.SubString(1, 1) == AnsiString(' ')) || (ConfigValue.SubString(1, 1) == AnsiString('\t')))
+                        {
+                            ConfigValue = ConfigValue.SubString(2, ConfigValue.Length() - 1);
+                        }
+                        if(ConfigValue == "redlow")
+                        {
+                            LengthHeatMapImage = LengthHeatMapImageRedLow;
+                            SpeedHeatMapImage = SpeedHeatMapImageRedLow;
+                            HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = high values";
+                            Track->RedLowFlag = true;
+                        }
+                        else if(ConfigValue == "redhigh")
+                        {
+                            LengthHeatMapImage = LengthHeatMapImageRedHigh;
+                            SpeedHeatMapImage = SpeedHeatMapImageRedHigh;
+                            HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = low values";
+                            Track->RedLowFlag = false;
+                        }
+                    } //if neither then leave as is
                     if((ConfigStr.SubString(1, 8) == "BgndCol=") && FirstLoad)
                     {
                         // pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
@@ -17760,7 +17778,7 @@ void TInterface::SaveConfigFile(int Caller)
         TrainController->LogEvent("SaveConfigFile");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveConfigFile");
         // rewrite ConfigFile with signal handedness, background colour & InitialDir values (may be same but no matter)
-        AnsiString ColourStr = "", SignalStr = "", LengthStr = "", SpeedStr = "";
+        AnsiString ColourStr = "", SignalStr = "", LengthStr = "", SpeedStr = "", HeatmapColourStr = "";
         remove((CurDir + "\\Config.txt").c_str());
         std::ofstream ConfigFile((CurDir + "\\Config.txt").c_str());
         ColourStr = "black";
@@ -17787,6 +17805,14 @@ void TInterface::SaveConfigFile(int Caller)
         {
             SignalStr = "right";
         }
+        if(HeatmapsRedlowvaluesMenuItem->Caption == "Heatmaps: Red = high values") // added after v2.21.0
+        {
+            HeatmapColourStr = "redlow";
+        }
+        else
+        {
+            HeatmapColourStr = "redhigh";
+        }
         ConfigFile << AnsiString("#This file contains a list of parameters that are saved after each use of the program and reloaded for the "
                                  "next use.  Track element length and speed limit values after the = sign may be changed and the configuration file reloaded "
                                  "during play, but please do not change anything else.  Comments begin with '#' and are ignored by the program.\n\n");
@@ -17795,6 +17821,7 @@ void TInterface::SaveConfigFile(int Caller)
         ConfigFile << AnsiString("RLYLocn=") << AnsiString(LoadRailwayDialog->InitialDir) << '\n';
         ConfigFile << AnsiString("TTBLocn=") << AnsiString(TimetableDialog->InitialDir) << '\n';
         ConfigFile << AnsiString("SSNLocn=") << AnsiString(LoadSessionDialog->InitialDir) << '\n';
+        ConfigFile << AnsiString("Heatmap=") << HeatmapColourStr << '\n';  // added after v2.21.0
         ConfigFile << AnsiString("Length =") << LengthStr << "    #default track element length in metres (not less than 10)\n";
         ConfigFile << AnsiString("Speed  =") << SpeedStr << "    #default track element speed limit in km/h (not less than 10 and not greater than 400)\n";
         ConfigFile.close();
@@ -18485,6 +18512,7 @@ void TInterface::SetLevel1Mode(int Caller)
             BlackBgndMenuItem->Enabled = false;
             WhiteBgndMenuItem->Enabled = false;
             BlueBgndMenuItem->Enabled = false;
+            HeatmapsRedlowvaluesMenuItem->Enabled = true;
             ConvertToOtherHandSignalsMenuItem->Enabled = true; // new at v2.3.0
             SigImagePanel->Visible = true; // new at v2.3.0
             if(Utilities->clTransparent != TColor(0))
@@ -18521,6 +18549,7 @@ void TInterface::SetLevel1Mode(int Caller)
             BlackBgndMenuItem->Enabled = false;
             WhiteBgndMenuItem->Enabled = false;
             BlueBgndMenuItem->Enabled = false;
+            HeatmapsRedlowvaluesMenuItem->Enabled = false;
             SaveOperatingImageMenuItem->Enabled = false;
             ClearAllMenuItem->Enabled = true;
         }
@@ -19165,8 +19194,6 @@ void TInterface::SetLevel2TrackMode(int Caller)
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatmapBitBtn->Enabled = true;
             SpeedHeatmapBitBtn->Enabled = true;
-            ReverseColoursBitBtn->Visible = true;
-            ReverseColoursBitBtn->Enabled = true;
             LengthConversionPanel->Visible = true;
             SpeedConversionPanel->Visible = true;
             UserGraphicReselectPanel->Visible = false;
@@ -19180,8 +19207,6 @@ void TInterface::SetLevel2TrackMode(int Caller)
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatmapBitBtn->Enabled = false;
             SpeedHeatmapBitBtn->Enabled = false;
-            ReverseColoursBitBtn->Visible = true;
-            ReverseColoursBitBtn->Enabled = false;
             if(ConstructPrefDir->PrefDirSize() == 1)
             {
                 InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select next location";
@@ -21886,7 +21911,6 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
     DistanceKey->Visible = false;
     LengthHeatmapBitBtn->Visible = false;
     SpeedHeatmapBitBtn->Visible = false;
-    ReverseColoursBitBtn->Visible = false;
     LengthHeatMapImage->Visible = false;
     SpeedHeatMapImage->Visible = false;
     RecoverClipboardMessageSent = true; // to stop paste message being given if recover clipboard error
@@ -29206,23 +29230,7 @@ void __fastcall TInterface::LengthsHeatmapButtonClick(TObject *Sender) //only av
 /*
 Heatmap functions:
 
-Use a small utility function in InterfaceUnit to initialise all heatmap parameters
-
-ExitHeatmaps()
-{
-    Track->LengthHeatMapFlag = false;
-    Track->SpeedHeatMapFlag = false;
-    LengthHeatmapBitBtn->Caption = "Show Track Length Heatmap";
-    SpeedHeatmapBitBtn->Caption = "Show Speed Limit Heatmap";
-    LengthHeatmapBitBtn->Visible = false;
-    SpeedHeatmapBitBtn->Visible = false;
-    ReverseColoursBitBtn->Visible = false;
-    ReverseColoursBitBtn->Enabled = false;
-    LengthHeatmapBitBtn->Enabled = false;
-    SpeedHeatmapBitBtn->Enabled = false;
-    LengthHeatMapImage->Visible = false;
-    SpeedHeatMapImage->Visible = false;
-}
+Use a small utility function in InterfaceUnit to initialise all heatmap parameters - ExitHeatmaps()
 
 ExitHeatmaps() used for the following TrackBuild buttons
     AddTrackButton;
@@ -29256,15 +29264,13 @@ Actions needed for the following
 
             ... non heatmap code
             ExitHeatmaps(); //initialise
-            Track->LengthHeatMapFlag = true //shows heatmap when call Clearand... (in RebuildTrackAndtext)
+            Track->LengthHeatMapFlag = true; //shows heatmap when call Clearand...
             LengthHeatmapBitBtn->Caption = "Hide Track Length Heatmap";
-            LengthHeatmapBitBtn->Visible = true
-            LengthHeatmapBitBtn->Enabled = true
+            LengthHeatmapBitBtn->Visible = true;
+            LengthHeatmapBitBtn->Enabled = true;
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatMapImage->Visible = true;
-            ReverseColoursBitBtn->Visible = true;
-            ReverseColoursBitBtn->Enabled = true;
-            DistanceKey->Visible = false
+            DistanceKey->Visible = false;
             ... non heatmap code
 
         click LengthHeatMapBitBtn (with LengthheatMapFlag false)
@@ -29297,7 +29303,6 @@ Actions needed for the following
             LengthHeatmapBitBtn->Enabled = true;
             SpeedHeatmapBitBtn->Visible = true;
             LengthHeatMapImage->Visible = true;
-            ReverseColoursBitBtn->Visible = true;
             DistanceKey->Visible = false;
             DistancesMarked = false;
             Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
@@ -29343,7 +29348,6 @@ void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only ava
             SpeedHeatmapBitBtn->Enabled = true;
             LengthHeatmapBitBtn->Visible = true;
             SpeedHeatMapImage->Visible = true;
-            ReverseColoursBitBtn->Visible = true;
             DistanceKey->Visible = false;
             DistancesMarked = false;
             Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
@@ -29381,27 +29385,28 @@ void TInterface::ExitHeatmaps()
     SpeedHeatmapBitBtn->Visible = false;
     LengthHeatmapBitBtn->Enabled = false;
     SpeedHeatmapBitBtn->Enabled = false;
-    ReverseColoursBitBtn->Visible = false;
-    ReverseColoursBitBtn->Enabled = false;
     LengthHeatMapImage->Visible = false;
     SpeedHeatMapImage->Visible = false;
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::ReverseColoursBitBtnClick(TObject *Sender)
+void __fastcall TInterface::HeatmapsRedlowvaluesMenuItemClick(TObject *Sender)
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReverseColoursBitBtnClick");
+    TrainController->LogEvent("HeatmapsRedlowvaluesMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HeatmapsRedlowvaluesMenuItemClick");
     if(Track->RedLowFlag)
     {
         LengthHeatMapImage = LengthHeatMapImageRedHigh;
         SpeedHeatMapImage = SpeedHeatMapImageRedHigh;
+        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = low values";
         Track->RedLowFlag = false;
     }
     else
     {
         LengthHeatMapImage = LengthHeatMapImageRedLow;
         SpeedHeatMapImage = SpeedHeatMapImageRedLow;
+        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = high values";
         Track->RedLowFlag = true;
     }
     Utilities->CallLogPop(7777);
@@ -29472,5 +29477,4 @@ void __fastcall TInterface::ReverseColoursBitBtnClick(TObject *Sender)
    Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
-//---------------------------------------------------------------------------
 

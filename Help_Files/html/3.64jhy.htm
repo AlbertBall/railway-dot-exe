@@ -87,7 +87,7 @@ the start and end points selected; restoring ALL default values - i.e. reset
 all track elements to their default values (a warning message is given if this
 is selected); and cancel without making any changes.</p>
 
-<p>Default values, normally 100m and 200km/h, are loaded into RailOS from the configuration file Config.txt.  These values can be changed if required by direct editing of this file using Notepad or any other text editor.  Instructions for editing are contained in the file itself.  If changes are made make sure that the file is saved as text only and retains the name Config.txt.  It can be reloaded without having to exit RailOS using the 'Mode' menu.</p>
+<p>Default values, normally 100m and 200km/h, are loaded into RailOS from the configuration file Config.txt.  These values can be changed if required by direct editing of this file using Notepad or any other text editor.  Instructions for editing are contained in the file itself.  If changes are made make sure that the file is saved as text only and retains the name Config.txt.  It can be reloaded without having to exit RailOS using the 'Mode' menu. Note that only the changed default element length and speed limit will reload when there is a railway present, the other values remain the same until the program is restarted.  It is strongly recommended that settings other than default lengths and speed limits only be changed within the program and not by editing Config.txt directly.</p>
 
 <p>If just a single element is to have its length or speed limit set, then use
 the selection method described in 'Selecting, cutting, copying and pasting
@@ -108,6 +108,16 @@ note the overall length in the 'Length' box, then click 'cancel'.</p>
 <p>RailOS only works in metric units but conversion facilities are
 included to change imperial lengths to metric, and speeds in miles per hour to
 kilometres per hour.</p>
+
+<p><b>3.6.1 Heatmaps</b></p>
+
+<p>Heatmaps provide a quick way to illustrate how data are distributed within an area.  The data can be anything, they don't have to represent heat.  They are called heatmaps simply because they were first used to illustrate heat distributions.  RailOS provides two maps, one for track element lengths and one for track element speed limits.  When the <img width=24 height=24 src="../images/RailSim2_SETDISTS.gif"> 'check and set track element lengths and speed limits' button is clicked two new buttons appear, one for each type of heatmap.  Clicking one of these buttons brings up the appropriate map, as well as a diagram that calibrates the colours against lengths or speed limits.  The colours use a rainbow spectrum where (on first load) red represents the shortest lengths and lowest speed limits, with increasing values in both cases progressing through orange, yellow, green, cyan, blue and finally violet.  These colours can be reversed if preferred, as described below.</p>
+
+<p>The maps are useful for checking quickly whether lengths and speed limits are set appropriately - station areas and sidings generally have short lengths and low speed limits, whereas sections of track between stations have longer lengths and higher speed limits.  Similarly the diverging track of points generally has a lower speed limit than the straight track, and crossovers generally have lower speed limits than surrounding track.  The heatmap quickly shows up any elements that have inconsistent values.</p>
+
+<p>Some people prefer the shortest lengths and lowest speed limits to be represented by violet, with increasing values progressing through all the colours to red.  To reverse the colours open the 'Mode' menu before any railway is loaded, and click 'Heatmaps: Red = high values'.  This preference is stored in the configuration file Config.txt when the program closes and is automatically selected on each subsequent opening of the program.  The menu item acts as a toggle so that when the reversed colours are selected the option changes to 'Heatmaps: Red = low values'.</p>
+
+<p>Heatmaps show up best against a black background.</p>
 
 </div>
 

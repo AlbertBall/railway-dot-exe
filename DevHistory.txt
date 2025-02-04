@@ -2,9 +2,9 @@ Problems with display of train serv ref:
 
 /why 2 x train constructor calls for ABC railway, from session then when plotted? - because constructor called when load session trains, but not stored in vector & deleted when routine ends, second call is when first train created.
 
-why does Clearand... plot all early serv ref plots? - because train name entered into text vector but not erased from it
+/why does Clearand... plot all early serv ref plots? - because train name entered into text vector but not erased from it
 
-why does name B1 replot in original position when screen moved?  - screen moves between pickup & replace bgnd
+/why does name B1 replot in original position when screen moved?  - screen moves between pickup & replace bgnd
 
 why do all names overlap when have delete & replace in new routine? - because the second move pickup picks up the new name, need to pickup bgnd without any trains or their names, use Clearand... without having trains replotted
 

@@ -276,7 +276,6 @@ bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput, AnsiStrin
 //                (TextPtr->VPos + (TextPtr->Font->Size) * 1.5)))  //changed this at v2.5.0 so all functions use the same values
             if((HPosInput >= TextPtr->HPos) && (HPosInput < (TextPtr->HPos + abs(TextPtr->Font->Height))) && (VPosInput >= TextPtr->VPos) && (VPosInput <
                 (TextPtr->VPos + abs(TextPtr->Font->Height))))
-
             {
                 if(((TextToErase != "") && (TextPtr->TextString == TextToErase)) || (TextToErase == ""))
                 {

@@ -2429,12 +2429,14 @@ void TTrain::UpdateTrain(int Caller)
         TrainHasFailed(7);
     }
     //unplot earlier text
-
-    if(ServiceRefEnteredFlag)
-    {
-        ReplaceBackgroundandRemoveName(7777, Display->DisplayOffsetH - PickupHoffset, Display->DisplayOffsetV - PickupVoffset, TrainDataEntryPtr->ServiceReference);
-    }
-    PickupBackgroundAndEnterName(7777); //added after v2.21.0
+if(Straddle == LeadMid)
+{
+        if(ServiceRefEnteredFlag)
+        {
+            ReplaceBackgroundandRemoveName(7777, TrainDataEntryPtr->ServiceReference);
+        }
+        PickupBackgroundAndEnterName(7777); //added after v2.21.0
+}
 
     Display->Update();
     // need to keep this since Update() not called for PlotSmallOutput as too slow
@@ -2466,21 +2468,27 @@ void TTrain::PickupBackgroundAndEnterName(int Caller)
     TTextItem TI(HPos, VPos, TrainDataEntryPtr->ServiceReference, Font);
     TI.Font = Font; // may have been changed in constructor when returned as reference
     TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos); //need this to retain in textvector until removed
+
+//    TRect TempRect(0,0,128,16);
+//    Display->GetImage()->Canvas->CopyRect(TempRect, ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
+
+    Display->Update();
     ServiceRefEnteredFlag = true;
     Utilities->CallLogPop(661);
 }
 
 // ----------------------------------------------------------------------------
 
-void TTrain::ReplaceBackgroundandRemoveName(int Caller, int HoffsetDiff, int VoffsetDiff, AnsiString NameText) //diff is replacement offset - pickup offset
+void TTrain::ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText) //diff is replacement offset - pickup offset
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ReplaceBackground,HoffDiff," + AnsiString(HoffsetDiff) + ",VoffDiff," + AnsiString(VoffsetDiff));
-    ScreenServiceRefRect.left = ScreenServiceRefRect.left + (HoffsetDiff*16);
-    ScreenServiceRefRect.right = ScreenServiceRefRect.right + (HoffsetDiff*16);
-    ScreenServiceRefRect.top = ScreenServiceRefRect.top + (VoffsetDiff*16);
-    ScreenServiceRefRect.bottom = ScreenServiceRefRect.bottom + (VoffsetDiff*16);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ReplaceBackgroundandRemoveName," + NameText);
+    TextHandler->TextErase(7777, ScreenServiceRefRect.left, ScreenServiceRefRect.top, NameText); //ignore bool result
+    ScreenServiceRefRect.left = ScreenServiceRefRect.left - ((Display->DisplayOffsetH - PickupHoffset)*16);         //these are correct when subtracted
+    ScreenServiceRefRect.right = ScreenServiceRefRect.right - ((Display->DisplayOffsetH - PickupHoffset)*16);
+    ScreenServiceRefRect.top = ScreenServiceRefRect.top - ((Display->DisplayOffsetV - PickupVoffset)*16);
+    ScreenServiceRefRect.bottom = ScreenServiceRefRect.bottom - ((Display->DisplayOffsetV - PickupVoffset)*16);
     Display->GetImage()->Canvas->CopyRect(ScreenServiceRefRect, ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
-    TextHandler->TextErase(7777, ScreenServiceRefRect.left, ScreenServiceRefRect.top, NameText);
+    Display->Update();
     ServiceRefEnteredFlag = false;
     Utilities->CallLogPop(661);
 }

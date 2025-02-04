@@ -694,7 +694,7 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// This is to display the train's service ref above the train
     void PickupBackgroundAndEnterName(int Caller);
 /// Removes the displayed train service ref
-    void ReplaceBackgroundandRemoveName(int Caller, int HoffsetDiff, int VoffsetDiff, AnsiString NameText); //diff is replacement offset - pickup offset
+    void ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText); //diff is replacement offset - pickup offset
 
 
 // inline functions

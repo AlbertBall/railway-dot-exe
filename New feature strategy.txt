@@ -1,0 +1,21 @@
+I have had a lot of feature requests recently, so let me explain my strategy for considering them.  Requestors I am sure are disappointed when I turn down a request, so hopefully this explanation will help them acknowledge that I have legitimate reasons for doing so, even if they don't agree with them.
+
+My problem is that I have far more feature requests than I have time to devote to them!  I do add features every now and again but as the program development team consists of just me (others develop very useful utilities) the requests increase faster than my ability to attend to them.
+
+On the one hand it's very gratifying that people enjoy the program so much that they want to see it improved, but on the other it's very frustrating that I am unable to respond positively to all requests.
+
+I keep a list of all suggestions (in DevHistory.txt on GitHub if anyone wishes to see it).  I review it periodically and sometimes adopt a suggestion that I rejected earlier - incorporation of track length and speed limit heatmaps is a good case in point.
+
+My strategy for adding features (when I have time available) is to consider:
+(a) the level of demand - the higher the demand the more consideration it gets;
+(b) whether it represents a new feature or a convenience - priority given to new features unless a convenience is very easy to incorporate;
+(c) the ease of modification - the easier the more likely to be incorporated;
+(d) the potential for disrupting stable aspects of the program - the more likely this is the more wary I am of tackling it; and
+(e) the degree of complexity it adds for the user - new users often find the current interface quite overwhelming - the more complexity it adds the more reluctant I am to incorporate it.
+
+(a), (b) and (e) are relatively easy to assess.
+(c) and (d) are very much harder to assess, and even after starting a modification unforeseen effects, sometimes in what would appear to be completely unrelated parts of the code, often emerge that are quite difficult and time consuming to deal with.  Several of these cropped up with the timetable event skipping functions and with the random delays and track element failures, and there are still some that have emerged more recently that took time to correct.  This is the reason I am reluctant to announce any new features in advance.  It's quite possible that unwanted effects can emerge late in development that raise the difficulty level immensely, in one case to the point of scuppering the whole intent - multiplayer functionality.
+
+Some requests appear to be quite simple, and requestors sometimes tell me how simple they will be to incorporate - I wish I had a pound for every time a non-programmer has told me how easy it will be to program a modification!  For example I have had several people ask for three-way points (switches), and from a graphical point of view they would indeed be relatively simple to add and would enhance the appearance and reality of a railway considerably, but the programming to deal with three routes across a track element rather than the current maximum of two would require a major rewrite of much of the program.  That maximum of two routes across a track element is a fundamental aspect of the program's design, so that is one that I have had to turn down.  However in effect this is a cosmetic change only, because there is no track layout that can be created using three-way points that can't be created using available track elements, the only difference is that three-way points would look better.
+
+I always deal with errors and program faults as soon as I can, so when these occur any improvements have to be put on hold, sometimes for weeks at a time.

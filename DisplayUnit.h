@@ -75,9 +75,9 @@ public:
 // element values must be multiplied by 16.  They are static so they are the same for both Display and HiddenDisplay
 
     static int DisplayOffsetH;
-///< the horizontal offset of the displayed screen
+///< the horizontal offset of the displayed screen  (as viewpoint moves to the right this offset increases)
     static int DisplayOffsetV;
-///< the vertical offset of the displayed screen
+///< the vertical offset of the displayed screen    (as viewpoint moves down this offset increases)
     static int DisplayOffsetHHome;
 ///< the horizontal offset of the 'Home' display
     static int DisplayOffsetVHome;

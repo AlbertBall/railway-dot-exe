@@ -44,6 +44,7 @@
 
 #include "TrainUnit.h"
 #include "TrackUnit.h"
+#include "TextUnit.h" //for displaying train service reference
 #include "GraphicUnit.h"
 //#include "DisplayUnit.h" included in TrackUnit.h
 #include "PerfLogUnit.h"
@@ -235,6 +236,11 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     CumulativeDelayedRandMinsOneTrain = 0; //added at v2.13.0
     ActualArrivalTime = TDateTime(0); //added at v2.13.0
     LastSigPassedFailed = false; //added at v2.13.0
+    ServiceRefBackground = new Graphics::TBitmap; //added after v2.21.0
+    ServiceRefBackground->Height = 16;
+    ServiceRefBackground->Width = 128;
+    ServiceRefEnteredFlag = false;
+    ServiceRefBackgroundRect = TRect(0,0,128,16); //added after v2.21.0
     Utilities->CallLogPop(648);
 }
 
@@ -281,6 +287,8 @@ void TTrain::DeleteTrain(int Caller)
         delete HeadCodeGrPtr[x];
         HeadCodeGrPtr[x] = 0;
     }
+    delete ServiceRefBackground;
+    ServiceRefBackground = 0;
     Utilities->CallLogPop(649);
 }
 
@@ -2420,12 +2428,99 @@ void TTrain::UpdateTrain(int Caller)
     {
         TrainHasFailed(7);
     }
+    //unplot earlier text
+
+    if(ServiceRefEnteredFlag)
+    {
+        ReplaceBackgroundandRemoveName(7777, Display->DisplayOffsetH - PickupHoffset, Display->DisplayOffsetV - PickupVoffset, TrainDataEntryPtr->ServiceReference);
+    }
+    PickupBackgroundAndEnterName(7777); //added after v2.21.0
+
     Display->Update();
     // need to keep this since Update() not called for PlotSmallOutput as too slow
     Utilities->CallLogPop(661);
 }
 
 // ----------------------------------------------------------------------------
+
+void TTrain::PickupBackgroundAndEnterName(int Caller)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PickupBackground");
+    if(ServiceRefEnteredFlag) //shouldn't happen but return if does
+    {
+        Utilities->CallLogPop(661);
+        return;
+    }
+    int VPos, HPos;
+    //ServiceRefBackgroundRect defined as TRect(0,0,128,16) in TTrain constructor
+    int TrainHLoc = Track->TrackElementAt(7777, LeadElement).HLoc;
+    int TrainVLoc = Track->TrackElementAt(7777, LeadElement).VLoc;
+    TFont *Font = Display->GetFont(); //change this for fixed font later
+    HPos = TrainHLoc * 16;
+    int Depth = abs(Font->Height); // Height may be negative - see C++Builder Help file
+    VPos = (TrainVLoc * 16) - Depth - 4; // reduce by depth of font + 4 pixels, when subtract from VPos it rises
+    PickupHoffset = Display->DisplayOffsetH;
+    PickupVoffset = Display->DisplayOffsetV;
+    ScreenServiceRefRect = TRect(HPos, VPos, HPos + 128, VPos + 16);
+    ServiceRefBackground->Canvas->CopyRect(ServiceRefBackgroundRect, Display->GetImage()->Canvas, ScreenServiceRefRect);  //save background prior to text being displayed
+    TTextItem TI(HPos, VPos, TrainDataEntryPtr->ServiceReference, Font);
+    TI.Font = Font; // may have been changed in constructor when returned as reference
+    TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos); //need this to retain in textvector until removed
+    ServiceRefEnteredFlag = true;
+    Utilities->CallLogPop(661);
+}
+
+// ----------------------------------------------------------------------------
+
+void TTrain::ReplaceBackgroundandRemoveName(int Caller, int HoffsetDiff, int VoffsetDiff, AnsiString NameText) //diff is replacement offset - pickup offset
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ReplaceBackground,HoffDiff," + AnsiString(HoffsetDiff) + ",VoffDiff," + AnsiString(VoffsetDiff));
+    ScreenServiceRefRect.left = ScreenServiceRefRect.left + (HoffsetDiff*16);
+    ScreenServiceRefRect.right = ScreenServiceRefRect.right + (HoffsetDiff*16);
+    ScreenServiceRefRect.top = ScreenServiceRefRect.top + (VoffsetDiff*16);
+    ScreenServiceRefRect.bottom = ScreenServiceRefRect.bottom + (VoffsetDiff*16);
+    Display->GetImage()->Canvas->CopyRect(ScreenServiceRefRect, ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
+    TextHandler->TextErase(7777, ScreenServiceRefRect.left, ScreenServiceRefRect.top, NameText);
+    ServiceRefEnteredFlag = false;
+    Utilities->CallLogPop(661);
+}
+
+// ----------------------------------------------------------------------------
+
+/*
+
+    if((ServiceReference == ""))// || (ServiceReference.Length() < 5)) //only display if exists & > 4 characters
+    {
+        Utilities->CallLogPop(1558);
+        return;
+    }
+    int TrainHLoc = Track->TrackElementAt(7777, LeadElement).HLoc;
+    int TrainVLoc = Track->TrackElementAt(7777, LeadElement).VLoc;
+
+
+    HPos = TrainHLoc * 16;
+    int Depth = abs(Font->Height); // Height may be negative - see C++Builder Help file
+    VPos = (TrainVLoc * 16) - Depth - 4; // reduce by depth of font + 4 pixels
+    (Display->DisplayOffsetV * 16)
+    (Display->DisplayOffsetV * 16;
+    TTextItem TI(HPos, VPos, ServiceReference, Font);
+    TI.Font = Font; // may have been changed in constructor when returned as reference
+    ServiceRefBackgroundRect = TRect(0,0,128,16);
+
+//    if(ServiceRefEnteredFlag)
+//    {
+//        Display->GetImage()->Canvas->CopyRect(ScreenServiceRefRect, ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
+//        ServiceRefEnteredFlag = false;
+//    }
+
+
+    ServiceRefBackground->Canvas->CopyRect(ServiceRefBackgroundRect, Display->GetImage()->Canvas, ScreenServiceRefRect);  //save background prior to text being displayed
+    TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos); //need this to retain in textvector until removed
+    ServiceRefEnteredFlag = true;
+    Utilities->CallLogPop(1558);
+}
+*/
+// ---------------------------------------------------------------------------
 
 Graphics::TBitmap *TTrain::SetOneGraphicCode(char CodeChar)
 {
@@ -9711,6 +9806,8 @@ bool TTrain::TrainOnContinuation(int Caller)
 }
 
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
 // TTrainController
 // ---------------------------------------------------------------------------
 
@@ -12431,7 +12528,7 @@ bool TTrainController::CheckHeadCodeValidity(int Caller, bool GiveMessages, Ansi
     for(int x = 3; x >= 0; x--)
     {
         if(((HeadCode[HeadCode.Length() - x] < 'A') || (HeadCode[HeadCode.Length() - x] > 'Z')) && ((HeadCode[HeadCode.Length() - x] < 'a') ||
-                                                                                                    (HeadCode[HeadCode.Length() - x] > 'z')) && ((HeadCode[HeadCode.Length() - x] < '0') || (HeadCode[HeadCode.Length() - x] > '9')))
+            (HeadCode[HeadCode.Length() - x] > 'z')) && ((HeadCode[HeadCode.Length() - x] < '0') || (HeadCode[HeadCode.Length() - x] > '9')))
         {
             TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', headcode must consist of letters and digits only");
             Utilities->CallLogPop(1790);

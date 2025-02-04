@@ -1,3 +1,15 @@
+Problems with display of train serv ref:
+
+/why 2 x train constructor calls for ABC railway, from session then when plotted? - because constructor called when load session trains, but not stored in vector & deleted when routine ends, second call is when first train created.
+
+why does Clearand... plot all early serv ref plots? - because train name entered into text vector but not erased from it
+
+why does name B1 replot in original position when screen moved?  - screen moves between pickup & replace bgnd
+
+why do all names overlap when have delete & replace in new routine? - because the second move pickup picks up the new name, need to pickup bgnd without any trains or their names, use Clearand... without having trains replotted
+
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -15,6 +27,18 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#115 from Chris_24 01/02/25
+Albert, since its night i wont ping you, but is there a possibility to have dynamically increasing train lenght to accomodate for headcode lenght? example: 4 character headcode: 2 elements long, 5 headcode 2.5 Elements long etc etc?
+
+BWJM 02/02/25
+I can't and won't speak on behalf of the Grand Poobah himself, but I don't think you'll see longer trains in RailOS any time soon, especially not just for displaying longer headcodes.  There is an argument in favour of longer trains to more accurately model the actual length of a train, but that could mean extending a train all the way across the screen if you're dealing with long 100+ car freight trains.  It would be quite complex to deal with under the covers as well because the entire length of the train would have to occupy a route, not just two squares.  You could also potentially get into situations (most likely contrived) where your train could collide with itself.  I'm sure there are lots of other issues, or at least complications, if I spent more than a minute thinking about it.
+TL;DR:  Don't hold your breath waiting for the display of longer headcodes.
+Personally, I just figure out ways to play within the 4-character visual limit, and I occasionally use headcode "prefixes" to differentiate between two services that use the same headcode.
+
+Albert 02/02/25
+I think @BWJM has said it all really. I'd just add that the code that deals with train movements, especially that handling movement onto half elements, is very complex indeed, and has given me plenty of headaches over the years. I really don't want to mess with it. Your request asks me to make it several times more complex!  As I keep pointing out you can see the full service reference by hovering the mouse over the train if it's more than 4 characters long so I don't think it's necessary. 
+
 
 #114 from RysuiLmann 31/01/25 via discord
 1)  up to 6 digit headcode displaying, variable signal side, more signal types (Blue+White for shunt, Green+Orange+Red+Orange+White for main signal), subsidue signals, signals for unproper direction movement etc etc (polish pack)

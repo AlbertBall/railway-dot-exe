@@ -376,6 +376,10 @@ private:
 ///< TrackVector positions, & entry & exit connection positions for the elements that the train occupies
     int TrainID;
 ///< the train's identification number
+    int PickupHoffset;
+///< Horizontal offset when the background is stored for train long serv. ref. display
+    int PickupVoffset;
+///< Vertical offset when the background is stored for train long serv. ref. display
     TTrainDataEntry *TrainDataEntryPtr;
 ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr;
@@ -483,6 +487,16 @@ private:
     TTrainMode TrainMode;
 ///< mode of operation - either Timetable (running under timetable control) or Signaller (running under signaller control)
 
+    TRect ServiceRefBackgroundRect;
+///<used for unplotting the service re text for a train
+    TRect ScreenServiceRefRect;
+///<used for unplotting the service re text for a train
+    TRect ReplacementRect;
+//the rect to replace the background allowing for H & V offset changes since pickup
+    bool ServiceRefEnteredFlag;
+//defines whether service ref plotted or not
+
+
 // operating data
     AnsiString RestoreTimetableLocation;
 ///< stores the location name at which signaller control is taken, to ensure that it is back at that location before timetable control can be restored
@@ -516,6 +530,8 @@ private:
 ///< points to the front headcode segment, this is set to red or blue depending on TrainMode
     Graphics::TBitmap *HeadCodeGrPtr[4];
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
+    Graphics::TBitmap *ServiceRefBackground;  //added after v2.21.0
+///< Stores the background canvas when a service ref is plotted on screen in full for > 4 chars
 
     TColor BackgroundColour;
 ///< the background colour of the train's headcode graphics
@@ -601,6 +617,8 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
     void DeleteTrain(int Caller);
 /// Checks whether Element and EntryPos (where train is about to enter) is on an existing route (or crosses or meets an existing route for crossings and points) that isn't the train's own route and cancels it if so - because it has reached it at the wrong point
     void CheckAndCancelRouteForWrongEndEntry(int Caller, int Element, int EntryPos);
+/// Displays train service ref on screen if > 4 chars
+    void DisplayServiceReference(int Caller, AnsiString ServiceReference);
 /// Carry out the actions needed when a train is waiting to join another train
     void FinishJoin(int Caller);
 /// Carry out the actions needed when a train is to split from the front
@@ -673,6 +691,11 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
     void UpdateTrain(int Caller);
 /// Called by TTrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file
     void WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap);
+/// This is to display the train's service ref above the train
+    void PickupBackgroundAndEnterName(int Caller);
+/// Removes the displayed train service ref
+    void ReplaceBackgroundandRemoveName(int Caller, int HoffsetDiff, int VoffsetDiff, AnsiString NameText); //diff is replacement offset - pickup offset
+
 
 // inline functions
 
@@ -705,6 +728,8 @@ public:
     TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiString InputCode, int StartSpeed, int Mass, double MaxRunningSpeed,
            double MaxBrakeRate, double PowerAtRail, TTrainMode TrainMode, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes,
            int IncrementalDigits, int SignallerMaxSpeed);
+
+    // don't have ~TTrain() - see DeleteTrain;
 };
 
 // ---------------------------------------------------------------------------

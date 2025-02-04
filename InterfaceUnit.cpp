@@ -1310,14 +1310,14 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
             Utilities->CallLogPop(5);
             return;
         }
-        if(Key == '\x0D')
+        if(Key == '\x0D') //enter the name
         {
             Screen->Cursor = TCursor(-11); // Hourglass;
             SetTrackBuildImages(8);
             ResetChangedFileDataAndCaption(8, true); // moved here after 2.7.0 from mainScreenMouseDown2 in case nothing changed
             AnsiString ExistingName;
             LocationNameTextBox->Text = LocationNameTextBox->Text.Trim();
-// added at v2.6.1 to prevent added spaces because they skip the different location same name chack
+// added at v2.6.1 to prevent added spaces because they skip the different location same name check
             if(Track->LNPendingList.front() > -1)
             {
                 ExistingName = Track->InactiveTrackElementAt(27, Track->LNPendingList.front()).LocationName;
@@ -26074,7 +26074,7 @@ void TInterface::AddLocationNameText(int Caller, AnsiString Name, int HPos, int 
         }
         else
         {
-            VPos = ScreenPosLo + 288; // if location extends to or beyond height of screen the display in centre of screen
+            VPos = ScreenPosLo + 288; // if location extends to or beyond height of screen then display in centre of screen
         }
     }
     TTextItem TI(HPos, VPos, Name, Font);

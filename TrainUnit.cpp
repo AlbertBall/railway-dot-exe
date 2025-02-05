@@ -651,6 +651,7 @@ void TTrain::UnplotTrain(int Caller)
     }
     Plotted = false;
     BackgroundColour = clNormalBackground;
+    ReplaceBackgroundandRemoveName(7777, TrainDataEntryPtr->ServiceReference);
     Display->Update();
     // without this the screen 'blinks' at next Clearand... prob forces a full repaint for some reason
     // resurrected when Update() dropped from PlotOutput etc
@@ -2428,15 +2429,13 @@ void TTrain::UpdateTrain(int Caller)
     {
         TrainHasFailed(7);
     }
-    //unplot earlier text
-if(Straddle == LeadMid)
-{
-        if(ServiceRefEnteredFlag)
-        {
-            ReplaceBackgroundandRemoveName(7777, TrainDataEntryPtr->ServiceReference);
-        }
-        PickupBackgroundAndEnterName(7777); //added after v2.21.0
-}
+
+    if(ServiceRefEnteredFlag)
+    {
+        ReplaceBackgroundandRemoveName(7777, TrainDataEntryPtr->ServiceReference);
+    }
+    PickupBackgroundAndEnterName(7777);
+
 
     Display->Update();
     // need to keep this since Update() not called for PlotSmallOutput as too slow
@@ -2445,33 +2444,85 @@ if(Straddle == LeadMid)
 
 // ----------------------------------------------------------------------------
 
-void TTrain::PickupBackgroundAndEnterName(int Caller)
+void TTrain::PickupBackgroundAndEnterName(int Caller)  //added after v2.21.0 to display long serv refs
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PickupBackground");
-    if(ServiceRefEnteredFlag) //shouldn't happen but return if does
-    {
-        Utilities->CallLogPop(661);
-        return;
-    }
-    int VPos, HPos;
+    int VPos, HPos, TrainHLocLead, TrainHLocMid, TrainHLocLag, TrainVLocLead, TrainVLocMid, TrainVLocLag;
+    TTrackElement TrainLead, TrainMid, TrainLag;
     //ServiceRefBackgroundRect defined as TRect(0,0,128,16) in TTrain constructor
-    int TrainHLoc = Track->TrackElementAt(7777, LeadElement).HLoc;
-    int TrainVLoc = Track->TrackElementAt(7777, LeadElement).VLoc;
-    TFont *Font = Display->GetFont(); //change this for fixed font later
-    HPos = TrainHLoc * 16;
+    TrainLead = Track->TrackElementAt(7777, LeadElement);
+    TrainMid = Track->TrackElementAt(7777, MidElement);
+    TrainLag = Track->TrackElementAt(7777, LagElement);
+
+    //find topmost and leftmost train track element and base name on that
+    if(Straddle == LeadMid)
+    {
+        if(TrainLead.HLoc < TrainMid.HLoc)
+        {
+            HPos = TrainLead.HLoc * 16;
+        }
+        else
+        {
+            HPos = TrainMid.HLoc * 16;
+        }
+        if(TrainLead.VLoc < TrainMid.VLoc)
+        {
+            VPos = TrainLead.VLoc * 16;
+        }
+        else
+        {
+            VPos = TrainMid.VLoc * 16;
+        }
+    }
+    else if(Straddle == LeadMidLag)
+    {
+        if(TrainLead.HLoc < TrainLag.HLoc)
+        {
+            HPos = (TrainLead.HLoc * 16) + 8;
+        }
+        else
+        {
+            HPos = (TrainLag.HLoc * 16) + 8;
+        }
+        if(TrainLead.VLoc < TrainLag.VLoc)
+        {
+            VPos = TrainLead.VLoc * 16;
+        }
+        else
+        {
+            VPos = TrainLag.VLoc * 16;
+        }
+    }
+
+    TFont *Font = new TFont; //REMEMBER TO DELETE IT
+    Font->Name = "Arial";
+    Font->Style = TFontStyles() << fsBold;
+    Font->Size = 8;
+
     int Depth = abs(Font->Height); // Height may be negative - see C++Builder Help file
-    VPos = (TrainVLoc * 16) - Depth - 4; // reduce by depth of font + 4 pixels, when subtract from VPos it rises
+    VPos = VPos - Depth - 4; // reduce by depth of font + 4 pixels, [when subtract from VPos it rises]
+
     PickupHoffset = Display->DisplayOffsetH;
     PickupVoffset = Display->DisplayOffsetV;
-    ScreenServiceRefRect = TRect(HPos, VPos, HPos + 128, VPos + 16);
+    ServRefTextH = HPos;  //have to store these so text can be erased using absolute location
+    ServRefTextV = VPos;
+    ScreenServiceRefRect = TRect(HPos - (Display->DisplayOffsetH*16),
+                                 VPos - (Display->DisplayOffsetV*16),
+                                 HPos + 128 - (Display->DisplayOffsetH*16),
+                                 VPos + 16 - (Display->DisplayOffsetV*16)); //transform from absolute to screen position
     ServiceRefBackground->Canvas->CopyRect(ServiceRefBackgroundRect, Display->GetImage()->Canvas, ScreenServiceRefRect);  //save background prior to text being displayed
     TTextItem TI(HPos, VPos, TrainDataEntryPtr->ServiceReference, Font);
     TI.Font = Font; // may have been changed in constructor when returned as reference
+
+    Display->GetImage()->Canvas->CopyRect(TRect(0,0,128,16), ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
+    //now need to create a background mask from the text, i.e. only have background in ServiceRefBackground where there are text pixels, rest is transparent
+    GetMaskedBackground(7777, TI);
+
+
+    Display->GetImage()->Canvas->CopyRect(TRect(0,20,128,36), ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
+
+
     TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos); //need this to retain in textvector until removed
-
-//    TRect TempRect(0,0,128,16);
-//    Display->GetImage()->Canvas->CopyRect(TempRect, ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
-
     Display->Update();
     ServiceRefEnteredFlag = true;
     Utilities->CallLogPop(661);
@@ -2479,11 +2530,74 @@ void TTrain::PickupBackgroundAndEnterName(int Caller)
 
 // ----------------------------------------------------------------------------
 
-void TTrain::ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText) //diff is replacement offset - pickup offset
+void TTrain::GetMaskedBackground(int Caller, TTextItem TI)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetMaskedBackground,String ," + TI.TextString);
+    Graphics::TBitmap *TextBitmap;
+    TextBitmap = new Graphics::TBitmap;
+
+    TextBitmap->Assign(ServiceRefBackground);
+/*
+    TextBitmap->Height = ServiceRefBackground->Height;
+    TextBitmap->Width = ServiceRefBackground->Width;
+*/
+
+    Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn
+    Byte *SLPtrOut; // pointer to the ScanLine values in TempBitmapOut
+
+    //write text to TextBitmap
+    TextBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
+    TextBitmap->Canvas->Brush->Color = Utilities->clTransparent;
+    TextBitmap->Canvas->FillRect(ServiceRefBackgroundRect); //fill it with transparent colour
+
+    TextBitmap->Canvas->Font->Assign(TI.Font); //assign all font properties but may need to alter colour
+
+    if(Utilities->clTransparent == clB5G5R5) //white
+    {
+        TextBitmap->Canvas->Font->Color = clB0G0R0; //black
+    }
+    else
+    {
+        TextBitmap->Canvas->Font->Color = clB5G5R5; //white
+    }
+
+    TextBitmap->Canvas->TextOut(0, 0, TI.TextString);
+
+    Display->GetImage()->Canvas->CopyRect(TRect(130,0,258,16), TextBitmap->Canvas, ServiceRefBackgroundRect);  //diagnostics
+
+
+    for(int x = 0; x < ServiceRefBackground->Height; x++)
+    {
+        SLPtrIn = reinterpret_cast<Byte*>(TextBitmap->ScanLine[x]);
+        SLPtrOut = reinterpret_cast<Byte*>(ServiceRefBackground->ScanLine[x]);
+        for(int y = 0; y < ServiceRefBackground->Width; y++)
+        {
+            if(SLPtrIn[y] == Utilities->clTransparent)
+            {
+                SLPtrOut[y] = Utilities->clTransparent;
+            } //else leave as is
+        }
+    }
+
+    Display->GetImage()->Canvas->CopyRect(TRect(130,20,258,36), ServiceRefBackground->Canvas, ServiceRefBackgroundRect);  //diagnostics
+
+
+    delete TextBitmap;
+    Utilities->CallLogPop(2103);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrain::ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText) //added after v2.21.0 to remove long serv refs
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ReplaceBackgroundandRemoveName," + NameText);
-    TextHandler->TextErase(7777, ScreenServiceRefRect.left, ScreenServiceRefRect.top, NameText); //ignore bool result
-    ScreenServiceRefRect.left = ScreenServiceRefRect.left - ((Display->DisplayOffsetH - PickupHoffset)*16);         //these are correct when subtracted
+    if(!ServiceRefEnteredFlag) //if already absent then return
+    {
+        Utilities->CallLogPop(661);
+        return;
+    }
+    TextHandler->TextErase(7777, ServRefTextH, ServRefTextV, NameText); //ignore bool result
+    ScreenServiceRefRect.left = ScreenServiceRefRect.left - ((Display->DisplayOffsetH - PickupHoffset)*16);   //transform to current screen position
     ScreenServiceRefRect.right = ScreenServiceRefRect.right - ((Display->DisplayOffsetH - PickupHoffset)*16);
     ScreenServiceRefRect.top = ScreenServiceRefRect.top - ((Display->DisplayOffsetV - PickupVoffset)*16);
     ScreenServiceRefRect.bottom = ScreenServiceRefRect.bottom - ((Display->DisplayOffsetV - PickupVoffset)*16);

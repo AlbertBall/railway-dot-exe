@@ -33,6 +33,8 @@
 
 /// Predeclared to allow access, full declaration in DisplayUnit
 class TDisplay;
+/// Predeclared to allow access, full declaration in TextUnit
+class TTextItem;
 /// Used for reporting error conditions & warnings
 enum TActionEventType  //37 in total
 {
@@ -492,9 +494,13 @@ private:
     TRect ScreenServiceRefRect;
 ///<used for unplotting the service re text for a train
     TRect ReplacementRect;
-//the rect to replace the background allowing for H & V offset changes since pickup
+///<the rect to replace the background allowing for H & V offset changes since pickup
     bool ServiceRefEnteredFlag;
-//defines whether service ref plotted or not
+///<defines whether service ref plotted or not
+    int ServRefTextH;
+///< stores the HPos position of the service ref train name
+    int ServRefTextV;
+///< stores the VPos position of the service ref train name
 
 
 // operating data
@@ -694,7 +700,9 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// This is to display the train's service ref above the train
     void PickupBackgroundAndEnterName(int Caller);
 /// Removes the displayed train service ref
-    void ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText); //diff is replacement offset - pickup offset
+    void ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText);
+/// Changes ServiceRefBackground to only contain background where there is text
+    void GetMaskedBackground(int Caller, TTextItem TI);
 
 
 // inline functions

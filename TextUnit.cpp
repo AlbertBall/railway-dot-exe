@@ -264,7 +264,7 @@ bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput, AnsiStrin
 // ---------------------------------------------------------------------------
 
 bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput, AnsiString TextToErase) //if TextToErase is null then erase any text that is found, else erase TextToErase
-{
+{       //NB ONLY erases from text vector, erased from screen by Clearand...
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextErase," + AnsiString(HPosInput) + "," + AnsiString(VPosInput) + "," + TextToErase);
 
     TTextVectorIterator TextPtr;

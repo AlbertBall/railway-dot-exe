@@ -236,11 +236,12 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     CumulativeDelayedRandMinsOneTrain = 0; //added at v2.13.0
     ActualArrivalTime = TDateTime(0); //added at v2.13.0
     LastSigPassedFailed = false; //added at v2.13.0
-    ServiceRefBackground = new Graphics::TBitmap; //added after v2.21.0
-    ServiceRefBackground->Height = 16;
-    ServiceRefBackground->Width = 128;
-    ServiceRefEnteredFlag = false;
-    ServiceRefBackgroundRect = TRect(0,0,128,16); //added after v2.21.0
+    LongServRefName = new Graphics::TBitmap; //added after v2.21.0
+    LongServRefName->PixelFormat = pf8bit;
+    LongServRefName->Height = 16;
+    LongServRefName->Width = 128;
+    LongServRefEnteredFlag = false;
+    LongServRefNameRect = TRect(0,0,128,16); //added after v2.21.0
     Utilities->CallLogPop(648);
 }
 
@@ -287,8 +288,8 @@ void TTrain::DeleteTrain(int Caller)
         delete HeadCodeGrPtr[x];
         HeadCodeGrPtr[x] = 0;
     }
-    delete ServiceRefBackground;
-    ServiceRefBackground = 0;
+    delete LongServRefName;
+    LongServRefName = 0;
     Utilities->CallLogPop(649);
 }
 
@@ -651,7 +652,7 @@ void TTrain::UnplotTrain(int Caller)
     }
     Plotted = false;
     BackgroundColour = clNormalBackground;
-    ReplaceBackgroundandRemoveName(7777, TrainDataEntryPtr->ServiceReference);
+    RemoveLongServRef(7777, TrainDataEntryPtr->ServiceReference);
     Display->Update();
     // without this the screen 'blinks' at next Clearand... prob forces a full repaint for some reason
     // resurrected when Update() dropped from PlotOutput etc
@@ -2430,11 +2431,11 @@ void TTrain::UpdateTrain(int Caller)
         TrainHasFailed(7);
     }
 
-    if(ServiceRefEnteredFlag)
+    if(LongServRefEnteredFlag)
     {
-        ReplaceBackgroundandRemoveName(7777, TrainDataEntryPtr->ServiceReference);
+        RemoveLongServRef(7777, TrainDataEntryPtr->ServiceReference);
     }
-    PickupBackgroundAndEnterName(7777);
+    EnterLongServRefAsName(7777);
 
 
     Display->Update();
@@ -2444,12 +2445,12 @@ void TTrain::UpdateTrain(int Caller)
 
 // ----------------------------------------------------------------------------
 
-void TTrain::PickupBackgroundAndEnterName(int Caller)  //added after v2.21.0 to display long serv refs
+void TTrain::EnterLongServRefAsName(int Caller)  //added after v2.21.0 to display long serv refs
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PickupBackground");
     int VPos, HPos, TrainHLocLead, TrainHLocMid, TrainHLocLag, TrainVLocLead, TrainVLocMid, TrainVLocLag;
     TTrackElement TrainLead, TrainMid, TrainLag;
-    //ServiceRefBackgroundRect defined as TRect(0,0,128,16) in TTrain constructor
+    //LongServRefNameRect defined as TRect(0,0,128,16) in TTrain constructor
     TrainLead = Track->TrackElementAt(7777, LeadElement);
     TrainMid = Track->TrackElementAt(7777, MidElement);
     TrainLag = Track->TrackElementAt(7777, LagElement);
@@ -2494,155 +2495,70 @@ void TTrain::PickupBackgroundAndEnterName(int Caller)  //added after v2.21.0 to 
         }
     }
 
+    //write text to TextBitmap
     TFont *Font = new TFont; //REMEMBER TO DELETE IT
     Font->Name = "Arial";
     Font->Style = TFontStyles() << fsBold;
     Font->Size = 8;
-
+    TTextItem TI(HPos, VPos, TrainDataEntryPtr->ServiceReference, Font);
+    TI.Font = Font; // may have been changed in constructor when returned as reference
     int Depth = abs(Font->Height); // Height may be negative - see C++Builder Help file
     VPos = VPos - Depth - 4; // reduce by depth of font + 4 pixels, [when subtract from VPos it rises]
 
+    LongServRefName->Canvas->Brush->Style = bsClear; // so text prints transparent
+    LongServRefName->Canvas->Brush->Color = Utilities->clTransparent;
+    LongServRefName->Canvas->FillRect(LongServRefNameRect); //fill it with transparent colour
+    LongServRefName->Canvas->Font->Assign(TI.Font); //assign all font properties but may need to alter colour
+
+    if(Utilities->clTransparent == clB5G5R5) //white
+    {
+        LongServRefName->Canvas->Font->Color = clB0G0R0; //black
+    }
+    else
+    {
+        LongServRefName->Canvas->Font->Color = clB5G5R5; //white
+    }
+
+    LongServRefName->Canvas->TextOut(0, 0, TI.TextString); //text written to canvas
+
     PickupHoffset = Display->DisplayOffsetH;
     PickupVoffset = Display->DisplayOffsetV;
-    ServRefTextH = HPos;  //have to store these so text can be erased using absolute location
-    ServRefTextV = VPos;
+    LongServRefTextH = HPos;  //have to store these so text can be erased using absolute location
+    LongServRefTextV = VPos;
     ScreenServiceRefRect = TRect(HPos - (Display->DisplayOffsetH*16),
                                  VPos - (Display->DisplayOffsetV*16),
                                  HPos + 128 - (Display->DisplayOffsetH*16),
                                  VPos + 16 - (Display->DisplayOffsetV*16)); //transform from absolute to screen position
-    ServiceRefBackground->Canvas->CopyRect(ServiceRefBackgroundRect, Display->GetImage()->Canvas, ScreenServiceRefRect);  //save background prior to text being displayed
-    TTextItem TI(HPos, VPos, TrainDataEntryPtr->ServiceReference, Font);
-    TI.Font = Font; // may have been changed in constructor when returned as reference
-
-    Display->GetImage()->Canvas->CopyRect(TRect(0,0,128,16), ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
-    //now need to create a background mask from the text, i.e. only have background in ServiceRefBackground where there are text pixels, rest is transparent
-    GetMaskedBackground(7777, TI);
-
-
-    Display->GetImage()->Canvas->CopyRect(TRect(0,20,128,36), ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
-
-
     TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos); //need this to retain in textvector until removed
     Display->Update();
-    ServiceRefEnteredFlag = true;
+    LongServRefEnteredFlag = true;
     Utilities->CallLogPop(661);
 }
+//probs at end 060225 colour not pure white, maybe ok on canvas but not when entered with EnterAndDisplayNewText
+//not removed but removal function not changed yet
 
 // ----------------------------------------------------------------------------
 
-void TTrain::GetMaskedBackground(int Caller, TTextItem TI)
+void TTrain::RemoveLongServRef(int Caller, AnsiString NameText) //added after v2.21.0 to remove long serv refs
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetMaskedBackground,String ," + TI.TextString);
-    Graphics::TBitmap *TextBitmap;
-    TextBitmap = new Graphics::TBitmap;
-
-    TextBitmap->Assign(ServiceRefBackground);
-/*
-    TextBitmap->Height = ServiceRefBackground->Height;
-    TextBitmap->Width = ServiceRefBackground->Width;
-*/
-
-    Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn
-    Byte *SLPtrOut; // pointer to the ScanLine values in TempBitmapOut
-
-    //write text to TextBitmap
-    TextBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
-    TextBitmap->Canvas->Brush->Color = Utilities->clTransparent;
-    TextBitmap->Canvas->FillRect(ServiceRefBackgroundRect); //fill it with transparent colour
-
-    TextBitmap->Canvas->Font->Assign(TI.Font); //assign all font properties but may need to alter colour
-
-    if(Utilities->clTransparent == clB5G5R5) //white
-    {
-        TextBitmap->Canvas->Font->Color = clB0G0R0; //black
-    }
-    else
-    {
-        TextBitmap->Canvas->Font->Color = clB5G5R5; //white
-    }
-
-    TextBitmap->Canvas->TextOut(0, 0, TI.TextString);
-
-    Display->GetImage()->Canvas->CopyRect(TRect(130,0,258,16), TextBitmap->Canvas, ServiceRefBackgroundRect);  //diagnostics
-
-
-    for(int x = 0; x < ServiceRefBackground->Height; x++)
-    {
-        SLPtrIn = reinterpret_cast<Byte*>(TextBitmap->ScanLine[x]);
-        SLPtrOut = reinterpret_cast<Byte*>(ServiceRefBackground->ScanLine[x]);
-        for(int y = 0; y < ServiceRefBackground->Width; y++)
-        {
-            if(SLPtrIn[y] == Utilities->clTransparent)
-            {
-                SLPtrOut[y] = Utilities->clTransparent;
-            } //else leave as is
-        }
-    }
-
-    Display->GetImage()->Canvas->CopyRect(TRect(130,20,258,36), ServiceRefBackground->Canvas, ServiceRefBackgroundRect);  //diagnostics
-
-
-    delete TextBitmap;
-    Utilities->CallLogPop(2103);
-}
-
-// ---------------------------------------------------------------------------
-
-void TTrain::ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText) //added after v2.21.0 to remove long serv refs
-{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ReplaceBackgroundandRemoveName," + NameText);
-    if(!ServiceRefEnteredFlag) //if already absent then return
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RemoveLongServRef," + NameText);
+    if(!LongServRefEnteredFlag) //if already absent then return
     {
         Utilities->CallLogPop(661);
         return;
     }
-    TextHandler->TextErase(7777, ServRefTextH, ServRefTextV, NameText); //ignore bool result
+    TextHandler->TextErase(7777, LongServRefTextH, LongServRefTextV, NameText); //ignore bool result
     ScreenServiceRefRect.left = ScreenServiceRefRect.left - ((Display->DisplayOffsetH - PickupHoffset)*16);   //transform to current screen position
     ScreenServiceRefRect.right = ScreenServiceRefRect.right - ((Display->DisplayOffsetH - PickupHoffset)*16);
     ScreenServiceRefRect.top = ScreenServiceRefRect.top - ((Display->DisplayOffsetV - PickupVoffset)*16);
     ScreenServiceRefRect.bottom = ScreenServiceRefRect.bottom - ((Display->DisplayOffsetV - PickupVoffset)*16);
-    Display->GetImage()->Canvas->CopyRect(ScreenServiceRefRect, ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
+    Display->GetImage()->Canvas->CopyRect(ScreenServiceRefRect, LongServRefName->Canvas, LongServRefNameRect);
     Display->Update();
-    ServiceRefEnteredFlag = false;
+    LongServRefEnteredFlag = false;
     Utilities->CallLogPop(661);
 }
 
 // ----------------------------------------------------------------------------
-
-/*
-
-    if((ServiceReference == ""))// || (ServiceReference.Length() < 5)) //only display if exists & > 4 characters
-    {
-        Utilities->CallLogPop(1558);
-        return;
-    }
-    int TrainHLoc = Track->TrackElementAt(7777, LeadElement).HLoc;
-    int TrainVLoc = Track->TrackElementAt(7777, LeadElement).VLoc;
-
-
-    HPos = TrainHLoc * 16;
-    int Depth = abs(Font->Height); // Height may be negative - see C++Builder Help file
-    VPos = (TrainVLoc * 16) - Depth - 4; // reduce by depth of font + 4 pixels
-    (Display->DisplayOffsetV * 16)
-    (Display->DisplayOffsetV * 16;
-    TTextItem TI(HPos, VPos, ServiceReference, Font);
-    TI.Font = Font; // may have been changed in constructor when returned as reference
-    ServiceRefBackgroundRect = TRect(0,0,128,16);
-
-//    if(ServiceRefEnteredFlag)
-//    {
-//        Display->GetImage()->Canvas->CopyRect(ScreenServiceRefRect, ServiceRefBackground->Canvas, ServiceRefBackgroundRect);
-//        ServiceRefEnteredFlag = false;
-//    }
-
-
-    ServiceRefBackground->Canvas->CopyRect(ServiceRefBackgroundRect, Display->GetImage()->Canvas, ScreenServiceRefRect);  //save background prior to text being displayed
-    TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos); //need this to retain in textvector until removed
-    ServiceRefEnteredFlag = true;
-    Utilities->CallLogPop(1558);
-}
-*/
-// ---------------------------------------------------------------------------
 
 Graphics::TBitmap *TTrain::SetOneGraphicCode(char CodeChar)
 {
@@ -3233,7 +3149,7 @@ void TTrain::PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int El
 
 // This was an attempt to pick up the actual 8x8 graphic from the display, so that text & user graphics would show as soon as the train passed, and overwrite it with the
 // reconstructed track, and it works ok but for the little arrows showing route directions at start and end, which extend beyond the track.  It doesn't matter for autosig
-// routes because they are replotted (alomg with the direction arrows) but for others they shouldn't be.  Leave in in case an easy way to remove these pointers comes to mind.
+// routes because they are replotted (along with the direction arrows) but for others they shouldn't be.  Leave in in case an easy way to remove these pointers comes to mind.
 /*
 
   void TTrain::PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, int EntryPos, Graphics::TBitmap *GraphicPtr) const

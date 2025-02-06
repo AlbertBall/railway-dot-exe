@@ -97,7 +97,7 @@ public:
 ///< look in TextVector for text item 'Name', and if found return true and return its position in &HPos and &VPos
     bool FontSame(int Caller, TFont *ExistingFont, TFont *InputFont);
 ///< checks colour, size, name, charset and style
-    bool TextErase(int Caller, int HPosition, int VPosition, AnsiString TextToErase);
+    bool TextErase(int Caller, int HPosition, int VPosition, AnsiString TextToErase); //NB ONLY erases from text vector, erased from screen by Clearand...
 ///< look for a text item in the vicinity of HPosInput & VPosInput & if TextToErase is null then erase any text that is found, else erase TextToErase
     bool TextFound(int Caller, int HPosInput, int VPosInput, AnsiString& Text);
 ///< look for a text item in the vicinity of HPosInput & VPosInput, return true if found & return the found text in the AnsiString

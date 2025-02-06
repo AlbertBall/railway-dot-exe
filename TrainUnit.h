@@ -489,17 +489,17 @@ private:
     TTrainMode TrainMode;
 ///< mode of operation - either Timetable (running under timetable control) or Signaller (running under signaller control)
 
-    TRect ServiceRefBackgroundRect;
+    TRect LongServRefNameRect;
 ///<used for unplotting the service re text for a train
     TRect ScreenServiceRefRect;
 ///<used for unplotting the service re text for a train
     TRect ReplacementRect;
 ///<the rect to replace the background allowing for H & V offset changes since pickup
-    bool ServiceRefEnteredFlag;
+    bool LongServRefEnteredFlag;
 ///<defines whether service ref plotted or not
-    int ServRefTextH;
+    int LongServRefTextH;
 ///< stores the HPos position of the service ref train name
-    int ServRefTextV;
+    int LongServRefTextV;
 ///< stores the VPos position of the service ref train name
 
 
@@ -536,7 +536,7 @@ private:
 ///< points to the front headcode segment, this is set to red or blue depending on TrainMode
     Graphics::TBitmap *HeadCodeGrPtr[4];
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
-    Graphics::TBitmap *ServiceRefBackground;  //added after v2.21.0
+    Graphics::TBitmap *LongServRefName;  //added after v2.21.0
 ///< Stores the background canvas when a service ref is plotted on screen in full for > 4 chars
 
     TColor BackgroundColour;
@@ -698,11 +698,9 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// Called by TTrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file
     void WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap);
 /// This is to display the train's service ref above the train
-    void PickupBackgroundAndEnterName(int Caller);
+    void EnterLongServRefAsName(int Caller);
 /// Removes the displayed train service ref
-    void ReplaceBackgroundandRemoveName(int Caller, AnsiString NameText);
-/// Changes ServiceRefBackground to only contain background where there is text
-    void GetMaskedBackground(int Caller, TTextItem TI);
+    void RemoveLongServRef(int Caller, AnsiString NameText);
 
 
 // inline functions

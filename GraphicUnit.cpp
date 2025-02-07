@@ -3678,7 +3678,7 @@ void TRailGraphics::ChangeBackgroundColour2(int Caller, Graphics::TBitmap *Bitma
 
 void TRailGraphics::ChangeBackgroundColour3(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour,
                                             TColor OldBackgroundColour)
-{
+{  //NB  if use Byte* then have to use pf8bitbit form graphics, for pf24bit need TRGBTriple* - see Main Help for Scanline (C++)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeBackgroundColour3" + AnsiString(NewBackgroundColour) + "," +
                                  AnsiString(OldBackgroundColour));
     Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn

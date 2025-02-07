@@ -484,14 +484,13 @@ private:
 ///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime). ActualArrivalTime added at v2.13.0 for random delays
     TDateTime LastActionTime;
 ///< time of the last timetabled event, used to ensure at least a 30 second delay before the next action
+    TFont *LongServRefFont;
     THVShortPair ExitPair;
 ///< H & V coordinates of the exit element related to TimeToExit, new for multiplayer
     TTrainMode TrainMode;
 ///< mode of operation - either Timetable (running under timetable control) or Signaller (running under signaller control)
 
     TRect LongServRefNameRect;
-///<used for unplotting the service re text for a train
-    TRect ScreenServiceRefRect;
 ///<used for unplotting the service re text for a train
     TRect ReplacementRect;
 ///<the rect to replace the background allowing for H & V offset changes since pickup

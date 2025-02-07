@@ -236,12 +236,17 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     CumulativeDelayedRandMinsOneTrain = 0; //added at v2.13.0
     ActualArrivalTime = TDateTime(0); //added at v2.13.0
     LastSigPassedFailed = false; //added at v2.13.0
-    LongServRefName = new Graphics::TBitmap; //added after v2.21.0
+    LongServRefName = new Graphics::TBitmap; //added after v2.21.0  these are for displaying long serv refs above the train
     LongServRefName->PixelFormat = pf8bit;
     LongServRefName->Height = 16;
     LongServRefName->Width = 128;
     LongServRefEnteredFlag = false;
     LongServRefNameRect = TRect(0,0,128,16); //added after v2.21.0
+    LongServRefFont = new TFont;
+    LongServRefFont->Name = "Arial";
+    LongServRefFont->Style = TFontStyles() << fsBold;
+    LongServRefFont->Size = 8;
+    LongServRefFont->Color = clB0G0R0; //temporary colour
     Utilities->CallLogPop(648);
 }
 
@@ -290,6 +295,7 @@ void TTrain::DeleteTrain(int Caller)
     }
     delete LongServRefName;
     LongServRefName = 0;
+    delete LongServRefFont;
     Utilities->CallLogPop(649);
 }
 
@@ -652,7 +658,6 @@ void TTrain::UnplotTrain(int Caller)
     }
     Plotted = false;
     BackgroundColour = clNormalBackground;
-    RemoveLongServRef(7777, TrainDataEntryPtr->ServiceReference);
     Display->Update();
     // without this the screen 'blinks' at next Clearand... prob forces a full repaint for some reason
     // resurrected when Update() dropped from PlotOutput etc
@@ -2434,6 +2439,15 @@ void TTrain::UpdateTrain(int Caller)
     if(LongServRefEnteredFlag)
     {
         RemoveLongServRef(7777, TrainDataEntryPtr->ServiceReference);
+/*
+        for(int x = 0; x<10000; x++)      //delay
+        {
+            for(int y = 0; y<10000; y++)
+            {
+                int z = (2.34567 * x) + (3.45678 * y);
+            }
+        }
+*/
     }
     EnterLongServRefAsName(7777);
 
@@ -2446,8 +2460,10 @@ void TTrain::UpdateTrain(int Caller)
 // ----------------------------------------------------------------------------
 
 void TTrain::EnterLongServRefAsName(int Caller)  //added after v2.21.0 to display long serv refs
-{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PickupBackground");
+{ //colours clB2G0R0 for white bgnd, clB5G5R3 for dark bgnds
+
+
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EnterLongServRefAsName");
     int VPos, HPos, TrainHLocLead, TrainHLocMid, TrainHLocLag, TrainVLocLead, TrainVLocMid, TrainVLocLag;
     TTrackElement TrainLead, TrainMid, TrainLag;
     //LongServRefNameRect defined as TRect(0,0,128,16) in TTrain constructor
@@ -2496,40 +2512,52 @@ void TTrain::EnterLongServRefAsName(int Caller)  //added after v2.21.0 to displa
     }
 
     //write text to TextBitmap
-    TFont *Font = new TFont; //REMEMBER TO DELETE IT
-    Font->Name = "Arial";
-    Font->Style = TFontStyles() << fsBold;
-    Font->Size = 8;
-    TTextItem TI(HPos, VPos, TrainDataEntryPtr->ServiceReference, Font);
-    TI.Font = Font; // may have been changed in constructor when returned as reference
-    int Depth = abs(Font->Height); // Height may be negative - see C++Builder Help file
+//    TFont *DisplayFont = Display->GetFont();
+    int Depth = abs(LongServRefFont->Height); // Height may be negative - see C++Builder Help file
     VPos = VPos - Depth - 4; // reduce by depth of font + 4 pixels, [when subtract from VPos it rises]
 
     LongServRefName->Canvas->Brush->Style = bsClear; // so text prints transparent
     LongServRefName->Canvas->Brush->Color = Utilities->clTransparent;
     LongServRefName->Canvas->FillRect(LongServRefNameRect); //fill it with transparent colour
-    LongServRefName->Canvas->Font->Assign(TI.Font); //assign all font properties but may need to alter colour
 
     if(Utilities->clTransparent == clB5G5R5) //white
     {
-        LongServRefName->Canvas->Font->Color = clB0G0R0; //black
+        LongServRefFont->Color = clB3G0R0; //dark blue
     }
     else
     {
-        LongServRefName->Canvas->Font->Color = clB5G5R5; //white
+        LongServRefFont->Color = clB3G5R5; //cream
     }
 
+    TTextItem TI = TTextItem(HPos, VPos, TrainDataEntryPtr->ServiceReference, LongServRefFont);
+    TI.Font = LongServRefFont; // may have been changed in above constructor when returned as reference
+    LongServRefName->Canvas->Font->Assign(LongServRefFont); //assign all font properties
     LongServRefName->Canvas->TextOut(0, 0, TI.TextString); //text written to canvas
 
     PickupHoffset = Display->DisplayOffsetH;
     PickupVoffset = Display->DisplayOffsetV;
     LongServRefTextH = HPos;  //have to store these so text can be erased using absolute location
     LongServRefTextV = VPos;
-    ScreenServiceRefRect = TRect(HPos - (Display->DisplayOffsetH*16),
-                                 VPos - (Display->DisplayOffsetV*16),
-                                 HPos + 128 - (Display->DisplayOffsetH*16),
-                                 VPos + 16 - (Display->DisplayOffsetV*16)); //transform from absolute to screen position
-    TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos); //need this to retain in textvector until removed
+    TextHandler->TextVectorPush(1, TI);
+
+Display->GetImage()->Canvas->CopyRect(TRect(0,0,128,16), LongServRefName->Canvas, LongServRefNameRect);  //diagnostics
+
+    Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn (Byte* for pf8bit bitmaps
+    Byte *SLPtrOut; // pointer to the ScanLine values in TempBitmapOut
+    Display->GetImage()->Picture->Bitmap->PixelFormat = pf8bit;
+    for(int x = 0; x < LongServRefName->Height; x++)
+    {
+        SLPtrIn = reinterpret_cast<Byte*>(LongServRefName->ScanLine[x]);
+        SLPtrOut = reinterpret_cast<Byte*>(Display->GetImage()->Picture->Bitmap->ScanLine[VPos - (Display->DisplayOffsetV*16) + x]);
+        for(int y = 0; y < LongServRefName->Width; y++)
+        {
+            if(SLPtrOut[HPos - (Display->DisplayOffsetH*16) + y] == Utilities->clTransparent) //nothing on bgnd so can copy the text pixel
+            {
+                SLPtrOut[HPos - (Display->DisplayOffsetH*16) + y] = SLPtrIn[y]; //may still be transparent of course but no matter
+            } //else do nothing
+        }
+    }
+
     Display->Update();
     LongServRefEnteredFlag = true;
     Utilities->CallLogPop(661);
@@ -2548,11 +2576,24 @@ void TTrain::RemoveLongServRef(int Caller, AnsiString NameText) //added after v2
         return;
     }
     TextHandler->TextErase(7777, LongServRefTextH, LongServRefTextV, NameText); //ignore bool result
-    ScreenServiceRefRect.left = ScreenServiceRefRect.left - ((Display->DisplayOffsetH - PickupHoffset)*16);   //transform to current screen position
-    ScreenServiceRefRect.right = ScreenServiceRefRect.right - ((Display->DisplayOffsetH - PickupHoffset)*16);
-    ScreenServiceRefRect.top = ScreenServiceRefRect.top - ((Display->DisplayOffsetV - PickupVoffset)*16);
-    ScreenServiceRefRect.bottom = ScreenServiceRefRect.bottom - ((Display->DisplayOffsetV - PickupVoffset)*16);
-    Display->GetImage()->Canvas->CopyRect(ScreenServiceRefRect, LongServRefName->Canvas, LongServRefNameRect);
+
+    Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn (Byte* for pf8bit bitmaps
+    Byte *SLPtrOut; // pointer to the ScanLine values in TempBitmapOut
+    Display->GetImage()->Picture->Bitmap->PixelFormat = pf8bit;
+    for(int x = 0; x < LongServRefName->Height; x++)
+    {
+//        SLPtrIn = reinterpret_cast<Byte*>(LongServRefName->ScanLine[x]);
+        SLPtrOut = reinterpret_cast<Byte*>(Display->GetImage()->Picture->Bitmap->ScanLine[LongServRefTextV - ((Display->DisplayOffsetV - PickupHoffset)*16) + x]);
+        for(int y = 0; y < LongServRefName->Width; y++)
+        {
+            if(SLPtrOut[LongServRefTextH - ((Display->DisplayOffsetH - PickupHoffset)*16) + y] == LongServRefFont->Color) //text colour
+            {
+                SLPtrOut[LongServRefTextH - ((Display->DisplayOffsetH - PickupHoffset)*16) + y] = Utilities->clTransparent; //may still be transparent of course but no matter
+            } //else do nothing
+        }
+    }
+
+
     Display->Update();
     LongServRefEnteredFlag = false;
     Utilities->CallLogPop(661);

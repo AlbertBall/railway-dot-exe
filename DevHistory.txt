@@ -6,7 +6,9 @@ Problems with display of train serv ref:
 
 /why does name B1 replot in original position when screen moved?  - screen moves between pickup & replace bgnd
 
-why do all names overlap when have delete & replace in new routine? - because the second move pickup picks up the new name, need to pickup bgnd without any trains or their names, use Clearand... without having trains replotted
+/why do all names overlap when have delete & replace in new routine? - because the second move pickup picks up the new name, need to pickup bgnd without any trains or their names, use Clearand... without having trains replotted
+
+Note: in TTextItem a new font is created on heap but doesn't seem always to be deleted - investigate
 
 
 

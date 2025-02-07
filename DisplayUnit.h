@@ -62,7 +62,6 @@ private:
     TLabel* &OutputLog8;
     TLabel* &OutputLog9;
     TLabel* &OutputLog10;
-///< pointer to the panel that displays the performance log
 
 public:
 

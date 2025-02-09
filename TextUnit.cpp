@@ -37,6 +37,8 @@
 #include <vector>
 #include <vcl.h>
 
+#include <sysset.h>
+
 #pragma hdrstop
 
 #include "TextUnit.h"
@@ -63,6 +65,7 @@ TTextItem::TTextItem(int H, int V, AnsiString T, TFont * &FontPointer) // constr
     TFont *NewFont = new TFont;
 
     NewFont->Assign(FontPointer);
+
     TFont *RequiredPointer = NewFont;
 
     if(TextHandler->FontVector.empty())
@@ -423,8 +426,8 @@ bool TTextHandler::CheckTextElementsInFile(int Caller, std::ifstream& VecFile)
 
 // ---------------------------------------------------------------------------
 
-void TTextHandler::RebuildFromTextVector(int Caller, TDisplay *Disp)
-{
+void TTextHandler::RebuildFromTextVector(int Caller, bool DisplayLongServRefNamesOnly, TDisplay *Disp)
+{                                                       //DisplayLongServRefNamesOnly false = display averything but LongServRefNames
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildFromTextVector");
     for(unsigned int x = 0; x < (TextHandler->TextVectorSize(4)); x++)
     {
@@ -432,7 +435,14 @@ void TTextHandler::RebuildFromTextVector(int Caller, TDisplay *Disp)
         int VPos = TextHandler->TextPtrAt(17, x)->VPos;
         AnsiString TextString = TextHandler->TextPtrAt(18, x)->TextString;
         TFont *TextFont = TextHandler->TextPtrAt(19, x)->Font;
-        Disp->TextOut(1, HPos, VPos, TextString, TextFont); // colour changed to white if was black & dark background in TDisplay::TextOut
+        if(DisplayLongServRefNamesOnly && TextFont->Color == TrainController->LongServRefFont->Color)
+        {    //relies on ONLY LongServRefNames having that colour (clB3RG0R0 or clB3G5R5)
+            Disp->TextOut(1, HPos, VPos, TextString, TextFont); // colour changed to white if was black & dark background in TDisplay::TextOut
+        }
+        else if(!DisplayLongServRefNamesOnly)
+        {
+            Disp->TextOut(1, HPos, VPos, TextString, TextFont); // colour changed to white if was black & dark background in TDisplay::TextOut
+        }
     }
     Disp->Update();
     Utilities->CallLogPop(1327);

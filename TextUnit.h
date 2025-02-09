@@ -50,7 +50,8 @@ public:
 ///< the horizontal position on the railway
     int VPos;
 ///< the vertical position on the railway
-    TFont *Font;
+    TFont *Font;  //note that TFont::Style is a set (TFontStyles) of enum {fsBold, fsItalic, fsUnderline, fsStrikeOut} where can add to it using <<, e.g. NewFont->Style = TFontStyles() << fsBold;
+                  //to check if Style contains a specific element use if(NewFont->Style.Contains(fsUnderline))
 ///< the text font
 
     TTextItem(); // default constructor
@@ -119,7 +120,7 @@ public:
 ///< add Text to TextVector and display it on the screen
     void LoadText(int Caller, std::ifstream& VecFile);
 ///< load the railway's text from VecFile
-    void RebuildFromTextVector(int Caller, TDisplay *Disp);
+    void RebuildFromTextVector(int Caller, bool DisplayLongServRefNamesOnly, TDisplay *Disp);
 ///< display all text items in TextVector on the screen
     void SaveText(int Caller, std::ofstream& VecFile);
 ///< save the railway's text to VecFile

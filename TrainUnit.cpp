@@ -236,17 +236,12 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     CumulativeDelayedRandMinsOneTrain = 0; //added at v2.13.0
     ActualArrivalTime = TDateTime(0); //added at v2.13.0
     LastSigPassedFailed = false; //added at v2.13.0
-    LongServRefName = new Graphics::TBitmap; //added after v2.21.0  these are for displaying long serv refs above the train
-    LongServRefName->PixelFormat = pf8bit;
-    LongServRefName->Height = 16;
-    LongServRefName->Width = 128;
     LongServRefEnteredFlag = false;
-    LongServRefNameRect = TRect(0,0,128,16); //added after v2.21.0
-    LongServRefFont = new TFont;
-    LongServRefFont->Name = "Arial";
-    LongServRefFont->Style = TFontStyles() << fsBold;
-    LongServRefFont->Size = 8;
-    LongServRefFont->Color = clB0G0R0; //temporary colour
+    LongServRefNameBitmap = new Graphics::TBitmap; //added after v2.21.0  these are for displaying long serv refs above the train
+    LongServRefNameBitmap->PixelFormat = pf8bit;
+    LongServRefNameBitmap->Height = 16;
+    LongServRefNameBitmap->Width = 64;
+    RailGraphics->SetWebSafePalette(LongServRefNameBitmap);
     Utilities->CallLogPop(648);
 }
 
@@ -293,9 +288,8 @@ void TTrain::DeleteTrain(int Caller)
         delete HeadCodeGrPtr[x];
         HeadCodeGrPtr[x] = 0;
     }
-    delete LongServRefName;
-    LongServRefName = 0;
-    delete LongServRefFont;
+    delete LongServRefNameBitmap;
+    LongServRefNameBitmap = 0;
     Utilities->CallLogPop(649);
 }
 
@@ -2513,26 +2507,35 @@ void TTrain::EnterLongServRefAsName(int Caller)  //added after v2.21.0 to displa
 
     //write text to TextBitmap
 //    TFont *DisplayFont = Display->GetFont();
-    int Depth = abs(LongServRefFont->Height); // Height may be negative - see C++Builder Help file
+    int Depth = abs(TrainController->LongServRefFont->Height); // Height may be negative - see C++Builder Help file
     VPos = VPos - Depth - 4; // reduce by depth of font + 4 pixels, [when subtract from VPos it rises]
 
-    LongServRefName->Canvas->Brush->Style = bsClear; // so text prints transparent
-    LongServRefName->Canvas->Brush->Color = Utilities->clTransparent;
-    LongServRefName->Canvas->FillRect(LongServRefNameRect); //fill it with transparent colour
+    LongServRefNameBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
+    LongServRefNameBitmap->Canvas->Brush->Color = Utilities->clTransparent;
+    LongServRefNameBitmap->Canvas->FillRect(TrainController->LongServRefNameRect); //fill it with transparent colour
 
     if(Utilities->clTransparent == clB5G5R5) //white
     {
-        LongServRefFont->Color = clB3G0R0; //dark blue
+        TrainController->LongServRefFont->Color = clB3G0R0; //dark blue    //number 03
+        TrainController->LongServRefFontColNumber = 3;
+        BgndColNumber = 0xd7;
     }
-    else
+    else if(Utilities->clTransparent == clB0G0R0) //black
     {
-        LongServRefFont->Color = clB3G5R5; //cream
+        TrainController->LongServRefFont->Color = clB3G5R5; //cream      //number 0xd5
+        TrainController->LongServRefFontColNumber = 0xd5;
+        BgndColNumber = 0;
+    }
+    else //clB1G0R0) dark blue
+    {
+        TrainController->LongServRefFont->Color = clB3G5R5; //cream
+        TrainController->LongServRefFontColNumber = 0xd5;
+        BgndColNumber = 1;
     }
 
-    TTextItem TI = TTextItem(HPos, VPos, TrainDataEntryPtr->ServiceReference, LongServRefFont);
-    TI.Font = LongServRefFont; // may have been changed in above constructor when returned as reference
-    LongServRefName->Canvas->Font->Assign(LongServRefFont); //assign all font properties
-    LongServRefName->Canvas->TextOut(0, 0, TI.TextString); //text written to canvas
+    TTextItem TI = TTextItem(HPos, VPos, TrainDataEntryPtr->ServiceReference, TrainController->LongServRefFont);
+    LongServRefNameBitmap->Canvas->Font->Assign(TrainController->LongServRefFont); //assign all font properties
+    LongServRefNameBitmap->Canvas->TextOut(0, 0, TI.TextString); //text written to canvas
 
     PickupHoffset = Display->DisplayOffsetH;
     PickupVoffset = Display->DisplayOffsetV;
@@ -2540,18 +2543,23 @@ void TTrain::EnterLongServRefAsName(int Caller)  //added after v2.21.0 to displa
     LongServRefTextV = VPos;
     TextHandler->TextVectorPush(1, TI);
 
-Display->GetImage()->Canvas->CopyRect(TRect(0,0,128,16), LongServRefName->Canvas, LongServRefNameRect);  //diagnostics
+    Display->GetImage()->Picture->Bitmap->PixelFormat = pf8bit;
+    RailGraphics->SetWebSafePalette(Display->GetImage()->Picture->Bitmap);
 
-    Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn (Byte* for pf8bit bitmaps
+//Display->GetImage()->Canvas->CopyRect(TRect(0,0,64,16), LongServRefNameBitmap->Canvas, LongServRefNameRect);  //diagnostics
+
+    Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn (Byte* for pf8bit bitmaps)
     Byte *SLPtrOut; // pointer to the ScanLine values in TempBitmapOut
     Display->GetImage()->Picture->Bitmap->PixelFormat = pf8bit;
-    for(int x = 0; x < LongServRefName->Height; x++)
-    {
-        SLPtrIn = reinterpret_cast<Byte*>(LongServRefName->ScanLine[x]);
+
+    for(int x = 0; x < LongServRefNameBitmap->Height; x++)
+    {   //Examines the main display within the area where the text is to be placed and allows it only if there is a background pixel already there, that way
+        //the new text is placed behind everything alse
+        SLPtrIn = reinterpret_cast<Byte*>(LongServRefNameBitmap->ScanLine[x]);
         SLPtrOut = reinterpret_cast<Byte*>(Display->GetImage()->Picture->Bitmap->ScanLine[VPos - (Display->DisplayOffsetV*16) + x]);
-        for(int y = 0; y < LongServRefName->Width; y++)
+        for(int y = 0; y < LongServRefNameBitmap->Width; y++)
         {
-            if(SLPtrOut[HPos - (Display->DisplayOffsetH*16) + y] == Utilities->clTransparent) //nothing on bgnd so can copy the text pixel
+            if(SLPtrOut[HPos - (Display->DisplayOffsetH*16) + y] == BgndColNumber) //nothing on bgnd so can copy the text pixel
             {
                 SLPtrOut[HPos - (Display->DisplayOffsetH*16) + y] = SLPtrIn[y]; //may still be transparent of course but no matter
             } //else do nothing
@@ -2562,8 +2570,6 @@ Display->GetImage()->Canvas->CopyRect(TRect(0,0,128,16), LongServRefName->Canvas
     LongServRefEnteredFlag = true;
     Utilities->CallLogPop(661);
 }
-//probs at end 060225 colour not pure white, maybe ok on canvas but not when entered with EnterAndDisplayNewText
-//not removed but removal function not changed yet
 
 // ----------------------------------------------------------------------------
 
@@ -2577,22 +2583,21 @@ void TTrain::RemoveLongServRef(int Caller, AnsiString NameText) //added after v2
     }
     TextHandler->TextErase(7777, LongServRefTextH, LongServRefTextV, NameText); //ignore bool result
 
-    Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn (Byte* for pf8bit bitmaps
     Byte *SLPtrOut; // pointer to the ScanLine values in TempBitmapOut
     Display->GetImage()->Picture->Bitmap->PixelFormat = pf8bit;
-    for(int x = 0; x < LongServRefName->Height; x++)
+    //Examines the main display within the area where the original text was placed (behind all else) and if a pixel contains LongServRefFontColNumber it changes it to
+    //the background colour.  It doesn't need to examine LongServRefNameBitmap.
+    for(int x = 0; x < LongServRefNameBitmap->Height; x++)
     {
-//        SLPtrIn = reinterpret_cast<Byte*>(LongServRefName->ScanLine[x]);
         SLPtrOut = reinterpret_cast<Byte*>(Display->GetImage()->Picture->Bitmap->ScanLine[LongServRefTextV - ((Display->DisplayOffsetV - PickupHoffset)*16) + x]);
-        for(int y = 0; y < LongServRefName->Width; y++)
+        for(int y = 0; y < LongServRefNameBitmap->Width; y++)
         {
-            if(SLPtrOut[LongServRefTextH - ((Display->DisplayOffsetH - PickupHoffset)*16) + y] == LongServRefFont->Color) //text colour
+            if(SLPtrOut[LongServRefTextH - ((Display->DisplayOffsetH - PickupHoffset)*16) + y] == TrainController->LongServRefFontColNumber) //text colour
             {
-                SLPtrOut[LongServRefTextH - ((Display->DisplayOffsetH - PickupHoffset)*16) + y] = Utilities->clTransparent; //may still be transparent of course but no matter
+                SLPtrOut[LongServRefTextH - ((Display->DisplayOffsetH - PickupHoffset)*16) + y] = BgndColNumber; //transparent colour
             } //else do nothing
         }
     }
-
 
     Display->Update();
     LongServRefEnteredFlag = false;
@@ -9939,6 +9944,15 @@ TTrainController::TTrainController()
     SigSLow = false;
     randomize();
     // to seed rand() & random() with a random number (see UpdateTrain)
+    LongServRefFont = new TFont;
+    LongServRefFont->Name = "Arial";
+    LongServRefFont->Style = TFontStyles() << fsBold;
+    LongServRefFont->Size = 8;
+    LongServRefFont->Color = clB0G0R0; //temporary colour
+    LongServRefFontColNumber = 0; //temporary
+    LongServRefNameRect = TRect(0,0,64,16); //added after v2.21.0
+
+
 }
 
 // ---------------------------------------------------------------------------
@@ -9950,6 +9964,7 @@ TTrainController::~TTrainController()
         TrainVectorAt(32, x).DeleteTrain(4);
     }
     TrainVector.clear();
+    delete LongServRefFont;
 }
 
 // ---------------------------------------------------------------------------

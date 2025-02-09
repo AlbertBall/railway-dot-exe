@@ -216,6 +216,14 @@ void TDisplay::TextOut(int Caller, int HPos, int VPos, AnsiString TextString, TF
     Output->Canvas->Brush->Style = bsClear; // so text prints transparent
     Output->Canvas->Font->Assign(TempInputFont);
     Output->Canvas->TextOut(HPos - (DisplayOffsetH * 16), VPos - (DisplayOffsetV * 16), TextString);
+
+/*
+if(Output->Canvas->Font->Style.Contains(fsBold))
+{
+    int x = 4;
+}
+*/
+
     Output->Canvas->Font->Assign(TempCanvasFont); // restore original
     Output->Canvas->Brush = TempBrush; // restore original brush
     delete TempInputFont;

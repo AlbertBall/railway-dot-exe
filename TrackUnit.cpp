@@ -3808,7 +3808,9 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildTrackAndText," + AnsiString((short)BothPointFilletsAndBasicLCs));
     TTrackElement Next;
 
-// Disp->ClearDisplay();
+    TextHandler->RebuildFromTextVector(1, true, Disp); // plot LongServRefNames  first so lies behind all else, remaining text plotted last
+
+    // Disp->ClearDisplay();
     NextTrackElementPtr = InactiveTrackVector.begin();
     while(ReturnNextInactiveTrackElement(0, Next))
     {
@@ -3915,7 +3917,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
         }
     }
 
-    TextHandler->RebuildFromTextVector(1, Disp); // plot text after all else so visible over stations/track etc.  //moved from above at v2.20.3
+    TextHandler->RebuildFromTextVector(1, false, Disp); // plot text (apart from LongServRefNames) after all else so visible over stations/track etc.  //moved from above at v2.20.3
     Disp->Update();
     Utilities->CallLogPop(468);
 }

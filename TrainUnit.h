@@ -484,23 +484,19 @@ private:
 ///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime). ActualArrivalTime added at v2.13.0 for random delays
     TDateTime LastActionTime;
 ///< time of the last timetabled event, used to ensure at least a 30 second delay before the next action
-    TFont *LongServRefFont;
     THVShortPair ExitPair;
 ///< H & V coordinates of the exit element related to TimeToExit, new for multiplayer
     TTrainMode TrainMode;
 ///< mode of operation - either Timetable (running under timetable control) or Signaller (running under signaller control)
 
-    TRect LongServRefNameRect;
-///<used for unplotting the service re text for a train
-    TRect ReplacementRect;
-///<the rect to replace the background allowing for H & V offset changes since pickup
     bool LongServRefEnteredFlag;
 ///<defines whether service ref plotted or not
     int LongServRefTextH;
 ///< stores the HPos position of the service ref train name
     int LongServRefTextV;
 ///< stores the VPos position of the service ref train name
-
+    int BgndColNumber;
+///< 8 bit colour number corresponding to background colour (Utilities->clTransparent)
 
 // operating data
     AnsiString RestoreTimetableLocation;
@@ -535,7 +531,7 @@ private:
 ///< points to the front headcode segment, this is set to red or blue depending on TrainMode
     Graphics::TBitmap *HeadCodeGrPtr[4];
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
-    Graphics::TBitmap *LongServRefName;  //added after v2.21.0
+    Graphics::TBitmap *LongServRefNameBitmap;  //added after v2.21.0
 ///< Stores the background canvas when a service ref is plotted on screen in full for > 4 chars
 
     TColor BackgroundColour;
@@ -925,6 +921,13 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///< vector containing the internal timetable, the copy is used for conflict analysis only
     TTrainVector TrainVector;
 ///< vector containing all trains currently in the railway
+    TFont *LongServRefFont;
+///< the font used for long serv ref names
+    TRect LongServRefNameRect;
+///< the rectangle used for long serv ref names
+    int LongServRefFontColNumber;
+///< the websafe colour number for long serv ref names
+
 
 //inline function
 

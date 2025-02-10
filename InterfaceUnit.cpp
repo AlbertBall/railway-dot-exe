@@ -17870,8 +17870,8 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     Utilities->Clock2Stopped = true;
     HiddenDisplay->ClearDisplay(6);
     AllRoutes->RebuildRailwayFlag = false; //moved here at v2.14.0 from ClockTimer2 so this function not called twice when called before ClockTimer2 triggered
-    Track->RebuildUserGraphics(0, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
-    if(ScreenGridFlag && (Level1Mode == TrackMode))
+//    Track->RebuildUserGraphics(0, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
+    if(ScreenGridFlag && (Level1Mode == TrackMode))          //after v2.21.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else
     {
         int WidthNum = int(MainScreen->Width / 160) + 1;
         int HeightNum = int(MainScreen->Height / 144) + 1;

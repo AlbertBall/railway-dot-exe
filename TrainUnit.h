@@ -378,10 +378,6 @@ private:
 ///< TrackVector positions, & entry & exit connection positions for the elements that the train occupies
     int TrainID;
 ///< the train's identification number
-    int PickupHoffset;
-///< Horizontal offset when the background is stored for train long serv. ref. display
-    int PickupVoffset;
-///< Vertical offset when the background is stored for train long serv. ref. display
     TTrainDataEntry *TrainDataEntryPtr;
 ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr;
@@ -532,7 +528,9 @@ private:
     Graphics::TBitmap *HeadCodeGrPtr[4];
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
     Graphics::TBitmap *LongServRefNameBitmap;  //added after v2.21.0
-///< Stores the background canvas when a service ref is plotted on screen in full for > 4 chars
+///< Stores the long service ref name is plotted on screen in full for > 4 chars
+    Graphics::TBitmap *LongServRefMainScreenBitmap;  //added after v2.21.0
+///< Stores the long service ref name is plotted on screen in full for > 4 chars
 
     TColor BackgroundColour;
 ///< the background colour of the train's headcode graphics
@@ -692,10 +690,6 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
     void UpdateTrain(int Caller);
 /// Called by TTrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file
     void WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap);
-/// This is to display the train's service ref above the train
-    void EnterLongServRefAsName(int Caller);
-/// Removes the displayed train service ref
-    void RemoveLongServRef(int Caller, AnsiString NameText);
 
 
 // inline functions
@@ -725,6 +719,11 @@ public:
 
 /// functions in .cpp file
     bool LinkOccupied(int Caller, int TrackVectorPosition, int LinkNumber);
+/// This is to display the train's service ref above the train
+    void EnterLongServRefAsName(int Caller, TDisplay *Disp);
+/// Removes the displayed train service ref
+    void RemoveLongServRef(int Caller, AnsiString NameText, TDisplay *Disp);
+
 /// Constructor, sets listed member values
     TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiString InputCode, int StartSpeed, int Mass, double MaxRunningSpeed,
            double MaxBrakeRate, double PowerAtRail, TTrainMode TrainMode, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes,

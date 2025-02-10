@@ -1,5 +1,15 @@
 Problems with display of train serv ref:
 
+Need button (or something) to toggle long ref display
+
+H position moves side to side when train vertical
+
+V position overlaps last element when train vertical & moving down
+
+convert all (or some) bitmaps to websafe colours
+
+Check signal handedness after deleted TmpBM in GraphicsUnit.cpp
+
 /why 2 x train constructor calls for ABC railway, from session then when plotted? - because constructor called when load session trains, but not stored in vector & deleted when routine ends, second call is when first train created.
 
 /why does Clearand... plot all early serv ref plots? - because train name entered into text vector but not erased from it

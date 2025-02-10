@@ -4645,7 +4645,7 @@ void TRailGraphics::SetUpAllDerivitiveGraphics(TColor TransparentColour)
 // ---------------------------------------------------------------------------
 
 void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
-
+//no need for new graphic elements, just convert the originals
 {
     Utilities->EventLog.push_back("ConvertSignalsToOppositeHand");
     if(Utilities->EventLog.size() > 1000)
@@ -4820,6 +4820,7 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
     }
 
     Utilities->RHSignalFlag = !Utilities->RHSignalFlag; // set in itially to false (= LH)
+    delete TmpBM;
     Utilities->CallLogPop(74);
 }
 

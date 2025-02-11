@@ -3808,13 +3808,6 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildTrackAndText," + AnsiString((short)BothPointFilletsAndBasicLCs));
     TTrackElement Next;
 
-    //replot long serv ref names before all else
-/*
-    for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
-    {
-        TVIt->EnterLongServRefAsName(7777, HiddenDisplay);
-    }
-*/
     Track->RebuildUserGraphics(0, HiddenDisplay); //moved here from Clearand... so user graphics overwrites LongServRef names
     NextTrackElementPtr = InactiveTrackVector.begin();
     while(ReturnNextInactiveTrackElement(0, Next))

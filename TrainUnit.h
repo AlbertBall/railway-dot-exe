@@ -528,9 +528,11 @@ private:
     Graphics::TBitmap *HeadCodeGrPtr[4];
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
     Graphics::TBitmap *LongServRefNameBitmap;  //added after v2.21.0
-///< Stores the long service ref name is plotted on screen in full for > 4 chars
+///< Stores the long service ref name for > 4 chars
     Graphics::TBitmap *LongServRefMainScreenBitmap;  //added after v2.21.0
-///< Stores the long service ref name is plotted on screen in full for > 4 chars
+///< Stores the background + long serv ref name
+    Graphics::TBitmap *LongServRefBackgroundBitmap;  //added after v2.21.0
+///< Stores the original background before the long serv ref name is plotted
 
     TColor BackgroundColour;
 ///< the background colour of the train's headcode graphics

@@ -247,11 +247,6 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     LongServRefMainScreenBitmap->Height = 13;
     LongServRefMainScreenBitmap->Width = 54;
     RailGraphics->SetWebSafePalette(LongServRefMainScreenBitmap);
-    LongServRefBackgroundBitmap = new Graphics::TBitmap; //added after v2.21.0  these are for displaying long serv refs above the train
-    LongServRefBackgroundBitmap->PixelFormat = pf8bit;
-    LongServRefBackgroundBitmap->Height = 13;
-    LongServRefBackgroundBitmap->Width = 54;
-    RailGraphics->SetWebSafePalette(LongServRefBackgroundBitmap);
     Utilities->CallLogPop(648);
 }
 
@@ -300,10 +295,8 @@ void TTrain::DeleteTrain(int Caller)
     }
     delete LongServRefNameBitmap;
     delete LongServRefMainScreenBitmap;
-    delete LongServRefBackgroundBitmap;
     LongServRefNameBitmap = 0;
     LongServRefMainScreenBitmap = 0;
-    LongServRefBackgroundBitmap = 0;
     Utilities->CallLogPop(649);
 }
 
@@ -2472,7 +2465,10 @@ void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EnterLongServRefAsName");
     int VPos, HPos, TrainHLocLead, TrainHLocMid, TrainHLocLag, TrainVLocLead, TrainVLocMid, TrainVLocLag;
     TTrackElement TrainLead, TrainMid, TrainLag;
+
     //LongServRefNameRect defined as TRect(0,0,54,13) in TTrain constructor
+
+    //set all H & VPos's
     if(LeadElement > -1)
     {
         TrainLead = Track->TrackElementAt(7777, LeadElement);
@@ -2486,7 +2482,98 @@ void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v
         TrainLag = Track->TrackElementAt(7777, LagElement);
     }
 
-    //find topmost and leftmost train track element and base name position on that
+    int LeftHAndOffset, TopVAndOffset;
+//get leftmost and topmost train graphic elements
+
+    if(Straddle == LeadMid)
+    {
+        LeftHAndOffset = (TrainLead.HLoc * 16) + HOffset[0];
+        if(((TrainLead.HLoc * 16) + HOffset[1]) < LeftHAndOffset)
+        {
+            LeftHAndOffset = (TrainLead.HLoc * 16) + HOffset[1];
+        }
+        if(((TrainMid.HLoc * 16) + HOffset[2]) < LeftHAndOffset)
+        {
+            LeftHAndOffset = (TrainMid.HLoc * 16) + HOffset[2];
+        }
+        if(((TrainMid.HLoc * 16) + HOffset[3]) < LeftHAndOffset)
+        {
+            LeftHAndOffset = (TrainMid.HLoc * 16) + HOffset[3];
+        }
+        TopVAndOffset = (TrainLead.VLoc * 16) + VOffset[0];
+        if(((TrainLead.VLoc * 16) + VOffset[1]) < TopVAndOffset)
+        {
+            TopVAndOffset = (TrainLead.VLoc * 16) + VOffset[1];
+        }
+        if(((TrainMid.VLoc * 16) + VOffset[2]) < TopVAndOffset)
+        {
+            TopVAndOffset = (TrainMid.VLoc * 16) + VOffset[2];
+        }
+        if(((TrainMid.VLoc * 16) + VOffset[3]) < TopVAndOffset)
+        {
+            TopVAndOffset = (TrainMid.VLoc * 16) + VOffset[3];
+        }
+        HPos = LeftHAndOffset;
+        VPos = TopVAndOffset - 13;
+    }
+
+/*
+    if(Straddle == LeadMid)
+    {
+        if(TrainLead.HLoc <= TrainMid.HLoc) //LeadElement leftmost
+        {
+            LeftMostHLoc = TrainLead.HLoc;
+            if(HOffset[0] <= HOffset[1])
+            {
+                LeftHOffset = HOffset[0];
+            }
+            else
+            {
+                LeftHOffset = HOffset[1];
+            }
+        }
+        else
+        {
+            LeftMostHLoc = TrainMid.HLoc;
+            if(HOffset[2] <= HOffset[3])
+            {
+                LeftHOffset = HOffset[2];
+            }
+            else
+            {
+                LeftHOffset = HOffset[3];
+            }
+        }
+        if(TrainLead.VLoc <= TrainMid.VLoc)
+        {
+            TopMostVLoc = TrainLead.VLoc;
+            if(VOffset[0] <= VOffset[1])
+            {
+                TopVOffset = VOffset[0];
+            }
+            else
+            {
+                TopVOffset = VOffset[1];
+            }
+        }
+        else
+        {
+            TopMostVLoc = TrainMid.VLoc;
+            if(VOffset[2] <= VOffset[3])
+            {
+                TopVOffset = VOffset[2];
+            }
+            else
+            {
+                TopVOffset = VOffset[3];
+            }
+        }
+        HPos = (LeftMostHLoc * 16) + LeftHOffset;
+        VPos = (TopMostVLoc * 16) + TopVOffset - 13;
+    }
+
+*/
+/*
     if(Straddle == LeadMid)          //can't be MidLag as that only used outside UpdateTrain for entry at continuation when not visible
     {
         if(TrainLead.VLoc == TrainMid.VLoc) //horizontal
@@ -2494,82 +2581,146 @@ void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v
             if(TrainLead.HLoc < TrainMid.HLoc) //moving left
             {
                 HPos = TrainLead.HLoc * 16;
+                VPos = (TrainLead.VLoc * 16) - 9;
             }
             else //moving right
             {
                 HPos = TrainMid.HLoc * 16;
+                VPos = (TrainLead.VLoc * 16) - 9;
             }
-            VPos = TrainLead.VLoc * 16;
         }
-        else  //vertical or diagonal
+        else if(TrainLead.HLoc == TrainMid.HLoc) //vertical
         {
-            if(TrainLead.HLoc < TrainMid.HLoc) //moving left
+            if(TrainLead.VLoc < TrainMid.VLoc) //moving up
             {
                 HPos = TrainLead.HLoc * 16;
+                VPos = (TrainLead.VLoc * 16) - 9;
             }
-            else //moving right
+            else //moving down
+            {
+                HPos = TrainLead.HLoc * 16;
+                VPos = (TrainMid.VLoc * 16) - 9;
+            }
+        }
+        else //diagonal
+        {
+            if((TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc < TrainMid.VLoc)) //moving left & up
+            {
+                HPos = TrainLead.HLoc * 16;
+                VPos = (TrainLead.VLoc * 16) - 9;
+            }
+            else if((TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc > TrainMid.VLoc)) //moving left & down
+            {
+                HPos = TrainLead.HLoc * 16;
+                VPos = (TrainMid.VLoc * 16) - 13;
+            }
+            else if((TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc < TrainMid.VLoc)) //moving right & up
             {
                 HPos = TrainMid.HLoc * 16;
+                VPos = (TrainLead.VLoc * 16) - 9;
             }
-            if(TrainLead.VLoc < TrainMid.VLoc) //moving up
+            else if((TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc > TrainMid.VLoc)) //moving right & down
             {
-                VPos = TrainLead.VLoc * 16;
+                HPos = TrainMid.HLoc * 16;
+                VPos = (TrainMid.VLoc * 16) - 13;
             }
-            else //moving down
-            {
-                VPos = TrainMid.VLoc * 16;
-            }
-        }
-        if(TrainLead.HLoc == TrainMid.HLoc) //vertical
-        {
-            if(TrainLead.VLoc < TrainMid.VLoc) //moving up
-            {
-                VPos = TrainLead.VLoc * 16 - 8;
-            }
-            else //moving down
-            {
-                VPos = TrainMid.VLoc * 16 - 8;
-            }
-            HPos = TrainLead.HLoc * 16;
         }
     }
-    else if(Straddle == LeadMidLag)  //can't be MidLag as that only used outside UpdateTrain for entry at continuation when not visible
+    else //must be leadMidLag as can't be MidLag as that only used outside UpdateTrain for entry at continuation when not visible
     {
         if(TrainLead.VLoc == TrainLag.VLoc) //horizontal
         {
             if(TrainLead.HLoc < TrainLag.HLoc) //moving left
             {
                 HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLead.VLoc * 16) - 9;
             }
             else //moving right
             {
                 HPos = (TrainLag.HLoc * 16) + 8;
+                VPos = (TrainLead.VLoc * 16) - 9;
             }
-            VPos = (TrainLead.VLoc * 16);
         }
-        else //vertical or diagonal
+        else if(TrainLead.HLoc == TrainMid.HLoc) //vertical
         {
-            if(TrainLead.HLoc < TrainLag.HLoc) //moving left
-            {
-                HPos = (TrainLead.HLoc * 16) +8;
-            }
-            else //moving right
-            {
-                HPos = (TrainLag.HLoc * 16) + 8;
-            }
             if(TrainLead.VLoc < TrainLag.VLoc) //moving up
             {
-                VPos = (TrainLead.VLoc * 16);
+                HPos = TrainLead.HLoc * 16;
+                VPos = (TrainLead.VLoc * 16) - 1; //top element is already 8 further down
             }
             else //moving down
             {
-                VPos = (TrainLag.VLoc * 16);
+                HPos = TrainLead.HLoc * 16;
+                VPos = (TrainLag.VLoc * 16) - 1; //top element is already 8 further down
+            }
+        }
+        else //all the diagonals here 2 elements on top, 2 elements on bottom and all three on diagonal, each for
+        {
+            if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc)) //2 on top & moving left & up
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLead.VLoc * 16) - 9;
+            }
+            else if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc)) //2 on top & moving right & up
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLead.VLoc * 16) - 9;
+            }
+            else if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc))//2 on top moving left & down
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLag.VLoc * 16) - 9;
+            }
+            if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc))//2 on top & moving right & down
+            {
+                HPos = (TrainLag.HLoc * 16) + 8;
+                VPos = (TrainLag.VLoc * 16) - 9;
+            }
+
+            else if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//2 on bottom moving left & up
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLead.VLoc * 16) - 9;
+            }
+            if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//2 on bottom & moving right & up
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLead.VLoc * 16) - 9;
+            }
+            if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //2 on bottom moving left & down
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLag.VLoc * 16) - 9;
+            }
+            else if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //2 on bottom moving right & down
+            {
+                HPos = (TrainLag.HLoc * 16) + 8;
+                VPos = (TrainLag.VLoc * 16) - 5;
+            }
+
+            else if((TrainLead.VLoc < TrainMid.VLoc) && (TrainMid.HLoc < TrainLag.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//1 on top, 1 on bottom moving left & up
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLead.VLoc * 16) - 9;
+            }
+            if((TrainLead.VLoc > TrainMid.VLoc) && (TrainMid.HLoc > TrainLag.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//1 on top, 1 on bottom & moving right & up
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLag.VLoc * 16) - 9;
+            }
+            if((TrainLead.VLoc < TrainMid.VLoc) && (TrainMid.HLoc < TrainLag.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //1 on top, 1 on bottom moving left & down
+            {
+                HPos = (TrainLead.HLoc * 16) + 8;
+                VPos = (TrainLag.VLoc * 16) - 9;
+            }
+            else if((TrainLead.VLoc > TrainMid.VLoc) && (TrainMid.HLoc > TrainLag.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //1 on top, 1 on bottom moving right & down
+            {
+                HPos = (TrainLag.HLoc * 16) + 8;
+                VPos = (TrainLag.VLoc * 16) -5;
             }
         }
     }
-
-    VPos = VPos - 9; //so shows immediately above train with room for descenders
-
+*/
     if(Utilities->clTransparent == clB5G5R5) //white
     {
         TrainController->LongServRefFont->Color = clB3G0R0; //dark blue    //number 03
@@ -10039,7 +10190,7 @@ TTrainController::TTrainController()
     // to seed rand() & random() with a random number (see UpdateTrain)
     LongServRefFont = new TFont;
     LongServRefFont->Name = "Arial";
-//    LongServRefFont->Style = TFontStyles() << fsBold;
+    LongServRefFont->Style = TFontStyles() << fsBold;
     LongServRefFont->Size = 8;
     LongServRefFont->Color = clB0G0R0; //temporary colour
     LongServRefFontColNumber = 0; //temporary

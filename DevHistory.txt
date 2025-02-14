@@ -1,5 +1,7 @@
 Problems with display of train serv ref:
 
+Mention that whole train must be showing for name to show
+
 Need button (or something) to toggle long ref display
 
 H position moves side to side when train vertical

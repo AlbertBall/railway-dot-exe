@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion() + " Beta";
+        ProgramVersion = "RailOS32" + GetVersion() + " Beta2";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -694,6 +694,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // read the locality conversion structure
         conv = localeconv(); // this is what updates the structure
         ExitHeatmaps(); //to set up initial parameters
+        ShowLongServRefsFlag = false;
+        ShowLongServiceReferences->Caption = "Show Long Service References";
+
         Utilities->DecimalPoint = conv->decimal_point[0];
     }
 
@@ -17870,7 +17873,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     Utilities->Clock2Stopped = true;
     HiddenDisplay->ClearDisplay(6);
     AllRoutes->RebuildRailwayFlag = false; //moved here at v2.14.0 from ClockTimer2 so this function not called twice when called before ClockTimer2 triggered
-//    Track->RebuildUserGraphics(0, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
+//    Track->RebuildUserGraphics(1, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
     if(ScreenGridFlag && (Level1Mode == TrackMode))          //after v2.21.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else
     {
         int WidthNum = int(MainScreen->Width / 160) + 1;
@@ -29306,7 +29309,7 @@ Actions needed for the following
             DistanceKey->Visible = false;
             DistancesMarked = false;
             Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
-            ClearandRebuildRailway(7777);
+            ClearandRebuildRailway(99);
             InfoPanel->Caption = "Track element length heatmap";
             Screen->Cursor = TCursor(-2); // Arrow
         }
@@ -29316,15 +29319,15 @@ Actions needed for the following
             Screen->Cursor = TCursor(-11); // Hourglass
             DistanceKey->Visible = true;
             Level2TrackMode = DistanceStart;
-            SetLevel2TrackMode(7777);
-            ClearandRebuildRailway(7777);
+            SetLevel2TrackMode(70);
+            ClearandRebuildRailway(100);
             Screen->Cursor = TCursor(-2); // Arrow
         }
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2720);
     }
     catch(const Exception &e)
     {
-        ErrorLog(7777, e.Message);
+        ErrorLog(251, e.Message);
     }
 }
 
@@ -29351,7 +29354,7 @@ void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only ava
             DistanceKey->Visible = false;
             DistancesMarked = false;
             Display->Update();  //to display buttons prior to Clearand.. which can take quite a long time
-            ClearandRebuildRailway(7777);
+            ClearandRebuildRailway(101);
             InfoPanel->Caption = "Track element speed limit heatmap";
             Screen->Cursor = TCursor(-2); // Arrow
         }
@@ -29361,15 +29364,15 @@ void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only ava
             Screen->Cursor = TCursor(-11); // Hourglass
             DistanceKey->Visible = true;
             Level2TrackMode = DistanceStart;
-            SetLevel2TrackMode(7777);
-            ClearandRebuildRailway(7777);
+            SetLevel2TrackMode(71);
+            ClearandRebuildRailway(102);
             Screen->Cursor = TCursor(-2); // Arrow
         }
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2718);
     }
     catch(const Exception &e)
     {
-        ErrorLog(7777, e.Message);
+        ErrorLog(252, e.Message);
     }
 }
 
@@ -29409,7 +29412,28 @@ void __fastcall TInterface::HeatmapsRedlowvaluesMenuItemClick(TObject *Sender)
         HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = high values";
         Track->RedLowFlag = true;
     }
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2719);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ShowLongServiceReferencesClick(TObject *Sender)
+{
+    TrainController->LogEvent("ShowLongServiceReferencesClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ShowLongServiceReferencesClick");
+    if(TrainController->ShowLongServRefsFlag)
+    {
+        TrainController->ShowLongServRefsFlag = false;
+        ShowLongServiceReferences->Caption = "Show Long Service References";
+        ClearandRebuildRailway(3);
+    }
+    else
+    {
+        TrainController->ShowLongServRefsFlag = true;
+        ShowLongServiceReferences->Caption = "Hide Long Service References";
+        ClearandRebuildRailway(4);
+    }
+    Utilities->CallLogPop(2730);
 }
 
 //---------------------------------------------------------------------------
@@ -29477,4 +29501,5 @@ void __fastcall TInterface::HeatmapsRedlowvaluesMenuItemClick(TObject *Sender)
    Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
+//---------------------------------------------------------------------------
 

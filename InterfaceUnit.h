@@ -772,6 +772,7 @@ __published: // IDE-managed Components
     TSpeedButton *SpeedButton17;
     TMenuItem *HeatmapsRedlowvaluesMenuItem;
     TMenuItem *N7;
+    TMenuItem *ShowLongServiceReferences;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -1007,6 +1008,7 @@ __published: // IDE-managed Components
     void __fastcall LengthsHeatmapButtonClick(TObject *Sender);
     void __fastcall SpeedsHeatmapButtonClick(TObject *Sender);
     void __fastcall HeatmapsRedlowvaluesMenuItemClick(TObject *Sender);
+    void __fastcall ShowLongServiceReferencesClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 
@@ -1167,6 +1169,9 @@ private:
     ///< function to determine if floating label behind performance log, returns true if so
     bool NumHVPairCheckOK(TNumHVPair NumHVPair);
     ///<check for datagram validity
+    bool ShowLongServRefsFlag;
+    ///< menu item toggle for display of long service references
+
     void BuildDatagramFromPlayerMap(int Caller, char marker, AnsiString UserName, TBytes &buffer, TDynamicMap DynamicMap);
     ///< converts a player's dynamic map into a datagram; marker is a single digit to identify the datagram type; includes the username at the start & adds ';' delimiters for strings
     void BuildDatagramFromHostMap(int Caller, TBytes &buffer, TDynamicMap DynamicMap);
@@ -1179,6 +1184,7 @@ private:
     ///< Convert TimeToExitMultiMap to an existing DynamicMap with all THVShortPairs listed
     void RemovePlayerFromStringGridAndInfoVector(int Caller, AnsiString PlayerUserName);
     ///<utility  to clear user name from string grid & infovector (used several times)
+
 //-----------------
 //other multiplayer variables
     int NumPlayers; //Multiplayer participants including host

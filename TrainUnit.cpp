@@ -241,12 +241,12 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     LongServRefNameBitmap->PixelFormat = pf8bit;
     LongServRefNameBitmap->Height = 13;
     LongServRefNameBitmap->Width = 54;
-    RailGraphics->SetWebSafePalette(LongServRefNameBitmap);
+    RailGraphics->SetWebSafePalette(62, LongServRefNameBitmap);
     LongServRefMainScreenBitmap = new Graphics::TBitmap; //added after v2.21.0  these are for displaying long serv refs above the train
     LongServRefMainScreenBitmap->PixelFormat = pf8bit;
     LongServRefMainScreenBitmap->Height = 13;
     LongServRefMainScreenBitmap->Width = 54;
-    RailGraphics->SetWebSafePalette(LongServRefMainScreenBitmap);
+    RailGraphics->SetWebSafePalette(63, LongServRefMainScreenBitmap);
     Utilities->CallLogPop(648);
 }
 
@@ -570,13 +570,16 @@ void TTrain::PlotStartPosition(int Caller)
         PlotTrainGraphic(11, 3, Display);
         // Plotted = true; set in PlotTrainGraphic
         //below handles long serv ref display
-        if(Plotted && (LeadElement > -1) && !Display->ZoomOutFlag) //if not plotted yet, or exiting at continuation then ignore
+        if(!Display->ZoomOutFlag)
         {
             if(LongServRefEnteredFlag)
             {
-                RemoveLongServRef(7777, TrainDataEntryPtr->ServiceReference, Display);
+                RemoveLongServRef(0, TrainDataEntryPtr->ServiceReference, Display);
             }
-            EnterLongServRefAsName(7777, Display);
+            if(Plotted && (LeadElement > -1) && TrainController->ShowLongServRefsFlag) //if not plotted yet, exiting at continuation, or show flag false then ignore
+            {
+                EnterLongServRefAsName(0, Display);
+            }
         }
     }
     Display->Update(); // resurrected when Update() dropped from PlotOutput etc
@@ -2445,13 +2448,16 @@ void TTrain::UpdateTrain(int Caller)
     {
         TrainHasFailed(7);
     }
-    if(Plotted && (LeadElement > -1) && !Display->ZoomOutFlag) //if not plotted yet, or exiting at continuation then ignore
+    if(!Display->ZoomOutFlag)
     {
         if(LongServRefEnteredFlag)
         {
-            RemoveLongServRef(7777, TrainDataEntryPtr->ServiceReference, Display);
+            RemoveLongServRef(1, TrainDataEntryPtr->ServiceReference, Display);
         }
-        EnterLongServRefAsName(7777, Display);
+        if(Plotted && (LeadElement > -1) && TrainController->ShowLongServRefsFlag) //if not plotted yet, exiting at continuation, or show flag false then ignore
+        {
+            EnterLongServRefAsName(1, Display);
+        }
     }
     Display->Update();
     // need to keep this since Update() not called for PlotSmallOutput as too slow
@@ -2463,23 +2469,46 @@ void TTrain::UpdateTrain(int Caller)
 void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v2.21.0 to display long serv refs
 { //colours clB3G0R0 for white bgnd, clB3G5R5 for dark bgnds
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EnterLongServRefAsName");
+    if(LongServRefEnteredFlag) //if already present then return
+    {
+        Utilities->CallLogPop(2724);
+        return;
+    }
     int VPos, HPos, TrainHLocLead, TrainHLocMid, TrainHLocLag, TrainVLocLead, TrainVLocMid, TrainVLocLag;
     TTrackElement TrainLead, TrainMid, TrainLag;
+    bool ReturnEarly = false;
 
     //LongServRefNameRect defined as TRect(0,0,54,13) in TTrain constructor
 
     //set all H & VPos's
     if(LeadElement > -1)
     {
-        TrainLead = Track->TrackElementAt(7777, LeadElement);
+        TrainLead = Track->TrackElementAt(1686, LeadElement);
+    }
+    else
+    {
+        ReturnEarly = true;
     }
     if(MidElement > -1)
     {
-        TrainMid = Track->TrackElementAt(7777, MidElement);
+        TrainMid = Track->TrackElementAt(1687, MidElement);
+    }
+    else
+    {
+        ReturnEarly = true;
     }
     if(LagElement > -1)
     {
-        TrainLag = Track->TrackElementAt(7777, LagElement);
+        TrainLag = Track->TrackElementAt(1688, LagElement);
+    }
+    else if(Straddle == LeadMidLag)
+    {
+        ReturnEarly = true;
+    }
+    if(ReturnEarly)
+    {
+        Utilities->CallLogPop(2725);
+        return;
     }
 
     int LeftHAndOffset, TopVAndOffset;
@@ -2516,211 +2545,43 @@ void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v
         HPos = LeftHAndOffset;
         VPos = TopVAndOffset - 13;
     }
-
-/*
-    if(Straddle == LeadMid)
+    else if(Straddle == LeadMidLag)
     {
-        if(TrainLead.HLoc <= TrainMid.HLoc) //LeadElement leftmost
+        LeftHAndOffset = (TrainLead.HLoc * 16) + HOffset[0];
+        if(((TrainMid.HLoc * 16) + HOffset[1]) < LeftHAndOffset)
         {
-            LeftMostHLoc = TrainLead.HLoc;
-            if(HOffset[0] <= HOffset[1])
-            {
-                LeftHOffset = HOffset[0];
-            }
-            else
-            {
-                LeftHOffset = HOffset[1];
-            }
+            LeftHAndOffset = (TrainMid.HLoc * 16) + HOffset[1];
         }
-        else
+        if(((TrainMid.HLoc * 16) + HOffset[2]) < LeftHAndOffset)
         {
-            LeftMostHLoc = TrainMid.HLoc;
-            if(HOffset[2] <= HOffset[3])
-            {
-                LeftHOffset = HOffset[2];
-            }
-            else
-            {
-                LeftHOffset = HOffset[3];
-            }
+            LeftHAndOffset = (TrainMid.HLoc * 16) + HOffset[2];
         }
-        if(TrainLead.VLoc <= TrainMid.VLoc)
+        if(((TrainLag.HLoc * 16) + HOffset[3]) < LeftHAndOffset)
         {
-            TopMostVLoc = TrainLead.VLoc;
-            if(VOffset[0] <= VOffset[1])
-            {
-                TopVOffset = VOffset[0];
-            }
-            else
-            {
-                TopVOffset = VOffset[1];
-            }
+            LeftHAndOffset = (TrainLag.HLoc * 16) + HOffset[3];
         }
-        else
+        TopVAndOffset = (TrainLead.VLoc * 16) + VOffset[0];
+        if(((TrainMid.VLoc * 16) + VOffset[1]) < TopVAndOffset)
         {
-            TopMostVLoc = TrainMid.VLoc;
-            if(VOffset[2] <= VOffset[3])
-            {
-                TopVOffset = VOffset[2];
-            }
-            else
-            {
-                TopVOffset = VOffset[3];
-            }
+            TopVAndOffset = (TrainMid.VLoc * 16) + VOffset[1];
         }
-        HPos = (LeftMostHLoc * 16) + LeftHOffset;
-        VPos = (TopMostVLoc * 16) + TopVOffset - 13;
+        if(((TrainMid.VLoc * 16) + VOffset[2]) < TopVAndOffset)
+        {
+            TopVAndOffset = (TrainMid.VLoc * 16) + VOffset[2];
+        }
+        if(((TrainLag.VLoc * 16) + VOffset[3]) < TopVAndOffset)
+        {
+            TopVAndOffset = (TrainLag.VLoc * 16) + VOffset[3];
+        }
+        HPos = LeftHAndOffset;
+        VPos = TopVAndOffset - 13;
+    }
+    else  //shouldn't be anything else
+    {
+        Utilities->CallLogPop(2726);
+        return;
     }
 
-*/
-/*
-    if(Straddle == LeadMid)          //can't be MidLag as that only used outside UpdateTrain for entry at continuation when not visible
-    {
-        if(TrainLead.VLoc == TrainMid.VLoc) //horizontal
-        {
-            if(TrainLead.HLoc < TrainMid.HLoc) //moving left
-            {
-                HPos = TrainLead.HLoc * 16;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            else //moving right
-            {
-                HPos = TrainMid.HLoc * 16;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-        }
-        else if(TrainLead.HLoc == TrainMid.HLoc) //vertical
-        {
-            if(TrainLead.VLoc < TrainMid.VLoc) //moving up
-            {
-                HPos = TrainLead.HLoc * 16;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            else //moving down
-            {
-                HPos = TrainLead.HLoc * 16;
-                VPos = (TrainMid.VLoc * 16) - 9;
-            }
-        }
-        else //diagonal
-        {
-            if((TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc < TrainMid.VLoc)) //moving left & up
-            {
-                HPos = TrainLead.HLoc * 16;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            else if((TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc > TrainMid.VLoc)) //moving left & down
-            {
-                HPos = TrainLead.HLoc * 16;
-                VPos = (TrainMid.VLoc * 16) - 13;
-            }
-            else if((TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc < TrainMid.VLoc)) //moving right & up
-            {
-                HPos = TrainMid.HLoc * 16;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            else if((TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc > TrainMid.VLoc)) //moving right & down
-            {
-                HPos = TrainMid.HLoc * 16;
-                VPos = (TrainMid.VLoc * 16) - 13;
-            }
-        }
-    }
-    else //must be leadMidLag as can't be MidLag as that only used outside UpdateTrain for entry at continuation when not visible
-    {
-        if(TrainLead.VLoc == TrainLag.VLoc) //horizontal
-        {
-            if(TrainLead.HLoc < TrainLag.HLoc) //moving left
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            else //moving right
-            {
-                HPos = (TrainLag.HLoc * 16) + 8;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-        }
-        else if(TrainLead.HLoc == TrainMid.HLoc) //vertical
-        {
-            if(TrainLead.VLoc < TrainLag.VLoc) //moving up
-            {
-                HPos = TrainLead.HLoc * 16;
-                VPos = (TrainLead.VLoc * 16) - 1; //top element is already 8 further down
-            }
-            else //moving down
-            {
-                HPos = TrainLead.HLoc * 16;
-                VPos = (TrainLag.VLoc * 16) - 1; //top element is already 8 further down
-            }
-        }
-        else //all the diagonals here 2 elements on top, 2 elements on bottom and all three on diagonal, each for
-        {
-            if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc)) //2 on top & moving left & up
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            else if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc)) //2 on top & moving right & up
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            else if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc))//2 on top moving left & down
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLag.VLoc * 16) - 9;
-            }
-            if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc))//2 on top & moving right & down
-            {
-                HPos = (TrainLag.HLoc * 16) + 8;
-                VPos = (TrainLag.VLoc * 16) - 9;
-            }
-
-            else if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//2 on bottom moving left & up
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            if((TrainMid.VLoc == TrainLag.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//2 on bottom & moving right & up
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc < TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //2 on bottom moving left & down
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLag.VLoc * 16) - 9;
-            }
-            else if((TrainLead.VLoc == TrainMid.VLoc) && (TrainLead.HLoc > TrainMid.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //2 on bottom moving right & down
-            {
-                HPos = (TrainLag.HLoc * 16) + 8;
-                VPos = (TrainLag.VLoc * 16) - 5;
-            }
-
-            else if((TrainLead.VLoc < TrainMid.VLoc) && (TrainMid.HLoc < TrainLag.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//1 on top, 1 on bottom moving left & up
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLead.VLoc * 16) - 9;
-            }
-            if((TrainLead.VLoc > TrainMid.VLoc) && (TrainMid.HLoc > TrainLag.HLoc) && (TrainLead.VLoc < TrainLag.VLoc))//1 on top, 1 on bottom & moving right & up
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLag.VLoc * 16) - 9;
-            }
-            if((TrainLead.VLoc < TrainMid.VLoc) && (TrainMid.HLoc < TrainLag.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //1 on top, 1 on bottom moving left & down
-            {
-                HPos = (TrainLead.HLoc * 16) + 8;
-                VPos = (TrainLag.VLoc * 16) - 9;
-            }
-            else if((TrainLead.VLoc > TrainMid.VLoc) && (TrainMid.HLoc > TrainLag.HLoc) && (TrainLead.VLoc > TrainLag.VLoc)) //1 on top, 1 on bottom moving right & down
-            {
-                HPos = (TrainLag.HLoc * 16) + 8;
-                VPos = (TrainLag.VLoc * 16) -5;
-            }
-        }
-    }
-*/
     if(Utilities->clTransparent == clB5G5R5) //white
     {
         TrainController->LongServRefFont->Color = clB3G0R0; //dark blue    //number 03
@@ -2747,7 +2608,7 @@ void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v
 
     TTextItem TI = TTextItem(HPos, VPos, TrainDataEntryPtr->ServiceReference, TrainController->LongServRefFont);
     LongServRefNameBitmap->Canvas->Font->Assign(TrainController->LongServRefFont); //assign all font properties
-    LongServRefNameBitmap->Canvas->TextOut(0, 0, TI.TextString); //text written to LongServRefNameBitmap->Canvas using LongServRefFont
+    LongServRefNameBitmap->Canvas->TextOut(2, 0, TI.TextString); //text written to LongServRefNameBitmap->Canvas using LongServRefFont
 
 //Disp->GetImage()->Canvas->CopyRect(TRect(0,0,54,13), LongServRefNameBitmap->Canvas, TRect(0,0,54,13)); //diagnostics
 
@@ -2776,20 +2637,6 @@ void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v
             } //else do nothing
         }
     }
-/*
-    for(int x = 0; x < 13; x++) //plots text in front of all else
-    {
-        SLPtrIn = reinterpret_cast<Byte*>(LongServRefNameBitmap->ScanLine[x]);
-        SLPtrOut = reinterpret_cast<Byte*>(LongServRefMainScreenBitmap->ScanLine[x]);
-        for(int y = 0; y < 54; y++)
-        {
-            if(SLPtrIn[y] == TrainController->LongServRefFontColNumber) //only copy text pixels
-            {
-                SLPtrOut[y] = SLPtrIn[y];
-            }
-        }
-    }
-*/
 //copy back onto MainScreen
     Disp->GetImage()->Canvas->CopyRect(TRect(LongServRefTextH - (Display->DisplayOffsetH * 16), LongServRefTextV - (Display->DisplayOffsetV * 16),
         LongServRefTextH - (Display->DisplayOffsetH * 16) + 54, LongServRefTextV - (Display->DisplayOffsetV * 16) + 13), LongServRefMainScreenBitmap->Canvas, TRect(0,0,54,13));
@@ -2798,7 +2645,7 @@ void TTrain::EnterLongServRefAsName(int Caller, TDisplay *Disp)  //added after v
 
     Disp->Update();
     LongServRefEnteredFlag = true;
-    Utilities->CallLogPop(661);
+    Utilities->CallLogPop(2727);
 }
 
 // ----------------------------------------------------------------------------
@@ -2808,7 +2655,7 @@ void TTrain::RemoveLongServRef(int Caller, AnsiString NameText, TDisplay *Disp) 
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RemoveLongServRef," + NameText);
     if(!LongServRefEnteredFlag) //if already absent then return
     {
-        Utilities->CallLogPop(661);
+        Utilities->CallLogPop(2728);
         return;
     }
 
@@ -2837,7 +2684,7 @@ void TTrain::RemoveLongServRef(int Caller, AnsiString NameText, TDisplay *Disp) 
 
     Disp->Update();
     LongServRefEnteredFlag = false;
-    Utilities->CallLogPop(661);
+    Utilities->CallLogPop(2729);
 }
 
 // ----------------------------------------------------------------------------
@@ -9624,13 +9471,16 @@ void TTrain::PlotTrain(int Caller, TDisplay *Disp)
     {
         PlotTrainGraphic(7, x, Disp);
     }
-    if(Plotted && (LeadElement > -1) && !Display->ZoomOutFlag) //if not plotted yet, or exiting at continuation, or zoomed out, then ignore
+    if(!Display->ZoomOutFlag)
     {
         if(LongServRefEnteredFlag)
         {
-            RemoveLongServRef(7777, TrainDataEntryPtr->ServiceReference, Disp);
+            RemoveLongServRef(2, TrainDataEntryPtr->ServiceReference, Disp);
         }
-        EnterLongServRefAsName(7777, Disp);
+        if(Plotted && (LeadElement > -1) && TrainController->ShowLongServRefsFlag) //if not plotted yet, exiting at continuation, or show flag false then ignore
+        {
+            EnterLongServRefAsName(2, Disp);
+        }
     }
     Utilities->CallLogPop(647);
 }

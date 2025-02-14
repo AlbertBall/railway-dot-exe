@@ -3839,8 +3839,8 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                     PlotPoints(5, Next, Disp, BothPointFilletsAndBasicLCs);
                     if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
                     {
-                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
-                        OneLengthOrSpeedHeatMapColour(7777, Next, false, Disp); //false for 23 length
+                        OneLengthOrSpeedHeatMapColour(0, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(1, Next, false, Disp); //false for 23 length
                     }
                 }
                 else if(Next.TrackType == SignalPost)
@@ -3848,7 +3848,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                     PlotSignal(9, Next, Disp);
                     if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
                     {
-                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(2, Next, true, Disp); //true for 01 length
                     }
                 }
                 else if(Next.TrackType == GapJump)
@@ -3856,7 +3856,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                     PlotGap(0, Next, Disp);
                     if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
                     {
-                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(3, Next, true, Disp); //true for 01 length
                     }
                 }
                 else if(Next.TrackType == Continuation) //added for multiplayer graphic overlays
@@ -3864,7 +3864,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                     PlotContinuation(0, Next, Disp);
                     if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
                     {
-                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(4, Next, true, Disp); //true for 01 length
                     }
                 }
                 else if(Next.TrackType == Crossover || Next.TrackType == Bridge)
@@ -3872,16 +3872,16 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                     Next.PlotVariableTrackElement(3, Disp); // for footcrossings, may be striped or not
                     if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
                     {
-                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
-                        OneLengthOrSpeedHeatMapColour(7777, Next, false, Disp); //false for 23 length
+                        OneLengthOrSpeedHeatMapColour(5, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(6, Next, false, Disp); //false for 23 length
                     }
                 }
                 else
                 {
-                    Next.PlotVariableTrackElement(3, Disp); // for footcrossings, may be striped or not
+                    Next.PlotVariableTrackElement(13, Disp); // for footcrossings, may be striped or not
                     if((LengthHeatMapFlag) || (SpeedHeatMapFlag))
                     {
-                        OneLengthOrSpeedHeatMapColour(7777, Next, true, Disp); //true for 01 length
+                        OneLengthOrSpeedHeatMapColour(7, Next, true, Disp); //true for 01 length
                     }
                 }
             }
@@ -9886,22 +9886,22 @@ void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Len
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthOrSpeedHeatMap");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TTrackElement TempElement = TrackElementAt(1377, x);
+        TTrackElement TempElement = TrackElementAt(1689, x);
         if(((TempElement.HLoc - Display->DisplayOffsetH) >= 0) && ((TempElement.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
                    ((TempElement.VLoc - Display->DisplayOffsetV) >= 0) && ((TempElement.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
         {//only plot if onscreen as takes quite a long time
             if(TempElement.Length01 > -1)
             {
-                OneLengthOrSpeedHeatMapColour(1, TempElement, true, Disp); // need Length01 test in case there are erase elements (but shouldn't be after LinkTrack)
+                OneLengthOrSpeedHeatMapColour(8, TempElement, true, Disp); // need Length01 test in case there are erase elements (but shouldn't be after LinkTrack)
             }
             if(TempElement.Length23 > -1)
             {
-                OneLengthOrSpeedHeatMapColour(2, TempElement, false, Disp);
+                OneLengthOrSpeedHeatMapColour(9, TempElement, false, Disp);
             }
         }
     }
     Disp->Update();
-    Utilities->CallLogPop(618);
+    Utilities->CallLogPop(2722);
 }
 
 // ---------------------------------------------------------------------------
@@ -10118,7 +10118,7 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
         }
         RailGraphics->GetHeatMapColor(0, (Ln(Len))/5.704, R, G, B); //Len/10 makes range 1 to limit of 300, representing 3000km per element {3000/Len] for reverse spectrum
         Col = TColor((65536 * Blue) + (256 * Green) + Red);            //5.704 normalises Ln range to between 0 & 1
-        RailGraphics->ChangeForegroundColour2(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
+        RailGraphics->ChangeForegroundColour2(3, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
     }                               //use ChangeForegroundColour2 as faster
     else if (SpeedHeatMapFlag)
     {
@@ -10132,15 +10132,15 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
         }
         RailGraphics->GetHeatMapColor(1, (Ln(Spd))/3.691, R, G, B); //Spd/10 makes range 1 to limit of 40, representing 400km/h [400/Spd] for reverse spectrum
         Col = TColor((65536 * Blue) + (256 * Green) + Red);         //3.691 normalises Ln range to between 0 & 1
-        RailGraphics->ChangeForegroundColour2(7777, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
+        RailGraphics->ChangeForegroundColour2(4, RailGraphics->HeatMapGraphic, RailGraphics->HeatMapGraphic, Col, Utilities->clTransparent);
     }                               //use ChangeForegroundColour2 as faster
     else
     {
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2721);
         return;
     }
-    Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, RailGraphics->HeatMapGraphic);
-    Utilities->CallLogPop(620);
+    Disp->PlotOutput(289, TrackElement.HLoc * 16, TrackElement.VLoc * 16, RailGraphics->HeatMapGraphic);
+    Utilities->CallLogPop(2723);
 }
 
 // ---------------------------------------------------------------------------

@@ -848,6 +848,9 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///<new at v2.6.0 so potential error message only shows in TTEdit mode
     bool SSHigh, MassHigh, BFHigh, BFLow, PwrHigh, SigSHigh, SigSLow;  //MRSHigh & MRSLow removed at v2.21.0
 //        TrainController->MRSLow = false;
+    bool ShowLongServRefsFlag;
+///< indicates menu item toggle for display of long service references
+
 
 ///<Message flags in TT checks to stop being given twice
 

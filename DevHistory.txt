@@ -4,13 +4,13 @@ Mention that whole train must be showing for name to show
 
 Need button (or something) to toggle long ref display
 
-H position moves side to side when train vertical
+/ H position moves side to side when train vertical
 
-V position overlaps last element when train vertical & moving down
+/ V position overlaps last element when train vertical & moving down
 
-convert all (or some) bitmaps to websafe colours
+/ convert all (or some) bitmaps to websafe colours
 
-Check signal handedness after deleted TmpBM in GraphicsUnit.cpp
+/ Check signal handedness after deleted TmpBM in GraphicsUnit.cpp
 
 /why 2 x train constructor calls for ABC railway, from session then when plotted? - because constructor called when load session trains, but not stored in vector & deleted when routine ends, second call is when first train created.
 
@@ -20,7 +20,7 @@ Check signal handedness after deleted TmpBM in GraphicsUnit.cpp
 
 /why do all names overlap when have delete & replace in new routine? - because the second move pickup picks up the new name, need to pickup bgnd without any trains or their names, use Clearand... without having trains replotted
 
-Note: in TTextItem a new font is created on heap but doesn't seem always to be deleted - investigate
+/ Note: in TTextItem a new font is created on heap but doesn't seem always to be deleted - investigate
 
 
 

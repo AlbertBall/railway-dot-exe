@@ -476,11 +476,8 @@ __published: // IDE-managed Components
     TMenuItem *CheckPrefDirConflictsMenuItem;
 
     TMenuItem *FloatingInfoMenu;
-    TMenuItem *TrackInfoMenuItem;
     TMenuItem *TrackInfoOnOffMenuItem;
-    TMenuItem *TrainInfoMenuItem;
     TMenuItem *TrainStatusInfoOnOffMenuItem;
-    TMenuItem *TrainTTInfoOnOffMenuItem;
 
     TMenuItem *ImageMenu;
     TMenuItem *SaveImageNoGridMenuItem;
@@ -772,7 +769,8 @@ __published: // IDE-managed Components
     TSpeedButton *SpeedButton17;
     TMenuItem *HeatmapsRedlowvaluesMenuItem;
     TMenuItem *N7;
-    TMenuItem *ShowLongServiceReferences;
+    TMenuItem *TrainLongServRefInfoOnOffMenuItem;
+    TMenuItem *TrainTTInfoOnOffMenuItem;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -1008,7 +1006,7 @@ __published: // IDE-managed Components
     void __fastcall LengthsHeatmapButtonClick(TObject *Sender);
     void __fastcall SpeedsHeatmapButtonClick(TObject *Sender);
     void __fastcall HeatmapsRedlowvaluesMenuItemClick(TObject *Sender);
-    void __fastcall ShowLongServiceReferencesClick(TObject *Sender);
+    void __fastcall TrainLongServRefInfoOnOffMenuItemClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 

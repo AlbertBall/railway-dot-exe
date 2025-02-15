@@ -255,9 +255,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
 
-        TrackInfoOnOffMenuItem->Caption = "Show"; // added here at v1.2.0 because dropped from ResetAll()
-        TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; // changed at v2.0.0 so normally visible
-        TrainTTInfoOnOffMenuItem->Caption = "Hide Timetable"; // as above
+        TrackInfoOnOffMenuItem->Caption = "Show Track &Information                    Shift+ Ctrl+ I"; // added here at v1.2.0 because dropped from ResetAll()
+        TrainStatusInfoOnOffMenuItem->Caption = "Hide Train &Status Information         Shift+ Ctrl+ S"; // changed at v2.0.0 so normally visible
+        TrainTTInfoOnOffMenuItem->Caption = "Hide Train &Timetable Information   Shift+ Ctrl+ T"; // as above
         NoDelaysMenuItem->Enabled = false;
         NoFailuresMenuItem->Enabled = false;
 
@@ -695,7 +695,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         conv = localeconv(); // this is what updates the structure
         ExitHeatmaps(); //to set up initial parameters
         ShowLongServRefsFlag = false;
-        ShowLongServiceReferences->Caption = "Show Long Service References";
+        TrainLongServRefInfoOnOffMenuItem->Caption = "Show &Long Service References          Shift+ Ctrl+ L";
 
         Utilities->DecimalPoint = conv->decimal_point[0];
     }
@@ -7369,13 +7369,13 @@ void __fastcall TInterface::TrackInfoOnOffMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("TrackInfoOnOffMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrackInfoOnOffMenuItemClick");
-        if(TrackInfoOnOffMenuItem->Caption == "Show")
+        if(TrackInfoOnOffMenuItem->Caption == "Show Track &Information                    Shift+ Ctrl+ I")
         {
-            TrackInfoOnOffMenuItem->Caption = "Hide";
+            TrackInfoOnOffMenuItem->Caption = "Hide Track &Information                    Shift+ Ctrl+ I";
         }
         else
         {
-            TrackInfoOnOffMenuItem->Caption = "Show";
+            TrackInfoOnOffMenuItem->Caption = "Show Track &Information                    Shift+ Ctrl+ I";
         }
         Utilities->CallLogPop(1183);
     }
@@ -7392,13 +7392,13 @@ void __fastcall TInterface::TrainStatusInfoOnOffMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("TrainStatusInfoOnOffMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainStatusInfoOnOffMenuItemClick");
-        if(TrainStatusInfoOnOffMenuItem->Caption == "Show Status")
+        if(TrainStatusInfoOnOffMenuItem->Caption == "Show Train &Status Information         Shift+ Ctrl+ S")
         {
-            TrainStatusInfoOnOffMenuItem->Caption = "Hide Status";
+            TrainStatusInfoOnOffMenuItem->Caption = "Hide Train &Status Information         Shift+ Ctrl+ S";
         }
         else
         {
-            TrainStatusInfoOnOffMenuItem->Caption = "Show Status";
+            TrainStatusInfoOnOffMenuItem->Caption = "Show Train &Status Information         Shift+ Ctrl+ S";
         }
         Utilities->CallLogPop(1184);
     }
@@ -7415,13 +7415,13 @@ void __fastcall TInterface::TrainTTInfoOnOffMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("TrainTTInfoOnOffMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainTTInfoOnOffMenuItemClick");
-        if(TrainTTInfoOnOffMenuItem->Caption == "Show Timetable")
+        if(TrainTTInfoOnOffMenuItem->Caption == "Show Train &Timetable Information   Shift+ Ctrl+ T")
         {
-            TrainTTInfoOnOffMenuItem->Caption = "Hide Timetable";
+            TrainTTInfoOnOffMenuItem->Caption = "Hide Train &Timetable Information   Shift+ Ctrl+ T";
         }
         else
         {
-            TrainTTInfoOnOffMenuItem->Caption = "Show Timetable";
+            TrainTTInfoOnOffMenuItem->Caption = "Show Train &Timetable Information   Shift+ Ctrl+ T";
         }
         Utilities->CallLogPop(1185);
     }
@@ -11080,8 +11080,8 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
         // deal with ContinuationAutoSigList
         ContinuationAutoSignals(0, TrainController->TTClockTime);
         // FloatingLabel function
-        if((TrackInfoOnOffMenuItem->Caption == "Hide") || (TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") ||
-           (TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable"))
+        if((TrackInfoOnOffMenuItem->Caption == "Hide Track &Information          Shift+ Ctrl+ I") || (TrainStatusInfoOnOffMenuItem->Caption == "Hide Train &Status Information         Shift+ Ctrl+ S") ||
+           (TrainTTInfoOnOffMenuItem->Caption == "Hide Train &Timetable Information   Shift+ Ctrl+ T"))
         {
             TrackTrainFloat(0);
         }
@@ -16081,16 +16081,17 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
             {
                 TrackInfoOnOffMenuItem->Click();
             }
-            else if(TrainInfoMenuItem->Enabled)
+            if(Key == 'S' || Key == 's') // toggle train status info
             {
-                if(Key == 'S' || Key == 's') // toggle train status info
-                {
-                    TrainStatusInfoOnOffMenuItem->Click();
-                }
-                else if(Key == 'T' || Key == 't') // toggle train timetable info
-                {
-                    TrainTTInfoOnOffMenuItem->Click();
-                }
+                TrainStatusInfoOnOffMenuItem->Click();
+            }
+            else if(Key == 'T' || Key == 't') // toggle train timetable info
+            {
+                TrainTTInfoOnOffMenuItem->Click();
+            }
+            else if(Key == 'L' || Key == 'l') // toggle train timetable info
+            {
+                TrainLongServRefInfoOnOffMenuItem->Click();
             }
         }
 // end of 2.4.2 addition
@@ -20242,7 +20243,7 @@ void TInterface::TrackTrainFloat(int Caller)
             MouseOverOAPanel = true;
         }
     }
-    if((TrackInfoOnOffMenuItem->Caption == "Hide") && !MouseOverOAPanel)
+    if((TrackInfoOnOffMenuItem->Caption == "Hide Track &Information                    Shift+ Ctrl+ I") && !MouseOverOAPanel)
     // MouseOverOAPanel condit added at v2.7.0 in place of prohibition of all floating windows (which was added at v2.3.0 when Xeon notified me in email of 15/10/19 that they were showing)
     {
         bool ActiveTrackFoundFlag = false, InactiveTrackFoundFlag = false, TwoTrack = false;
@@ -20537,7 +20538,8 @@ void TInterface::TrackTrainFloat(int Caller)
 // end of TrackFloat section
 
     bool ActionsDueListBoxFloatRequired = false; // identifies which window needs the float
-    if(Level1Mode == OperMode && ((TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") || (TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")))
+    if(Level1Mode == OperMode && ((TrainStatusInfoOnOffMenuItem->Caption == "Hide Train &Status Information         Shift+ Ctrl+ S") ||
+        (TrainTTInfoOnOffMenuItem->Caption == "Hide Train &Timetable Information   Shift+ Ctrl+ T")))
     // if caption is 'Hide' label is required
     {
         bool FoundFlag;
@@ -20555,11 +20557,11 @@ void TInterface::TrackTrainFloat(int Caller)
                 if(GetTrainIDOrContinuationPosition(1, X, Y, TrainID, ContinuationPos))
                 {
                     ActionsDueListBoxFloatRequired = true;
-                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
+                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Train &Status Information         Shift+ Ctrl+ S")
                     {
                         ShowTrainStatusFloatFlag = true;
                     }
-                    if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
+                    if(TrainTTInfoOnOffMenuItem->Caption == "Hide Train &Timetable Information   Shift+ Ctrl+ T")
                     {
                         ShowTrainTTFloatFlag = true;
                     }
@@ -20585,12 +20587,12 @@ void TInterface::TrackTrainFloat(int Caller)
                 // if a bridge & 2 trains at that position will select the train with TrainIDOnElement set
                 {
                     int TrainID = Track->TrackElementAt(452, VecPos).TrainIDOnElement;
-                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
+                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Train &Status Information         Shift+ Ctrl+ S")
                     {
                         ShowTrainStatusFloatFlag = true;
                         TrainStatusFloat = GetTrainStatusFloat(1, TrainID, FormatNoDPStr, SpecialStr);
                     }
-                    if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
+                    if(TrainTTInfoOnOffMenuItem->Caption == "Hide Train &Timetable Information   Shift+ Ctrl+ T")
                     {
                         ShowTrainTTFloatFlag = true;
                         TTrain Train = TrainController->TrainVectorAtIdent(54, TrainID);
@@ -20604,7 +20606,7 @@ void TInterface::TrackTrainFloat(int Caller)
                 {
                     TrainStatusFloat = "No trains expected";
                     TrainTTFloat = "No timetable";
-                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
+                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Train &Status Information         Shift+ Ctrl+ S")
                     {
                         ShowTrainStatusFloatFlag = true;
                     }
@@ -21577,20 +21579,23 @@ void TInterface::SetSaveMenuAndButtons(int Caller)
     if((Track->NoActiveOrInactiveTrack(8)) || Display->ZoomOutFlag || ((Level1Mode == TimetableMode) && (TimetableEditPanel->Visible)))
     {
         FloatingInfoMenu->Enabled = false;
-        TrackInfoMenuItem->Enabled = false;
-        TrainInfoMenuItem->Enabled = false;
+        TrackInfoOnOffMenuItem->Enabled = false;
+        TrainStatusInfoOnOffMenuItem->Enabled = false;
+        TrainTTInfoOnOffMenuItem->Enabled = false;
     }
     else
     {
         FloatingInfoMenu->Enabled = true;
-        TrackInfoMenuItem->Enabled = true;
+        TrackInfoOnOffMenuItem->Enabled = true;
         if(Level1Mode == OperMode)
         {
-            TrainInfoMenuItem->Enabled = true;
+            TrainStatusInfoOnOffMenuItem->Enabled = true;
+            TrainTTInfoOnOffMenuItem->Enabled = true;
         }
         else
         {
-            TrainInfoMenuItem->Enabled = false;
+            TrainStatusInfoOnOffMenuItem->Enabled = false;
+            TrainTTInfoOnOffMenuItem->Enabled = false;
         }
     }
 // set all bar CallingOnButton operational to begin with - no, causes flickering of button graphics,
@@ -29417,20 +29422,20 @@ void __fastcall TInterface::HeatmapsRedlowvaluesMenuItemClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::ShowLongServiceReferencesClick(TObject *Sender)
+void __fastcall TInterface::TrainLongServRefInfoOnOffMenuItemClick(TObject *Sender)
 {
-    TrainController->LogEvent("ShowLongServiceReferencesClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ShowLongServiceReferencesClick");
+    TrainController->LogEvent("TrainLongServRefInfoOnOffMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainLongServRefInfoOnOffMenuItemClick");
     if(TrainController->ShowLongServRefsFlag)
     {
         TrainController->ShowLongServRefsFlag = false;
-        ShowLongServiceReferences->Caption = "Show Long Service References";
+        TrainLongServRefInfoOnOffMenuItem->Caption = "Show &Long Service References          Shift+ Ctrl+ L";
         ClearandRebuildRailway(3);
     }
     else
     {
         TrainController->ShowLongServRefsFlag = true;
-        ShowLongServiceReferences->Caption = "Hide Long Service References";
+        TrainLongServRefInfoOnOffMenuItem->Caption = "Hide &Long Service References          Shift+ Ctrl+ L";
         ClearandRebuildRailway(4);
     }
     Utilities->CallLogPop(2730);

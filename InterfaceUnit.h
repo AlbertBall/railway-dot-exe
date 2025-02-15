@@ -1167,8 +1167,11 @@ private:
     ///< function to determine if floating label behind performance log, returns true if so
     bool NumHVPairCheckOK(TNumHVPair NumHVPair);
     ///<check for datagram validity
+    bool TrackInfoShowing;
+    bool TrainStatusShowing;
+    bool TrainTTShowing;
     bool ShowLongServRefsFlag;
-    ///< menu item toggle for display of long service references
+    ///<flags for floating information
 
     void BuildDatagramFromPlayerMap(int Caller, char marker, AnsiString UserName, TBytes &buffer, TDynamicMap DynamicMap);
     ///< converts a player's dynamic map into a datagram; marker is a single digit to identify the datagram type; includes the username at the start & adds ';' delimiters for strings

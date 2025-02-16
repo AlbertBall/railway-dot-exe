@@ -1029,6 +1029,8 @@ public: // AboutForm needs access to these
 ///< Sets the information panel message for zoom-out or paused modes
     void ClearandRebuildRailway(int Caller);
 ///< Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker
+    void ClearandRebuildRailwayWithoutTrains(int Caller);
+///< as above but no trains, for display of long service references
     bool FirstActionsDueFormDisplay;
 ///< places ActionsDueForm at bottom RHS when first displayed
     bool GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition);
@@ -1509,6 +1511,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 
     TImage *HiddenScreen;
 ///< a hidden copy of the railway display screen used during ClearandRebuildRailway (see below) to avoid flicker
+    TImage *StaticFeaturesScreen;
+///< basic features only for replacing long service references
 
     TOnePrefDir *ConstructPrefDir;
 ///< the Pref Dir under construction

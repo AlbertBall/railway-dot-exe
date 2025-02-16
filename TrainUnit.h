@@ -925,8 +925,6 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///< vector containing all trains currently in the railway
     TFont *LongServRefFont;
 ///< the font used for long serv ref names
-    TRect LongServRefNameRect;
-///< the rectangle used for long serv ref names
     int LongServRefFontColNumber;
 ///< the websafe colour number for long serv ref names
 

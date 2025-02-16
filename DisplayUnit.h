@@ -40,10 +40,11 @@ public:
 // ---------------------------------------------------------------------------
 /// Class that manages all aspects of the display
 ///
-/// There are 2 objects - Display, which is the screen, and HiddenDisplay,
+/// There are 3 objects - Display, which is the screen, HiddenDisplay,
 /// which is an internal object used when building a new display and transferred
 /// to Display when complete (avoids the flicker that would be visible if Display
-/// was built directly)
+/// was built directly), and StaticFeaturesDisplay, used to store track, text and graphics
+///and used for replacing the text of long service references
 
 class TDisplay
 {
@@ -71,7 +72,7 @@ public:
 
 // the following offset values relate horizontal and vertical positions on the display area to the positions on the railway as a whole
 // as follows:-  overall railway position = display position + offset.  They represent track elements, so to obtain pixel positions the
-// element values must be multiplied by 16.  They are static so they are the same for both Display and HiddenDisplay
+// element values must be multiplied by 16.  They are static so they are the same for all displays
 
     static int DisplayOffsetH;
 ///< the horizontal offset of the displayed screen  (as viewpoint moves to the right [railway moves left] this offset increases)
@@ -225,7 +226,7 @@ public:
 
 // functions defined in .cpp file
 
-/// Constructor, sets the screen image (MainScreen or HiddenScreen), the
+/// Constructor, sets the screen image (MainScreen, HiddenScreen or StaticFeaturesScreen), the
 /// main display image and warning message labels
     TDisplay(TImage* &Image, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
                        TLabel* &L9, TLabel* &L10);
@@ -279,6 +280,8 @@ public:
 extern TDisplay *Display;
 /// The object pointer for the internal hidden display, object created in InterfaceUnit
 extern TDisplay *HiddenDisplay;
+/// The object pointer for track, text & graphics only for replacing the text of long service references
+extern TDisplay *StaticFeaturesDisplay;
 
 // ---------------------------------------------------------------------------
 

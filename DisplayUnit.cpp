@@ -53,6 +53,7 @@
 // ---------------------------------------------------------------------------
 TDisplay *Display;
 TDisplay *HiddenDisplay;
+TDisplay *StaticFeaturesDisplay;
 
 int TDisplay::DisplayOffsetH = 0; // have to be initialised outside the class, these lines aren't called
 int TDisplay::DisplayOffsetV = 0; // in the normal way, the members are presumably intialised by the compiler

@@ -199,7 +199,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 
         int DispW = (Screen->Width - 64) / 16; // will truncate down to a multiple of 16 OK here as screen dimensions are accurate
         int DispH = (Screen->Height - 192) / 16; // Interface dimensions are 16 too wide & 14 short in height
-        MainScreen->Width = DispW * 16;
+        MainScreen->Width = DispW * 16; //already created on form
         MainScreen->Height = DispH * 16;
 
         Display = new TDisplay(MainScreen, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6, OutputLog7, OutputLog8,
@@ -210,6 +210,11 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         HiddenScreen->Width = MainScreen->Width;
         HiddenScreen->Height = MainScreen->Height;
         HiddenDisplay = new TDisplay(HiddenScreen, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6, OutputLog7,
+                                     OutputLog8, OutputLog9, OutputLog10);
+        StaticFeaturesScreen = new TImage(Interface);
+        StaticFeaturesScreen->Width = MainScreen->Width;
+        StaticFeaturesScreen->Height = MainScreen->Height;
+        StaticFeaturesDisplay = new TDisplay(StaticFeaturesScreen, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6, OutputLog7,
                                      OutputLog8, OutputLog9, OutputLog10);
         TextHandler = new TTextHandler;
         Track = new TTrack;
@@ -250,7 +255,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         SpeedHeatMapImage = SpeedHeatMapImageRedLow;
         SpeedHeatMapImage->Visible = false;
         Track->RedLowFlag = true;
-        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = high values";
+        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent High Values";
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -748,6 +753,8 @@ __fastcall TInterface::~TInterface()
         delete HiddenDisplay;
         delete HiddenScreen;
         delete Display;
+        delete StaticFeaturesDisplay;
+        delete StaticFeaturesScreen;
         delete RailGraphics;
         delete Utilities;
         delete session_api_;        //added at v2.10.0
@@ -11083,6 +11090,10 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             ClearandRebuildRailway(16);
 //            AllRoutes->RebuildRailwayFlag = false;  //dropped at v2.14.0 & moved to ClearandRebuildRailway so it isn't called again if it is called before reaching this location
         }
+        if(AllRoutes->RebuildRailwayWithoutTrainsFlag && !Display->ZoomOutFlag)
+        {
+            ClearandRebuildRailwayWithoutTrains(16);
+        }
         // deal with approach locking
         ApproachLocking(0, TrainController->TTClockTime);
         // deal with ContinuationAutoSigList
@@ -17136,6 +17147,8 @@ void __fastcall TInterface::FormResize(TObject *Sender) // new at v2.1.0
             Utilities->ScreenElementHeight = DispH;
             HiddenScreen->Width = MainScreen->Width;
             HiddenScreen->Height = MainScreen->Height;
+            StaticFeaturesScreen->Width = MainScreen->Width;
+            StaticFeaturesScreen->Height = MainScreen->Height;
 //            PerfLogForm->Top = Screen->Height - PerfLogForm->Height - 32; //-32 to avoid overlapping taskbar  dropped these after Beta5a so keep last positions
 //            PerfLogForm->Left = 0;
 //            ActionsDueForm->Top = Screen->Height -ActionsDueForm->Height - 32; //-32 to avoid overlapping taskbar;;
@@ -17642,14 +17655,14 @@ void TInterface::LoadConfigFile(int Caller, bool FirstLoad, bool &NoConfigFile) 
                         {
                             LengthHeatMapImage = LengthHeatMapImageRedLow;
                             SpeedHeatMapImage = SpeedHeatMapImageRedLow;
-                            HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = high values";
+                            HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent High Values";
                             Track->RedLowFlag = true;
                         }
                         else if(ConfigValue == "redhigh")
                         {
                             LengthHeatMapImage = LengthHeatMapImageRedHigh;
                             SpeedHeatMapImage = SpeedHeatMapImageRedHigh;
-                            HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = low values";
+                            HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent Low Values";
                             Track->RedLowFlag = false;
                         }
                     } //if neither then leave as is
@@ -17816,7 +17829,7 @@ void TInterface::SaveConfigFile(int Caller)
         {
             SignalStr = "right";
         }
-        if(HeatmapsRedlowvaluesMenuItem->Caption == "Heatmaps: Red = high values") // added after v2.21.0
+        if(HeatmapsRedlowvaluesMenuItem->Caption == "Heatmaps: Set Red to Represent High Values") // added after v2.21.0
         {
             HeatmapColourStr = "redlow";
         }
@@ -17897,7 +17910,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
 // TextHandler->RebuildFromTextVector(1, HiddenDisplay); //This now incorporated in RebuildTrackAndText so that text is plotted after inactive
 // elements but before active elements.  This is so text can overwite stations and non-station named locations.
 
-    Track->RebuildTrackAndText(4, HiddenDisplay, (Level1Mode != OperMode));
+    Track->RebuildTrackAndText(0, HiddenDisplay, (Level1Mode != OperMode));
 
 // Display->Output->Invalidate();  experiment, needs TDisplay Output to be public.  Trying to invoke the white flashes that
 // used to occur frequently without Disp->Update() in PlotOriginal
@@ -18121,6 +18134,266 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
             }
         }
         TrainController->ReplotTrains(0, HiddenDisplay);
+    }
+    Display->ZoomOutFlag = false;
+    ZoomButton->Glyph->LoadFromResourceName(0, "ZoomOut");
+    MainScreen->Picture->Bitmap->Assign(HiddenScreen->Picture->Bitmap);
+    Display->Update(); // resurrected when Update() dropped from PlotOutput etc
+    Utilities->Clock2Stopped = ClockState;
+    Utilities->CallLogPop(91);
+}
+
+// ---------------------------------------------------------------------------
+
+void TInterface::ClearandRebuildRailwayWithoutTrains(int Caller) // now uses HiddenScreen to help avoid flicker
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ClearandRebuildRailway");
+    bool ClockState = Utilities->Clock2Stopped;
+
+    Utilities->Clock2Stopped = true;
+    AllRoutes->RebuildRailwayWithoutTrainsFlag = false;
+    HiddenDisplay->ClearDisplay(6);
+    AllRoutes->RebuildRailwayFlag = false; //moved here at v2.14.0 from ClockTimer2 so this function not called twice when called before ClockTimer2 triggered
+//    Track->RebuildUserGraphics(1, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
+    if(ScreenGridFlag && (Level1Mode == TrackMode))          //after v2.21.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else
+    {
+        int WidthNum = int(MainScreen->Width / 160) + 1;
+        int HeightNum = int(MainScreen->Height / 144) + 1;
+        for(int x = 0; x < WidthNum; x++)
+        {
+            for(int y = 0; y < HeightNum; y++)
+            {
+                HiddenDisplay->PlotAbsolute(0, x * 160, y * 144, RailGraphics->GridBitmap);
+            }
+        }
+    }
+// TextHandler->RebuildFromTextVector(1, HiddenDisplay); //This now incorporated in RebuildTrackAndText so that text is plotted after inactive
+// elements but before active elements.  This is so text can overwite stations and non-station named locations.
+
+    Track->RebuildTrackAndText(0, HiddenDisplay, (Level1Mode != OperMode));
+
+// Display->Output->Invalidate();  experiment, needs TDisplay Output to be public.  Trying to invoke the white flashes that
+// used to occur frequently without Disp->Update() in PlotOriginal
+
+    // OperMode LCs plotted below
+    if(Level2TrackMode == GapSetting)
+    {
+        Track->ShowSelectedGap(1, HiddenDisplay);
+    }
+    if(Level1Mode == PrefDirMode)
+    {
+        if(EveryPrefDir->PrefDirSize() > 0)
+        {
+            EveryPrefDir->EveryPrefDirMarker(0, HiddenDisplay);
+        }
+        if((Level2PrefDirMode == PrefDirContinuing) && (ConstructPrefDir->PrefDirSize() > 0))
+        {
+            ConstructPrefDir->PrefDirMarker(5, PrefDirCall, true, HiddenDisplay);
+        }
+    }
+    if(Level1Mode == TrackMode)
+    {
+        if(Track->NonFootCrossingNamedLocationExists(0))
+        {
+            LocationNameButton->Enabled = true;
+        }
+        else
+        {
+            LocationNameButton->Enabled = false;
+        }
+    }
+    if(Level2TrackMode == DistanceStart)
+    {
+        if(!Track->LengthHeatMapFlag && !Track->SpeedHeatMapFlag)
+        {
+            Track->LengthandSpeedMarker(0, HiddenDisplay);
+            DistanceKey->Visible = true;
+            DistancesMarked = true;
+        }
+        LengthConversionPanel->Visible = true;
+        SpeedConversionPanel->Visible = true;
+    }
+    if(Level2TrackMode == DistanceContinuing) // for extended distances
+    {
+        if(ConstructPrefDir->PrefDirSize() > 0)
+        {
+// this line was after the next line until v2.5.1, changed so magenta not overrridden after PrefDirMarker called
+            ConstructPrefDir->PrefDirMarker(11, PrefDirCall, true, HiddenDisplay);
+            LengthConversionPanel->Visible = true;
+            SpeedConversionPanel->Visible = true;
+            Track->LengthandSpeedMarker(2, HiddenDisplay);
+            LengthHeatMapImage->Visible = false;
+            SpeedHeatMapImage->Visible = false;
+            DistanceKey->Visible = true;
+            DistancesMarked = true;
+        }
+    }
+    if((Level2TrackMode == TrackSelecting) && DistancesMarked)
+    // this is to keep the distance markers if they are already present when Select is chosen, in case user wishes to choose SelectLengths,
+    // don't need to display ConstructPrefDir marker as that only needed in DistanceContinuing mode
+    {
+        ExitHeatmaps();
+        Track->LengthandSpeedMarker(1, HiddenDisplay);
+        DistanceKey->Visible = true;
+    }
+    if((Level2TrackMode != TrackSelecting) && (Level2TrackMode != DistanceContinuing) && (Level2TrackMode != DistanceStart))
+    // cancel DistancesMarked if exit from any of these modes
+    {
+        DistancesMarked = false;
+        DistanceKey->Visible = false;
+        ExitHeatmaps();
+        LengthConversionPanel->Visible = false; // added at v1.3.1 to remove when distance/speed setting exited
+        SpeedConversionPanel->Visible = false; // added at v1.3.1 to remove when distance/speed setting exited
+    }
+    if(mbLeftDown && SelectPickedUp && ((Level2TrackMode == CopyMoving) || (Level2TrackMode == CutMoving)))
+    // in process of moving so use NewSelectBitmapHLoc & VLoc
+    {
+        HiddenDisplay->PlotOutput(8, NewSelectBitmapHLoc * 16, NewSelectBitmapVLoc * 16, SelectBitmap);
+    }
+
+    else if((!mbLeftDown || !SelectPickedUp) && ((Level2TrackMode == CopyMoving) || (Level2TrackMode == CutMoving)))
+    // not in process of moving or failed to click mouse within selection so use SelectBitmapHLoc & VLoc
+    {
+        HiddenDisplay->PlotOutput(9, SelectBitmapHLoc * 16, SelectBitmapVLoc * 16, SelectBitmap);
+    }
+
+    if(Level1Mode == OperMode)
+    {
+        AllRoutes->MarkAllRoutes(0, HiddenDisplay);
+        if(!AllRoutes->LockedRouteVector.empty())
+        {
+            for(TAllRoutes::TLockedRouteVectorIterator LRVIT = AllRoutes->LockedRouteVector.end() - 1; LRVIT >= AllRoutes->LockedRouteVector.begin(); LRVIT--)
+            {
+                if(!(AllRoutes->TrackIsInARoute(7, LRVIT->LastTrackVectorPosition, LRVIT->LastXLinkPos)))
+                {
+                    AllRoutes->LockedRouteVector.erase(LRVIT);
+                    // if end element not in route then a train must have entered it from the wrong end and erased the whole route,
+                    // hence no longer needed so get rid of it (end of route can't be points, crossover or bridge so danger of
+                    // route being on the other track of a 2-track element doesn't arise)
+                    continue;
+                }
+                TOneRoute Route = AllRoutes->GetFixedRouteAt(0, LRVIT->RouteNumber);
+//                int x = Route.PrefDirSize() - 1;
+//here need to find the PrefDirVector position for Route that corresponds to LRVIT->LastTrackVectorPosition
+                int FrontPDPos = -1;  //added at v2.15.0 for front truncation
+                for(int x = (Route.PrefDirSize() - 1); x >= 0; x--)
+                {
+                    if(Route.GetFixedPrefDirElementAt(262, x).GetTrackVectorPosition() == LRVIT->LastTrackVectorPosition)
+                    {
+                        FrontPDPos = x;
+                    }
+                }
+                if(FrontPDPos == -1)
+                {
+                    throw Exception("Failed to find LastTrackVectorPosition in Clearand... for a locked route");
+                }
+                bool BreakFlag = false;
+                TPrefDirElement PrefDirElement = Route.GetFixedPrefDirElementAt(1, FrontPDPos);
+                while(PrefDirElement.GetTrackVectorPosition() != LRVIT->RearTrackVectorPosition)
+                {
+                    HiddenDisplay->PlotOutput(10, (PrefDirElement.HLoc) * 16, (PrefDirElement.VLoc) * 16,
+                                              RailGraphics->LockedRouteCancelPtr[PrefDirElement.GetELink()]);
+                    if(!(AllRoutes->TrackIsInARoute(8, PrefDirElement.Conn[PrefDirElement.GetELinkPos()],
+                                                    PrefDirElement.ConnLinkPos[PrefDirElement.GetELinkPos()])))
+                    {
+                        BreakFlag = true;
+                        break; // train removed earlier element from route so stop here
+                    }
+                    FrontPDPos--;
+                    if(FrontPDPos < 0) // added after Albie Vowles reported error on 14/08/20 by email
+                    {
+                        // it means that part of the route (including that at the truncate point) has been cancelled, in this case by a train running past the signal
+                        BreakFlag = true;
+// at danger and cancelling the route elements in front of it.  The locked route is now too short and this 'while' loop won't find
+                        break; // it, so x keeps decrementing and when it becomes -1 an error is thrown.  This addition prevents the error.
+                    }
+                    PrefDirElement = Route.GetFixedPrefDirElementAt(2, FrontPDPos);
+                }
+                if(!BreakFlag)
+                {
+                    if(PrefDirElement.GetTrackVectorPosition() == LRVIT->RearTrackVectorPosition)
+                    {
+                        HiddenDisplay->PlotOutput(11, (PrefDirElement.HLoc) * 16, (PrefDirElement.VLoc) * 16,
+                                                  RailGraphics->LockedRouteCancelPtr[PrefDirElement.GetELink()]);
+                    }
+                }
+            }
+        }
+        if(RouteMode == RouteContinuing)
+        {
+            AutoRouteStartMarker->PlotOriginal(23, HiddenDisplay);
+// system thinks overlay is already plotted, so plot original to reset the OverlayPlotted flag
+            SigRouteStartMarker->PlotOriginal(24, HiddenDisplay);
+            NonSigRouteStartMarker->PlotOriginal(25, HiddenDisplay);
+            if(AutoSigsFlag)
+            {
+                AutoRouteStartMarker->PlotOverlay(7, HiddenDisplay);
+            }
+            else if(PreferredRoute) // added at v2.7.0, was ConsecSignalsRoute
+            {
+                SigRouteStartMarker->PlotOverlay(8, HiddenDisplay);
+            }
+            else
+            {
+                NonSigRouteStartMarker->PlotOverlay(9, HiddenDisplay);
+            }
+        }
+        if(Track->PointFlashFlag)
+        {
+            // need to reset the screen location for picking up the original graphic
+            int Left, Top; // Embarcadero change - these missing in error from Borland file
+            Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos());
+            // note that the above Pos values are wrt layout, not the screen, but the Left & Top values are wrt screen
+            PointFlash->SetSourceRect(Left, Top);
+            PointFlash->LoadOriginalScreenGraphic(4); // reload from new position
+            // doesn't matter whether Flash was on or off when this function called as will sort itself out later (may miss a flash but won't be noticeable)
+        }
+        // now plot level crossings (must be after routes). These don't need any base elements to be plotted as they are already plotted.
+        // In order to avoid plotting the whole LC for every element of a LC a bool value - LCPlotted - is used to save time
+        for(unsigned int x = 0; x < Track->LCVector.size(); x++)
+        {
+            (Track->InactiveTrackVector.begin() + (*(Track->LCVector.begin() + x)))->LCPlotted = false;
+        }
+        for(unsigned int x = 0; x < Track->LCVector.size(); x++)
+        {
+            int BaseSpeedTag;
+            TTrackElement ATE;
+            TTrackElement ITE = *(Track->InactiveTrackVector.begin() + (*(Track->LCVector.begin() + x)));
+            {
+                BaseSpeedTag = Track->GetTrackElementFromTrackMap(0, ITE.HLoc, ITE.VLoc).SpeedTag;
+                if(ITE.LCPlotted == false)
+                {
+                    if(ITE.Attribute == 0)
+                    {
+                        Track->PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(0, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay);
+                    }
+                    else if(ITE.Attribute == 1)
+                    {
+                        // need to determine if should plot green (manual) or red (auto), but all linked LCs have ConsecSignals set to 2 in BarriersDownVector if manual
+                        // so just need to test this for the HLoc & VLoc position match
+                        for(unsigned int x = 0; x < Track->BarriersDownVector.size(); x++)
+                        {
+                            if((Track->BarriersDownVector.at(x).HLoc == ITE.HLoc) && (Track->BarriersDownVector.at(x).VLoc == ITE.VLoc))
+                            {
+                                if(Track->BarriersDownVector.at(x).TypeOfRoute == 2)
+                                {
+                                    Track->PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(0, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay,
+                                                                                                    true); // true for manual = green
+                                }
+                                else
+                                {
+                                    Track->PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(1, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay,
+                                                                                                    false); // false for auto = red
+                                }
+                            }
+                        }
+                    }
+                    // if ITE->Attribute == 2 then LC is changing, FlashingGraphics will take care of flashing & final plotting,
+                    // it won't set LCPlotted but no real time lost in this case
+                }
+            }
+        }
+//        TrainController->ReplotTrains(0, HiddenDisplay);
     }
     Display->ZoomOutFlag = false;
     ZoomButton->Glyph->LoadFromResourceName(0, "ZoomOut");
@@ -18945,6 +19218,11 @@ void TInterface::SetLevel1Mode(int Caller)
         FailureMenu->Visible = true; //the following added at v2.14.0
         FailureMenu->Enabled = true;
         ClearandRebuildRailway(55); // so points display with one fillet
+        StaticFeaturesScreen->Canvas->Brush->Style = bsClear; // so text prints transparent
+        StaticFeaturesScreen->Canvas->Brush->Color = Utilities->clTransparent;
+        StaticFeaturesScreen->Canvas->FillRect(TRect(0, 0, MainScreen->Width, MainScreen->Height)); //fill it with transparent colour
+        //generate a new StaticFeaturesDisplay
+        Track->RebuildTrackAndText(1, StaticFeaturesDisplay, true); //true for plot both fillets & basic LCs
         break;
 
     case RestartSessionOperMode: // restart in Paused mode after a session load, sets both Level1Mode & Level2OperMode
@@ -19021,6 +19299,11 @@ void TInterface::SetLevel1Mode(int Caller)
         ActionsDueForm->ActionsDueListBox->Items->Add(L"hold \"Actions");
         ActionsDueForm->ActionsDueListBox->Items->Add(L"Due\" label");
         ActionsDueForm->ActionsDueListBox->Items->Add(L"to move panel");
+        StaticFeaturesScreen->Canvas->Brush->Style = bsClear; // so text prints transparent
+        StaticFeaturesScreen->Canvas->Brush->Color = Utilities->clTransparent;
+        StaticFeaturesScreen->Canvas->FillRect(TRect(0, 0, MainScreen->Width, MainScreen->Height)); //fill it with transparent colour
+        //generate a new StaticFeaturesDisplay
+        Track->RebuildTrackAndText(1, StaticFeaturesDisplay, true); //true for plot both fillets & basic LCs
         if((TrainController->AvHoursIntValue > 0) || (Level2OperMode == PreStart)) // only visible if already set or if still in prestart mode
         {
             MTBFEditBox->Visible = true;
@@ -26108,7 +26391,14 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
 
 //test code here
 
-
+/*
+for(int x = 1; x < 100; x++)
+{
+    Track->RebuildTrackAndText(-1, HiddenDisplay, true);
+ClearandRebuildRailway(-1);
+}
+int y = 4;
+*/
 
 //end of test code
 
@@ -29413,14 +29703,14 @@ void __fastcall TInterface::HeatmapsRedlowvaluesMenuItemClick(TObject *Sender)
     {
         LengthHeatMapImage = LengthHeatMapImageRedHigh;
         SpeedHeatMapImage = SpeedHeatMapImageRedHigh;
-        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = low values";
+        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent Low Values";
         Track->RedLowFlag = false;
     }
     else
     {
         LengthHeatMapImage = LengthHeatMapImageRedLow;
         SpeedHeatMapImage = SpeedHeatMapImageRedLow;
-        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Red = high values";
+        HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent High Values";
         Track->RedLowFlag = true;
     }
     Utilities->CallLogPop(2719);

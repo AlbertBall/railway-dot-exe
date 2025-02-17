@@ -491,8 +491,6 @@ private:
 ///< stores the HPos position of the service ref train name
     int LongServRefTextV;
 ///< stores the VPos position of the service ref train name
-    int BgndColNumber;
-///< 8 bit colour number corresponding to background colour (Utilities->clTransparent)
 
 // operating data
     AnsiString RestoreTimetableLocation;
@@ -527,9 +525,9 @@ private:
 ///< points to the front headcode segment, this is set to red or blue depending on TrainMode
     Graphics::TBitmap *HeadCodeGrPtr[4];
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
-    Graphics::TBitmap *LongServRefNameBitmap;  //added after v2.21.0
+    Graphics::TBitmap *LongServRefNameBitmap;  //added at v2.22.0
 ///< Stores the long service ref name for > 4 chars
-    Graphics::TBitmap *LongServRefMainScreenBitmap;  //added after v2.21.0
+    Graphics::TBitmap *LongServRefMainScreenBitmap;  //added at v2.22.0
 ///< Stores the background + long serv ref name
 
     TColor BackgroundColour;
@@ -925,6 +923,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///< vector containing all trains currently in the railway
     TFont *LongServRefFont;
 ///< the font used for long serv ref names
+    int BgndColNumber;
+///< 8 bit websafe colour number corresponding to background colour (Utilities->clTransparent)
     int LongServRefFontColNumber;
 ///< the websafe colour number for long serv ref names
 

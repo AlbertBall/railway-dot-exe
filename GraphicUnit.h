@@ -1029,7 +1029,7 @@ public:
     Graphics::TBitmap *bmPointBlank;
     Graphics::TBitmap *bmStraightEWSignalBlank;
     Graphics::TBitmap *bmStraightNSSignalBlank;
-//below new after v2.21.0 for length & speed heatmaps, copies existing track graphic prior to being coloured
+//below new at v2.22.0 for length & speed heatmaps, copies existing track graphic prior to being coloured
 
     Graphics::TBitmap *HeatMapGraphic;
 

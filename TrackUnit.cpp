@@ -9880,7 +9880,7 @@ void TTrack::LengthandSpeedMarker(int Caller, TDisplay *Disp)
 }
 
 // ---------------------------------------------------------------------------
-void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Length false -> speed heatmap  //unused  //added after v2.21.0
+void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Length false -> speed heatmap  //unused  //added at v2.22.0
 // Examine all elements in the TrackVector and if have a valid length mark the relevant track using OneLengthOrSpeedHeatMapColour
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthOrSpeedHeatMap");
@@ -9906,7 +9906,7 @@ void TTrack::LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp) //Len
 
 // ---------------------------------------------------------------------------
 
-void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)   //added after v2.21.0
+void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)   //added at v2.22.0
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",OneLengthOrSpeedHeatMapColour," + TrackElement.LogTrack(8) + "," +

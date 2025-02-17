@@ -262,7 +262,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrackInfoShowing = false;
         TrainStatusShowing = true;
         TrainTTShowing = true;
-        //these menu items rearranged after v2.21.0
+        //these menu items rearranged at v2.22.0
         TrackInfoOnOffMenuItem->Caption = "Show Track &Information                    Shift+ Ctrl+ I"; // added here at v1.2.0 because dropped from ResetAll()
         TrainStatusInfoOnOffMenuItem->Caption = "Hide Train &Status Information         Shift+ Ctrl+ S"; // changed at v2.0.0 so normally visible
         TrainTTInfoOnOffMenuItem->Caption = "Hide Train &Timetable Information   Shift+ Ctrl+ T"; // as above
@@ -7538,8 +7538,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 StartWholeRailwayMoveVPos = Y;
                 WholeRailwayMoving = true;
                 Screen->Cursor = TCursor(-22); // Four arrows;
-                AnsiString OldInfo = InfoPanel->Caption;      //added after v2.21.0
-                InfoPanel->Caption  = "Railway moving, please don't click the mouse"; //added after v2.21.0
+                AnsiString OldInfo = InfoPanel->Caption;      //added at v2.22.0
+                InfoPanel->Caption  = "Railway moving, please don't click the mouse"; //added at v2.22.0
                 InfoPanel->Visible = true;
                 Display->Update();  //to make the InfoPanel visible
             }
@@ -9314,8 +9314,8 @@ void TInterface::MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftSta
             StartWholeRailwayMoveVPos = Y;
             WholeRailwayMoving = true;
             Screen->Cursor = TCursor(-22); // Four arrows;
-            AnsiString OldInfo = InfoPanel->Caption;      //added after v2.21.0
-            InfoPanel->Caption  = "Railway moving, please don't click the mouse"; //added after v2.21.0
+            AnsiString OldInfo = InfoPanel->Caption;      //added at v2.22.0
+            InfoPanel->Caption  = "Railway moving, please don't click the mouse"; //added at v2.22.0
             InfoPanel->Visible = true;
             Display->Update(); //to show InfoPanel
         }
@@ -9468,7 +9468,7 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender, TShiftState Shi
 //                if((abs(X - StartWholeRailwayMoveHPos) >= 16) || (abs(Y - StartWholeRailwayMoveVPos) >= 16)) //don't need this as railway won't move with less than 16 pixels
                 {                                                                                              //since use int division by 16, also it causes a short move
                                                                                                                //followed by a longer move so better without it,
-                                                                                                               //changed after v2.21.0
+                                                                                                               //changed at v2.22.0
                     int NewH = X - StartWholeRailwayMoveHPos;
                     int NewV = Y - StartWholeRailwayMoveVPos;
                     Display->DisplayOffsetH -= NewH / 16;
@@ -11718,7 +11718,7 @@ void __fastcall TInterface::SelectMenuItemClick(TObject *Sender)
         if(Level1Mode == TrackMode)
         {
             SelectionValid = false;
-            ExitHeatmaps(); //added after v2.21.0 to avoid spectrum image showing with track element panel after selection made
+            ExitHeatmaps(); //added at v2.22.0 to avoid spectrum image showing with track element panel after selection made
             Level2TrackMode = TrackSelecting;
             SetLevel2TrackMode(34);
             if(!PasteWarningSentFlag)
@@ -17829,7 +17829,7 @@ void TInterface::SaveConfigFile(int Caller)
         {
             SignalStr = "right";
         }
-        if(HeatmapsRedlowvaluesMenuItem->Caption == "Heatmaps: Set Red to Represent High Values") // added after v2.21.0
+        if(HeatmapsRedlowvaluesMenuItem->Caption == "Heatmaps: Set Red to Represent High Values") // added at v2.22.0
         {
             HeatmapColourStr = "redlow";
         }
@@ -17845,7 +17845,7 @@ void TInterface::SaveConfigFile(int Caller)
         ConfigFile << AnsiString("RLYLocn=") << AnsiString(LoadRailwayDialog->InitialDir) << '\n';
         ConfigFile << AnsiString("TTBLocn=") << AnsiString(TimetableDialog->InitialDir) << '\n';
         ConfigFile << AnsiString("SSNLocn=") << AnsiString(LoadSessionDialog->InitialDir) << '\n';
-        ConfigFile << AnsiString("Heatmap=") << HeatmapColourStr << '\n';  // added after v2.21.0
+        ConfigFile << AnsiString("Heatmap=") << HeatmapColourStr << '\n';  // added at v2.22.0
         ConfigFile << AnsiString("Length =") << LengthStr << "    #default track element length in metres (not less than 10)\n";
         ConfigFile << AnsiString("Speed  =") << SpeedStr << "    #default track element speed limit in km/h (not less than 10 and not greater than 400)\n";
         ConfigFile.close();
@@ -17895,7 +17895,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     HiddenDisplay->ClearDisplay(6);
     AllRoutes->RebuildRailwayFlag = false; //moved here at v2.14.0 from ClockTimer2 so this function not called twice when called before ClockTimer2 triggered
 //    Track->RebuildUserGraphics(1, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
-    if(ScreenGridFlag && (Level1Mode == TrackMode))          //after v2.21.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else
+    if(ScreenGridFlag && (Level1Mode == TrackMode))          //at v2.22.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else
     {
         int WidthNum = int(MainScreen->Width / 160) + 1;
         int HeightNum = int(MainScreen->Height / 144) + 1;
@@ -18155,7 +18155,7 @@ void TInterface::ClearandRebuildRailwayWithoutTrains(int Caller) // now uses Hid
     HiddenDisplay->ClearDisplay(6);
     AllRoutes->RebuildRailwayFlag = false; //moved here at v2.14.0 from ClockTimer2 so this function not called twice when called before ClockTimer2 triggered
 //    Track->RebuildUserGraphics(1, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
-    if(ScreenGridFlag && (Level1Mode == TrackMode))          //after v2.21.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else
+    if(ScreenGridFlag && (Level1Mode == TrackMode))          //at v2.22.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else
     {
         int WidthNum = int(MainScreen->Width / 160) + 1;
         int HeightNum = int(MainScreen->Height / 144) + 1;
@@ -29530,7 +29530,7 @@ void TInterface::PlayerHandshakingActions()
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::LengthsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting  //added after v2.21.0
+void __fastcall TInterface::LengthsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting  //added at v2.22.0
 /*
 Heatmap functions:
 
@@ -29634,7 +29634,7 @@ Actions needed for the following
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting   //added after v2.21.0
+void __fastcall TInterface::SpeedsHeatmapButtonClick(TObject *Sender) //only available when length/speed setting   //added at v2.22.0
 {
     try
     {

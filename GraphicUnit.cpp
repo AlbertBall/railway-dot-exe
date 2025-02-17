@@ -2315,7 +2315,7 @@ TRailGraphics::TRailGraphics()
     LCTopHorMan->Transparent = true;
     LCTopHorMan->TransparentColor = clB5G5R5;
 
-    HeatMapGraphic = new Graphics::TBitmap; //new after v2.21.0 for length & speed heatmaps, copies existing graphic prior to colour being added
+    HeatMapGraphic = new Graphics::TBitmap; //new at v2.22.0 for length & speed heatmaps, copies existing graphic prior to colour being added
     HeatMapGraphic->PixelFormat = pf32bit;
     HeatMapGraphic->Height = 16;
     HeatMapGraphic->Width = 16;
@@ -3465,7 +3465,7 @@ TRailGraphics::~TRailGraphics()
     delete bmTransparentBgnd;
     delete GridBitmap;
 
-    delete HeatMapGraphic; //added after v2.21.0
+    delete HeatMapGraphic; //added at v2.22.0
 }
 
 // ---------------------------------------------------------------------------

@@ -118,7 +118,7 @@ __published: // IDE-managed Components
     TBitBtn *LengthOKButton;
 ///< distance/speed setting buttons - left to right & top to bottom
     TBitBtn *UserGraphicButton; // new at v2.4.0
-    TBitBtn *LengthHeatmapBitBtn; //added after v2.21.0
+    TBitBtn *LengthHeatmapBitBtn; //added at v2.22.0
     TBitBtn *SpeedHeatmapBitBtn;
 
 // user graphic selection buttons

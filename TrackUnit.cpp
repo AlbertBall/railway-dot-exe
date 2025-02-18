@@ -3817,8 +3817,8 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
             if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
             {
                 // only plot if on screen, to save time
-                if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-                   ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+//                if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+//                   ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
                 {
                     Next.PlotVariableTrackElement(2, Disp); // striped if not named
                 }
@@ -3831,8 +3831,8 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
     {
         if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
         {
-            if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-               ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+//            if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+//               ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
             {
                 if(Next.TrackType == Points)
                 {
@@ -3898,8 +3898,8 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                 if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
                 {
                     // only plot if on screen, to save time, & OK as plotting one by one here
-                    if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-                       ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+//                    if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+//                       ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
                     {
                         if(GetTrackElementFromTrackMap(1, Next.HLoc, Next.VLoc).SpeedTag == 1)
                         {

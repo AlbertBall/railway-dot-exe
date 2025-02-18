@@ -527,8 +527,8 @@ private:
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
     Graphics::TBitmap *LongServRefNameBitmap;  //added at v2.22.0
 ///< Stores the long service ref name for > 4 chars
-    Graphics::TBitmap *LongServRefMainScreenBitmap;  //added at v2.22.0
-///< Stores the background + long serv ref name
+    Graphics::TBitmap *LongServRefWorkingBitmap;  //added at v2.22.0
+///< General purpose storage for long serv ref display
 
     TColor BackgroundColour;
 ///< the background colour of the train's headcode graphics
@@ -927,6 +927,9 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///< 8 bit websafe colour number corresponding to background colour (Utilities->clTransparent)
     int LongServRefFontColNumber;
 ///< the websafe colour number for long serv ref names
+    int StaticFeaturesOffsetH;
+    int StaticFeaturesOffsetV;
+///< these store the offsets when StaticFeaturesDisplay is created, need to correct for these for later values
 
 
 //inline function

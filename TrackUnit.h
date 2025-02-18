@@ -1734,8 +1734,6 @@ public:
 
     bool RebuildRailwayFlag;
 ///< this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the next clock tick if not in zoom-out mode to clear the now cancelled route on the display
-    bool RebuildRailwayWithoutTrainsFlag;
-///< as above but without plotting trains, for display of long service references
     bool RouteBackTruncateFlag;
 ///< used to flag the fact that a route is being truncated from the back in order to change the behaviour of signal aspect setting in SetRearwardsSignalsReturnFalseForTrainInRear
 

@@ -2595,6 +2595,7 @@ and is created in the Train constructor.  The font is  LongServRefFont and is cr
 
     //write service reference to bitmap after clearing it, can't do it in constructor as service ref not set at that stage
     LongServRefNameBitmap->Transparent = true;
+    LongServRefNameBitmap->TransparentColor = Utilities->clTransparent;
     LongServRefNameBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
     LongServRefNameBitmap->Canvas->Brush->Color = Utilities->clTransparent;
     LongServRefNameBitmap->Canvas->FillRect(TRect(0,0,54,13)); //fill it with transparent colour
@@ -2606,13 +2607,20 @@ Display->Update();
 
     //copy MainScreen background segment but clear it first
     LongServRefWorkingBitmap->Transparent = true;
+    LongServRefWorkingBitmap->TransparentColor = Utilities->clTransparent;
     LongServRefWorkingBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
     LongServRefWorkingBitmap->Canvas->Brush->Color = Utilities->clTransparent;
     LongServRefWorkingBitmap->Canvas->FillRect(TRect(0,0,54,10)); //fill it with transparent colour
+
+//Disp->GetImage()->Canvas->CopyRect(TRect(100,0,54,10), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
+
     LongServRefWorkingBitmap->Canvas->CopyRect(TRect(0,0,54,10), Disp->GetImage()->Canvas, TRect(LongServRefTextH - (Display->DisplayOffsetH * 16),
         LongServRefTextV +3 - (Display->DisplayOffsetV * 16), LongServRefTextH - (Display->DisplayOffsetH * 16) + 54, LongServRefTextV + 3 - (Display->DisplayOffsetV * 16) + 10));
 
-Disp->GetImage()->Canvas->CopyRect(TRect(0,20,54,30), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
+if(HeadCode == "2K60")
+{
+    Disp->GetImage()->Canvas->CopyRect(TRect(0,20,54,30), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
+}
 
     Byte *SLPtrIn; // pointer to the ScanLine values in LongServRefNameBitmap
     Byte *SLPtrOut; // pointer to the ScanLine values in LongServRefWorkingBitmap
@@ -2630,8 +2638,12 @@ Disp->GetImage()->Canvas->CopyRect(TRect(0,20,54,30), LongServRefWorkingBitmap->
         }
     }
 
-Disp->GetImage()->Canvas->CopyRect(TRect(0,40,54,50), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
 
+if(HeadCode == "2K60")
+{
+//Sleep(5000);
+Disp->GetImage()->Canvas->CopyRect(TRect(0,40,54,50), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
+}
 
 //copy back onto MainScreen - use Draw to retain transparent pixels CopyRect doesn't accept transparent pixels
     Disp->GetImage()->Canvas->Draw(LongServRefTextH - (Display->DisplayOffsetH * 16), LongServRefTextV + 3 - (Display->DisplayOffsetV * 16), LongServRefWorkingBitmap);
@@ -2642,31 +2654,43 @@ Disp->GetImage()->Canvas->CopyRect(TRect(0,40,54,50), LongServRefWorkingBitmap->
     LongServRefWorkingBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
     LongServRefWorkingBitmap->Canvas->Brush->Color = Utilities->clTransparent;
     LongServRefWorkingBitmap->Canvas->FillRect(TRect(0,0,54,10)); //fill it with transparent colour
-    LongServRefWorkingBitmap->Canvas->CopyRect(TRect(0,0,54,10), StaticFeaturesDisplay->GetImage()->Canvas, TRect(LongServRefTextH/*-
-        ((Display->DisplayOffsetH - TrainController->StaticFeaturesOffsetH) * 16)*/, LongServRefTextV + 3 /*-
-        ((Display->DisplayOffsetV - TrainController->StaticFeaturesOffsetV) * 16)*/, LongServRefTextH /*-
-        ((Display->DisplayOffsetH - TrainController->StaticFeaturesOffsetH) * 16)*/ + 54, LongServRefTextV + 3 /*-
-        ((Display->DisplayOffsetV - TrainController->StaticFeaturesOffsetV) * 16)*/ + 10));
+    LongServRefWorkingBitmap->Canvas->CopyRect(TRect(0,0,54,10), StaticFeaturesDisplay->GetImage()->Canvas, TRect(LongServRefTextH - (TrainController->StaticFeaturesOffsetH * 16),
+        LongServRefTextV - (TrainController->StaticFeaturesOffsetV * 16) + 3, LongServRefTextH - (TrainController->StaticFeaturesOffsetH * 16) + 54,
+        LongServRefTextV - (TrainController->StaticFeaturesOffsetV * 16) + 3 + 10));
 //now just get the background pixels where overlap with text
 
+if(HeadCode == "2K60")
+{
+//Sleep(5000);
 Disp->GetImage()->Canvas->CopyRect(TRect(0,60,54,70), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
+}
 
     byte *SLPtrText;
     for(int x = 3; x < 13; x++)
-    {   //Examines the main display within the area where the text is to be placed and allows it only if there is a background pixel already there, that way
-        //the new text is placed behind everything alse
+    {
         SLPtrText = reinterpret_cast<Byte*>(LongServRefNameBitmap->ScanLine[x]);   //this is 13 pixels deep
-        SLPtrOut = reinterpret_cast<Byte*>(LongServRefWorkingBitmap->ScanLine[x - 3]);  //use LongServRefWorkingBitmap for both output and statics
+        SLPtrOut = reinterpret_cast<Byte*>(LongServRefWorkingBitmap->ScanLine[x - 3]);  //this is 10 pixels deep
         for(int y = 0; y < 54; y++)
         {
             if(SLPtrText[y] == TrainController->LongServRefFontColNumber)
             {
-                SLPtrOut[y] = Utilities->clTransparent;//SLPtrStatics[y];
+                if(SLPtrOut[y] == TrainController->BgndColNumber)
+                {
+                    SLPtrOut[y] = 3;//TrainController->BgndColNumber;
+                } //else leave pixel as it is
+                else
+                {
+                    SLPtrOut[y] = SLPtrOut[y];
+                }
             }  //else do nothing
         }
     }
 
-Disp->GetImage()->Canvas->CopyRect(TRect(0,80,54,90), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
+if(HeadCode == "2K60")
+{
+//Sleep(5000);
+    Disp->GetImage()->Canvas->CopyRect(TRect(0,80,54,90), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10)); //diagnostics
+}
 
     Disp->Update();
     LongServRefEnteredFlag = true;
@@ -2688,6 +2712,9 @@ void TTrain::RemoveLongServRef(int Caller, AnsiString NameText, TDisplay *Disp) 
 
 //copy back onto MainScreen
     Disp->GetImage()->Canvas->Draw(LongServRefTextH - (Display->DisplayOffsetH * 16), LongServRefTextV + 3 - (Display->DisplayOffsetV * 16), LongServRefWorkingBitmap);
+//    Disp->GetImage()->Canvas->CopyRect(TRect(LongServRefTextH - (Display->DisplayOffsetH * 16), LongServRefTextV + 3 - (Display->DisplayOffsetV * 16),
+//        LongServRefTextH - (Display->DisplayOffsetH * 16) + 54, LongServRefTextV + 3 - (Display->DisplayOffsetV * 16) + 10), LongServRefWorkingBitmap->Canvas,
+//       TRect(0,0,54,10));
 
     Disp->Update();
 //    AllRoutes->RebuildRailwayFlag = true;
@@ -10050,7 +10077,6 @@ TTrainController::TTrainController()
     LongServRefFont->Name = "Arial";
     LongServRefFont->Style = TFontStyles() << fsBold;
     LongServRefFont->Size = 8;
-    LongServRefFont->Color = clB0G0R0; //temporary colour
     if(Utilities->clTransparent == clB5G5R5) //white
     {
         LongServRefFont->Color = clB3G0R0; //dark blue    //number 03

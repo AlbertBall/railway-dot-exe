@@ -16333,7 +16333,7 @@ void __fastcall TInterface::BlueBgndMenuItemClick(TObject *Sender)
         TrainController->LogEvent("BlueBgndMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlueBgndMenuItemClick");
         TColor OldTransparentColour = Utilities->clTransparent;
-        Utilities->clTransparent = TColor(0x330000);
+        Utilities->clTransparent = TColor(0x330000);    //clB1G0R0
         SelectBitmap->TransparentColor = Utilities->clTransparent;
         RailGraphics->ChangeAllTransparentColours(Utilities->clTransparent, OldTransparentColour);
         RailGraphics->SetUpAllDerivitiveGraphics(Utilities->clTransparent);
@@ -18129,6 +18129,8 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
                 }
             }
         }
+        //populate StaticFeaturesDisplay at this point prior to train plotting
+        StaticFeaturesDisplay->GetImage()->Picture->Bitmap->Assign(HiddenScreen->Picture->Bitmap); //now has same offsets as mainscreen
         TrainController->ReplotTrains(0, HiddenDisplay);
     }
     Display->ZoomOutFlag = false;
@@ -18954,14 +18956,11 @@ void TInterface::SetLevel1Mode(int Caller)
         FailureMenu->Visible = true; //the following added at v2.14.0
         FailureMenu->Enabled = true;
         ClearandRebuildRailway(55); // so points display with one fillet
-        //generate a new StaticFeaturesDisplay
+        //create a new StaticFeaturesDisplay, populate it in Clearand...
         StaticFeaturesDisplay->ClearDisplay(12);
         StaticFeaturesScreen->Canvas->Brush->Style = bsClear; // so text prints transparent
         StaticFeaturesScreen->Canvas->Brush->Color = Utilities->clTransparent;
         StaticFeaturesScreen->Canvas->FillRect(TRect(0, 0, MainScreen->Width, MainScreen->Height)); //fill it with transparent colour
-        TrainController->StaticFeaturesOffsetH = Display->DisplayOffsetH;
-        TrainController->StaticFeaturesOffsetV = Display->DisplayOffsetV;
-        Track->RebuildTrackAndText(1, StaticFeaturesDisplay, true); //true for plot both fillets & basic LCs
         break;
 
     case RestartSessionOperMode: // restart in Paused mode after a session load, sets both Level1Mode & Level2OperMode
@@ -19038,14 +19037,11 @@ void TInterface::SetLevel1Mode(int Caller)
         ActionsDueForm->ActionsDueListBox->Items->Add(L"hold \"Actions");
         ActionsDueForm->ActionsDueListBox->Items->Add(L"Due\" label");
         ActionsDueForm->ActionsDueListBox->Items->Add(L"to move panel");
-        //generate a new StaticFeaturesDisplay
+        //create a new StaticFeaturesDisplay, populate it in Clearand...
         StaticFeaturesDisplay->ClearDisplay(13);
         StaticFeaturesScreen->Canvas->Brush->Style = bsClear; // so text prints transparent
         StaticFeaturesScreen->Canvas->Brush->Color = Utilities->clTransparent;
         StaticFeaturesScreen->Canvas->FillRect(TRect(0, 0, MainScreen->Width, MainScreen->Height)); //fill it with transparent colour
-        TrainController->StaticFeaturesOffsetH = Display->DisplayOffsetH;
-        TrainController->StaticFeaturesOffsetV = Display->DisplayOffsetV;
-        Track->RebuildTrackAndText(2, StaticFeaturesDisplay, true); //true for plot both fillets & basic LCs
         if((TrainController->AvHoursIntValue > 0) || (Level2OperMode == PreStart)) // only visible if already set or if still in prestart mode
         {
             MTBFEditBox->Visible = true;
@@ -26133,16 +26129,17 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
 
 //test code here
 
+/*
 Display->GetImage()->Picture->Bitmap->Assign(StaticFeaturesDisplay->GetImage()->Picture->Bitmap);
 Display->Update();
 
-//for(int x = 1; x < 50; x++)
+for(int x = 1; x < 50; x++)
 {
-//    Track->RebuildTrackAndText(-1, HiddenDisplay, true);
-//    ClearandRebuildRailway(-1);
+    Track->RebuildTrackAndText(-1, HiddenDisplay, true);
+    ClearandRebuildRailway(-1);
 }
 int y = 4;
-
+*/
 
 //end of test code
 

@@ -2654,9 +2654,9 @@ Disp->GetImage()->Canvas->CopyRect(TRect(0,40,54,50), LongServRefWorkingBitmap->
     LongServRefWorkingBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
     LongServRefWorkingBitmap->Canvas->Brush->Color = Utilities->clTransparent;
     LongServRefWorkingBitmap->Canvas->FillRect(TRect(0,0,54,10)); //fill it with transparent colour
-    LongServRefWorkingBitmap->Canvas->CopyRect(TRect(0,0,54,10), StaticFeaturesDisplay->GetImage()->Canvas, TRect(LongServRefTextH - (TrainController->StaticFeaturesOffsetH * 16),
-        LongServRefTextV - (TrainController->StaticFeaturesOffsetV * 16) + 3, LongServRefTextH - (TrainController->StaticFeaturesOffsetH * 16) + 54,
-        LongServRefTextV - (TrainController->StaticFeaturesOffsetV * 16) + 3 + 10));
+    LongServRefWorkingBitmap->Canvas->CopyRect(TRect(0,0,54,10), StaticFeaturesDisplay->GetImage()->Canvas, TRect(LongServRefTextH - (Display->DisplayOffsetH * 16),
+        LongServRefTextV - (Display->DisplayOffsetV * 16) + 3, LongServRefTextH - (Display->DisplayOffsetH * 16) + 54,
+        LongServRefTextV - (Display->DisplayOffsetV * 16) + 3 + 10));
 //now just get the background pixels where overlap with text
 
 if(HeadCode == "2K60")
@@ -2676,13 +2676,9 @@ Disp->GetImage()->Canvas->CopyRect(TRect(0,60,54,70), LongServRefWorkingBitmap->
             {
                 if(SLPtrOut[y] == TrainController->BgndColNumber)
                 {
-                    SLPtrOut[y] = 3;//TrainController->BgndColNumber;
+                    SLPtrOut[y] = TrainController->NearTransparentColNumber;
                 } //else leave pixel as it is
-                else
-                {
-                    SLPtrOut[y] = SLPtrOut[y];
-                }
-            }  //else do nothing
+            }  //else leave pixel as it is
         }
     }
 
@@ -10080,19 +10076,22 @@ TTrainController::TTrainController()
     if(Utilities->clTransparent == clB5G5R5) //white
     {
         LongServRefFont->Color = clB3G0R0; //dark blue    //number 03
-        LongServRefFontColNumber = 3;
+        LongServRefFontColNumber = 3; //clB3G0R0
+        NearTransparentColNumber = 0xd6;  //clB4G5R5
         BgndColNumber = 0xd7;
     }
     else if(Utilities->clTransparent == clB0G0R0) //black
     {
         LongServRefFont->Color = clB3G5R5; //cream      //number 0xd5
-        LongServRefFontColNumber = 0xd5;
+        LongServRefFontColNumber = 0xd5; //clB3G5R5
+        NearTransparentColNumber = 2;    //clB2G0R0
         BgndColNumber = 0;
     }
     else //clB1G0R0) dark blue
     {
         LongServRefFont->Color = clB3G5R5; //cream
-        LongServRefFontColNumber = 0xd5;
+        LongServRefFontColNumber = 0xd5; //clB3G5R5
+        NearTransparentColNumber = 2; //clB2G0R0
         BgndColNumber = 1;
     }
 }

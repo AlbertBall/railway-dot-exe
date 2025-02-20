@@ -927,6 +927,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///< 8 bit websafe colour number corresponding to background colour (Utilities->clTransparent)
     int LongServRefFontColNumber;
 ///< the websafe colour number for long serv ref names
+    int NearTransparentColNumber;  //clB2G0R0 for dark backgrounds (black is clB0G0R0 & dark blue is clB1G0R0) & clB2G5R5 for white background
+///< Colour used to replace long serv. ref. text colour when removed - can't be transparent or text remains, so needs to be as close as possible so not noticeable
     int StaticFeaturesOffsetH;
     int StaticFeaturesOffsetV;
 ///< these store the offsets when StaticFeaturesDisplay is created, need to correct for these for later values

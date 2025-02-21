@@ -43,8 +43,7 @@
 
 #include "TextUnit.h"
 #include "TrackUnit.h"
-#include "TrainUnit.h";
-//#include "DisplayUnit.h" included in TrackUnit.h
+#include "TrainUnit.h"
 #include "Utilities.h"
 
 // ---------------------------------------------------------------------------

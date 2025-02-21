@@ -1,10 +1,19 @@
+
+add new keyboard shortcuts to manual
+
 Problems with display of train serv ref:
 
-need to add RebuildTrackAndText to caller checker
+update list of suggestions with my offer to add names outside train itself
+
+when remove trains for any reason make sure remove serv ref names if plotted
 
 Mention that whole train must be showing for name to show
 
-Need button (or something) to toggle long ref display
+/try to use better serv ref colour for white bgnds so contrasts with blue locations
+
+/need to add RebuildTrackAndText to caller checker
+
+/ Need button (or something) to toggle long ref display - use info menu
 
 / H position moves side to side when train vertical
 

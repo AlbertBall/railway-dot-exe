@@ -15505,6 +15505,10 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
         {
             Train.SendMissedActionLogs(0, -1, Train.ActionVectorEntryPtr); // -1 is a marker for send messages for all remaining
         } // entries, including Fer if present
+        if(Train.LongServRefEnteredFlag)
+        {
+            Train.RemoveLongServRef(3, Train.TrainDataEntryPtr->ServiceReference, Display);
+        }
         Utilities->CallLogPop(1200);
     }
     catch(const Exception &e)
@@ -29473,7 +29477,7 @@ void __fastcall TInterface::TrainLongServRefInfoOnOffMenuItemClick(TObject *Send
     {
         TrainController->ShowLongServRefsFlag = true;
         TrainLongServRefInfoOnOffMenuItem->Caption = "Hide &Long Service References          Shift+ Ctrl+ L";
-        ClearandRebuildRailway(4);
+        ClearandRebuildRailway(103);
     }
     Utilities->CallLogPop(2730);
 }

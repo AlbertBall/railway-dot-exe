@@ -408,7 +408,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "RebuildLocationNameMultiMap",
         "RebuildOpTimeToActMultimap", //new v2.2.0
         "RebuildPrefDirVector",
-        "RebuildTrack",
+        "RebuildTrackAndText",
         "RebuildUserGraphics",
         "ReclaimSignalsForNonAutoSigRoutes",
         "RecoverClipboard",
@@ -550,7 +550,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "TrainToJoinIsAdjacent",
         "TrainVectorAt",
         "TrainVectorAtIdent",
-		"TruncateRoute",
+        "TruncateRoute",
         "TryToConnectTrack",
         "TTrain",
         "UnplotTrain",

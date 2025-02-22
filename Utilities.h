@@ -78,9 +78,10 @@ public:
     ///< new at v2.3.0   false=LH signals
     bool SetLocaleResultOK;
     ///< flag to indicate whether the call to setlocale() in InterfaceUnit.cpp succeeded or not
+    bool ShowLongServRefsFlag;
+    ///< when set long service references show on screen, initialsied in Interface constructor
     char DecimalPoint;
     ///< added at v2.4.0 so can use the local value in loaded session files
-
     double LastDelayTTClockTime;
     ///< Clock time at which the latest delay for any train occurred. Used to prevent new delays within 5 minutes of the last one, added at v2.13.0
     double MTBTSRs;

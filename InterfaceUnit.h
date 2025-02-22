@@ -1170,7 +1170,6 @@ private:
     bool TrackInfoShowing;
     bool TrainStatusShowing;
     bool TrainTTShowing;
-    bool ShowLongServRefsFlag;
     ///<flags for floating information
 
     void BuildDatagramFromPlayerMap(int Caller, char marker, AnsiString UserName, TBytes &buffer, TDynamicMap DynamicMap);

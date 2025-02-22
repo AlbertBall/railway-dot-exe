@@ -638,12 +638,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         DevelopmentPanel->Color = TColor(0xCCCCCC); // new v2.2.0 as above
         TTStartTimeBox->Color = TColor(0x99FFFF); // cream
         HighlightPanel->Color = TColor(0x33CCFF);
-        TrainController->OpActionPanelHintDelayCounter = 0;
         MTBFEditBox->Visible = false; // new at v2.4.0
         MTBFLabel->Visible = false;
-        TrainController->AvHoursIntValue = 0;
-        TrainController->MTBFHours = 0;
-        TrainController->TwoOrMoreLocationsWarningGiven = false;
         CancelSelectionFlag = false;
         TTStartTimeIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, best to initialise to an invalid location to force errors if not set properly
         TTFirstServiceIterator = TimetableEditVector.end();
@@ -684,6 +680,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure; //set high initially
         Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure; //set high initially
         Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
+        Utilities->ShowLongServRefsFlag = false;
         AllEntriesTTListBox->TopIndex = 0; //added at v2.13.0 to initialise the value (seemed to initialise to 0 without this but not documented)
         FlashControlButton->Visible = false; //added at v2.15.0
 
@@ -703,7 +700,6 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // read the locality conversion structure
         conv = localeconv(); // this is what updates the structure
         ExitHeatmaps(); //to set up initial parameters
-        ShowLongServRefsFlag = false;
         Utilities->DecimalPoint = conv->decimal_point[0];
     }
 
@@ -29467,16 +29463,18 @@ void __fastcall TInterface::TrainLongServRefInfoOnOffMenuItemClick(TObject *Send
 {
     TrainController->LogEvent("TrainLongServRefInfoOnOffMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainLongServRefInfoOnOffMenuItemClick");
-    if(TrainController->ShowLongServRefsFlag)
+    if(Utilities->ShowLongServRefsFlag)
     {
-        TrainController->ShowLongServRefsFlag = false;
+        Utilities->ShowLongServRefsFlag = false;
         TrainLongServRefInfoOnOffMenuItem->Caption = "Show &Long Service References          Shift+ Ctrl+ L";
-        ClearandRebuildRailway(3);
+        TrainController->ReplotTrains(3, Display);
+        ClearandRebuildRailway(3);  //add this after trains replotted to tidy up any remaining text overwriting
     }
     else
     {
-        TrainController->ShowLongServRefsFlag = true;
+        Utilities->ShowLongServRefsFlag = true;
         TrainLongServRefInfoOnOffMenuItem->Caption = "Hide &Long Service References          Shift+ Ctrl+ L";
+        TrainController->ReplotTrains(4, Display);
         ClearandRebuildRailway(103);
     }
     Utilities->CallLogPop(2730);

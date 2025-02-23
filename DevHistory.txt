@@ -1,7 +1,7 @@
 
 add new keyboard shortcuts to manual
 
-Problems with display of train serv ref:
+/ added long refs to operating image (32 bit only as yet)
 
 / update list of suggestions with my offer to add names outside train itself
 

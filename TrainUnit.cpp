@@ -9515,6 +9515,10 @@ void TTrain::WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap)
         {
             Bitmap->Canvas->Draw(((Track->TrackElementAt(744, PlotElement[x]).HLoc - Track->GetHLocMin()) * 16 + HOffset[x]),
                                  ((Track->TrackElementAt(745, PlotElement[x]).VLoc - Track->GetVLocMin()) * 16 + VOffset[x]), HeadCodePosition[x]);
+            if(Utilities->ShowLongServRefsFlag)
+            {
+                Bitmap->Canvas->Draw(LongServRefTextH - (Track->GetHLocMin() * 16), LongServRefTextV - (Track->GetVLocMin() * 16), LongServRefWorkingBitmap);
+            }
         }
     }
     Utilities->CallLogPop(1708);

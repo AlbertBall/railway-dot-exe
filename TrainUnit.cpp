@@ -10073,21 +10073,21 @@ TTrainController::TTrainController()
     {
         LongServRefFont->Color = clB1G0R0; //very dark blue
         LongServRefFontColNumber = 0x01; //clB1G0R0
-        NearTransparentColNumber = 0xd6;  //clB4G5R5
+        NearTransparentColNumber = 0xda; // =218 decimal, was 0xd6;  //clB4G5R5 - see RailGraphics->SetWebSafePalette(...
         BgndColNumber = 0xd7; //clB5G5R5
     }
     else if(Utilities->clTransparent == clB0G0R0) //black
     {
         LongServRefFont->Color = clB3G5R5; //cream      //number 0xd5
         LongServRefFontColNumber = 0xd5; //clB3G5R5
-        NearTransparentColNumber = 0x01;    //clB1G0R0
+        NearTransparentColNumber = 0xd8;  // = 216 decimal, was 0x01;    //clB1G0R0 - see RailGraphics->SetWebSafePalette(...
         BgndColNumber = 0x00; //clB0G0R0
     }
     else //clB1G0R0) dark blue
     {
         LongServRefFont->Color = clB3G5R5; //cream
         LongServRefFontColNumber = 0xd5; //clB3G5R5
-        NearTransparentColNumber = 0x00; //clB0G0R0
+        NearTransparentColNumber = 0xd9; // =217 decimal,was 0x00; //clB0G0R0 - see RailGraphics->SetWebSafePalette(...
         BgndColNumber = 0x01; //clB1G0R0
     }
 }

@@ -3476,7 +3476,7 @@ void TRailGraphics::SetWebSafePalette(int Caller, Graphics::TBitmap *bmp)  //gen
     LOGPALETTE *logPal;
     logPal = (LOGPALETTE*) new char[sizeof(LOGPALETTE) + 255 * sizeof(PALETTEENTRY)];
     logPal->palVersion = 0x300;
-    logPal->palNumEntries = 216; // Web-safe palette has 216 colors
+    logPal->palNumEntries = 219; // Web-safe palette has 216 colors + 3 extra
 
     // Generate Web-Safe Colors
     int index = 0;
@@ -3491,6 +3491,21 @@ void TRailGraphics::SetWebSafePalette(int Caller, Graphics::TBitmap *bmp)  //gen
             }
         }
     }
+// add near transparent colours:
+//216 = near black = B005; G0, R0
+//217 = near dark blue = B046; G0, R0
+//218 = nerar white = B250, G255, R255
+    logPal->palPalEntry[216].peBlue = 5;  // }
+    logPal->palPalEntry[216].peGreen = 0; // } near black
+    logPal->palPalEntry[216].peRed = 0;   // }
+
+    logPal->palPalEntry[217].peBlue = 46; // }
+    logPal->palPalEntry[217].peGreen = 0; // } near dark blue
+    logPal->palPalEntry[217].peRed = 0;   // }
+
+    logPal->palPalEntry[218].peBlue = 250;  // }
+    logPal->palPalEntry[218].peGreen = 255; // } near white
+    logPal->palPalEntry[218].peRed = 255;   // }
 
     // Create and assign the palette
     HPALETTE hPal = CreatePalette(logPal);

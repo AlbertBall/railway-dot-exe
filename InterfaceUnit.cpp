@@ -263,10 +263,10 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrainStatusShowing = true;
         TrainTTShowing = true;
         //these menu items rearranged at v2.22.0
-        TrackInfoOnOffMenuItem->Caption = "Show Track &Information                    Shift+ Ctrl+ I"; // added here at v1.2.0 because dropped from ResetAll()
-        TrainStatusInfoOnOffMenuItem->Caption = "Hide Train &Status Information         Shift+ Ctrl+ S"; // changed at v2.0.0 so normally visible
-        TrainTTInfoOnOffMenuItem->Caption = "Hide Train &Timetable Information   Shift+ Ctrl+ T"; // as above
-        TrainLongServRefInfoOnOffMenuItem->Caption = "Show &Long Service References          Shift+ Ctrl+ L";
+        TrackInfoOnOffMenuItem->Caption = "Show Track &Information"; // added here at v1.2.0 because dropped from ResetAll()
+        TrainStatusInfoOnOffMenuItem->Caption = "Hide Train &Status Information"; // changed at v2.0.0 so normally visible
+        TrainTTInfoOnOffMenuItem->Caption = "Hide Train &Timetable Information"; // as above
+        TrainLongServRefInfoOnOffMenuItem->Caption = "Show &Long Service References";
         NoDelaysMenuItem->Enabled = false;
         NoFailuresMenuItem->Enabled = false;
 
@@ -7376,12 +7376,12 @@ void __fastcall TInterface::TrackInfoOnOffMenuItemClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrackInfoOnOffMenuItemClick");
         if(!TrackInfoShowing)
         {
-            TrackInfoOnOffMenuItem->Caption = "Hide Track &Information                    Shift+ Ctrl+ I";
+            TrackInfoOnOffMenuItem->Caption = "Hide Track &Information";
             TrackInfoShowing = true;
         }
         else
         {
-            TrackInfoOnOffMenuItem->Caption = "Show Track &Information                    Shift+ Ctrl+ I";
+            TrackInfoOnOffMenuItem->Caption = "Show Track &Information";
             TrackInfoShowing = false;
         }
         Utilities->CallLogPop(1183);
@@ -7401,12 +7401,12 @@ void __fastcall TInterface::TrainStatusInfoOnOffMenuItemClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainStatusInfoOnOffMenuItemClick");
         if(!TrainStatusShowing)
         {
-            TrainStatusInfoOnOffMenuItem->Caption = "Hide Train &Status Information         Shift+ Ctrl+ S";
+            TrainStatusInfoOnOffMenuItem->Caption = "Hide Train &Status Information";
             TrainStatusShowing = true;
         }
         else
         {
-            TrainStatusInfoOnOffMenuItem->Caption = "Show Train &Status Information         Shift+ Ctrl+ S";
+            TrainStatusInfoOnOffMenuItem->Caption = "Show Train &Status Information";
             TrainStatusShowing = false;
         }
         Utilities->CallLogPop(1184);
@@ -7426,12 +7426,12 @@ void __fastcall TInterface::TrainTTInfoOnOffMenuItemClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainTTInfoOnOffMenuItemClick");
         if(!TrainTTShowing)
         {
-            TrainTTInfoOnOffMenuItem->Caption = "Hide Train &Timetable Information   Shift+ Ctrl+ T";
+            TrainTTInfoOnOffMenuItem->Caption = "Hide Train &Timetable Information";
             TrainTTShowing = true;
         }
         else
         {
-            TrainTTInfoOnOffMenuItem->Caption = "Show Train &Timetable Information   Shift+ Ctrl+ T";
+            TrainTTInfoOnOffMenuItem->Caption = "Show Train &Timetable Information";
             TrainTTShowing = false;
         }
         Utilities->CallLogPop(1185);
@@ -29466,14 +29466,14 @@ void __fastcall TInterface::TrainLongServRefInfoOnOffMenuItemClick(TObject *Send
     if(Utilities->ShowLongServRefsFlag)
     {
         Utilities->ShowLongServRefsFlag = false;
-        TrainLongServRefInfoOnOffMenuItem->Caption = "Show &Long Service References          Shift+ Ctrl+ L";
+        TrainLongServRefInfoOnOffMenuItem->Caption = "Show &Long Service References";
         TrainController->ReplotTrains(3, Display);
         ClearandRebuildRailway(3);  //add this after trains replotted to tidy up any remaining text overwriting
     }
     else
     {
         Utilities->ShowLongServRefsFlag = true;
-        TrainLongServRefInfoOnOffMenuItem->Caption = "Hide &Long Service References          Shift+ Ctrl+ L";
+        TrainLongServRefInfoOnOffMenuItem->Caption = "Hide &Long Service References";
         TrainController->ReplotTrains(4, Display);
         ClearandRebuildRailway(103);
     }

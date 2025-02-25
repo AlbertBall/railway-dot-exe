@@ -1,5 +1,6 @@
-
 add new keyboard shortcuts to manual
+
+/ tidy up info menu, align all keyboard shorcuts
 
 / improved the near-transparent colours by adding 3 new ones to the palette
 

@@ -1,3 +1,5 @@
+problem:  when loading a session the showLongServFlag is set false when the train is created, so when replot trains is called in loadsession Remove not called, but Enter is, but the StaticFeaturesDisplay isn't yet loaded (only loaded during Clearand...) so if ShowLongRef flag set when load a session there is no static display loaded during Enter so that when Clearand... calls replottrains again, and Remove is called, no static features are plotted, and when Enter called the area under the text is blank.  Only happens oddly for 64 bit, 32 bit works ok for some reason.
+
 add new keyboard shortcuts to manual
 
 / tidy up info menu, align all keyboard shorcuts

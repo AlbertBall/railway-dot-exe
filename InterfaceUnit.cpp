@@ -18955,12 +18955,12 @@ void TInterface::SetLevel1Mode(int Caller)
         DelayMenu->Enabled = true;
         FailureMenu->Visible = true; //the following added at v2.14.0
         FailureMenu->Enabled = true;
-        ClearandRebuildRailway(55); // so points display with one fillet
         //create a new StaticFeaturesDisplay, populate it in Clearand...
         StaticFeaturesDisplay->ClearDisplay(12);
         StaticFeaturesScreen->Canvas->Brush->Style = bsClear; // so text prints transparent
         StaticFeaturesScreen->Canvas->Brush->Color = Utilities->clTransparent;
         StaticFeaturesScreen->Canvas->FillRect(TRect(0, 0, MainScreen->Width, MainScreen->Height)); //fill it with transparent colour
+        ClearandRebuildRailway(55); // so points display with one fillet //moved to after StaticFeatures... cleared to set it up correctly
         break;
 
     case RestartSessionOperMode: // restart in Paused mode after a session load, sets both Level1Mode & Level2OperMode
@@ -19067,6 +19067,7 @@ void TInterface::SetLevel1Mode(int Caller)
             MTBFLabel->Caption = "Mean time between\ntrain failures in\ntimetable hours";
             TrainController->MTBFHours = 0;
         }
+        ClearandRebuildRailway(104); // after StaticFeatures cleared to set it up correctly
         break;
 
     default:
@@ -23427,7 +23428,23 @@ FINISHEDLOADING:
                     }
                     RlyFile = true;
                     SetCaption(3);
-                    TrainController->ReplotTrains(2, Display); //to set track elements with train IDs
+//                    TrainController->ReplotTrains(2, Display); //to set track elements with train IDs //removed at v2.22.0 as caused EnterLongServRefAsName to be called
+                                                                 //when LongServRefsFlag is set without StaticFeaturesDisplay being populated (only populated in
+                                                                 //Clearand... and that not called yet).  Instead just set the track elements with TrainIDs
+                    if(!TrainController->TrainVector.empty())  //this part sets track element with TrainIDs without calling EnterLongServRefAsName
+                    {
+                        for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                        {
+                            if(!TrainController->TrainVectorAt(106, x).HasTrainGone()) //added at v2.11.0 to prevent plotting a train pending removal & particularly to prevent TrainElementID's being reinstated
+                            {                                        //see Kevin Smith error information for details
+                                for(int y = 0; y < 4; y++)
+                                {
+                                    TrainController->TrainVectorAt(107, x).PlotTrainGraphic(13, y, Display);
+                                }
+                            }
+                        }
+                    }
+
                    //now routes and trains loaded and TrainIDs set (in ReplotTrains) set all the signals as a session file saved before v2.14.0 will have incorrect
                    //aspects if there are facing ground signals on a route new at v2.14.0
                     if(AllRoutes->AllRoutesVector.size() > 0)

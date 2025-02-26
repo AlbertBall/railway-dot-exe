@@ -9492,7 +9492,7 @@ void TTrain::PlotTrain(int Caller, TDisplay *Disp)
     }
     if((!Display->ZoomOutFlag) && (TrainDataEntryPtr->ServiceReference.Length() > 4))
     {
-        if(LongServRefEnteredFlag)
+         if(LongServRefEnteredFlag)
         {
             RemoveLongServRef(2, TrainDataEntryPtr->ServiceReference, Disp);
         }

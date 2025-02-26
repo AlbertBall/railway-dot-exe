@@ -26146,17 +26146,6 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
 
 //test code here
 
-/*
-Display->GetImage()->Picture->Bitmap->Assign(StaticFeaturesDisplay->GetImage()->Picture->Bitmap);
-Display->Update();
-
-for(int x = 1; x < 50; x++)
-{
-    Track->RebuildTrackAndText(-1, HiddenDisplay, true);
-    ClearandRebuildRailway(-1);
-}
-int y = 4;
-*/
 
 //end of test code
 

@@ -19354,6 +19354,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
 
         if(TruncateType == NextSignalTruncate) //re-instate the saved route
         {
+            AllRoutes->RouteBackTruncateFlag = false; //added at v2.22.0, not truncating from the back any longer so don't want to set SkipForwardLook when setting rearward signals
             AllRoutes->StoreOneRoute(3, &ReinstatementRoute);
             int RouteID = AllRoutes->GetFixedRouteAt(231, AllRoutes->AllRoutesSize() - 1).RouteID;
             int RouteNumber = AllRoutes->GetRouteVectorNumber(8, IDInt(RouteID));

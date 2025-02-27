@@ -2656,8 +2656,6 @@ colour can't be used as it would leave the text in place.
     Disp->GetImage()->Canvas->Draw(LongServRefTextH - (Display->DisplayOffsetH * 16), LongServRefTextV - (Display->DisplayOffsetV * 16), LongServRefWorkingBitmap);
 
 //from here building a new LongServRefWorkingBitmap ready for the next removal
-
-//pickup staticfeatures onto LongServRefWorkingBitmap as this not needed any more for this train
     LongServRefWorkingBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
     LongServRefWorkingBitmap->Canvas->Brush->Color = Utilities->clTransparent;
     LongServRefWorkingBitmap->Canvas->FillRect(TRect(0,0,54,10)); //fill it with transparent colour
@@ -2665,6 +2663,10 @@ colour can't be used as it would leave the text in place.
         LongServRefTextV - (Display->DisplayOffsetV * 16), LongServRefTextH - (Display->DisplayOffsetH * 16) + 54,
         LongServRefTextV - (Display->DisplayOffsetV * 16) + 10));
 //now just get the background pixels where overlap with text
+
+//Disp->GetImage()->Canvas->CopyRect(TRect(0,0,200,200), StaticFeaturesDisplay->GetImage()->Canvas, TRect(LongServRefTextH - (Display->DisplayOffsetH * 16),
+//        LongServRefTextV - (Display->DisplayOffsetV * 16), LongServRefTextH - (Display->DisplayOffsetH * 16) + 200,
+//        LongServRefTextV - (Display->DisplayOffsetV * 16) + 200));
 
     byte *SLPtrText;
     for(int x = 3; x < 13; x++)
@@ -2683,6 +2685,8 @@ colour can't be used as it would leave the text in place.
         }
     }
 
+//Disp->GetImage()->Canvas->CopyRect(TRect(0,210, 54,220), LongServRefWorkingBitmap->Canvas, TRect(0,0,54,10));
+
     Disp->Update();
     LongServRefEnteredFlag = true;
     Utilities->CallLogPop(2727);
@@ -2699,10 +2703,43 @@ void TTrain::RemoveLongServRef(int Caller, AnsiString NameText, TDisplay *Disp) 
         return;
     }
 
-//copy back onto MainScreen
+//copy back onto MainScreen, but first avoid overwriting any existing leading train colours (grey [clB4G4R4], red [clB0G0R5], or blue [clB5G0R0])
+//Pick up the relevant section of the main display onto a new bitmap
+    Graphics::TBitmap *TempBitmap = new Graphics::TBitmap;
+    TempBitmap->PixelFormat = pf8bit;
+    TempBitmap->Height = 10;   //shorter than name bitmap as top 3 pixels not occupied by text
+    TempBitmap->Width = 54;
+    RailGraphics->SetWebSafePalette(64, TempBitmap);
+    TempBitmap->Canvas->CopyRect(TRect(0,0,54,10), Disp->GetImage()->Canvas, TRect(LongServRefTextH - (Display->DisplayOffsetH * 16),
+        LongServRefTextV - (Display->DisplayOffsetV * 16), LongServRefTextH - (Display->DisplayOffsetH * 16) + 54, LongServRefTextV - (Display->DisplayOffsetV * 16) + 10));
+
+    Byte *SLPtrIn; // pointer to the ScanLine values in TempBitmap
+    Byte *SLPtrOut; // pointer to the ScanLine values in LongServRefWorkingBitmap
+    for(int x = 0; x < 10; x++)
+    {
+        SLPtrIn = reinterpret_cast<Byte*>(TempBitmap->ScanLine[x]);
+        SLPtrOut = reinterpret_cast<Byte*>(LongServRefWorkingBitmap->ScanLine[x]);
+        for(int y = 0; y < 54; y++)
+        {
+            if(SLPtrIn[y] == 0xac) //this is clB4G4R4 - grey
+            {
+                SLPtrOut[y] = TrainController->BgndColNumber;
+            }
+            else if(SLPtrIn[y] == 0xb4) //this is clB0G0R5 - red for leading character
+            {
+                SLPtrOut[y] = TrainController->BgndColNumber;
+            }
+            else if(SLPtrIn[y] == 0x05) //this is clB5G0R0 - blue for signaller control leading character
+            {
+                SLPtrOut[y] = TrainController->BgndColNumber;
+            }
+        }
+    }
+
     Disp->GetImage()->Canvas->Draw(LongServRefTextH - (Display->DisplayOffsetH * 16), LongServRefTextV - (Display->DisplayOffsetV * 16), LongServRefWorkingBitmap);
     Disp->Update();
     LongServRefEnteredFlag = false;
+    delete TempBitmap;
     Utilities->CallLogPop(2729);
 }
 

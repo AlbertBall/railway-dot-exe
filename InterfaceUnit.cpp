@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion() + " Beta2";
+        ProgramVersion = "RailOS32" + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -17889,6 +17889,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
 
     Utilities->Clock2Stopped = true;
     HiddenDisplay->ClearDisplay(6);
+    StaticFeaturesDisplay->ClearDisplay(14);
     AllRoutes->RebuildRailwayFlag = false; //moved here at v2.14.0 from ClockTimer2 so this function not called twice when called before ClockTimer2 triggered
 //    Track->RebuildUserGraphics(1, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
     if(ScreenGridFlag && (Level1Mode == TrackMode))          //at v2.22.0 moved to RebuildTrackAndText so LongServRefNames plotted before all else

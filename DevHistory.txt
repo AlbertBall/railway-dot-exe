@@ -1,6 +1,12 @@
-problem:  when loading a session the showLongServFlag is set false when the train is created, so when replot trains is called in loadsession Remove not called, but Enter is, but the StaticFeaturesDisplay isn't yet loaded (only loaded during Clearand...) so if ShowLongRef flag set when load a session there is no static display loaded during Enter so that when Clearand... calls replottrains again, and Remove is called, no static features are plotted, and when Enter called the area under the text is blank.  Only happens oddly for 64 bit, 32 bit works ok for some reason.
+
 
 add new keyboard shortcuts to manual
+
+Mention error re routing correction - fitzburger96 reported 26/02 via discord
+
+/ problem when trains moving upwards, the leading headcode character is overwritten during Remove... because trains aren't plotted on the StaticFeaturesDisplay.  Corrected by ensuring that no part of a leading character colour is overwritten during Remove...
+
+/ when loading a session the showLongServFlag is set false when the train is created, so when replot trains is called in loadsession Remove not called, but Enter is, but the StaticFeaturesDisplay isn't yet loaded (only loaded during Clearand...) so if ShowLongRef flag set when load a session there is no static display loaded during Enter so that when Clearand... calls replottrains again, and Remove is called, no static features are plotted, and when Enter called the area under the text is blank.  Only happens oddly for 64 bit, 32 bit works ok for some reason.  Corrected - replot trains in load session changed so that just sets the track element TrainIDs, this was why it was called.  Also call Clearand... at end of case RestartOperMode (is already called at end of case OperMode)
 
 / tidy up info menu, align all keyboard shorcuts
 

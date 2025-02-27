@@ -79,7 +79,7 @@ public:
     bool SetLocaleResultOK;
     ///< flag to indicate whether the call to setlocale() in InterfaceUnit.cpp succeeded or not
     bool ShowLongServRefsFlag;
-    ///< when set long service references show on screen, initialsied in Interface constructor
+    ///< when set long service references show on screen, initialised in Interface constructor
     char DecimalPoint;
     ///< added at v2.4.0 so can use the local value in loaded session files
     double LastDelayTTClockTime;

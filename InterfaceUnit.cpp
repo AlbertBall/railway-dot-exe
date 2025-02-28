@@ -15503,7 +15503,7 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
         } // entries, including Fer if present
         if(Train.LongServRefEnteredFlag)
         {
-            Train.RemoveLongServRef(3, Train.TrainDataEntryPtr->ServiceReference, Display);
+            Train.RemoveLongServRef(2, Train.TrainDataEntryPtr->ServiceReference, Display);
         }
         Utilities->CallLogPop(1200);
     }

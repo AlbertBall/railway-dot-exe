@@ -572,17 +572,7 @@ void TTrain::PlotStartPosition(int Caller)
         PlotTrainGraphic(11, 3, Display);
         // Plotted = true; set in PlotTrainGraphic
         //below handles long serv ref display
-        if((!Display->ZoomOutFlag) && (TrainDataEntryPtr->ServiceReference.Length() > 4))
-        {
-            if(LongServRefEnteredFlag)
-            {
-                RemoveLongServRef(0, TrainDataEntryPtr->ServiceReference, Display);
-            }
-            if(Plotted && (LeadElement > -1) && Utilities->ShowLongServRefsFlag) //if not plotted yet, exiting at continuation, or show flag false then ignore
-            {
-                EnterLongServRefAsName(0, Display);
-            }
-        }
+        IsLongServRefDisplayRequired(0, Display);
     }
     Display->Update(); // resurrected when Update() dropped from PlotOutput etc
     Utilities->CallLogPop(652);
@@ -675,7 +665,7 @@ void TTrain::UnplotTrain(int Caller)
     BackgroundColour = clNormalBackground;
     if(LongServRefEnteredFlag)
     {
-        RemoveLongServRef(4, TrainDataEntryPtr->ServiceReference, Display);
+        RemoveLongServRef(0, TrainDataEntryPtr->ServiceReference, Display);
     }
     Display->Update();
     // without this the screen 'blinks' at next Clearand... prob forces a full repaint for some reason
@@ -2454,20 +2444,27 @@ void TTrain::UpdateTrain(int Caller)
     {
         TrainHasFailed(7);
     }
-    if((!Display->ZoomOutFlag) && (TrainDataEntryPtr->ServiceReference.Length() > 4))
-    {
-        if(LongServRefEnteredFlag)
-        {
-            RemoveLongServRef(1, TrainDataEntryPtr->ServiceReference, Display);
-        }
-        if(Plotted && (LeadElement > -1) && Utilities->ShowLongServRefsFlag) //if not plotted yet, exiting at continuation, or show flag false then ignore
-        {
-            EnterLongServRefAsName(1, Display);
-        }
-    }
+    IsLongServRefDisplayRequired(1, Display);
     Display->Update();
     // need to keep this since Update() not called for PlotSmallOutput as too slow
     Utilities->CallLogPop(661);
+}
+
+// ----------------------------------------------------------------------------
+
+void TTrain::IsLongServRefDisplayRequired(int Caller, TDisplay *Disp)
+{
+    if((!Display->ZoomOutFlag) && (TrainDataEntryPtr->ServiceReference.Length() > 4))
+    {
+         if(LongServRefEnteredFlag)
+        {
+            RemoveLongServRef(1, TrainDataEntryPtr->ServiceReference, Disp);
+        }
+        if(Plotted && (LeadElement > -1) && Utilities->ShowLongServRefsFlag) //if not plotted yet, exiting at continuation, or show flag false then ignore
+        {
+            EnterLongServRefAsName(0, Disp);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -9527,17 +9524,7 @@ void TTrain::PlotTrain(int Caller, TDisplay *Disp)
     {
         PlotTrainGraphic(7, x, Disp);
     }
-    if((!Display->ZoomOutFlag) && (TrainDataEntryPtr->ServiceReference.Length() > 4))
-    {
-         if(LongServRefEnteredFlag)
-        {
-            RemoveLongServRef(2, TrainDataEntryPtr->ServiceReference, Disp);
-        }
-        if(Plotted && (LeadElement > -1) && Utilities->ShowLongServRefsFlag) //if not plotted yet, exiting at continuation, or show flag false then ignore
-        {
-            EnterLongServRefAsName(2, Disp);
-        }
-    }
+    IsLongServRefDisplayRequired(2, Disp);
     Utilities->CallLogPop(647);
 }
 

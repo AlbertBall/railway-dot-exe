@@ -717,6 +717,8 @@ public:
 
 /// functions in .cpp file
     bool LinkOccupied(int Caller, int TrackVectorPosition, int LinkNumber);
+/// function that checks if long serv ref display needed and if so removes earlier display if plotted then plots new one
+    void IsLongServRefDisplayRequired(int Caller, TDisplay *Disp);
 /// This is to display the train's service ref above the train
     void EnterLongServRefAsName(int Caller, TDisplay *Disp);
 /// Removes the displayed train service ref

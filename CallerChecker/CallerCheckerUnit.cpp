@@ -264,6 +264,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "IsBecomeNewServiceAvailable",
         "IsElementDefaultLength",
         "IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber",
+        "IsLongServRefDisplayRequired",
         "IsNamedNonStationLocationPresent",
         "IsLCAtHV",
         "IsLCBarrierDownAtHV",

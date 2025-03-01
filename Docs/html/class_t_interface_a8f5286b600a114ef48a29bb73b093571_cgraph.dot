@@ -1,0 +1,16 @@
+digraph "TInterface::HeatmapsRedlowvaluesMenuItemClick"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TInterface::HeatmapsRedlowvalues\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TTrainController::LogEvent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1",tooltip="store Str to the event log - moved from TUtilities for v0.6 so can record the tt clock value"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

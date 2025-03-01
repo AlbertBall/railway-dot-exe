@@ -109,7 +109,7 @@ digraph "TTrack::EnterLocationName"
   Node22 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node23 [label="TTextHandler::TextErase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_text_handler.html#a5741d1b36f1245b55926cb1243046307",tooltip="look for a text item in the vicinity of HPosInput & VPosInput & if TextToErase is null then erase any..."];
+  Node23 [label="TTextHandler::TextErase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_text_handler.html#a5741d1b36f1245b55926cb1243046307",tooltip=" "];
   Node23 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node24 [label="TTrack::CalcHLocMinEtc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9",tooltip="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..."];
   Node24 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

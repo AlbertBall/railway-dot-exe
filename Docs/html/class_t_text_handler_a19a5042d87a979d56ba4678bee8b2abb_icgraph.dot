@@ -103,11 +103,11 @@ digraph "TTextHandler::GetFontStyleAsInt"
   Node10 -> Node50 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node50 [label="TInterface::ExportTTButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426",tooltip=" "];
   Node10 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node10 -> Node126 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node126 [label="TInterface::SaveMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7699c9c408064623d335d3452b60f289",tooltip=" "];
+  Node10 -> Node127 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node127 [label="TInterface::SaveMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7699c9c408064623d335d3452b60f289",tooltip=" "];
   Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node5 -> Node126 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node5 -> Node191 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node191 [label="TInterface::SaveSession",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25",tooltip="Save a session file - see LoadSession for details of additions to the session file."];
-  Node191 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node127 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node193 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node193 [label="TInterface::SaveSession",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25",tooltip="Save a session file - see LoadSession for details of additions to the session file."];
+  Node193 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

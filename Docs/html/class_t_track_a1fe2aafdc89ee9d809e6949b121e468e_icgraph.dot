@@ -105,7 +105,7 @@ digraph "TTrack::DuplicatedLocationName"
   Node8 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node55 [label="TInterface::OneEntryTimetable\lMemoKeyUp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a8f417437f1683ddacce33c6e681571fc",tooltip=" "];
   Node8 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 -> Node107 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node107 [label="TInterface::SetSaveMenuAnd\lButtons",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_interface.html#afeb3a4236e5cfa7e93d7d5167304f937",tooltip="Called during the ClockTimer2 function to set screen boundaries, buttons & menu items."];
+  Node2 -> Node109 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node109 [label="TInterface::SetSaveMenuAnd\lButtons",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_interface.html#afeb3a4236e5cfa7e93d7d5167304f937",tooltip="Called during the ClockTimer2 function to set screen boundaries, buttons & menu items."];
   Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

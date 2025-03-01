@@ -1,0 +1,31 @@
+digraph "TRailGraphics::ChangeTransparentColour"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TRailGraphics::ChangeTransparent\lColour",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TRailGraphics::ChangeAll\lTransparentColours",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88",tooltip="Uses 'ChangeTransparentColour' method to change each graphic in turn."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::BlackBgndMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f",tooltip=" "];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::BlueBgndMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f",tooltip=" "];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::TInterface",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2",tooltip="constructor"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::WhiteBgndMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3a9f9cf4b530f7958ee3d14047fd951a",tooltip=" "];
+  Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TTrack::WriteOperatingTrack\lAndTextToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4",tooltip="Called by TInterface::SaveOperatingImage1Click to add all track & text to the image file in their ope..."];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TInterface::SaveOperating\lImageMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf",tooltip=" "];
+  Node2 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TTrack::WriteTrackAndText\lToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4",tooltip="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..."];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TInterface::SaveImageAnd\lGridMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1",tooltip=" "];
+  Node9 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TInterface::SaveImageAnd\lPrefDirsMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a",tooltip=" "];
+  Node9 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TInterface::SaveImageNoGrid\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a",tooltip=" "];
+}

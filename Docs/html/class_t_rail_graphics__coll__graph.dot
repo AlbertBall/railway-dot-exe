@@ -1,0 +1,8 @@
+digraph "TRailGraphics"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{TRailGraphics\n|+ AddPrefDir\l+ AddText\l+ AddTrack\l+ AutoSig\l+ CallingOn\l+ ClearAllPrefDir\l+ ClearOnePrefDir\l+ ConnectGaps\l+ Exit\l+ FontGraphic\land 732 more...\l|+ TRailGraphics()\l+ ~TRailGraphics()\l+ SetWebSafePalette()\l+ ChangeAllTransparentColours()\l+ ChangeBackgroundColour()\l+ ChangeBackgroundColour2()\l+ ChangeBackgroundColour3()\l+ ChangeForegroundColour()\l+ ChangeForegroundColour2()\l+ ChangeSpecificColour()\land 6 more...\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Handles graphic data & functions, single object defined."];
+}

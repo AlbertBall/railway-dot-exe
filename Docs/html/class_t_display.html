@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.21.0</span>
+   &#160;<span id="projectnumber">v2.22.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -228,10 +228,10 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a9a9f37c50df125f2543f251460caf841"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a9a9f37c50df125f2543f251460caf841">DisplayOffsetH</a> = 0</td></tr>
-<tr class="memdesc:a9a9f37c50df125f2543f251460caf841"><td class="mdescLeft">&#160;</td><td class="mdescRight">the horizontal offset of the displayed screen  <a href="class_t_display.html#a9a9f37c50df125f2543f251460caf841">More...</a><br /></td></tr>
+<tr class="memdesc:a9a9f37c50df125f2543f251460caf841"><td class="mdescLeft">&#160;</td><td class="mdescRight">the horizontal offset of the displayed screen (as viewpoint moves to the right [railway moves left] this offset increases)  <a href="class_t_display.html#a9a9f37c50df125f2543f251460caf841">More...</a><br /></td></tr>
 <tr class="separator:a9a9f37c50df125f2543f251460caf841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f11e4ccff893eef6ab624a7430974c3"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a6f11e4ccff893eef6ab624a7430974c3">DisplayOffsetV</a> = 0</td></tr>
-<tr class="memdesc:a6f11e4ccff893eef6ab624a7430974c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">the vertical offset of the displayed screen  <a href="class_t_display.html#a6f11e4ccff893eef6ab624a7430974c3">More...</a><br /></td></tr>
+<tr class="memdesc:a6f11e4ccff893eef6ab624a7430974c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">the vertical offset of the displayed screen (as viewpoint moves down [railway moves up] this offset increases)  <a href="class_t_display.html#a6f11e4ccff893eef6ab624a7430974c3">More...</a><br /></td></tr>
 <tr class="separator:a6f11e4ccff893eef6ab624a7430974c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef050e7f3b440542a12bbccd27bcd99d"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#aef050e7f3b440542a12bbccd27bcd99d">DisplayOffsetHHome</a> = 0</td></tr>
 <tr class="memdesc:aef050e7f3b440542a12bbccd27bcd99d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the horizontal offset of the 'Home' display  <a href="class_t_display.html#aef050e7f3b440542a12bbccd27bcd99d">More...</a><br /></td></tr>
@@ -277,14 +277,13 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a5bf597b689a283f16b1aae5fe79ad2ec"><td class="memItemLeft" align="right" valign="top">TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a5bf597b689a283f16b1aae5fe79ad2ec">OutputLog9</a></td></tr>
 <tr class="separator:a5bf597b689a283f16b1aae5fe79ad2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc194f2bc9eda7fe8de600098c85d2ac"><td class="memItemLeft" align="right" valign="top">TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#afc194f2bc9eda7fe8de600098c85d2ac">OutputLog10</a></td></tr>
-<tr class="memdesc:afc194f2bc9eda7fe8de600098c85d2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the panel that displays the performance log  <a href="class_t_display.html#afc194f2bc9eda7fe8de600098c85d2ac">More...</a><br /></td></tr>
 <tr class="separator:afc194f2bc9eda7fe8de600098c85d2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that manages all aspects of the display</p>
-<p>There are 2 objects - Display, which is the screen, and HiddenDisplay, which is an internal object used when building a new display and transferred to Display when complete (avoids the flicker that would be visible if Display was built directly) </p>
+<p>There are 3 objects - Display, which is the screen, HiddenDisplay, which is an internal object used when building a new display and transferred to Display when complete (avoids the flicker that would be visible if Display was built directly), and StaticFeaturesDisplay, used to store track, text and graphics and used for replacing the text of long service references </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00048">48</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00049">49</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab34b9c853e7e348cce8e9c19507d9f04"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab34b9c853e7e348cce8e9c19507d9f04">&#9670;&nbsp;</a></span>TDisplay()</h2>
@@ -365,9 +364,9 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructor, sets the screen image (MainScreen or HiddenScreen), the main display image and warning message labels </p>
+<p>Constructor, sets the screen image (MainScreen, HiddenScreen or StaticFeaturesScreen), the main display image and warning message labels </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00068">68</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00069">69</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -400,7 +399,7 @@ Private Attributes</h2></td></tr>
 
 <p>Empty the rectangle defined by Rect. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00174">174</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00175">175</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -427,7 +426,7 @@ Here is the call graph for this function:</div>
 
 <p>Empty the display. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00184">184</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00185">185</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -512,7 +511,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot an ellipse at the defined position and with the defined colour. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00124">124</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00125">125</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1015,7 +1014,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Used in <a class="el" href="class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers.">TGraphicElement::LoadOriginalScreenGraphic</a> in TrackUnit to obtain OriginalGraphic from an area of the screen defined by SourceRect </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00228">228</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00229">229</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1077,7 +1076,7 @@ Here is the caller graph for this function:</div>
 
 <p>Hide all the warnings from the top part of the screen - for timetable clock adjustment. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00548">548</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00549">549</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1124,7 +1123,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Display the track element at HPos &amp; VPos inverted (used to show an offending element when trying to connect track </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00143">143</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00144">144</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1212,7 +1211,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot the graphic at the railway (not screen) position set by HPos &amp; VPos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00490">490</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00491">491</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1255,7 +1254,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot user graphic. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00100">100</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00101">101</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1304,7 +1303,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot a blank track element at HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00238">238</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00239">239</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1341,7 +1340,7 @@ Here is the call graph for this function:</div>
 
 <p>Plot a dashed rectangle for the area defined by Rect, used when selecting display areas. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00500">500</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00501">501</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1395,7 +1394,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot the graphic at screen position HPos &amp; VPos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00086">86</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00087">87</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1443,7 +1442,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Plot a small blank rectangle in the centre of a set of points at HLoc &amp; VLoc prior to plotting one or both fillets (the movable section) </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00248">248</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00249">249</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1503,7 +1502,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Plot a small blank rectangle over the signal aspect area at HLoc &amp; VLoc prior to plotting the current signal aspect </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00262">262</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00263">263</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1565,7 +1564,7 @@ Here is the caller graph for this function:</div>
 <li>for writing operating images to a bitmap file </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00379">379</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00380">380</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1619,7 +1618,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot small (4x4) graphic PlotItem on the zoomed-out display at HPos &amp; Vpos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00114">114</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00115">115</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1685,7 +1684,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plot a rectangle at the defined position with colour Col &amp; size defined by Size. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00155">155</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00156">156</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1820,7 +1819,7 @@ Here is the caller graph for this function:</div>
 
 <p>Show the warnings after timetable clock adjusted. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00566">566</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00567">567</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1880,7 +1879,7 @@ Here is the caller graph for this function:</div>
 
 <p>Display TextString at the defined position with the defined font. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00194">194</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00195">195</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1992,7 +1991,7 @@ Here is the caller graph for this function:</div>
 
 <p>Display warning message Statement in the bottom left hand warning position and scroll other messages up. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00523">523</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8cpp_source.html#l00524">524</a> of file <a class="el" href="_display_unit_8cpp_source.html">DisplayUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2062,7 +2061,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>the horizontal offset of the displayed screen </p>
+<p>the horizontal offset of the displayed screen (as viewpoint moves to the right [railway moves left] this offset increases) </p>
 
 <p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00077">77</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
@@ -2114,7 +2113,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>the vertical offset of the displayed screen </p>
+<p>the vertical offset of the displayed screen (as viewpoint moves down [railway moves up] this offset increases) </p>
 
 <p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00079">79</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
@@ -2272,7 +2271,7 @@ Here is the caller graph for this function:</div>
 
 <p>pointer to the 60 x 36 element railway display area </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00052">52</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00053">53</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2298,7 +2297,7 @@ Here is the caller graph for this function:</div>
 
 <p>Pointers to the warning message logs (appear above the railway display during operation) </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00054">54</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00055">55</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2322,9 +2321,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>pointer to the panel that displays the performance log </p>
-
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00064">64</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00065">65</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2348,7 +2345,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00056">56</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00057">57</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2372,7 +2369,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00057">57</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00058">58</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2396,7 +2393,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00058">58</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00059">59</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2420,7 +2417,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00059">59</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00060">60</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2444,7 +2441,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00060">60</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00061">61</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2468,7 +2465,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00061">61</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00062">62</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2492,7 +2489,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00062">62</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00063">63</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2516,7 +2513,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00063">63</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00064">64</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>

@@ -1,0 +1,8 @@
+digraph "TUtilities"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{TUtilities\n|+ MinorDelayCutoff\l+ ModerateDelayCutoff\l+ MajorDelayCutoff\l+ MinorDelayFactor\l+ ModerateDelayFactor\l+ MajorDelayFactor\l+ NilPointChangeEventsPerFailure\l+ NilSignalChangeEventsPer\lFailure\l+ NilMTBTSRs\l+ MinorPointChangeEventsPer\lFailure\land 32 more...\l|+ DateTimeStamp()\l+ TimeStamp()\l+ CallLogPop()\l+ FileDiagnostics()\l+ SaveFileBool()\l+ SaveFileInt()\l+ SaveFileDouble()\l+ SaveFileString()\l+ LoadFileBool()\l+ LoadFileInt()\land 17 more...\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+}

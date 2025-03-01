@@ -67,5 +67,6 @@ var class_t_utilities =
     [ "ScreenElementHeight", "class_t_utilities.html#a45d9703729a28c2fb2638539fa909e81", null ],
     [ "ScreenElementWidth", "class_t_utilities.html#ac9422864dc36c3d98ad952f10026c572", null ],
     [ "SetLocaleResultOK", "class_t_utilities.html#a10e6a4ee0aafcd732d1a2dc8a670466b", null ],
+    [ "ShowLongServRefsFlag", "class_t_utilities.html#afd93c190e8be4692909d59d956ae1a07", null ],
     [ "SignalChangeEventsPerFailure", "class_t_utilities.html#a59f6343f504ae8402ea9d966dafc8ebb", null ]
 ];

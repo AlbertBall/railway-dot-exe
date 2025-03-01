@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.21.0</span>
+   &#160;<span id="projectnumber">v2.22.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -100,7 +100,8 @@ $(document).ready(function(){initNavTree('class_t_rail_graphics.html',''); initR
 <div class="dynheader">
 Collaboration diagram for TRailGraphics:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_rail_graphics__coll__graph.svg" width="235" height="411"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 0 -->
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -110,7 +111,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acd3dfcf9686870772b1708030f11b1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad243415e657236ecca97fa1d064cf127"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#ad243415e657236ecca97fa1d064cf127">~TRailGraphics</a> ()</td></tr>
 <tr class="separator:ad243415e657236ecca97fa1d064cf127"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86224a621e09a9c317a876460d9498fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#a86224a621e09a9c317a876460d9498fe">SetWebSafePalette</a> (int Caller, Graphics::TBitmap *bmp)</td></tr>
+<tr class="separator:a86224a621e09a9c317a876460d9498fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5121c6d8b8fa69eefc293ca51cddce88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88">ChangeAllTransparentColours</a> (TColor NewTransparentColour, TColor OldTransparentColour)</td></tr>
+<tr class="memdesc:a5121c6d8b8fa69eefc293ca51cddce88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses 'ChangeTransparentColour' method to change each graphic in turn.  <a href="class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88">More...</a><br /></td></tr>
 <tr class="separator:a5121c6d8b8fa69eefc293ca51cddce88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74d7dcd5e17ef156d8c216c8e524de11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#a74d7dcd5e17ef156d8c216c8e524de11">ChangeBackgroundColour</a> (int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor NewBackgroundColour, TColor OldBackgroundColour, bool &amp;ColourError)</td></tr>
 <tr class="separator:a74d7dcd5e17ef156d8c216c8e524de11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,6 +141,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2a9f6885adeb46f1f8825ac02eaf30b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae19696d461eea07c5444ed4c9714acf3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#ae19696d461eea07c5444ed4c9714acf3">SetUpAllDerivitiveGraphics</a> (TColor TransparentColour)</td></tr>
 <tr class="separator:ae19696d461eea07c5444ed4c9714acf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe9035c61f72d3291fbf53779a8c972d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#abe9035c61f72d3291fbf53779a8c972d">GetHeatMapColor</a> (int Caller, float value, int *red, int *green, int *blue)</td></tr>
+<tr class="separator:abe9035c61f72d3291fbf53779a8c972d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab32f607aa6e60fa87ceeb48ef1d7d9d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#ab32f607aa6e60fa87ceeb48ef1d7d9d5">SetWebSafeHeadCodeGraphics</a> (int Caller)</td></tr>
+<tr class="memdesc:ab32f607aa6e60fa87ceeb48ef1d7d9d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ensures all headcodes have a websafe palette  <a href="class_t_rail_graphics.html#ab32f607aa6e60fa87ceeb48ef1d7d9d5">More...</a><br /></td></tr>
+<tr class="separator:ab32f607aa6e60fa87ceeb48ef1d7d9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -1558,6 +1567,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a2072c6206721542f520636a4c9095f9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63c9ae8dc09e75ce1e7fcbee848cabc0"><td class="memItemLeft" align="right" valign="top">Graphics::TBitmap *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#a63c9ae8dc09e75ce1e7fcbee848cabc0">bmStraightNSSignalBlank</a></td></tr>
 <tr class="separator:a63c9ae8dc09e75ce1e7fcbee848cabc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a240c76fa19a893acce70d995116b96bd"><td class="memItemLeft" align="right" valign="top">Graphics::TBitmap *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#a240c76fa19a893acce70d995116b96bd">HeatMapGraphic</a></td></tr>
+<tr class="separator:a240c76fa19a893acce70d995116b96bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe7c485ea70f0f6cf89b0fd7559826fe"><td class="memItemLeft" align="right" valign="top">Graphics::TBitmap *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_rail_graphics.html#abe7c485ea70f0f6cf89b0fd7559826fe">BridgeGraphicsPtr</a> [12]</td></tr>
 <tr class="memdesc:abe7c485ea70f0f6cf89b0fd7559826fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">basic graphic for use in plotting the original graphic during route flashing  <a href="class_t_rail_graphics.html#abe7c485ea70f0f6cf89b0fd7559826fe">More...</a><br /></td></tr>
 <tr class="separator:abe7c485ea70f0f6cf89b0fd7559826fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1662,6 +1673,12 @@ Public Attributes</h2></td></tr>
 <p>constructor </p>
 
 <p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l00054">54</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 1 -->
+</div>
+</div>
 
 </div>
 </div>
@@ -1679,10 +1696,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>destructor Changes all graphics to become compatible with a new background colour</p>
-<p>Uses 'ChangeTransparentColour' method to change each graphic in turn </p>
+<p>destructor Changes all graphics to become compatible with a new background colour Set websafe palette for a specific bitmap </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l02747">2747</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l02757">2757</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1713,16 +1729,20 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03843">3843</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p>Uses 'ChangeTransparentColour' method to change each graphic in turn. </p>
+
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03974">3974</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_rail_graphics_a5121c6d8b8fa69eefc293ca51cddce88_cgraph.svg" width="647" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 2 -->
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_rail_graphics_a5121c6d8b8fa69eefc293ca51cddce88_icgraph.svg" width="655" height="479"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 3 -->
+</div>
 </div>
 
 </div>
@@ -1779,7 +1799,7 @@ Here is the caller graph for this function:</div>
 <p>Change any pixels that are OldBackgroundColour in BitmapIn to NewBackgroundColour in BitmapOut</p>
 <p>Checks that the change is correct and sets ColourError if not (Windows will choose nearest matching colour if colour depth is incorrect and that will cause the error - lot of early problems due to this behaviour but all graphics now 256 colours) </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03593">3593</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03724">3724</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1788,7 +1808,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 -->
+<div class="center"><!-- SVG 4 -->
 </div>
 </div>
 
@@ -1840,7 +1860,7 @@ Here is the caller graph for this function:</div>
 
 <p>New function to do the same as the above but with fewer pixel changes - for use in LoadSession (&amp; PlotStartPosition) to avoid resource failures on loading many session trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03632">3632</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03763">3763</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1895,7 +1915,7 @@ Here is the call graph for this function:</div>
 
 <p>as above but uses Scanline </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03669">3669</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03800">3800</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1904,7 +1924,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 1 -->
+<div class="center"><!-- SVG 5 -->
 </div>
 </div>
 
@@ -1955,7 +1975,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Change any pixels that are not BackgroundColour in BitmapIn to NewForegroundColour in BitmapOut Any that are BackgroundColour in BitmapIn are set to BackgroundColour in BitmapOut </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03517">3517</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03648">3648</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1964,7 +1984,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 2 -->
+<div class="center"><!-- SVG 6 -->
 </div>
 </div>
 
@@ -2016,7 +2036,7 @@ Here is the caller graph for this function:</div>
 
 <p>New function to do the same as the above but with fewer pixel changes - for use in LoadSession to avoid resource failures on loading many session trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03543">3543</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03674">3674</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2025,7 +2045,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_rail_graphics_ad6db946801b17d5d4b462bc2c95ebfbd_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 7 -->
+</div>
 </div>
 
 </div>
@@ -2075,7 +2096,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Change any pixels that are ColourToBeChanged in BitmapIn to NewColour in BitmapOut Any that are not ColourToBeChanged in BitmapIn are set to their original colour in BitmapOut </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03572">3572</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03703">3703</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2084,7 +2105,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 3 -->
+<div class="center"><!-- SVG 8 -->
 </div>
 </div>
 
@@ -2130,7 +2151,7 @@ Here is the caller graph for this function:</div>
 <p>Changes a graphic to become compatible with a new background colour</p>
 <p>Change any pixels that are OldTransparentColour in BitmapIn to NewTransparentColour in BitmapOut, if NewTransparentColour dark then change any black pixels in BitmapIn to white in BitmapOut, or if NewTransparentColour white then change any white pixels in BitmapIn to black in BitmapOut </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03460">3460</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03591">3591</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2139,7 +2160,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_rail_graphics_a89a3e3a91129c4d02f4606478781b519_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 9 -->
+</div>
 </div>
 
 </div>
@@ -2172,7 +2194,7 @@ Here is the caller graph for this function:</div>
 
 <p>used in ChangeBackgroundColour3 to convert a named colour to a number for Scanline </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03705">3705</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03836">3836</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2181,7 +2203,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 4 -->
+<div class="center"><!-- SVG 10 -->
 </div>
 </div>
 
@@ -2205,7 +2227,7 @@ Here is the caller graph for this function:</div>
 
 <p>Converts all signal graphics to opposite hand new at v2.3.0. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04606">4606</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04737">4737</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2215,6 +2237,67 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_rail_graphics_a2a9f6885adeb46f1f8825ac02eaf30b0_icgraph.svg" width="100%" height="488"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="abe9035c61f72d3291fbf53779a8c972d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe9035c61f72d3291fbf53779a8c972d">&#9670;&nbsp;</a></span>GetHeatMapColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TRailGraphics::GetHeatMapColor </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>red</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>green</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>blue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>function to generate RGB heatmap values from an input value between 0 and 1 using 7 colours derived from code created by Dr Andrew Noske (<a href="https://www.andrewnoske.com/wiki/Code_-_heatmaps_and_color_gradients">https://www.andrewnoske.com/wiki/Code_-_heatmaps_and_color_gradients</a>) with his permission to use or modify. </p>
+
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04923">4923</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 11 -->
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 12 -->
+</div>
 </div>
 
 </div>
@@ -2237,7 +2320,7 @@ Here is the caller graph for this function:</div>
 <p>Sets all the derived graphics to be compatible with a new transparent colour</p>
 <p>Used when changing the background from dark to light and vice versa. The derived graphics are the preferred direction and route graphics for tracks, underbridges, direction markers and all the point fillets. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04435">4435</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04566">4566</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2247,6 +2330,82 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_rail_graphics_ae19696d461eea07c5444ed4c9714acf3_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ab32f607aa6e60fa87ceeb48ef1d7d9d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab32f607aa6e60fa87ceeb48ef1d7d9d5">&#9670;&nbsp;</a></span>SetWebSafeHeadCodeGraphics()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TRailGraphics::SetWebSafeHeadCodeGraphics </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ensures all headcodes have a websafe palette </p>
+
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03520">3520</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 13 -->
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 14 -->
+</div>
+</div>
+
+</div>
+</div>
+<a id="a86224a621e09a9c317a876460d9498fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86224a621e09a9c317a876460d9498fe">&#9670;&nbsp;</a></span>SetWebSafePalette()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TRailGraphics::SetWebSafePalette </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Graphics::TBitmap *&#160;</td>
+          <td class="paramname"><em>bmp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03473">3473</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 15 -->
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 16 -->
+</div>
 </div>
 
 </div>
@@ -5770,7 +5929,7 @@ Here is the caller graph for this function:</div>
 
 <p>basic graphic for use in plotting the original graphic during route flashing </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01036">1036</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01039">1039</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5788,7 +5947,7 @@ Here is the caller graph for this function:</div>
 
 <p>route graphic for unrestricted route overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01042">1042</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01045">1045</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5806,7 +5965,7 @@ Here is the caller graph for this function:</div>
 
 <p>preferred direction graphic overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01038">1038</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01041">1041</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5824,7 +5983,7 @@ Here is the caller graph for this function:</div>
 
 <p>route graphic for automatic signal routes overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01044">1044</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01047">1047</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5842,7 +6001,7 @@ Here is the caller graph for this function:</div>
 
 <p>route graphic for preferred routes overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01040">1040</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01043">1043</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7140,7 +7299,7 @@ Here is the caller graph for this function:</div>
 
 <p>unrestricted route marker arrows </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01064">1064</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01067">1067</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7158,7 +7317,7 @@ Here is the caller graph for this function:</div>
 
 <p>preferred direction marker arrows </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01062">1062</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01065">1065</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7176,7 +7335,7 @@ Here is the caller graph for this function:</div>
 
 <p>autosigs route marker arrows </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01068">1068</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01071">1071</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7194,7 +7353,7 @@ Here is the caller graph for this function:</div>
 
 <p>preferred direction route marker arrows </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01066">1066</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01069">1069</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -10190,6 +10349,22 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a240c76fa19a893acce70d995116b96bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a240c76fa19a893acce70d995116b96bd">&#9670;&nbsp;</a></span>HeatMapGraphic</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Graphics::TBitmap* TRailGraphics::HeatMapGraphic</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01034">1034</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+
+</div>
+</div>
 <a id="ad702ccce1f5a5beb24d1a1161027f3b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad702ccce1f5a5beb24d1a1161027f3b9">&#9670;&nbsp;</a></span>Hide</h2>
 
@@ -10476,7 +10651,7 @@ Here is the caller graph for this function:</div>
 
 <p>basic single track graphic for use in plotting the original graphic during route flashing </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01049">1049</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01052">1052</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -10494,7 +10669,7 @@ Here is the caller graph for this function:</div>
 
 <p>unrestricted route graphic overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01055">1055</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01058">1058</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -10512,7 +10687,7 @@ Here is the caller graph for this function:</div>
 
 <p>preferred direction graphic overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01051">1051</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01054">1054</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -10530,7 +10705,7 @@ Here is the caller graph for this function:</div>
 
 <p>auto signal route graphic overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01057">1057</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01060">1060</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -10548,7 +10723,7 @@ Here is the caller graph for this function:</div>
 
 <p>preferred direction route graphic overlay </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01053">1053</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01056">1056</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -10566,7 +10741,7 @@ Here is the caller graph for this function:</div>
 
 <p>for locked route cancel graphic, 1 for each of 8 links, 0 &amp; 5 included as for direction </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01074">1074</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01077">1077</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -10920,7 +11095,7 @@ Here is the caller graph for this function:</div>
 
 <p>for point fillets - 32 sets of points, each with two fillets </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01071">1071</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01074">1074</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13752,7 +13927,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01090">1090</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01093">1093</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13768,7 +13943,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01082">1082</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01085">1085</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13784,7 +13959,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01091">1091</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01094">1094</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13800,7 +13975,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01083">1083</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01086">1086</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13816,7 +13991,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01092">1092</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01095">1095</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13832,7 +14007,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01084">1084</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01087">1087</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13848,7 +14023,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01093">1093</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01096">1096</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13864,7 +14039,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01085">1085</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01088">1088</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13880,7 +14055,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01094">1094</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01097">1097</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13896,7 +14071,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01086">1086</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01089">1089</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13912,7 +14087,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01095">1095</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01098">1098</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13928,7 +14103,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01087">1087</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01090">1090</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13944,7 +14119,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01096">1096</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01099">1099</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13960,7 +14135,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01088">1088</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01091">1091</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13976,7 +14151,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01097">1097</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01100">1100</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>
@@ -13992,7 +14167,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01089">1089</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8h_source.html#l01092">1092</a> of file <a class="el" href="_graphic_unit_8h_source.html">GraphicUnit.h</a>.</p>
 
 </div>
 </div>

@@ -1,51 +1,3 @@
-Version notes: Mention error re routing correction - fitzburger96 reported 26/02 via discord
-
-/ Manual: add new keyboard shortcuts to manual
-
-X Manual: Mention that whole train must be showing for name to show
-
-/ problem when trains moving upwards, the leading headcode character is overwritten during Remove... because trains aren't plotted on the StaticFeaturesDisplay.  Corrected by ensuring that no part of a leading character colour is overwritten during Remove...
-
-/ when loading a session the showLongServFlag is set false when the train is created, so when replot trains is called in loadsession Remove not called, but Enter is, but the StaticFeaturesDisplay isn't yet loaded (only loaded during Clearand...) so if ShowLongRef flag set when load a session there is no static display loaded during Enter so that when Clearand... calls replottrains again, and Remove is called, no static features are plotted, and when Enter called the area under the text is blank.  Only happens oddly for 64 bit, 32 bit works ok for some reason.  Corrected - replot trains in load session changed so that just sets the track element TrainIDs, this was why it was called.  Also call Clearand... at end of case RestartOperMode (is already called at end of case OperMode)
-
-/ tidy up info menu, align all keyboard shorcuts
-
-/ improved the near-transparent colours by adding 3 new ones to the palette
-
-/ added long refs to operating image (32 bit only as yet)
-
-/ update list of suggestions with my offer to add names outside train itself
-
-/ add >4 character restriction
-
-/ when remove trains for any reason make sure remove serv ref names if plotted
-
-/ try to use better serv ref colour for white bgnds so contrasts with blue locations
-
-/ need to add RebuildTrackAndText to caller checker
-
-/ Need button (or something) to toggle long ref display - use info menu
-
-/ H position moves side to side when train vertical
-
-/ V position overlaps last element when train vertical & moving down
-
-/ convert all (or some) bitmaps to websafe colours
-
-/ Check signal handedness after deleted TmpBM in GraphicsUnit.cpp
-
-/ why 2 x train constructor calls for ABC railway, from session then when plotted? - because constructor called when load session trains, but not stored in vector & deleted when routine ends, second call is when first train created.
-
-/ why does Clearand... plot all early serv ref plots? - because train name entered into text vector but not erased from it
-
-/ why does name B1 replot in original position when screen moved?  - screen moves between pickup & replace bgnd
-
-/ why do all names overlap when have delete & replace in new routine? - because the second move pickup picks up the new name, need to pickup bgnd without any trains or their names, use Clearand... without having trains replotted
-
-/ Note: in TTextItem a new font is created on heap but doesn't seem always to be deleted - investigate
-
-
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -957,6 +909,65 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.21.0 for v2.22.0
+
+This version adds two mew features and corrects one bug.
+
+New Features:
+
+1.  Heatmaps:  These provide a way to illustrate how data are distributed within an area. The data can be anything, they don't have to represent heat.  RailOS provides two maps, one for track element lengths and one for track element speed limits. When the 'Set lengths and speed limits' button is clicked two new buttons appear, one for each type of heatmap. Clicking one of these buttons brings up the appropriate map, as well as a spectrum diagram.  The colours use a rainbow spectrum where (on first load) red represents the shortest lengths and lowest speed limits, with increasing values in both cases progressing through orange, yellow, green, cyan, blue and finally violet. These colours can be reversed if preferred, as described below.
+
+The maps are useful for checking quickly whether lengths and speed limits are set appropriately - station areas and sidings generally have short lengths and low speed limits, whereas sections of track between stations have longer lengths and higher speed limits. Similarly the diverging track of points generally has a lower speed limit than the straight track. The heatmap quickly shows up any elements that have inconsistent values.
+
+Some people prefer the shortest lengths and lowest speed limits to be represented by violet, with increasing values progressing through all the colours to red. To reverse the colours open the 'Mode' menu before any railway is loaded, and click 'Heatmaps: Set Red to Represent High Values'. This preference is stored in the configuration file Config.txt when the program closes and is automatically selected on each subsequent opening of the program. The menu item acts as a toggle so that when the reversed colours are selected the option changes to 'Heatmaps: Set Red to Represent Low Values'.
+
+Heatmaps show up best against a black background.
+
+
+2.  Display of long service references:  Trains in the UK are identified by headcodes consisting of four characters, and during RailOS operation a train appears on screen with these four characters shown. However additional characters are often required in order to allow for longer headcodes in other countries, and to identify uniquely in the timetable trains with the same headcode. Up to eight characters are permitted in all, with the last four in all cases shown on the train itself. Trains with more than four characters can now be shown using a new option under the 'Information' tab.  This is 'Show Long Service References' (or keyboard shortcut 'Shift+ Ctrl+ L') which shows the full (up to eight characters) train identifier on screen above the train. The long service references (train names if you prefer) only show if they exceed four characters, because four characters are already shown by the train itself.  They show up best against a dark background and for trains moving horizontally.  The other 'Information' options have been simplified so they are all listed together.
+
+Bug correction:  This was reported by fitzburger96 via discord on 26/02/25.  If a blue route is followed by a red or green route, and a single segment of the blue route truncated, the signal at the end of the blue route changed to red instead of being set by the next signal state ahead of it.  It happened because an internal flag used for the truncation of the mid-route segment was set so the signals rearwards of the truncation point would be set correctly, but should have been reset before the front section of route was re-instated.  This has now been reset and seems to work ok.  Thanks are due to fitzburger96 for bringing this to my attention.  
+
+additional notes not for website:
+
+/ Manual: add new keyboard shortcuts to manual
+
+/ problem when trains moving upwards, the leading headcode character is overwritten during Remove... because trains aren't plotted on the StaticFeaturesDisplay.  Corrected by ensuring that no part of a leading character colour is overwritten during Remove...
+
+/ when loading a session the showLongServFlag is set false when the train is created, so when replot trains is called in loadsession Remove not called, but Enter is, but the StaticFeaturesDisplay isn't yet loaded (only loaded during Clearand...) so if ShowLongRef flag set when load a session there is no static display loaded during Enter so that when Clearand... calls replottrains again, and Remove is called, no static features are plotted, and when Enter called the area under the text is blank.  Only happens oddly for 64 bit, 32 bit works ok for some reason.  Corrected - replot trains in load session changed so that just sets the track element TrainIDs, this was why it was called.  Also call Clearand... at end of case RestartOperMode (is already called at end of case OperMode)
+
+/ tidy up info menu, align all keyboard shorcuts
+
+/ improved the near-transparent colours by adding 3 new ones to the palette
+
+/ added long refs to operating image
+
+/ add >4 character restriction
+
+/ when remove trains for any reason make sure remove serv ref names if plotted
+
+/ try to use better serv ref colour for white bgnds so contrasts with blue locations
+
+/ Need button (or something) to toggle long ref display - use info menu
+
+/ H position moves side to side when train vertical
+
+/ V position overlaps last element when train vertical & moving down
+
+/ convert all (or some) bitmaps to websafe colours
+
+/ Check signal handedness after deleted TmpBM in GraphicsUnit.cpp
+
+/ why 2 x train constructor calls for ABC railway, from session then when plotted? - because constructor called when load session trains, but not stored in vector & deleted when routine ends, second call is when first train created.
+
+/ why does Clearand... plot all early serv ref plots? - because train name entered into text vector but not erased from it
+
+/ why does name B1 replot in original position when screen moved?  - screen moves between pickup & replace bgnd
+
+/ why do all names overlap when have delete & replace in new routine? - because the second move pickup picks up the new name, need to pickup bgnd without any trains or their names, use Clearand... without having trains replotted
+
+/ Note: in TTextItem a new font is created on heap but doesn't seem always to be deleted - investigate
 
 VERSION CHANGES AFTER v2.20.3 for v2.21.0
 

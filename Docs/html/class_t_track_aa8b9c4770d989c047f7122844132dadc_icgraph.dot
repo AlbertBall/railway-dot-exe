@@ -100,11 +100,11 @@ digraph "TTrack::SaveUserGraphics"
   Node49 [label="TInterface::ExportTTMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597",tooltip=" "];
   Node6 -> Node50 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node50 [label="TInterface::FlipMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#add5fbdbceae6285c2cc440905b270491",tooltip=" "];
-  Node6 -> Node125 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node125 [label="TInterface::SaveMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7699c9c408064623d335d3452b60f289",tooltip=" "];
+  Node6 -> Node126 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node126 [label="TInterface::SaveMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7699c9c408064623d335d3452b60f289",tooltip=" "];
   Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node125 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node190 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node190 [label="TInterface::SaveSession",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25",tooltip="Save a session file - see LoadSession for details of additions to the session file."];
-  Node190 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node126 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node192 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node192 [label="TInterface::SaveSession",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25",tooltip="Save a session file - see LoadSession for details of additions to the session file."];
+  Node192 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

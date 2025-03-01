@@ -529,6 +529,8 @@ private:
 ///< Stores the long service ref name for > 4 chars
     Graphics::TBitmap *LongServRefWorkingBitmap;  //added at v2.22.0
 ///< General purpose storage for long serv ref display
+    Graphics::TBitmap *ImageLongServRefBitmap;  //added at v2.22.0
+///< Used for writing to operating image when long refs showing
 
     TColor BackgroundColour;
 ///< the background colour of the train's headcode graphics

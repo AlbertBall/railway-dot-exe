@@ -1,8 +1,8 @@
-Manual: add new keyboard shortcuts to manual
-
 Version notes: Mention error re routing correction - fitzburger96 reported 26/02 via discord
 
-Manual: Mention that whole train must be showing for name to show
+/ Manual: add new keyboard shortcuts to manual
+
+X Manual: Mention that whole train must be showing for name to show
 
 / problem when trains moving upwards, the leading headcode character is overwritten during Remove... because trains aren't plotted on the StaticFeaturesDisplay.  Corrected by ensuring that no part of a leading character colour is overwritten during Remove...
 

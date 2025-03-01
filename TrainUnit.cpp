@@ -249,6 +249,11 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     LongServRefWorkingBitmap->Width = 54;
     RailGraphics->SetWebSafePalette(63, LongServRefWorkingBitmap);
 
+    ImageLongServRefBitmap = new Graphics::TBitmap; //added at v2.22.0 these are for displaying long serv refs on the operating image
+    ImageLongServRefBitmap->PixelFormat = pf8bit;
+    ImageLongServRefBitmap->Height = 10;   //shorter than name bitmap as top 3 pixels not occupied by text
+    ImageLongServRefBitmap->Width = 54;
+    RailGraphics->SetWebSafePalette(65, ImageLongServRefBitmap);
     Utilities->CallLogPop(648);
 }
 
@@ -297,8 +302,10 @@ void TTrain::DeleteTrain(int Caller)
     }
     delete LongServRefNameBitmap;
     delete LongServRefWorkingBitmap;
+    delete ImageLongServRefBitmap;
     LongServRefNameBitmap = 0;
     LongServRefWorkingBitmap = 0;
+    ImageLongServRefBitmap = 0;
     Utilities->CallLogPop(649);
 }
 
@@ -2629,25 +2636,36 @@ colour can't be used as it would leave the text in place.
     LongServRefWorkingBitmap->Canvas->Brush->Color = Utilities->clTransparent;
     LongServRefWorkingBitmap->Canvas->FillRect(TRect(0,0,54,10)); //fill it with transparent colour
 
-
     LongServRefWorkingBitmap->Canvas->CopyRect(TRect(0,0,54,10), Disp->GetImage()->Canvas, TRect(LongServRefTextH - (Display->DisplayOffsetH * 16),
         LongServRefTextV - (Display->DisplayOffsetV * 16), LongServRefTextH - (Display->DisplayOffsetH * 16) + 54, LongServRefTextV - (Display->DisplayOffsetV * 16) + 10));
 
+//set up ImageLongServRefBitmap ready for receiving name & on white background
+    ImageLongServRefBitmap->Transparent = true;
+    ImageLongServRefBitmap->TransparentColor = clB5G5R5; //white
+    ImageLongServRefBitmap->Canvas->Brush->Style = bsClear; // so text prints transparent
+    ImageLongServRefBitmap->Canvas->Brush->Color = clB5G5R5; //white
+    ImageLongServRefBitmap->Canvas->FillRect(TRect(0,0,54,10)); //fill it with white
+
     Byte *SLPtrIn; // pointer to the ScanLine values in LongServRefNameBitmap
     Byte *SLPtrOut; // pointer to the ScanLine values in LongServRefWorkingBitmap
+    Byte *SLPtrImage; // pointer to the ScanLine values in ImageLongServRefBitmap
 
     for(int x = 3; x < 13; x++)
     {
         SLPtrIn = reinterpret_cast<Byte*>(LongServRefNameBitmap->ScanLine[x]);
         SLPtrOut = reinterpret_cast<Byte*>(LongServRefWorkingBitmap->ScanLine[x - 3]);
+        SLPtrImage = reinterpret_cast<Byte*>(ImageLongServRefBitmap->ScanLine[x - 3]);
         for(int y = 0; y < 54; y++)
         {
             if(SLPtrIn[y] == TrainController->LongServRefFontColNumber)
             {
                 SLPtrOut[y] = SLPtrIn[y];
+                SLPtrImage[y] = 0x01; //clB1G0R0
             } //else do nothing
         }
     }
+
+//ImageLongServRefBitmap now set up ready to write to image if required
 
 //copy back onto MainScreen - use Draw to retain transparent pixels CopyRect doesn't accept transparent pixels
     Disp->GetImage()->Canvas->Draw(LongServRefTextH - (Display->DisplayOffsetH * 16), LongServRefTextV - (Display->DisplayOffsetV * 16), LongServRefWorkingBitmap);
@@ -9539,11 +9557,11 @@ void TTrain::WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap)
         {
             Bitmap->Canvas->Draw(((Track->TrackElementAt(744, PlotElement[x]).HLoc - Track->GetHLocMin()) * 16 + HOffset[x]),
                                  ((Track->TrackElementAt(745, PlotElement[x]).VLoc - Track->GetVLocMin()) * 16 + VOffset[x]), HeadCodePosition[x]);
-            if(Utilities->ShowLongServRefsFlag)
-            {
-                Bitmap->Canvas->Draw(LongServRefTextH - (Track->GetHLocMin() * 16), LongServRefTextV - (Track->GetVLocMin() * 16), LongServRefWorkingBitmap);
-            }
         }
+    }
+    if(Utilities->ShowLongServRefsFlag)
+    {
+        Bitmap->Canvas->Draw(LongServRefTextH - (Track->GetHLocMin() * 16), LongServRefTextV - (Track->GetVLocMin() * 16), ImageLongServRefBitmap);
     }
     Utilities->CallLogPop(1708);
 }

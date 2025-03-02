@@ -3445,7 +3445,7 @@ On website (use Chrome - DiviBuilder seems to work better):
 
 9 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above (select correct category & search), SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Delete any earlier versions.  Update & preview.  Add any earlier versions to 'Archived Documentation' 
 
-10 Go to 'Version Information' page (usually last page, uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
+10 Go to 'Version Information' page (usually last page, uses DiviBuilder, make sure 'published' is selected & if won't load use safe mode: dashboard - Divi - Support -enable safe mode), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
 
 11 Download & check the new release & anything else that's changed
 

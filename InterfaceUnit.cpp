@@ -20862,8 +20862,8 @@ void TInterface::GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, An
                 TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.FixedDescription + ServiceReferenceInfo + "\nEntry speed " +
                     AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nExpected at " + Utilities->Format96HHMM(TempTime); //FixedDescription = new name, changed at v2.16.1
             }
-            if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
-            {
+            if(TrainTTInfoOnOffMenuItem->Caption == "Hide Train &Timetable Information") //at v2.22.0 this was left as Hide Timetable so failed to show timetable after caption updated
+            {                                                                            //corrected at v2.22.1
                 if(!TTDEPtr->ActionVector.at(0).SignallerControl) // if signaller control there's no timetable & SpecialStr covers this
                 {
                     TrainTTFloat = TrainController->ContinuationEntryFloatingTTString(0, TTDEPtr, CTEIt->second.RepeatNumber, CTEIt->second.IncrementalMinutes,

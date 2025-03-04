@@ -13832,9 +13832,9 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
             TActionVectorEntry *AVE = Train.ActionVectorEntryPtr;
             if((AVE->DepartureTime >= TDateTime(0)) && ((AVE->FormatType == TimeLoc) || (AVE->FormatType == TimeTimeLoc)))
             {
-                if((Train.ReleaseTime - Train.LastActionTime) < TDateTime(30.0 / 86400)) //due to release in less than 30 seconds, added at v2.13.0 to correct
+                if((Train.ReleaseTime - Train.LastActionTime) < TDateTime(AVE->MinDwellTime / 86400)) //due to release in less than 30 seconds, added at v2.13.0 to correct
                 {                                                                      //FinsburyPark (discord name) error reported 29/05/22
-                    Train.ReleaseTime = Train.LastActionTime + TDateTime(30.0 / 86400);
+                    Train.ReleaseTime = Train.LastActionTime + TDateTime(AVE->MinDwellTime / 86400);
                     Train.TRSTime = Train.ReleaseTime - TDateTime(10.0/86400);  //added at v2.14.0 as this needs to be reset too to plot correct train b'gnd colour
                 }
             }

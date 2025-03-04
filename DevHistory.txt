@@ -1,3 +1,10 @@
+Check invert tt entry works ok for non-default dwell times
+
+Change timetable panel labels for non-default dwell times
+
+Deal with conflicts when (departure - arrival) < min dwell time
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -15,6 +22,36 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#116 from Commuterpop via discord 03/03/25
+I'd promised you to give you a pause after your latest efforts, before presenting a couple of suggestions, however, I'll try to present it in a way that you might answer it more or less with a simple "Maybe", "no" or "let's see later"  The reason for asking now is I'm at a crossroads (is that the way to put it?) in the programming in what I believe is my next sim for publishing. I do believe there was a discussion about time and delays earlier, even though I can't find it right now. This reasoning and example might be of interest, or not - let's see. What I would like to discuss is the handling of times when trains are delayed. (As always, correct me when I'm wrong!) Today Rail OS handles delays in a stop by reducing the trains stop time to 30 seconds, giving the train a chance to reduce delays like IRL. (I have to once again mention the magnificent delays/failures function!) That's fine in the very most cases. However, I'd like to present a couple of special cases, and an example of how to handle it, to see what you think. 
+
+Case 1a: A late train arrives to a medium or large sized station. Even if it's late and people hurry, it still takes time for the exchange of passengers with luggage. It's hard to press it under 2 minutes. 
+
+Case 1b: The same but with freight train. Yes, you might squeeze the time, but you can't split or join trains, or load/unload in 30 seconds. (It seems that most people don't take these things in account when programming sims for Rail OS (too much work?). The trains simply arrive and depart freight terminals. It will however add extra spice. 
+
+Case 2: Different kind of services. Even if a train is late it still takes X time to wash it, inspect brakes, fill up oil etc. Example image from a forthcoming depot workshop where different tasks is made step by step:
+[image illustrating the situation]
+first the trains arrive at the arrival yard (lucky for us), queuing up efter rush hour to make a mess for us to handle, then enters the workshop where they are serviced step by step. My idea is if the trains had about the same times for the steps, so you as the operator would have to consider in wich order to service the trains to get them out to next services in the right order. If I'd timetable every step there wouldn't be a problem to solve for you, the user  
+
+One way to handle it program wise could be to use two different terms: absolute time (as today in Rail OS, like 10:38) and relative time (30 seconds, 10 minutes). That concept is used in programming the automaton in at least Alstom/Bombardier rail traffic managmenst systems. Sorry, that was a lot of text to ask a small question... hope you don't mind. As mentioned in the start, I full aware that you'we been doing a lot of programming lately and need some time of. I'm also aware that this would be for a minority of situations, to a large programming effort. If you already know that you will say "no", I'm content with that, as I have an answer. Or, it might be a nive idea to ponder Thanks in advance.
+
+Albert — 04/03/25 at 08:51
+'Being at a crossroads' is a good expression and often used to describe the kind of situation you mention.
+
+The answer to your request certainly isn't 'no', though I suspect it will need some thought as to how best to implement it.
+
+I think I understand what you are asking for and I can see that you have put a lot of thought into it.  Correct me if I'm wrong but I think what you want are variable minimum waiting times at location stops - i.e. some trains need to wait at least 2 minutes at particular stops whereas other trains, or the same train at other stops, only need wait 30 seconds.
+
+I have a multi-part question:
+(a) should the minimum waiting time be set for a particular train, so that all stops that that train makes are for the set minimum time? or 
+(b) should the minimum waiting time be set for a particular stop, so that all trains stopping there wait for the set minimum time? or
+(c) should the minimum waiting time be set for a particular stop for a particular train, so that just that train waits for the set minimum time at just that stop?
+(d) is there another possibility that I've missed?
+
+Of these (c) seems to offer the greatest flexibility for users, as it can be applied to encompass any of the others, though with perhaps a bit more work for users when programming.
+
+I haven't started thinking yet about implementation, I might well come back with other questions when I do! 
 
 #115 [done] from Chris_24 01/02/25
 Albert, since its night i wont ping you, but is there a possibility to have dynamically increasing train lenght to accomodate for headcode lenght? example: 4 character headcode: 2 elements long, 5 headcode 2.5 Elements long etc etc?

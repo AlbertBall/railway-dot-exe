@@ -130,6 +130,8 @@ public:
 ///< indicates a train that is defined by the timetable as under signaller control
     bool Warning;
 ///< if set triggers an alert in the warning and perf log panels when the action is reached
+    int MinDwellTime; //added after v2.22.0
+///< minimum waiting time at a location, default 30s
     int NumberOfRepeats;
 ///< the number of repeating services
     int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
@@ -164,7 +166,8 @@ public:
         FormatType = NoFormat;
         SequenceType = NoSequence;
         LocationType = NoLocation;
-        ShuttleLinkType = NoShuttleLink, EventTime = TDateTime(-1);
+        ShuttleLinkType = NoShuttleLink;
+        EventTime = TDateTime(-1);
         ArrivalTime = TDateTime(-1);
         DepartureTime = TDateTime(-1);
         LinkedTrainEntryPtr = 0;
@@ -172,6 +175,7 @@ public:
         Warning = false;
         Reminder = 0;
         SignallerControl = false;
+        MinDwellTime = 30; //default value in seconds
     }
 };
 

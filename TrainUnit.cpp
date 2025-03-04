@@ -939,9 +939,9 @@ void TTrain::UpdateTrain(int Caller)
                 NewDelay = 0; //section relating to random delays added at v2.13.0
                 TDateTime TimetableReleaseTime = TrainController->GetRepeatTime(0, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);  //Timetable value
                 TDateTime DwellTime = TimetableReleaseTime - ActualArrivalTime; //Timetable value
-                if(DwellTime < TDateTime(30.0 / 86400))
+                if(DwellTime < TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400))
                 {
-                    DwellTime = TDateTime(30.0 / 86400);
+                    DwellTime = TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
                 }
                 int randval = random(10000);
                 if(randval != 0)  //if randval == 0 or DelayMode == Nil then NewDelay will be 0 as set above
@@ -1006,9 +1006,9 @@ void TTrain::UpdateTrain(int Caller)
 //                    CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //as above
                 }
                 ReleaseTime = LastActionTime + TDateTime(NewDelay / 1440);  //earliest possible release time
-                if(NewDelay < 0.5) //less than the 30 secs min interval
+                if(NewDelay < (ActionVectorEntryPtr->MinDwellTime / 60)) //less than the min dwell time
                 {
-                    ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
+                    ReleaseTime = LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
                 }
                 if(ReleaseTime < TimetableReleaseTime)
                 {
@@ -1073,9 +1073,9 @@ void TTrain::UpdateTrain(int Caller)
                 NewDelay = 0;
                 DelayedRandMins = 0;
                 ReleaseTime = TrainController->GetRepeatTime(75, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);
-                if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
+                if(ReleaseTime <= LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400))
                 {
-                    ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
+                    ReleaseTime = LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
                 }
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
                 DepartureTimeSet = true;
@@ -1087,9 +1087,9 @@ void TTrain::UpdateTrain(int Caller)
                 NewDelay = 0;
                 DelayedRandMins = 0;
                 ReleaseTime = TrainController->GetRepeatTime(74, ActionVectorEntryPtr->EventTime, RepeatNumber, IncrementalMinutes);
-                if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
+                if(ReleaseTime <= LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400))
                 {
-                    ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
+                    ReleaseTime = LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
                 }
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
                 DepartureTimeSet = true;
@@ -1115,7 +1115,7 @@ void TTrain::UpdateTrain(int Caller)
             // ignore TimeLoc & TTLoc departures
             // Action logs given in functions
             if((TrainController->TTClockTime >= GetTrainTime(0, ActionVectorEntryPtr->EventTime)) && (TrainController->TTClockTime >=
-                                                                                                      LastActionTime + TDateTime(30.0 / 86400)))
+                LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400)))
             {
                 if(ActionVectorEntryPtr->Command == "fsp")
                 {
@@ -11932,8 +11932,15 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         {
                             ;
                         } // these will all be true as final call
-
                         ActionVectorEntry.LocationName = Second;
+                        if(Third == "") //added after v2.22.0
+                        {
+                            ActionVectorEntry.MinDwellTime = 30;
+                        }
+                        else
+                        {
+                            ActionVectorEntry.MinDwellTime = Third.ToInt();
+                        }
                     }
                     else if(FormatType == PassTime) // new
                     {
@@ -11955,6 +11962,14 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                             ;
                         }
                         ActionVectorEntry.LocationName = Third;
+                        if(Fourth == "") //added after v2.22.0
+                        {
+                            ActionVectorEntry.MinDwellTime = 30;
+                        }
+                        else
+                        {
+                            ActionVectorEntry.MinDwellTime = Fourth.ToInt();
+                        }
                     }
                     else if(FormatType == TimeCmd)
                     {
@@ -12355,7 +12370,22 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             Utilities->CallLogPop(912);
             return(false);
         }
-        Third = Remainder.SubString(Pos + 1, Remainder.Length() - Pos);
+        Third = Remainder.SubString(Pos + 1, Remainder.Length() - Pos);  //may be a fourth = non-default dwell time
+        Pos = Third.Pos(';');
+        if(Pos != 0) //there is a fourth
+        {
+            Fourth = Third.SubString(Pos + 1, Remainder.Length() - Pos);
+            Third = Third.SubString(1, Pos - 1);
+            for(int x = 1; x <= Fourth.Length(); x++)
+            {
+                if((Fourth[x] < '0') || (Fourth[x] > '9'))
+                {
+                    TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+            }
+        }
         if(!CheckLocationValidity(0, Third, GiveMessages, CheckLocationsExistInRailway))
         {
             Utilities->CallLogPop(913);
@@ -12388,7 +12418,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         }
         else
         {
-            FormatType = TimeLoc;
+            FormatType = TimeLoc; //TimeLoc with default dwell time
             LocationType = AtLocation;
             SequenceType = IntermediateSequence;
             ShuttleLinkType = NotAShuttleLink;
@@ -12396,6 +12426,27 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             return(true);
         }
     }
+//check here for TimeLoc with non-default dwell time
+    if((Pos != 0) && (CheckLocationValidity(7777, Remainder.SubString(1, Pos - 1), false, CheckLocationsExistInRailway))) //false for no give messages as likely to be ok
+        {
+            Second = Remainder.SubString(1, Pos - 1);
+            Third = Remainder.SubString(Pos + 1, Remainder.Length() - Pos); //non-default dwell time
+            for(int x = 1; x <= Third.Length(); x++)
+            {
+                if((Third[x] < '0') || (Third[x] > '9'))
+                {
+                    TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+            }
+            FormatType = TimeLoc; //TimeLoc with default dwell time
+            LocationType = AtLocation;
+            SequenceType = IntermediateSequence;
+            ShuttleLinkType = NotAShuttleLink;
+            Utilities->CallLogPop(7777);
+            return(true);
+        }
     // here if second segment is a command, with a third & maybe fourth segments
     if((Pos != 4) && (Pos != 7) && (Pos != 8))
     {

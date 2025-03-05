@@ -1073,9 +1073,13 @@ void TTrain::UpdateTrain(int Caller)
                 NewDelay = 0;
                 DelayedRandMins = 0;
                 ReleaseTime = TrainController->GetRepeatTime(75, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);
-                if(ReleaseTime <= LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400))
+                if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
                 {
-                    ReleaseTime = LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
+                    ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
+                }
+                if(ReleaseTime <= ActualArrivalTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400))
+                {
+                    ReleaseTime = ActualArrivalTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
                 }
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
                 DepartureTimeSet = true;
@@ -1083,7 +1087,7 @@ void TTrain::UpdateTrain(int Caller)
             else if((ActionVectorEntryPtr->Command == "pas") && TreatPassAsTimeLocDeparture) //new segment at v2.12.0 to treat a pass as a departure
             {//for when skip to a new service at a pass location. As above this also avoids any random delays, and will avoid above segment because
             //departure time isn't set - it's an event time.  Again random delays in this situation might cause additional complications
-             //from mixing modifications so best avoided.
+             //from mixing modifications so best avoided.  Note that can't set a min dwell time for pas commands
                 NewDelay = 0;
                 DelayedRandMins = 0;
                 ReleaseTime = TrainController->GetRepeatTime(74, ActionVectorEntryPtr->EventTime, RepeatNumber, IncrementalMinutes);
@@ -1115,7 +1119,7 @@ void TTrain::UpdateTrain(int Caller)
             // ignore TimeLoc & TTLoc departures
             // Action logs given in functions
             if((TrainController->TTClockTime >= GetTrainTime(0, ActionVectorEntryPtr->EventTime)) && (TrainController->TTClockTime >=
-                LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400)))
+                LastActionTime + TDateTime(30.0 / 86400)))
             {
                 if(ActionVectorEntryPtr->Command == "fsp")
                 {
@@ -11939,7 +11943,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         }
                         else
                         {
-                            ActionVectorEntry.MinDwellTime = Third.ToInt();
+                            ActionVectorEntry.MinDwellTime = Third.ToDouble();
                         }
                     }
                     else if(FormatType == PassTime) // new
@@ -11968,7 +11972,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         }
                         else
                         {
-                            ActionVectorEntry.MinDwellTime = Fourth.ToInt();
+                            ActionVectorEntry.MinDwellTime = Fourth.ToDouble();
                         }
                     }
                     else if(FormatType == TimeCmd)
@@ -12374,8 +12378,19 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         Pos = Third.Pos(';');
         if(Pos != 0) //there is a fourth
         {
-            Fourth = Third.SubString(Pos + 1, Remainder.Length() - Pos);
-            Third = Third.SubString(1, Pos - 1);
+            Fourth = Third.SubString(Pos + 1, Remainder.Length() - Pos); //min dwell time
+            if(Fourth == "")
+            {
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
+            Third = Third.SubString(1, Pos - 1); //location
+            if(Fourth.ToDouble() < 30.0)
+            {
+                TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
             for(int x = 1; x <= Fourth.Length(); x++)
             {
                 if((Fourth[x] < '0') || (Fourth[x] > '9'))
@@ -12429,8 +12444,19 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
 //check here for TimeLoc with non-default dwell time
     if((Pos != 0) && (CheckLocationValidity(7777, Remainder.SubString(1, Pos - 1), false, CheckLocationsExistInRailway))) //false for no give messages as likely to be ok
         {
-            Second = Remainder.SubString(1, Pos - 1);
+            Second = Remainder.SubString(1, Pos - 1); //location
             Third = Remainder.SubString(Pos + 1, Remainder.Length() - Pos); //non-default dwell time
+            if(Third == "")
+            {
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
+            if(Third.ToDouble() < 30.0)
+            {
+                TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
             for(int x = 1; x <= Third.Length(); x++)
             {
                 if((Third[x] < '0') || (Third[x] > '9'))
@@ -13724,6 +13750,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SecondPassActions,");
+    TDateTime LastArrivalTime;
+    double MinDwellTime;
     if(TrainDataVector.empty())
     {
         SecondPassMessage(GiveMessages, "Error in timetable - there appear to be no train services in the timetable, it must contain at least one");
@@ -14640,6 +14668,13 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     Utilities->CallLogPop(807);
                     return(false);
                 }
+                if((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)) //subtract 0.05 to avoid rounding errors
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
             }
             if(AVEntry.FormatType == PassTime)
             {
@@ -14698,10 +14733,27 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         AVEntry.DepartureTime = AVEntry.EventTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = false;
+                        if((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)) //subtract 0.05 to avoid rounding errors
+                        {
+                            SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
+                            TrainDataVector.clear();
+                            Utilities->CallLogPop(7777);
+                            return(false);
+                        }
+                        if(AVEntry.MinDwellTime > 30.0)
+                        {
+                            SecondPassMessage(GiveMessages, "Error in timetable - a minimum dwell time is not permitted for a departure, "
+                                "add it to the corresponding arrival instead, see: " + TDEntry.HeadCode);
+                            TrainDataVector.clear();
+                            Utilities->CallLogPop(7777);
+                            return(false);
+                        }
                     }
                     else // last entry a departure
                     {
                         AVEntry.ArrivalTime = AVEntry.EventTime;
+                        MinDwellTime = AVEntry.MinDwellTime;
+                        LastArrivalTime = AVEntry.ArrivalTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = true;
                     }

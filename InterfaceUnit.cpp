@@ -13743,7 +13743,7 @@ void __fastcall TInterface::TakeSignallerControlMenuItemClick(TObject *Sender)
 
 // ---------------------------------------------------------------------------
 
-void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
+void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender) //Restore timetable control
 {
     try
     {
@@ -13819,6 +13819,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
             {
                 // Timetable indicates that train still waiting to arrive for a TimeLoc arrival so send message and mark as arrived
                 Train.LogAction(28, Train.HeadCode, "", Arrive, LocName, "", Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
+                Train.ActualArrivalTime = TrainController->TTClockTime; //added after v2.22.0
                 Train.ActionVectorEntryPtr++; // advance pointer past arrival  //added at v1.2.0
             }
             else if((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) && !(Train.TimeTimeLocArrived))
@@ -13826,17 +13827,22 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
                 // Timetable indicates that train still waiting to arrive for a TimeTimeLoc arrival so send message and mark as arrived
                 Train.LogAction(29, Train.HeadCode, "", Arrive, LocName, "", Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
                 Train.TimeTimeLocArrived = true;
+                Train.ActualArrivalTime = TrainController->TTClockTime; //added after v2.22.0
                 // NB: No need for 'Train.ActionVectorEntryPtr++' because still to act on the departure time
             }
 
             TActionVectorEntry *AVE = Train.ActionVectorEntryPtr;
             if((AVE->DepartureTime >= TDateTime(0)) && ((AVE->FormatType == TimeLoc) || (AVE->FormatType == TimeTimeLoc)))
             {
-                if((Train.ReleaseTime - Train.LastActionTime) < TDateTime(AVE->MinDwellTime / 86400)) //due to release in less than 30 seconds, added at v2.13.0 to correct
+                if((Train.ReleaseTime - Train.LastActionTime) < TDateTime(30.0 / 86400)) //due to release in less than 30 seconds, added at v2.13.0 to correct
                 {                                                                      //FinsburyPark (discord name) error reported 29/05/22
-                    Train.ReleaseTime = Train.LastActionTime + TDateTime(AVE->MinDwellTime / 86400);
-                    Train.TRSTime = Train.ReleaseTime - TDateTime(10.0/86400);  //added at v2.14.0 as this needs to be reset too to plot correct train b'gnd colour
+                    Train.ReleaseTime = Train.LastActionTime + TDateTime(30.0 / 86400);
                 }
+                if((Train.ReleaseTime - Train.ActualArrivalTime) < TDateTime(AVE->MinDwellTime / 86400)) //added after v2.22.0
+                {
+                    Train.ReleaseTime = Train.ActualArrivalTime + TDateTime(AVE->MinDwellTime / 86400);
+                }
+                Train.TRSTime = Train.ReleaseTime - TDateTime(10.0/86400);  //added at v2.14.0 as this needs to be reset too to plot correct train b'gnd colour
             }
         }
         else

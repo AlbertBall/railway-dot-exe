@@ -1,3 +1,7 @@
+only allow a min dwell time in a timeloc arrival
+
+List utilities in next version of manual & on-screen
+
 Check invert tt entry works ok for non-default dwell times
 
 Change timetable panel labels for non-default dwell times
@@ -22,6 +26,13 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#117 from ThatOneTrainPhotographer via discord on 04/03/25 at 21:56
+I don't know how much the code limits this from being implemented, but instead of just having times in the HH:MM, also having the option for HH:MM:SS? For example 17:30:45;Snt;01-12 02-12
+But also just the option to do XX:XX:00
+
+Albert 05/03/25
+This has been suggested before but to me it adds a degree of precision that isn't warranted, at least in the UK.  Trains that run within 2 or 3 minutes of scheduled times are generally regarded as 'on time', and attempting to run to seconds wouldn't make things any better.  Also the additional programming effort required would well exceed any benefit gained in my view.
 
 #116 from Commuterpop via discord 03/03/25
 I'd promised you to give you a pause after your latest efforts, before presenting a couple of suggestions, however, I'll try to present it in a way that you might answer it more or less with a simple "Maybe", "no" or "let's see later"  The reason for asking now is I'm at a crossroads (is that the way to put it?) in the programming in what I believe is my next sim for publishing. I do believe there was a discussion about time and delays earlier, even though I can't find it right now. This reasoning and example might be of interest, or not - let's see. What I would like to discuss is the handling of times when trains are delayed. (As always, correct me when I'm wrong!) Today Rail OS handles delays in a stop by reducing the trains stop time to 30 seconds, giving the train a chance to reduce delays like IRL. (I have to once again mention the magnificent delays/failures function!) That's fine in the very most cases. However, I'd like to present a couple of special cases, and an example of how to handle it, to see what you think. 
@@ -558,8 +569,9 @@ The option to decrease the time or adjust it.
 My response (after a lot of user discussion, some for and some against):
 This topic has certainly generated a lot of discussion!  The 30 seconds minimum delay in the program isn't just for stops, it applies between any two stationary train events - direction changes, splits, joins etc.  I have to admit that I didn't do any research on the subject, it just seemed like a reasonable time to allow.  In the UK I think the LU must have the shortest dwell times, and I found this video https://www.youtube.com/watch?v=d2g9HlwoC-s which gave these times in seconds: 17, 25, 27, 35, 27, 23, 17, 30, 23, and 19 for the first 10 stops, averaging 24.3.  Bearing in mind too that all these are shown at relatively slack times I'm inclined to think that 30 seconds is a reasonable minimum even for the underground, and probably much too short for surface lines (which can be lengthened of course where necessary in increments of whole minutes).   I can appreciate that other countries will have shorter times in some cases but only by a quarter minute or so.  I'll add it to the suggestions list but confess that given these observations I don't feel much enthusiasm for making any changes.
 
-These three were sent in by Csaba by email on 16 April this year (2022) and I had somehow missed them, so here they are, better late than never I suppose (?)
 #79, #78 & #77
+These three were sent in by Csaba by email on 16 April this year (2022) and I had somehow missed them, so here they are, better late than never I suppose (?)
+
 1) Is there any plan to introduce crossings with automatic working? At the moment, I use the non-station named location option to indicate that there is an automatic crossing through a track whenever it's appropriate.
 
 2) For single track working, introducing a slot request/give option would be welcome.

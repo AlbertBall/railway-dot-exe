@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion();
+        ProgramVersion = "RailOS64" + GetVersion() + " Beta";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -578,8 +578,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
             "+ new description" + NL + "+ new maximum speed" + NL + "+ new service ref." + NL + "+ ref. of train to join" + NL +
             "+ list of valid exit element IDs (at least 1) separated by spaces" + NL + "+ linked shuttle service ref.";
 
-        const AnsiString TTLabelStr7 = "Arrival OR departure time (program will determine which from the context) ';' location." + NL +
-            "Arrival time ';' departure time (with no events between) ';' location";
+        const AnsiString TTLabelStr7 = "Arrival OR departure time (program will identify) ';' location [+ optional ';min dwell time in seconds' (arrival only)]" + NL +
+            "Arrival time ';' departure time (with no events between) ';' location [+ optional ';min dwell time in seconds']";
 
         const AnsiString TTLabelStr9 = "Timetable entries" + NL + "(service references etc.)";
         const AnsiString TTLabelStr11 = "Timetable" + NL + "start time";
@@ -4075,12 +4075,14 @@ void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at
         typedef std::vector<int> TMinVector;
         TMinVector MinVector;
         AnsiString OneLine = *TTCurrentEntryIterator, SubStr, First, Second, Third, Fourth, TrainDataLine, NewEntry;
+        AnsiString ArrivalTime, DepartureTime, FirstTimeLoc, FirstLocation;
         int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
         TTimetableFormatType FormatType;
         TTimetableLocationType LocationType;
         TTimetableSequenceType SequenceType;
         TTimetableShuttleLinkType ShuttleLinkType;
         TNumList ExitList;
+        bool FirstTimeLocRegistered = false;
         bool Warning, RepeatFlag = false;
         int Count = 1; // anything > 0 OK as if 0 still seeking a start time in ProcessOne...
         bool EndOfFile = false;
@@ -4122,7 +4124,7 @@ void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at
             }
             //here with InputVector populated, weed out any invalid entries
 /*
-NewEntry = "";   //populated
+NewEntry = "";   //populated  (diagnostics)
 for(TTEVIterator IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
 {
     NewEntry += *IPVIt + ',';
@@ -4131,7 +4133,7 @@ CopiedEntryStr = NewEntry; //this is needed for pasting as a new entry
 PasteTTEntryButton->Click(); //paste it after the current entry
 */
 
-            TDateTime TimeVal; //not used
+            TDateTime TimeVal;
             if(InputVector.size() > 0)
             {
                 for(TTEVIterator IPVIt = InputVector.end() - 1; IPVIt >= InputVector.begin(); IPVIt--) //backwards so can erase invalid entries
@@ -4193,7 +4195,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             }
             //now have InputVector populated in order with legitimate entries & it isn't empty, change all TimeTimeLocs to 2 x TimeLocs & Finish to TimeLoc
 /*
-NewEntry = ""; //weeded out
+NewEntry = ""; //diagnostics
 for(TTEVIterator IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
 {
     NewEntry += *IPVIt + ',';
@@ -4219,7 +4221,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
                     {
                         if(FormatType == TimeTimeLoc)
                         {
-                            LastTimeVal = Second;
+                            LastTimeVal = Second; //if there's a Fourth then that's the min dwell time, don't carry it forwards
                             AnsiString Arrival = First + ";" + Third;
                             AnsiString Departure = Second + ";" + Third;
                             *IPVIt = Departure; //substitute for original entry
@@ -4268,7 +4270,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             }
             //InputVector now complete
 
-/*
+/*   //diagnostics
 NewEntry = ""; //start & finish added & all TimeLocs
 for(TTEVIterator IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
 {
@@ -4319,7 +4321,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
                 AnsiString NewOutVal = AnsiTimeVal + OutputVector.at(x).SubString(6, OutputVector.at(x).Length() - 5);
                 OutputVector.at(x) = NewOutVal;
             }
-/*
+/*   //diagnostics
 NewEntry = "";
 for(TTEVIterator PVIt = OutputVector.begin(); PVIt < OutputVector.end(); PVIt++)
 {
@@ -4330,16 +4332,36 @@ PasteTTEntryButton->Click(); //paste it after the current entry
 */
 
             //convert successive TimeLocs to TimeTimeLocs and substitute text for linked service reference
-            bool FirstTimeLocRegistered = false;
-            AnsiString ArrivalTime, DepartureTime, FirstTimeLoc, FirstLocation;
+//            bool FirstTimeLocRegistered = false;                                 } declared too deep in nested blocks
+//            AnsiString ArrivalTime, DepartureTime, FirstTimeLoc, FirstLocation;  } show as 'cannot access, out of scope' in debugger
             for(TTEVIterator OPVIt = OutputVector.begin(); OPVIt < OutputVector.end(); OPVIt++)
             {
+                First = ""; Second = ""; Third = ""; Fourth = "";
                 if(TrainController->SplitEntry(4, *OPVIt, GiveMessagesFalse, CheckLocationsExistInRailwayFalse, First, Second,
                               Third, Fourth, RearStartOrRepeatMins, FrontStartOrRepeatDigits, FormatType,
                               LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
                 {
-                    if((FormatType != TimeLoc) || (OPVIt == OutputVector.begin()) || (OPVIt == OutputVector.end() - 1)) // first & last entries are start & finish but show as TimeLocs so capture it here
+                    if(FormatType == TimeLoc) //strip off any minimum dwell times //added after v2.22.0
                     {
+                        if(Third != "") //there is a min dwell time
+                        {
+                            for(int x = (*OPVIt).Length(); x > 0; x--)
+                            {
+                                bool BreakDue = false;
+                                if((*OPVIt)[x] == ';')
+                                {
+                                    BreakDue = true;
+                                }
+                                *OPVIt = OPVIt->SubString(1, x - 1);
+                                if(BreakDue)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if((FormatType != TimeLoc) || (OPVIt == OutputVector.begin()) || (OPVIt == OutputVector.end() - 1)) // first & last entries are start & finish but SplitEntry
+                    {                                                                                                   //shows then as TimeLocs (Time;text) so capture them here
                         if(FirstTimeLocRegistered)
                         {
                             OutputVector2.push_back(FirstTimeLoc); //push this first as not followed by a second TimeLoc
@@ -4414,7 +4436,8 @@ PasteTTEntryButton->Click(); //paste it after the current entry
                     "with a value corresponding to the required start time in minutes.\n\nService reference, description, start, finish and repeat "
                     "commands and linked service references remain to be added (indicated by '<...>'), and if this is to be a follow-on service then "
                     "the train data must be removed.\n\nIf train descriptions or maximum speeds have been changed then the values will probably need to be "
-                    "amended to suit the inverted timetable.\n\nThis message will not be shown again.");
+                    "amended to suit the inverted timetable.\n\nNote that if any minimum dwell times have been added to the original service then these will "
+                    "be stripped off and should be added again if required.\n\nThis message will not be shown again.");
                 InvertTTEntryMessageSent = true;
             }
 

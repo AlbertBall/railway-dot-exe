@@ -692,7 +692,7 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// Major function called at each clock tick for each train & handles all train movement & associated actions.  See flowchart
 /** \htmlinclude UpdateTrain.html */
     void UpdateTrain(int Caller);
-/// Called by TTrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file
+/// Called by TrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file
     void WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap);
 
 
@@ -1018,6 +1018,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool Last2CharactersBothDigits(int Caller, AnsiString HeadCode);
 /// A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an en-route command, used in timetable validation
     bool MovingSuccessor(const TActionVectorEntry &AVEntry);
+/// Checks whether a piece of text is a command and returns false if it is
+    bool NotACommand(int Caller, AnsiString Text);
 /// Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if FinalCall true) set the internal timetable data values, return true for success
     bool ProcessOneTimetableLine(int Caller, int Count, AnsiString OneLine, bool &EndOfFile, bool FinalCall, bool GiveMessages, bool CheckLocationsExistInRailway);
 /// Determines whether two services are running in the same direction when they arrive or depart from Location

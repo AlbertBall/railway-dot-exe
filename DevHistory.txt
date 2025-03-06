@@ -1,12 +1,20 @@
-only allow a min dwell time in a timeloc arrival
+deal with caller checker & 7777s
+
+add new reading area to railway map
+
+add NotACommand to caller checker
+
+maybe add min dwell time to floating window
+
+/ only allow a min dwell time in a timeloc arrival
 
 List utilities in next version of manual & on-screen
 
 Check invert tt entry works ok for non-default dwell times
 
-Change timetable panel labels for non-default dwell times
+/ Change timetable panel labels for non-default dwell times
 
-Deal with conflicts when (departure - arrival) < min dwell time
+/ Deal with conflicts when (departure - arrival) < min dwell time
 
 
 Development History

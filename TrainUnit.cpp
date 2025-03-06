@@ -12385,12 +12385,6 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
                 return(false);
             }
             Third = Third.SubString(1, Pos - 1); //location
-            if(Fourth.ToDouble() < 30.0)
-            {
-                TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
-                Utilities->CallLogPop(7777);
-                return(false);
-            }
             for(int x = 1; x <= Fourth.Length(); x++)
             {
                 if((Fourth[x] < '0') || (Fourth[x] > '9'))
@@ -12399,6 +12393,12 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
                     Utilities->CallLogPop(7777);
                     return(false);
                 }
+            }
+            if(Fourth.ToDouble() < 30.0)
+            {
+                TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
+                Utilities->CallLogPop(7777);
+                return(false);
             }
         }
         if(!CheckLocationValidity(0, Third, GiveMessages, CheckLocationsExistInRailway))
@@ -12445,33 +12445,36 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     if((Pos != 0) && (CheckLocationValidity(7777, Remainder.SubString(1, Pos - 1), false, CheckLocationsExistInRailway))) //false for no give messages as likely to be ok
         {
             Second = Remainder.SubString(1, Pos - 1); //location
-            Third = Remainder.SubString(Pos + 1, Remainder.Length() - Pos); //non-default dwell time
-            if(Third == "")
+            if(NotACommand(0, Second)) //added after v2.22.0 so invert works as that permitted without a railway loaded so any text (including commands) can count as locations
             {
-                Utilities->CallLogPop(7777);
-                return(false);
-            }
-            if(Third.ToDouble() < 30.0)
-            {
-                TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
-                Utilities->CallLogPop(7777);
-                return(false);
-            }
-            for(int x = 1; x <= Third.Length(); x++)
-            {
-                if((Third[x] < '0') || (Third[x] > '9'))
+                Third = Remainder.SubString(Pos + 1, Remainder.Length() - Pos); //non-default dwell time
+                if(Third == "")
                 {
-                    TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
                     Utilities->CallLogPop(7777);
                     return(false);
                 }
+                for(int x = 1; x <= Third.Length(); x++)
+                {
+                    if((Third[x] < '0') || (Third[x] > '9'))
+                    {
+                        TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
+                        Utilities->CallLogPop(7777);
+                        return(false);
+                    }
+                }
+                if(Third.ToDouble() < 30.0)
+                {
+                    TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+                FormatType = TimeLoc; //TimeLoc with default dwell time
+                LocationType = AtLocation;
+                SequenceType = IntermediateSequence;
+                ShuttleLinkType = NotAShuttleLink;
+                Utilities->CallLogPop(7777);
+                return(true);
             }
-            FormatType = TimeLoc; //TimeLoc with default dwell time
-            LocationType = AtLocation;
-            SequenceType = IntermediateSequence;
-            ShuttleLinkType = NotAShuttleLink;
-            Utilities->CallLogPop(7777);
-            return(true);
         }
     // here if second segment is a command, with a third & maybe fourth segments
     if((Pos != 4) && (Pos != 7) && (Pos != 8))
@@ -12750,6 +12753,23 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         }
     }
     Utilities->CallLogPop(924);
+    return(true);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrainController::NotACommand(int Caller, AnsiString Text)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NotACommand");
+    if((Text == "Snt") || (Text == "Sfs") || (Text == "Sns") || (Text == "Sns-fsh") || (Text == "Snt-sh") || (Text == "Sns-sh") ||
+        (Text == "pas") || (Text == "jbo") || (Text == "fsp") || (Text == "rsp") || (Text == "cdt") || (Text == "dsc") ||
+        (Text == "cms") || (Text == "Fns") || (Text == "Fjo") || (Text == "Fer") || (Text == "Frh-sh") || (Text == "Fns-sh") ||
+        (Text == "F-nshs") || (Text == "Frh"))
+    {
+        Utilities->CallLogPop(7777);
+        return(false);
+    }
+    Utilities->CallLogPop(7777);
     return(true);
 }
 
@@ -20582,7 +20602,7 @@ different to the train's front element name (whether null or not) (no report), a
                                     }
                                     if(MissingcdtUnreportedFlag)
                                     {
-                                        TTFile3 << "Possibly missing changes of direction - these will be missing unless the service travels in a loop back to the locations marked:-\n\n";
+                                        TTFile3 << "Possibly missing changes of direction - these should be checked to see if there is a good reason for cdt's not being included. :-\n\n";
                                     }
                                     TTFile3 << LocationNameToBeChecked << " is listed twice with no direction change between in service sequence: " << Sequence << "\n\n";
                                     MarkerList.push_back(FirstInstance);

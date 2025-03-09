@@ -1,14 +1,16 @@
-mention Oxalin's heatmap error reported on discord 08/03/25
-
-note that expect faults - so many oddments that needed changing, prob missed some
-
-note that repeats follow same pattern re min dwell times
-
-note that earlier prog versions won't load tts with min dwell times
-
 add new Reading Area to railway map
 
-List utilities in next version of manual & on-screen
+List utilities in next version of manual (& on-screen help?)
+
+/ mention Oxalin's heatmap error reported on discord 08/03/25
+
+/ note that expect faults - so many oddments that needed changing, prob missed some
+
+/ note that repeats follow same pattern re min dwell times
+
+/ note that earlier prog versions won't load tts with min dwell times
+
+/ need to deal with arrivals that don't have a departure, ok the dep - arr test only done for departures
 
 / add NotACommand to caller checker
 

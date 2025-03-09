@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS64" + GetVersion() + " Beta";
+        ProgramVersion = "RailOS32" + GetVersion() + " Beta";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -238,7 +238,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         RecoverClipboardMessageSent = false; // added at v2.8.0
         TooLongMessageSentFlag = false; //added at v2.9.1
         TooShortMessageSentFlag = false; //added at v2.9.1
-        Track->NoPlatsMessageSent = false; //added at v2.10.0
+        Utilities->NoPlatsMessageSent = false; //added at v2.10.0
         PrefDirConflictAdviceMessageSent = false; //added at v2.13.0
         TrainLeaveWarningSent = false; //added at v2.14.0
         InvertTTEntryMessageSent = false; //added at v2.15.0
@@ -254,7 +254,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LengthHeatMapImage->Visible = false;
         SpeedHeatMapImage = SpeedHeatMapImageRedLow;
         SpeedHeatMapImage->Visible = false;
-        Track->RedLowFlag = true;
+        Utilities->RedLowFlag = true;
         HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent High Values";
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
@@ -644,7 +644,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TTStartTimeIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, best to initialise to an invalid location to force errors if not set properly
         TTFirstServiceIterator = TimetableEditVector.end();
         TTLastServiceIterator = TimetableEditVector.end();
-        Track->OverrideAndHideSignalBridgeMessage = false; // added at v2.5.1 to allow facing signals before bridges - with a warning
+        Utilities->OverrideAndHideSignalBridgeMessage = false; // added at v2.5.1 to allow facing signals before bridges - with a warning
         ConflictPanel->Visible = false;
         TTClockAdjustWarningPanel->Visible = false;
         TTClockAdjustWarningHide = false;
@@ -4341,7 +4341,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
                               Third, Fourth, RearStartOrRepeatMins, FrontStartOrRepeatDigits, FormatType,
                               LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
                 {
-                    if(FormatType == TimeLoc) //strip off any minimum dwell times //added after v2.22.0
+                    if(FormatType == TimeLoc) //strip off any minimum dwell times //added at v2.23.0
                     {
                         if(Third != "") //there is a min dwell time
                         {
@@ -13842,7 +13842,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender) //Res
             {
                 // Timetable indicates that train still waiting to arrive for a TimeLoc arrival so send message and mark as arrived
                 Train.LogAction(28, Train.HeadCode, "", Arrive, LocName, "", Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
-                Train.ActualArrivalTime = TrainController->TTClockTime; //added after v2.22.0
+                Train.ActualArrivalTime = TrainController->TTClockTime; //added at v2.23.0
                 Train.ActionVectorEntryPtr++; // advance pointer past arrival  //added at v1.2.0
             }
             else if((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) && !(Train.TimeTimeLocArrived))
@@ -13850,7 +13850,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender) //Res
                 // Timetable indicates that train still waiting to arrive for a TimeTimeLoc arrival so send message and mark as arrived
                 Train.LogAction(29, Train.HeadCode, "", Arrive, LocName, "", Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
                 Train.TimeTimeLocArrived = true;
-                Train.ActualArrivalTime = TrainController->TTClockTime; //added after v2.22.0
+                Train.ActualArrivalTime = TrainController->TTClockTime; //added at v2.23.0
                 // NB: No need for 'Train.ActionVectorEntryPtr++' because still to act on the departure time
             }
 
@@ -13861,7 +13861,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender) //Res
                 {                                                                      //FinsburyPark (discord name) error reported 29/05/22
                     Train.ReleaseTime = Train.LastActionTime + TDateTime(30.0 / 86400);
                 }
-                if((Train.ReleaseTime - Train.ActualArrivalTime) < TDateTime(AVE->MinDwellTime / 86400)) //added after v2.22.0
+                if((Train.ReleaseTime - Train.ActualArrivalTime) < TDateTime((AVE->MinDwellTime - 0.05) / 86400)) //added at v2.23.0
                 {
                     Train.ReleaseTime = Train.ActualArrivalTime + TDateTime(AVE->MinDwellTime / 86400);
                 }
@@ -15675,11 +15675,11 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
                 if(MessageDlg("Do you wish to allow signals next to bridges?  If so please be aware that routes cannot be truncated to these signals.",
                               mtWarning, Buttons, 0) == mrYes)
                 {
-                    Track->OverrideAndHideSignalBridgeMessage = true;
+                    Utilities->OverrideAndHideSignalBridgeMessage = true;
                 }
                 else
                 {
-                    Track->OverrideAndHideSignalBridgeMessage = false;
+                    Utilities->OverrideAndHideSignalBridgeMessage = false;
                 }
             }
         }
@@ -17681,14 +17681,14 @@ void TInterface::LoadConfigFile(int Caller, bool FirstLoad, bool &NoConfigFile) 
                             LengthHeatMapImage = LengthHeatMapImageRedLow;
                             SpeedHeatMapImage = SpeedHeatMapImageRedLow;
                             HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent High Values";
-                            Track->RedLowFlag = true;
+                            Utilities->RedLowFlag = true;
                         }
                         else if(ConfigValue == "redhigh")
                         {
                             LengthHeatMapImage = LengthHeatMapImageRedHigh;
                             SpeedHeatMapImage = SpeedHeatMapImageRedHigh;
                             HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent Low Values";
-                            Track->RedLowFlag = false;
+                            Utilities->RedLowFlag = false;
                         }
                     } //if neither then leave as is
                     if((ConfigStr.SubString(1, 8) == "BgndCol=") && FirstLoad)
@@ -29476,19 +29476,19 @@ void __fastcall TInterface::HeatmapsRedlowvaluesMenuItemClick(TObject *Sender)
 {
     TrainController->LogEvent("HeatmapsRedlowvaluesMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HeatmapsRedlowvaluesMenuItemClick");
-    if(Track->RedLowFlag)
+    if(Utilities->RedLowFlag)
     {
         LengthHeatMapImage = LengthHeatMapImageRedHigh;
         SpeedHeatMapImage = SpeedHeatMapImageRedHigh;
         HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent Low Values";
-        Track->RedLowFlag = false;
+        Utilities->RedLowFlag = false;
     }
     else
     {
         LengthHeatMapImage = LengthHeatMapImageRedLow;
         SpeedHeatMapImage = SpeedHeatMapImageRedLow;
         HeatmapsRedlowvaluesMenuItem->Caption = "Heatmaps: Set Red to Represent High Values";
-        Track->RedLowFlag = true;
+        Utilities->RedLowFlag = true;
     }
     Utilities->CallLogPop(2719);
 }

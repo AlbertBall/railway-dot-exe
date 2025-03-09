@@ -347,6 +347,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "NoGaps",
         "NoNamedLocationElements",
         "NonFootbridgeNamedLocationExists",
+        "NotACommand",
         "NumberOfGaps",
         "NumberOfPlatforms",
         "OldTextOut",

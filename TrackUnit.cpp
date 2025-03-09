@@ -2792,7 +2792,7 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
             {
                 NoPlatsAnsiList += *NPLIt + '\n';
             }
-            if(!NoPlatsMessageSent)
+            if(!Utilities->NoPlatsMessageSent)
             {
                 if(NoPlatsList.size() > 1)
                 {
@@ -2802,7 +2802,7 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
                 {
                     ShowMessage("Please note: the following location has no platforms, trains won't be able to stop or pass there:-\n\n" + NoPlatsAnsiList + "\nThis message will not be shown again.");
                 }
-                NoPlatsMessageSent = true;
+                Utilities->NoPlatsMessageSent = true;
             }
         }
     }
@@ -5062,14 +5062,14 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     TrackElementPositionsOK = false;
                 }
 //removed at v2.15.0 as now have a warning for bridge either side of a signal, see below
-/*                else if((TrackElementAt(1172, x).Config[y] == Signal) && (TrackElementAt(1173, VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage)
+/*                else if((TrackElementAt(1172, x).Config[y] == Signal) && (TrackElementAt(1173, VecPos).TrackType == Bridge) && !Utilities->OverrideAndHideSignalBridgeMessage)
                 {
                     ShowMessage("Bridge next to a signal - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message will not be shown again.");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                     TrackElementPositionsOK = false;
                 }*/
-                else if((TrackElementAt(1564, x).TrackType == SignalPost) && (TrackElementAt(1565, VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage) //added at v2.15.0
+                else if((TrackElementAt(1564, x).TrackType == SignalPost) && (TrackElementAt(1565, VecPos).TrackType == Bridge) && !Utilities->OverrideAndHideSignalBridgeMessage) //added at v2.15.0
                 {
                     ShowMessage("Bridge next to a signal - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message will not be shown again.");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
@@ -10108,7 +10108,7 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
     float Len, Spd;
     if(LengthHeatMapFlag)
     {
-        if(RedLowFlag)
+        if(Utilities->RedLowFlag)
         {
             Len = Length/10;
         }
@@ -10122,7 +10122,7 @@ void TTrack::OneLengthOrSpeedHeatMapColour(int Caller, TTrackElement TrackElemen
     }                               //use ChangeForegroundColour2 as faster
     else if (SpeedHeatMapFlag)
     {
-        if(RedLowFlag)
+        if(Utilities->RedLowFlag)
         {
             Spd = Speed/10;
         }

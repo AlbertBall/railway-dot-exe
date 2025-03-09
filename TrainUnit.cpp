@@ -939,9 +939,9 @@ void TTrain::UpdateTrain(int Caller)
                 NewDelay = 0; //section relating to random delays added at v2.13.0
                 TDateTime TimetableReleaseTime = TrainController->GetRepeatTime(0, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);  //Timetable value
                 TDateTime DwellTime = TimetableReleaseTime - ActualArrivalTime; //Timetable value
-                if(DwellTime < TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400))
+                if(DwellTime < TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400))
                 {
-                    DwellTime = TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
+                    DwellTime = TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400);
                 }
                 int randval = random(10000);
                 if(randval != 0)  //if randval == 0 or DelayMode == Nil then NewDelay will be 0 as set above
@@ -968,7 +968,7 @@ void TTrain::UpdateTrain(int Caller)
                         }
                     }
                 }
-//NewDelay = 25; //test
+//NewDelay = 5; //test
                 if(double(TrainController->TTClockTime) <= (Utilities->LastDelayTTClockTime + 5.0/1440.0)) //if within 5 mins of last delay for any train
                 {                                                                                      //then don't delay.  Added at v2.13.0
                     NewDelay = 0;
@@ -1006,9 +1006,10 @@ void TTrain::UpdateTrain(int Caller)
 //                    CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //as above
                 }
                 ReleaseTime = LastActionTime + TDateTime(NewDelay / 1440);  //earliest possible release time
-                if(NewDelay < (ActionVectorEntryPtr->MinDwellTime / 60)) //less than the min dwell time
+//                if(NewDelay < (ArrivalActionVectorEntryPtr->MinDwellTime / 60)) //less than the min dwell time
+                if(ReleaseTime < ActualArrivalTime + TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400))
                 {
-                    ReleaseTime = LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
+                    ReleaseTime = ActualArrivalTime + TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400);
                 }
                 if(ReleaseTime < TimetableReleaseTime)
                 {
@@ -2414,6 +2415,7 @@ void TTrain::UpdateTrain(int Caller)
                             }
                             LogAction(8, HeadCode, "", Arrive, LocName, "", ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
                             ActualArrivalTime = TrainController->TTClockTime;   //added at v2.13.0
+                            ArrivalActionVectorEntryPtr = ActionVectorEntryPtr; //in order to retrieve MinDwellTime when reach departure
                             if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
                             {
                                 TimeTimeLocArrived = true;
@@ -7492,21 +7494,21 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture) //added at v2.12.0 for becoming new service early (see BecomeNewservice)
         {
-            RetStr = "Depart " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(46, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Depart " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(46, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->FormatType == PassTime) //must come after 'else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture)'
         {
-            RetStr = "Pass " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(31, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Pass " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(31, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->Command == "Fns")
         {
             RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(8, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " +
-                Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(6, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+                Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(6, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
             RetStr = GetNewServiceDepartureInfo(0, Ptr, RepeatNumber, Ptr->LinkedTrainEntryPtr, RetStr, false); //if there is a next service this adds the new service departure time to RetStr
         }
         else if(Ptr->Command == "F-nshs")
         {
-            RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName + " at approx. " +
+            RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName;// + " at approx. " +
                 Utilities->Format96HHMM(GetTrainTime(32, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
             RetStr = GetNewServiceDepartureInfo(1, Ptr, 0, Ptr->LinkedTrainEntryPtr, RetStr, false); //if there is a next service this adds the new service departure time to RetStr
             //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
@@ -7516,20 +7518,20 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
         {
             RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(9, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
-                Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+                Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
             // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
             RetStr = GetNewServiceDepartureInfo(2, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr, false); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Fns-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
         {
             RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode,
-            +" at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(8, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            +" at " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(8, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
             RetStr = GetNewServiceDepartureInfo(3, Ptr, 0, Ptr->NonRepeatingShuttleLinkEntryPtr, RetStr, false); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
         {
             RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(10, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
-                Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(9, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+                Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(9, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
             // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
             RetStr = GetNewServiceDepartureInfo(4, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr, false); //if there is a next service this adds the new service departure time to RetStr
         }
@@ -7544,39 +7546,39 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         else if(Ptr->Command == "Fer")
         {
             AnsiString AllowedExits = "";
-            RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(1, Ptr->ExitList, AllowedExits) + " at approx. " + Utilities->Format96HHMM(GetTrainTime(10, Ptr->EventTime + TDateTime(DelayedRandMins/1440))) + AllowedExits;
+            RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(1, Ptr->ExitList, AllowedExits) + AllowedExits;
         }
         else if(Ptr->Command == "Fjo")
         {
-            RetStr = "Join " + TrainController->GetRepeatHeadCode(11, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName + " at approx. " +
-                Utilities->Format96HHMM(GetTrainTime(11, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Join " + TrainController->GetRepeatHeadCode(11, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// + " at approx. " +
+//                Utilities->Format96HHMM(GetTrainTime(11, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->Command == "jbo")
         {
-            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(12, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
-                " at approx. " + Utilities->Format96HHMM(GetTrainTime(12, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(12, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// +
+//                " at approx. " + Utilities->Format96HHMM(GetTrainTime(12, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->Command == "fsp")
         {
-            RetStr = "Front split to " + TrainController->GetRepeatHeadCode(13, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
-                " at approx. " + Utilities->Format96HHMM(GetTrainTime(13, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Front split to " + TrainController->GetRepeatHeadCode(13, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// +
+//                " at approx. " + Utilities->Format96HHMM(GetTrainTime(13, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->Command == "rsp")
         {
-            RetStr = "Rear split to " + TrainController->GetRepeatHeadCode(14, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
-                " at approx. " + Utilities->Format96HHMM(GetTrainTime(14, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Rear split to " + TrainController->GetRepeatHeadCode(14, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// +
+//                " at approx. " + Utilities->Format96HHMM(GetTrainTime(14, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->Command == "cdt")
         {
-            RetStr = "Change direction at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(15, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Change direction at " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(15, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->Command == "dsc")
         {
-            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(65, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Change description at " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(65, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
         else if(Ptr->Command == "cms")
         {
-            RetStr = "Change maximum speed to " + Ptr->NewMaxSpeed + " at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(75, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Change maximum speed to " + Ptr->NewMaxSpeed + " at " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(75, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
     }
     else if(TrainController->TTClockTime > ActionTime) //condition added at v2.13.2 for trains that are delayed other than suffering a random delay
@@ -7677,13 +7679,13 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "Fjo")
         {
-            RetStr = "Join " + TrainController->GetRepeatHeadCode(63, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// + " at approx. " +
-//                Utilities->Format96HHMM(TrainController->TTClockTime);
+            RetStr = "Join " + TrainController->GetRepeatHeadCode(63, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName + " at approx. " +
+                Utilities->Format96HHMM(TrainController->TTClockTime);
         }
         else if(Ptr->Command == "jbo")
         {
-            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(64, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// +
-//                " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
+            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(64, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
         }
         else if(Ptr->Command == "fsp")
         {
@@ -7721,7 +7723,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
                 if(!TrainAtLocation(3, LocationName) || (LocationName != Ptr->LocationName))
                 // not arrived yet in tt mode
                 {
-                    RetStr = "Arrive " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(48, Ptr->ArrivalTime));
+                    RetStr = "Arrive " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(48, Ptr->ArrivalTime));
                 }
                 else
                 {
@@ -7736,13 +7738,13 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
                 }
                 else
                 {
-                    RetStr = "Depart " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(36, Ptr->DepartureTime));
+                    RetStr = "Depart " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(36, Ptr->DepartureTime));
                 }
             }
         }
         else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))
         {
-            RetStr = "Arrive " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(50, Ptr->ArrivalTime));
+            RetStr = "Arrive " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(50, Ptr->ArrivalTime));
         }
         else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
         {
@@ -7754,7 +7756,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->FormatType == PassTime) //must come after 'else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture)'
         {
-            RetStr = "Pass " + Ptr->LocationName;// + " at approx. " + Utilities->Format96HHMM(GetTrainTime(52, Ptr->EventTime));
+            RetStr = "Pass " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(52, Ptr->EventTime));
         }
         else if(Ptr->Command == "Fns")
         {
@@ -7802,17 +7804,17 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         else if(Ptr->Command == "Fer")
         {
             AnsiString AllowedExits = "";
-            RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(4, Ptr->ExitList, AllowedExits) /*+ " at approx. " + Utilities->Format96HHMM(GetTrainTime(62, Ptr->EventTime))*/ + AllowedExits;
+            RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(4, Ptr->ExitList, AllowedExits) + " at approx. " + Utilities->Format96HHMM(GetTrainTime(62, Ptr->EventTime)) + AllowedExits;
         }
         else if(Ptr->Command == "Fjo")
         {
-            RetStr = "Join " + TrainController->GetRepeatHeadCode(56, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// + " at approx. " +
-//                Utilities->Format96HHMM(GetTrainTime(58, Ptr->EventTime));
+            RetStr = "Join " + TrainController->GetRepeatHeadCode(56, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName + " at approx. " +
+                Utilities->Format96HHMM(GetTrainTime(58, Ptr->EventTime));
         }
         else if(Ptr->Command == "jbo")
         {
-            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(57, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;// +
-//                " at approx. " + Utilities->Format96HHMM(GetTrainTime(59, Ptr->EventTime));
+            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(57, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " at approx. " + Utilities->Format96HHMM(GetTrainTime(59, Ptr->EventTime));
         }
         else if(Ptr->Command == "fsp")
         {
@@ -8231,14 +8233,25 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                     }
                 }
-                else if(Ptr->ArrivalTime == Ptr->DepartureTime)
+                else if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
                 {
                     PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
                 }
                 else
                 {
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(16, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
-                        Utilities->Format96HHMM(GetTrainTime(17, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+                    {
+                        double MDTdouble = Ptr->MinDwellTime / 60;
+                        double MDT = int(MDTdouble * 10);
+                        MDT = MDT / 10;
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(16, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + "mins" + '\n' +
+                            Utilities->Format96HHMM(GetTrainTime(17, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    }
+                    else
+                    {
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(80, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                            Utilities->Format96HHMM(GetTrainTime(84, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    }
                     Count++; // because there are 2 entries
                 }
             }
@@ -8252,14 +8265,25 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                     }
                 }
-                else if(Ptr->ArrivalTime == Ptr->DepartureTime)
+                else if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
                 {
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(38, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
+                    PartStr = Utilities->Format96HHMM(GetTrainTime(78, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
                 }
                 else
                 {
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(39, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
-                        Utilities->Format96HHMM(GetTrainTime(40, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+                    {
+                        double MDTdouble = Ptr->MinDwellTime / 60;
+                        double MDT = int(MDTdouble * 10);
+                        MDT = MDT / 10;
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(39, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + "mins" + '\n' +
+                            Utilities->Format96HHMM(GetTrainTime(40, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    }
+                    else
+                    {
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(81, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                            Utilities->Format96HHMM(GetTrainTime(85, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    }
                     Count++; // because there are 2 entries
                 }
             }
@@ -8275,22 +8299,43 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                 }
             }
-            else if(Ptr->ArrivalTime == Ptr->DepartureTime)
+            else if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
             {
-                PartStr = Utilities->Format96HHMM(GetTrainTime(42, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
+                PartStr = Utilities->Format96HHMM(GetTrainTime(79, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
             }
             else
             {
-                PartStr = Utilities->Format96HHMM(GetTrainTime(43, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
-                    Utilities->Format96HHMM(GetTrainTime(44, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+                {
+                    double MDTdouble = Ptr->MinDwellTime / 60;
+                    double MDT = int(MDTdouble * 10);
+                    MDT = MDT / 10;
+                    PartStr = Utilities->Format96HHMM(GetTrainTime(87, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + "mins" + '\n' +
+                        Utilities->Format96HHMM(GetTrainTime(89, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                }
+                else
+                {
+                    PartStr = Utilities->Format96HHMM(GetTrainTime(82, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                        Utilities->Format96HHMM(GetTrainTime(86, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                }
                 Count++; // because there are 2 entries
             }
         }
-        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))  //arrival
         {
-            PartStr = Utilities->Format96HHMM(GetTrainTime(18, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName;
+            if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+            {
+                double MDTdouble = Ptr->MinDwellTime / 60;
+                double MDT = int(MDTdouble * 10);
+                MDT = MDT / 10;
+                PartStr = Utilities->Format96HHMM(GetTrainTime(88, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + "mins";
+            }
+            else
+            {
+                PartStr = Utilities->Format96HHMM(GetTrainTime(83, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName;
+            }
         }
-        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1))) //departure
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(19, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
             if((LocName == Ptr->LocationName) && (LocName != "") && SkippedDeparture && !SkipDepActedOn)
@@ -10963,22 +11008,43 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         }
         if(Ptr->FormatType == TimeTimeLoc)
         {
-            if(Ptr->ArrivalTime == Ptr->DepartureTime)
+            if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
             {
                 PartStr = Utilities->Format96HHMM(GetControllerTrainTime(0, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive & depart from " + Ptr->LocationName;
             }
             else
             {
-                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(1, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + '\n' +
-                    Utilities->Format96HHMM(GetControllerTrainTime(2, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
+                if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+                {
+                    double MDTdouble = Ptr->MinDwellTime / 60;
+                    double MDT = int(MDTdouble * 10);
+                    MDT = MDT / 10;
+                    PartStr = Utilities->Format96HHMM(GetControllerTrainTime(1, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + "mins" + '\n' +
+                        Utilities->Format96HHMM(GetControllerTrainTime(3, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
+                }
+                else
+                {
+                    PartStr = Utilities->Format96HHMM(GetControllerTrainTime(33, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                        Utilities->Format96HHMM(GetControllerTrainTime(2, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
+                }
                 Count++; // because there are 2 entries
             }
         }
-        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1))) //arrival
         {
-            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(3, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName;
+            if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+            {
+                double MDTdouble = Ptr->MinDwellTime / 60;
+                double MDT = int(MDTdouble * 10);
+                MDT = MDT / 10;
+                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(34, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + "mins";
+            }
+            else
+            {
+                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(35, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName;
+            }
         }
-        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1))) //departure
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(4, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
         }
@@ -11937,7 +12003,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                             ;
                         } // these will all be true as final call
                         ActionVectorEntry.LocationName = Second;
-                        if(Third == "") //added after v2.22.0
+                        if(Third == "") //added at v2.23.0
                         {
                             ActionVectorEntry.MinDwellTime = 30;
                         }
@@ -11966,7 +12032,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                             ;
                         }
                         ActionVectorEntry.LocationName = Third;
-                        if(Fourth == "") //added after v2.22.0
+                        if(Fourth == "") //added at v2.23.0
                         {
                             ActionVectorEntry.MinDwellTime = 30;
                         }
@@ -12381,7 +12447,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             Fourth = Third.SubString(Pos + 1, Remainder.Length() - Pos); //min dwell time
             if(Fourth == "")
             {
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2731);
                 return(false);
             }
             Third = Third.SubString(1, Pos - 1); //location
@@ -12390,14 +12456,14 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
                 if((Fourth[x] < '0') || (Fourth[x] > '9'))
                 {
                     TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2732);
                     return(false);
                 }
             }
             if(Fourth.ToDouble() < 30.0)
             {
                 TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2733);
                 return(false);
             }
         }
@@ -12442,15 +12508,15 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         }
     }
 //check here for TimeLoc with non-default dwell time
-    if((Pos != 0) && (CheckLocationValidity(7777, Remainder.SubString(1, Pos - 1), false, CheckLocationsExistInRailway))) //false for no give messages as likely to be ok
+    if((Pos != 0) && (CheckLocationValidity(4, Remainder.SubString(1, Pos - 1), false, CheckLocationsExistInRailway))) //false for no give messages as likely to be ok
         {
             Second = Remainder.SubString(1, Pos - 1); //location
-            if(NotACommand(0, Second)) //added after v2.22.0 so invert works as that permitted without a railway loaded so any text (including commands) can count as locations
+            if(NotACommand(0, Second)) //added at v2.23.0 so invert works as that permitted without a railway loaded so any text (including commands) can count as locations
             {
                 Third = Remainder.SubString(Pos + 1, Remainder.Length() - Pos); //non-default dwell time
                 if(Third == "")
                 {
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2734);
                     return(false);
                 }
                 for(int x = 1; x <= Third.Length(); x++)
@@ -12458,21 +12524,21 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
                     if((Third[x] < '0') || (Third[x] > '9'))
                     {
                         TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
-                        Utilities->CallLogPop(7777);
+                        Utilities->CallLogPop(2735);
                         return(false);
                     }
                 }
                 if(Third.ToDouble() < 30.0)
                 {
                     TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2736);
                     return(false);
                 }
                 FormatType = TimeLoc; //TimeLoc with default dwell time
                 LocationType = AtLocation;
                 SequenceType = IntermediateSequence;
                 ShuttleLinkType = NotAShuttleLink;
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2737);
                 return(true);
             }
         }
@@ -12766,10 +12832,10 @@ bool TTrainController::NotACommand(int Caller, AnsiString Text)
         (Text == "cms") || (Text == "Fns") || (Text == "Fjo") || (Text == "Fer") || (Text == "Frh-sh") || (Text == "Fns-sh") ||
         (Text == "F-nshs") || (Text == "Frh"))
     {
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2738);
         return(false);
     }
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2739);
     return(true);
 }
 
@@ -14692,7 +14758,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
                     TrainDataVector.clear();
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2740);
                     return(false);
                 }
             }
@@ -14757,7 +14823,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         {
                             SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
                             TrainDataVector.clear();
-                            Utilities->CallLogPop(7777);
+                            Utilities->CallLogPop(2741);
                             return(false);
                         }
                         if(AVEntry.MinDwellTime > 30.0)
@@ -14765,7 +14831,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                             SecondPassMessage(GiveMessages, "Error in timetable - a minimum dwell time is not permitted for a departure, "
                                 "add it to the corresponding arrival instead, see: " + TDEntry.HeadCode);
                             TrainDataVector.clear();
-                            Utilities->CallLogPop(7777);
+                            Utilities->CallLogPop(2742);
                             return(false);
                         }
                     }

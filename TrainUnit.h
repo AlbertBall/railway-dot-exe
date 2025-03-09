@@ -130,7 +130,7 @@ public:
 ///< indicates a train that is defined by the timetable as under signaller control
     bool Warning;
 ///< if set triggers an alert in the warning and perf log panels when the action is reached
-    double MinDwellTime; //added after v2.22.0
+    double MinDwellTime; //added at v2.23.0
 ///< minimum waiting time at a location, default 30s, float because float needed for TDateTime
     int NumberOfRepeats;
 ///< the number of repeating services
@@ -386,6 +386,8 @@ private:
 ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr;
 ///< points to the current position in the ActionVector (a member of the TTrainDataEntry class)
+    TActionVectorEntry *ArrivalActionVectorEntryPtr; //added  at v2.23.0
+///< saves TimeLoc arrival pointer so MinDwellTime can be retrieved at departure
     int SkipPtrValue;
 ///< stores the pointer increment from first action in ActionVector for skipped actions when a departure is still awaited
     int TrainSkippedEvents;

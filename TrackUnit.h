@@ -762,8 +762,6 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< true if found an LC during an automatic route search
     bool LengthHeatMapFlag;
 ///< true when plotting a length heatmap
-    bool NoPlatsMessageSent;
-///< used to send no platforms warning once only
     bool SpeedHeatMapFlag;
 ///< true when plotting a speed heatmap
     bool SuppressRouteFailMessage;
@@ -772,14 +770,10 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< true if a route set through an LC that is closed to trains (& therefore needs to be opened)
     bool PointFlashFlag;
 ///< true when points are flashing during manual change
-    bool RedLowFlag;
-///< true for heatmap colour where red = low speed limit & length
     bool RouteFlashFlag;
 ///< true while a route is flashing prior to being set
     bool SkipLocationNameMultiMapCheck;
 ///<changed from PastingWithAttributes in v2.4.0 as all pastes are now with attributes - needed to suppress multimap checks while pasting
-    bool OverrideAndHideSignalBridgeMessage;
-///<if false signals facing bridges are not permitted, but can be set to true using CTRL ALT 5
     bool SignalFailedFlag;
 ///<indicates at least one signal has failed
     bool TSRFlag;

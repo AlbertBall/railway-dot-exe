@@ -1,16 +1,36 @@
-deal with caller checker & 7777s
+mention Oxalin's heatmap error reported on discord 08/03/25
 
-add new reading area to railway map
+note that expect faults - so many oddments that needed changing, prob missed some
 
-add NotACommand to caller checker
+note that repeats follow same pattern re min dwell times
 
-maybe add min dwell time to floating window
+note that earlier prog versions won't load tts with min dwell times
 
-/ only allow a min dwell time in a timeloc arrival
+add new Reading Area to railway map
 
 List utilities in next version of manual & on-screen
 
-Check invert tt entry works ok for non-default dwell times
+/ add NotACommand to caller checker
+
+/ drop NewDelay = 5
+
+/ add or subtract a fraction to or from all MinDwellTimes when used in comparisons, and ensure get add/subtract correct
+
+/ check for any other Track->, Text-> etc for all classes subject to rebuild. ok all done, found another 2 in Track class
+
+/ check departure times in 'next' correspond to min dwell times
+
+/ apply caller checker
+
+/ check long delays shortened by excess over min dwell time
+
+/ deal with 7777s + 'after v2.22.0'
+
+/ maybe add min dwell time to floating timetable window
+
+/ only allow a min dwell time in a timeloc arrival
+
+/ Check invert tt entry works ok for non-default dwell times
 
 / Change timetable panel labels for non-default dwell times
 

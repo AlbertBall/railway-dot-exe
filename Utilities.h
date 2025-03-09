@@ -74,12 +74,18 @@ public:
 //other variables
     bool Clock2Stopped;
     ///< when true the main loop - Interface->ClockTimer2 - is stopped
+    bool RedLowFlag;
+    ///<Sets Red = low values for heatmaps
     bool RHSignalFlag;
     ///< new at v2.3.0   false=LH signals
     bool SetLocaleResultOK;
     ///< flag to indicate whether the call to setlocale() in InterfaceUnit.cpp succeeded or not
     bool ShowLongServRefsFlag;
     ///< when set long service references show on screen, initialised in Interface constructor
+    bool NoPlatsMessageSent; //moved here from Track class v2.23.0
+    ///< used to send no platforms warning once only
+    bool OverrideAndHideSignalBridgeMessage; // added at v2.5.1 to allow facing signals before bridges - with a warning (moved here from Track class v2.23.0)
+    ///<if false signals facing bridges are not permitted, but can be set to true using CTRL ALT 5
     char DecimalPoint;
     ///< added at v2.4.0 so can use the local value in loaded session files
     double LastDelayTTClockTime;

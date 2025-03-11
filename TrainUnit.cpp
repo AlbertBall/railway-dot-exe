@@ -236,6 +236,8 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     CumulativeDelayedRandMinsOneTrain = 0; //added at v2.13.0
     ActualArrivalTime = TDateTime(0); //added at v2.13.0
     LastSigPassedFailed = false; //added at v2.13.0
+    NonDefaultMinDwellTimeFlag = false; //added at v2.23.0
+    ArrivalMinDwellTime = 30.0; //added at v2.23.0
     LongServRefEnteredFlag = false;
     LongServRefNameBitmap = new Graphics::TBitmap; //added at v2.22.0 these are for displaying long serv refs above the train
     LongServRefNameBitmap->PixelFormat = pf8bit;
@@ -939,9 +941,14 @@ void TTrain::UpdateTrain(int Caller)
                 NewDelay = 0; //section relating to random delays added at v2.13.0
                 TDateTime TimetableReleaseTime = TrainController->GetRepeatTime(0, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);  //Timetable value
                 TDateTime DwellTime = TimetableReleaseTime - ActualArrivalTime; //Timetable value
-                if(DwellTime < TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400))
+//diagnostic additions
+//double aa = double(ActionVectorEntryPtr->DepartureTime) * 24;
+//double bb = double(ActualArrivalTime) * 24;
+//double cc = double(TimetableReleaseTime) * 24;
+//double dd = double(DwellTime) * 86400; //secs
+                if(DwellTime < TDateTime(ArrivalMinDwellTime / 86400))
                 {
-                    DwellTime = TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400);
+                    DwellTime = TDateTime(ArrivalMinDwellTime / 86400);
                 }
                 int randval = random(10000);
                 if(randval != 0)  //if randval == 0 or DelayMode == Nil then NewDelay will be 0 as set above
@@ -1006,10 +1013,10 @@ void TTrain::UpdateTrain(int Caller)
 //                    CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //as above
                 }
                 ReleaseTime = LastActionTime + TDateTime(NewDelay / 1440);  //earliest possible release time
-//                if(NewDelay < (ArrivalActionVectorEntryPtr->MinDwellTime / 60)) //less than the min dwell time
-                if(ReleaseTime < ActualArrivalTime + TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400))
+//                if(NewDelay < (ArrivalMinDwellTime / 60)) //less than the min dwell time
+                if(ReleaseTime < ActualArrivalTime + TDateTime(ArrivalMinDwellTime / 86400))
                 {
-                    ReleaseTime = ActualArrivalTime + TDateTime(ArrivalActionVectorEntryPtr->MinDwellTime / 86400);
+                    ReleaseTime = ActualArrivalTime + TDateTime(ArrivalMinDwellTime / 86400);
                 }
                 if(ReleaseTime < TimetableReleaseTime)
                 {
@@ -1064,7 +1071,8 @@ void TTrain::UpdateTrain(int Caller)
                     }
                 }
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
-                ActualArrivalTime = TDateTime(0); //only run through this section once per arrival
+                ActualArrivalTime = TDateTime(0); //reset to zero, note that only run through this section once per arrival
+                NonDefaultMinDwellTimeFlag = false; //reset
                 DepartureTimeSet = true;
             }
             else if(ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) //as was, for trains that don't have an errival time set
@@ -2415,7 +2423,11 @@ void TTrain::UpdateTrain(int Caller)
                             }
                             LogAction(8, HeadCode, "", Arrive, LocName, "", ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
                             ActualArrivalTime = TrainController->TTClockTime;   //added at v2.13.0
-                            ArrivalActionVectorEntryPtr = ActionVectorEntryPtr; //in order to retrieve MinDwellTime when reach departure
+                            ArrivalMinDwellTime = ActionVectorEntryPtr->MinDwellTime; //in order to retrieve MinDwellTime when reach departure
+                            if(ArrivalMinDwellTime > 30.1) //i.e. not the default value
+                            {
+                                NonDefaultMinDwellTimeFlag = true;
+                            }
                             if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
                             {
                                 TimeTimeLocArrived = true;
@@ -6734,6 +6746,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
     ActionVectorEntryPtr++;
     LastActionTime = TrainController->TTClockTime;
     TerminatedMessageSent = false;
+//Utilities->Pause(1000);
     Utilities->CallLogPop(1022);
 }
 

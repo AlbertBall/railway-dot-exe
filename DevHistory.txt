@@ -1,6 +1,18 @@
+re-jig Bath Spa for new session file structure
+
+try with cdt etc between arr & dep
+
+add bath Spa to railway map
+
+add Bolton to railway map
+
 add new Reading Area to railway map
 
 List utilities in next version of manual (& on-screen help?)
+
+/ remove pause(1000) in newtrainservice
+
+/ what makes session load fail with MDTs
 
 / mention Oxalin's heatmap error reported on discord 08/03/25
 

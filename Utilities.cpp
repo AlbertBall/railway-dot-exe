@@ -132,6 +132,30 @@ void TUtilities::SaveFileDouble(std::ofstream &OutFile, double SaveDouble)
 }
 
 // ---------------------------------------------------------------------------
+
+void TUtilities::Pause(double Msec)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Pause," + AnsiString(Msec));
+    TDateTime First, Second;
+    bool Finished = false;
+
+    First = TDateTime::CurrentDateTime();
+    double TimeVal1 = 86400000 * double(First); // no of msec in a day
+
+    while(!Finished)
+    {
+        Second = TDateTime::CurrentDateTime();
+        double TimeVal2 = 86400000 * double(Second);
+        if((TimeVal2 - TimeVal1) > Msec)
+        {
+            Finished = true;
+        }
+    }
+    Utilities->CallLogPop(2743);
+}
+
+// ---------------------------------------------------------------------------
+
 void TUtilities::SaveFileString(std::ofstream &OutFile, AnsiString SaveString)
 // If don't send a non- '\n' delimiter (using '\0' for convenience, tested in LoadFileString) then when string is null
 // two '\n' characters are placed together.  Then, during reloading, the second one is read because a readable character

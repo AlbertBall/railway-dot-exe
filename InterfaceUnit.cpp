@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion() + " Beta2";
+        ProgramVersion = "RailOS32" + GetVersion() + " Beta3";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -22623,6 +22623,16 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.20.3");
 //end of v2.20.3 additions
 
+//additions at v2.23.0
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                Utilities->SaveFileBool(SessionFile, TVIt->NonDefaultMinDwellTimeFlag);
+                Utilities->SaveFileDouble(SessionFile, TVIt->ArrivalMinDwellTime); //may be the default value of 30secs
+//                Utilities->SaveFileDouble(SessionFile, double(TVIt->ActualArrivalTime)); //already loaded in v2.13.0 additions
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.23.0");
+//end of v2.23.0 additions
+
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
             SessionFile.close();
@@ -23336,7 +23346,7 @@ NEXTADDITION:
                         }
                         if(SessionFile.eof()) // old session file
                         {
-                            //no initialisations needed as no new varianles introduced
+                            //no initialisations needed as no new variables introduced
                             SessionFile.close();
                             goto FINISHEDLOADING;
                         }
@@ -23410,6 +23420,46 @@ NEXTADDITION:
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.3" discarded 'E' may have been loaded earlier
 //end of v2.20.3 additions
+//additions at v2.23.0
+                        SessionFile.get(TempChar); //if not eof TempChar contains 1st train's bool of NonDefaultMinDwellTimeFlag or if there are no trains 'E' of 'End of file at v2.23.0'
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of RemainHereLogNotSent
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) // old session file
+                        {
+                            if(!TrainController->TrainVector.empty())//initialse the new variables
+                            {
+                                for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+                                {
+                                    TVIt->NonDefaultMinDwellTimeFlag = false;
+                                    TVIt->ArrivalMinDwellTime = 30.0;
+                                }
+                            }
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        if(!TrainController->TrainVector.empty())
+                        {//TempChar now contains 1st train's bool of NonDefaultMinDwellTimeFlag
+                            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+                            {
+                                if(TVIt == TrainController->TrainVector.begin())
+                                {
+                                    TVIt->NonDefaultMinDwellTimeFlag = (TempChar == '1');
+                                }
+                                else
+                                {
+                                    TVIt->NonDefaultMinDwellTimeFlag = Utilities->LoadFileBool(SessionFile);
+                                }
+                                TVIt->ArrivalMinDwellTime = Utilities->LoadFileDouble(SessionFile);
+                                if(!TVIt->NonDefaultMinDwellTimeFlag)
+                                {
+                                    TVIt->ArrivalMinDwellTime = 30.0; //just in case hadn't been initialised, to ensure has a value
+                                }
+                            }
+                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.23.0" discarded, 'E' may have been loaded earlier
+//end of v2.23.0 additions
                     }   //this is the final block closure after all additions (enclosed in a block so goto doesn't bypass initialisation of a local variable (DummyStr, ID etc.))
 
 FINISHEDLOADING:
@@ -25576,7 +25626,61 @@ void TInterface::SaveErrorFile()
             }
             Utilities->SaveFileString(ErrorFile, "End of file at v2.20.2");
 //end of v2.20.2 additions
+//additions at v2.20.3 - remaining train values
 
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                TTrain TempTrain = *TVIt; //for diagnostics as debugger can't handle iterators
+                Utilities->SaveFileBool(ErrorFile, TVIt->RemainHereLogNotSent);
+                Utilities->SaveFileString(ErrorFile, TVIt->HeadCode);
+                Utilities->SaveFileBool(ErrorFile, TVIt->FinishJoinLogSent);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoFrontSplitMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoRearSplitMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->FailedTrainNoFinishJoinMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoJoinedByMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoCDTMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoNewServiceMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoNewShuttleFromNonRepeatMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoRepeatShuttleMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerNoRepeatShuttleOrNewServiceMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->ZeroPowerDepartMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->TrainInFrontMessage);
+                Utilities->SaveFileBool(ErrorFile, TVIt->TrainFailurePending);
+                Utilities->SaveFileBool(ErrorFile, TVIt->BufferZoomOutFlashRequired);
+                Utilities->SaveFileBool(ErrorFile, TVIt->JoinedOtherTrainFlag);
+                Utilities->SaveFileBool(ErrorFile, TVIt->LastSigPassedFailed);
+                Utilities->SaveFileBool(ErrorFile, TVIt->LeavingUnderSigControlAtContinuation);
+                Utilities->SaveFileBool(ErrorFile, TVIt->SignallerStoppingFlag);
+                Utilities->SaveFileBool(ErrorFile, TVIt->StationStopCalculated);
+                Utilities->SaveFileBool(ErrorFile, TVIt->StepForwardFlag);
+                Utilities->SaveFileDouble(ErrorFile, TVIt->SignallerStopBrakeRate);
+                Utilities->SaveFileDouble(ErrorFile, TVIt->MinsDelayed);
+                Utilities->SaveFileDouble(ErrorFile, TVIt->OpTimeToAct);
+                Utilities->SaveFileDouble(ErrorFile, TVIt->TimeToExit);
+                Utilities->SaveFileDouble(ErrorFile, TVIt->FirstLaterStopRecoverableTime);
+                Utilities->SaveFileInt(ErrorFile, TVIt->DistanceToStationStop);
+                Utilities->SaveFileInt(ErrorFile, TVIt->UpdateCounter);
+                Utilities->SaveFileInt(ErrorFile, TVIt->ExitPair.first);
+                Utilities->SaveFileInt(ErrorFile, TVIt->ExitPair.second);
+                Utilities->SaveFileBool(ErrorFile, TVIt->StoppedWithoutPower);
+                Utilities->SaveFileBool(ErrorFile, TVIt->TrainInFront);
+                Utilities->SaveFileInt(ErrorFile, TVIt->OldZoomOutElement[0]);
+                Utilities->SaveFileInt(ErrorFile, TVIt->OldZoomOutElement[1]);
+                Utilities->SaveFileInt(ErrorFile, TVIt->OldZoomOutElement[2]);
+                Utilities->SaveFileString(ErrorFile, TVIt->SelReminderString);
+                Utilities->SaveFileString(ErrorFile, TVIt->SelSkipString);
+                Utilities->SaveFileBool(ErrorFile, TVIt->AllowedToPassRedSignal); //corrected earlier error in v2.20.2 LoadSession, see above
+                Utilities->SaveFileString(ErrorFile, "****"); //end of train marker
+            }
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.20.3");
+//end of v2.20.3 additions
+//additions at v2.23.0
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                Utilities->SaveFileBool(ErrorFile, TVIt->NonDefaultMinDwellTimeFlag);
+                Utilities->SaveFileDouble(ErrorFile, TVIt->ArrivalMinDwellTime); //may be the default value of 30secs
+            }
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.23.0");
 
 //REMAINDER STAY AT END OF FILE
 // addition at v2.8.0 in case of clipboard

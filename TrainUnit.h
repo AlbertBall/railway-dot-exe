@@ -386,8 +386,6 @@ private:
 ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr;
 ///< points to the current position in the ActionVector (a member of the TTrainDataEntry class)
-    TActionVectorEntry *ArrivalActionVectorEntryPtr; //added  at v2.23.0
-///< saves TimeLoc arrival pointer so MinDwellTime can be retrieved at departure
     int SkipPtrValue;
 ///< stores the pointer increment from first action in ActionVector for skipped actions when a departure is still awaited
     int TrainSkippedEvents;
@@ -412,6 +410,8 @@ private:
 ///< flag used to erase route elements in an autosigs route after a failed signal
     bool LeavingUnderSigControlAtContinuation;
 ///< set when the train has reached an exit continuation when under signaller control, used to prevent the popup menu being given on right clicking (can cause ambiguities in positioning if try to give signaller commands when at or close to a continuation)
+    bool NonDefaultMinDwellTimeFlag;
+///< set when an explicit min dwell time is set
     bool OneLengthAccelDecel;
 ///< set when a train can only move forwards one element before stopping but needs to accelerate for the first half of the element
     bool SignallerRemoved;
@@ -460,6 +460,8 @@ private:
 ///< an additional random delay at a location (added at v2.13.0)
     double CumulativeDelayedRandMinsOneTrain;
 ///< the running total of all random delays including knock-on delays for a single train, used to reduce total late mins in performance summary (added at v2.13.0)
+    double ArrivalMinDwellTime; //added  at v2.23.0
+///< saves MinDwellTime from the arrival event so it can be retrieved at departure
     double PowerAtRail;
 ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
     double OriginalPowerAtRail;
@@ -482,8 +484,9 @@ private:
 ///< used in train splitting operations to prevent too frequent checks for a location being long enough for a split after a failure message has already been given (doesn't need to stay failed as signaller can manoeuvre it to a better location)
     TDateTime EntryTime, ExitTimeHalf, ExitTimeFull;
 ///< times used in SetTrainMovementValues corresponding to the next element the train runs on
-    TDateTime ReleaseTime, TRSTime, ActualArrivalTime;
+    TDateTime ReleaseTime, TRSTime, ActualArrivalTime; //ActualArrivalTime
 ///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime). ActualArrivalTime added at v2.13.0 for random delays
+
     TDateTime LastActionTime;
 ///< time of the last timetabled event, used to ensure at least a 30 second delay before the next action
     THVShortPair ExitPair;

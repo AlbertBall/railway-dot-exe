@@ -131,6 +131,8 @@ public:
     ///< pops the last entry off the call stack, throws an error if called when empty
     void FileDiagnostics(AnsiString Input);
     ///< sends Input to 'TestFile.csv', this is a diagnostic function used during development
+    void Pause(double Msec);
+    ///gives a delay od Msec value;
     void SaveFileBool(std::ofstream &OutFile, bool SaveBool);
     ///< stores '1' if the bool is true or '0' if false to the file, then a CR
     void SaveFileInt(std::ofstream &OutFile, int SaveInt);

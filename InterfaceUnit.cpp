@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion() + " Beta3";
+        ProgramVersion = "RailOS32" + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -23456,6 +23456,9 @@ NEXTADDITION:
                                 {
                                     TVIt->ArrivalMinDwellTime = 30.0; //just in case hadn't been initialised, to ensure has a value
                                 }
+//AnsiString cc = TVIt->HeadCode;  //diagnostics
+//bool aa = TVIt->NonDefaultMinDwellTimeFlag;
+//double bb = TVIt->ArrivalMinDwellTime;
                             }
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.23.0" discarded, 'E' may have been loaded earlier

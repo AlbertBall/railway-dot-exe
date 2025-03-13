@@ -1072,6 +1072,7 @@ void TTrain::UpdateTrain(int Caller)
                 }
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
                 ActualArrivalTime = TDateTime(0); //reset to zero, note that only run through this section once per arrival
+                ArrivalMinDwellTime = 30.0; //reset to default value
                 NonDefaultMinDwellTimeFlag = false; //reset
                 DepartureTimeSet = true;
             }

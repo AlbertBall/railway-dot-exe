@@ -1,10 +1,10 @@
-add Bath Spa to railway map
-
 add Bolton to railway map
 
 add new Reading Area to railway map
 
 List utilities in next version of manual (& on-screen help?)
+
+/ add Bath Spa to railway map
 
 X re-jig Bath Spa for new session file structure - no need as no trains in pre-start mode
 

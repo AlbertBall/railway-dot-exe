@@ -484,7 +484,7 @@ private:
 ///< used in train splitting operations to prevent too frequent checks for a location being long enough for a split after a failure message has already been given (doesn't need to stay failed as signaller can manoeuvre it to a better location)
     TDateTime EntryTime, ExitTimeHalf, ExitTimeFull;
 ///< times used in SetTrainMovementValues corresponding to the next element the train runs on
-    TDateTime ReleaseTime, TRSTime, ActualArrivalTime; //ActualArrivalTime
+    TDateTime ReleaseTime, TRSTime, ActualArrivalTime;
 ///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime). ActualArrivalTime added at v2.13.0 for random delays
 
     TDateTime LastActionTime;

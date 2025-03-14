@@ -1,55 +1,19 @@
-add Bolton to railway map
+Deal with operation first:
 
-add new Reading Area to railway map
+/ Repeating services where ActualArrivalTime later, OK works for both TimeLocs & TimeTimeLocs
+/ Simple service changes Fns/Sns
+/ Joins Fjo/jbo  //use largest MDT of the 2 and LastActionTime of the last to arrive
+/ Splits fsp/rsp/Sfs  //if fsp or rsp the split train goes acc to timetable, only the original service is subject to the MDT, use LastActionTime of the split, not in manual & release notes: set departure for rear split to take account of original service MDT
+
+Shuttles F-nshs/Sns-sh, outbound to inbound later time to earlier time, Fns-sh/Sns-fsh
+Skipped events
+Form new service after skipping events for normal departure 
+Form new service after skipping events for pass treated as departure
+
+
+
 
 List utilities in next version of manual (& on-screen help?)
-
-/ add Bath Spa to railway map
-
-X re-jig Bath Spa for new session file structure - no need as no trains in pre-start mode
-
-/ try with cdt etc between arr & dep
-
-/ remove pause(1000) in newtrainservice
-
-/ what makes session load fail with MDTs
-
-/ mention Oxalin's heatmap error reported on discord 08/03/25
-
-/ note that expect faults - so many oddments that needed changing, prob missed some
-
-/ note that repeats follow same pattern re min dwell times
-
-/ note that earlier prog versions won't load tts with min dwell times
-
-/ need to deal with arrivals that don't have a departure, ok the dep - arr test only done for departures
-
-/ add NotACommand to caller checker
-
-/ drop NewDelay = 5
-
-/ add or subtract a fraction to or from all MinDwellTimes when used in comparisons, and ensure get add/subtract correct
-
-/ check for any other Track->, Text-> etc for all classes subject to rebuild. ok all done, found another 2 in Track class
-
-/ check departure times in 'next' correspond to min dwell times
-
-/ apply caller checker
-
-/ check long delays shortened by excess over min dwell time
-
-/ deal with 7777s + 'after v2.22.0'
-
-/ maybe add min dwell time to floating timetable window
-
-/ only allow a min dwell time in a timeloc arrival
-
-/ Check invert tt entry works ok for non-default dwell times
-
-/ Change timetable panel labels for non-default dwell times
-
-/ Deal with conflicts when (departure - arrival) < min dwell time
-
 
 Development History
 
@@ -1000,6 +964,16 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.22.0 for v2.23.0
+
+This version introduces one new feature and corrects two bugs.
+
+New feature:  This is the addition of location minimum dwell times (MDTs).  Formerly this was fixed at 30 seconds, so when a train had been delayed it would remain at a location for only 30 seconds, but as was pointed out some locations require considerably longer than this, for example because of heavy passenger usage, the need to change direction, join or split etc.  The way it works is as follows:  In the timetable editor an additional parameter is now allowed in arrival entries, e.g. '07:22;Wigan North Western;120', or '08:45;08;50;Patricroft;180'.  The MDT is expressed as a whole number of seconds.  Note that in the first example the entry must be an arrival, if a departure has an extra parameter then the validator will flag an error.  Also if the MDT exceeds the timetabled dwell time (departure time - arrival time) then the validator will flag an error.  Repeating services apply the same MDTs as the original service.
+
+Please note that if an earlier version of the program tries to load a timetable or a session containing an MDT then the load will fail.
+
+Bugs:  Two bugs have been fixed; the one referred to after release of v2.22.0 where the floating information window failed to give timetable information for trains that were still to enter from outside the railway; and one that Oxalin found where the 64bit version gave heatmap colours that were the wrong way round - short lengths and low speeds should have been represented by red colours but they were instead represented by blue/violet colours.  Thanks to Oxalin for reporting it.  It was due to an uninitialised variable that was handled differently by the 32bit and 64bit compilers.
 
 VERSION CHANGES AFTER v2.21.0 for v2.22.0
 

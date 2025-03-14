@@ -945,7 +945,7 @@ void TTrain::UpdateTrain(int Caller)
 //double aa = double(ActionVectorEntryPtr->DepartureTime) * 24;
 //double bb = double(ActualArrivalTime) * 24;
 //double cc = double(TimetableReleaseTime) * 24;
-//double dd = double(DwellTime) * 86400; //secs
+double dd = double(ArrivalMinDwellTime); //secs
                 if(DwellTime < TDateTime(ArrivalMinDwellTime / 86400))
                 {
                     DwellTime = TDateTime(ArrivalMinDwellTime / 86400);
@@ -1014,6 +1014,10 @@ void TTrain::UpdateTrain(int Caller)
                 }
                 ReleaseTime = LastActionTime + TDateTime(NewDelay / 1440);  //earliest possible release time
 //                if(NewDelay < (ArrivalMinDwellTime / 60)) //less than the min dwell time
+                if(ReleaseTime < LastActionTime + TDateTime(30.0 / 86400)) //30sec delay between actions
+                {
+                    ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
+                }
                 if(ReleaseTime < ActualArrivalTime + TDateTime(ArrivalMinDwellTime / 86400)) //lowest value of ArrivalMinDwellTime is 30s
                 {
                     ReleaseTime = ActualArrivalTime + TDateTime(ArrivalMinDwellTime / 86400);
@@ -6174,6 +6178,8 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
       will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the
       location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these
       circumstances the other train will need to be moved sufficiently away to release all 4 positions, then the train will split.
+
+       Note that for front split only the continuing service has the min dwell time as the front needs to go first & keeps to timetable is possible
 */
     TrainController->LogEvent("" + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
@@ -6486,7 +6492,7 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
 
 // ---------------------------------------------------------------------------
 
-void TTrain::FinishJoin(int Caller)
+void TTrain::FinishJoin(int Caller) //this just sends appropriate messages, the main work including deleting this train is done by JoinedBy - see below
 {
     if(FinishJoinLogSent == false)
     {
@@ -6529,7 +6535,8 @@ void TTrain::FinishJoin(int Caller)
         return; // keep this here in case need to add code before final return
     }
     // no need to clear error report flag here, cleared in jbo function
-    // No need to set TimetableFinished, done in jbo function
+    // No need to set TimetableFinished, done in jbo function, and this train deleted in jbo function
+    // here when other train is adjacent
     Utilities->CallLogPop(1031);
 }
 
@@ -6569,20 +6576,30 @@ void TTrain::JoinedBy(int Caller)
             TrainController->LogActionError(52, HeadCode, FJOHeadCode, WaitingForFJO, ActionVectorEntryPtr->LocationName);
             TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = WaitingForFJO;
         }
-        LastActionDelayFlag = true;
+        LastActionDelayFlag = true; //not used at v2.23.0 but keep as included in session file
         // need to update LastActionTime if this train first to arrive as need 30s after
         // both adjacent before the join
         Utilities->CallLogPop(1032);
         return;
     }
     // here when other train is adjacent
-    if(LastActionDelayFlag)
+//    if(LastActionDelayFlag) //drop this as if Fjo train arrives first it won't be set
     {
-        LastActionTime = TrainController->TTClockTime;
+        if(TrainToBeJoinedBy->LastActionTime > LastActionTime) //LastActionTime for this train already set when arrived
+        {
+            LastActionTime = TrainToBeJoinedBy->LastActionTime;
+        }
+        if(TrainToBeJoinedBy->ArrivalMinDwellTime > ArrivalMinDwellTime) //set this to the maximum dwell time of the two joining trains
+        {
+            ArrivalMinDwellTime = TrainToBeJoinedBy->ArrivalMinDwellTime;
+        }
         // need to update this as need 30s after both adjacent before the join
-        LastActionDelayFlag = false;
-        Utilities->CallLogPop(1033);
-        return;
+        if(TrainController->TTClockTime < (LastActionTime + TDateTime(30.0 / 86400))) //don't move on until 30s after last train to arrive + 30 secs
+        {
+            LastActionDelayFlag = false;
+            Utilities->CallLogPop(1033);
+            return;
+        }
     }
     // here when other train is adjacent & 30 secs elapsed since both adjacent
 
@@ -12505,7 +12522,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
                     return(false);
                 }
             }
-            if(Fourth.ToDouble() < 30.0)
+            if(Fourth.ToDouble() < 29.9)
             {
                 TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
                 Utilities->CallLogPop(2733);
@@ -12573,7 +12590,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
                         return(false);
                     }
                 }
-                if(Third.ToDouble() < 30.0)
+                if(Third.ToDouble() < 29.9)
                 {
                     TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
                     Utilities->CallLogPop(2736);
@@ -13881,8 +13898,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SecondPassActions,");
-    TDateTime LastArrivalTime;
-    double MinDwellTime;
+    //TDateTime LastArrivalTime;
+//    double MinDwellTime;
     if(TrainDataVector.empty())
     {
         SecondPassMessage(GiveMessages, "Error in timetable - there appear to be no train services in the timetable, it must contain at least one");
@@ -14799,6 +14816,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     Utilities->CallLogPop(807);
                     return(false);
                 }
+/*  dropped at v2.23.0 as too complex, and up to user to set timetable appropriately
 //                if((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)) //subtract 0.05 to avoid rounding errors
                 if((fabs(double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)))
                 { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
@@ -14814,6 +14832,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     Utilities->CallLogPop(2741);
                     return(false);
                 }
+*/
             }
             if(AVEntry.FormatType == PassTime)
             {
@@ -14877,6 +14896,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
 //double bb = double(AVEntry.DepartureTime);
 //double cc = 0.1/86400;
 //double dd = double(AVEntry.ArrivalTime);
+/*  dropped at v2.23.0 as too complex, and up to user to set timetable appropriately
                         if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
                         { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
                             SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
@@ -14891,7 +14911,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                             Utilities->CallLogPop(2741);
                             return(false);
                         }
-                        if(AVEntry.MinDwellTime > 30.0)
+*/
+                        if(AVEntry.MinDwellTime > 30.1)
                         {
                             SecondPassMessage(GiveMessages, "Error in timetable - a minimum dwell time is not permitted for a departure, "
                                 "add it to the corresponding arrival instead, see: " + TDEntry.HeadCode);
@@ -14903,8 +14924,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     else // last entry a departure
                     {
                         AVEntry.ArrivalTime = AVEntry.EventTime;
-                        MinDwellTime = AVEntry.MinDwellTime;
-                        LastArrivalTime = AVEntry.ArrivalTime;
+//                        MinDwellTime = AVEntry.MinDwellTime;
+//                        LastArrivalTime = AVEntry.ArrivalTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = true;
                     }
@@ -14928,6 +14949,14 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         AVEntry.DepartureTime = AVEntry.EventTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = false;
+                        if(AVEntry.MinDwellTime > 30.1)
+                        {
+                            SecondPassMessage(GiveMessages, "Error in timetable - a minimum dwell time is not permitted for a departure, "
+                                "add it to the corresponding arrival instead, see: " + TDEntry.HeadCode);
+                            TrainDataVector.clear();
+                            Utilities->CallLogPop(7777);
+                            return(false);
+                        }
                     }
                     else // last entry a departure
                     {

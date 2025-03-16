@@ -3,15 +3,32 @@ Deal with operation first:
 / Repeating services where ActualArrivalTime later, OK works for both TimeLocs & TimeTimeLocs
 / Simple service changes Fns/Sns
 / Joins Fjo/jbo  //use largest MDT of the 2 and LastActionTime of the last to arrive
-/ Splits fsp/rsp/Sfs  //if fsp or rsp the split train goes acc to timetable, only the original service is subject to the MDT, use LastActionTime of the split, not in manual & release notes: set departure for rear split to take account of original service MDT
+/ Splits fsp/rsp/Sfs  //both trains take the arrival time of the original train, if fsp the split train takes the MDT of the original train, and the original train uses MDT + 30 secs to allow the new front train to depart first.  If rsp the split train takes MDT + 30 secs amd the original train takes MDT so it departs first
+/ Shuttles F-nshs/Sns-sh, outbound to inbound later time to earlier time, Fns-sh/Sns-fsh
+/ Skipped events: MDT at first station, MDT at later station
+/ Form new service after skipping events for normal departure: new service takes arrival time of earlier service & applies max dwell time of first arrival, because later events inc MDTs have been skipped
+/ Form new service after skipping events for pass treated as departure
 
-Shuttles F-nshs/Sns-sh, outbound to inbound later time to earlier time, Fns-sh/Sns-fsh
-Skipped events
-Form new service after skipping events for normal departure 
-Form new service after skipping events for pass treated as departure
+/ Maybe note MDTs in logs?
+
+Need to recheck several dwell time events after moving reset of ArrivalMinDwellTime etc. to departure instead of DepartureSet
+
+warn user about actions due being underestimated if MDT greater than timetable dwell time
+
+Mention dropping validation checks for dep-arr < MDT
 
 
 
+
+
+
+mention FlyCalifornia/Silicon Airways error message via discord re exit operation button taking focus first, now it's the run/pause button
+
+add WCML to map
+
+mention that can often add extra text after other commands and tt still validates, but here the extras are ignored by the program
+
+add link to choco in readme files
 
 List utilities in next version of manual (& on-screen help?)
 

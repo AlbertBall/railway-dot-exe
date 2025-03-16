@@ -237,7 +237,7 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     ActualArrivalTime = TDateTime(0); //added at v2.13.0
     LastSigPassedFailed = false; //added at v2.13.0
     NonDefaultMinDwellTimeFlag = false; //added at v2.23.0
-    ArrivalMinDwellTime = 30.0; //added at v2.23.0
+    ArrivalMinDwellTime = 30.0; //added at v2.23.0, default value
     LongServRefEnteredFlag = false;
     LongServRefNameBitmap = new Graphics::TBitmap; //added at v2.22.0 these are for displaying long serv refs above the train
     LongServRefNameBitmap->PixelFormat = pf8bit;
@@ -920,7 +920,6 @@ void TTrain::UpdateTrain(int Caller)
         HoldAtLocationInTTMode = false;
     }
     // in Signaller mode HoldAtLocationInTTMode not changed
-
     // check if departure pending & set times unless already set
     if(TrainMode == Timetable)
     {
@@ -945,7 +944,7 @@ void TTrain::UpdateTrain(int Caller)
 //double aa = double(ActionVectorEntryPtr->DepartureTime) * 24;
 //double bb = double(ActualArrivalTime) * 24;
 //double cc = double(TimetableReleaseTime) * 24;
-double dd = double(ArrivalMinDwellTime); //secs
+//double dd = double(ArrivalMinDwellTime); //secs
                 if(DwellTime < TDateTime(ArrivalMinDwellTime / 86400))
                 {
                     DwellTime = TDateTime(ArrivalMinDwellTime / 86400);
@@ -1075,10 +1074,7 @@ double dd = double(ArrivalMinDwellTime); //secs
                     }
                 }
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
-                ActualArrivalTime = TDateTime(0); //reset to zero, note that only run through this section once per arrival
-                ArrivalMinDwellTime = 30.0; //reset to default value
-                NonDefaultMinDwellTimeFlag = false; //reset
-                DepartureTimeSet = true;
+                DepartureTimeSet = true;   //reset ActualArrivalTime, ArrivalMinDwellTime and NonDefaultMinDwellTimeFlag when depart.
             }
             else if(ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) //as was, for trains that don't have an arrival time set
             {//if have skipped to a new service then DepartureTime will be set (in above segment when earlier train arrived)
@@ -1105,9 +1101,13 @@ double dd = double(ArrivalMinDwellTime); //secs
                 NewDelay = 0;
                 DelayedRandMins = 0;
                 ReleaseTime = TrainController->GetRepeatTime(74, ActionVectorEntryPtr->EventTime, RepeatNumber, IncrementalMinutes);
-                if(ReleaseTime <= LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400))
+                if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
                 {
-                    ReleaseTime = LastActionTime + TDateTime(ActionVectorEntryPtr->MinDwellTime / 86400);
+                    ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
+                }
+                if(ReleaseTime <= ActualArrivalTime + TDateTime(ArrivalMinDwellTime / 86400))
+                {
+                    ReleaseTime = ActualArrivalTime + TDateTime(ArrivalMinDwellTime / 86400);
                 }
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
                 DepartureTimeSet = true;
@@ -1521,6 +1521,9 @@ double dd = double(ArrivalMinDwellTime); //secs
                         LogAction(6, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->DepartureTime, ActionVectorEntryPtr->Warning);
                     }
                     TreatPassAsTimeLocDeparture = false; //added at v2.12.0, reset after train departs
+                    ActualArrivalTime = TDateTime(0); //added these 3 at v2.23.0 //reset to zero, note that only run through this section once per arrival
+                    ArrivalMinDwellTime = 30.0; //reset to default value
+                    NonDefaultMinDwellTimeFlag = false; //reset
                     DepartureTimeSet = false;
                     // no need to set LastActionTime for a departure
                     //deal here with departure pointer change, increment if SkippedDeparture
@@ -2426,7 +2429,6 @@ double dd = double(ArrivalMinDwellTime); //secs
                                 PlotTrainWithNewBackgroundColour(12, clStationStopBackground, Display);
                                 // pale green
                             }
-                            LogAction(8, HeadCode, "", Arrive, LocName, "", ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
                             ActualArrivalTime = TrainController->TTClockTime;   //added at v2.13.0
                             ArrivalMinDwellTime = ActionVectorEntryPtr->MinDwellTime; //in order to retrieve MinDwellTime when reach departure
                             if(ArrivalMinDwellTime > 30.1) //i.e. not the default value
@@ -2440,6 +2442,7 @@ double dd = double(ArrivalMinDwellTime); //secs
                                 // whether had arrived or not, to avoid sending the arrival
                                 // message twice, see TInterface::TimetableControl1Click
                             }
+                            LogAction(8, HeadCode, "", Arrive, LocName, "", ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
                         }
                         else
                         {
@@ -5773,7 +5776,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
           Time = timetable time, the time adjustments for repeat trains is carried out internally
           Not all messages need this, if not needed a dummy value is required but not used
 
-          Arrive:  06:05:40: 2F46 arrived at Old Street 1 minute late
+          Arrive:  06:05:40: 2F46 arrived at Old Street 1 minute late (Min. Dwell Time xxx)
           Pass:  06:05:40: 2F46 passed Old Street 1 minute late
           Terminate:  06:05:40: 2F46 terminated at Old Street 1 minute late <-- sent from RemainHere as LogAction not called for terminate
           //NB for Frh just give terminated message but without event time - don't use this function
@@ -5983,7 +5986,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
 
     bool TimePerformance = true;
-
+    AnsiString MinMinsString = "";
     if((ActionType == TakeSignallerControl) || (ActionType == RestoreTimetableControl) || (ActionType == RemoveTrain) || (ActionType == SignallerMoveForwards)
        || (ActionType == SignallerChangeDirection) || (ActionType == SignallerPassRedSignal) || (ActionType == SignallerControlStop) ||
        (ActionType == SignallerStop) || (ActionType == SignallerLeave) || (ActionType == SignallerStepForward) || (ActionType == SignallerJoin) ||
@@ -6042,7 +6045,22 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
             PerfLog = "," + PerfLog;
             // if a position add a comma to separate vertical position number from number of minutes (better appearance)
         }
-        PerfLogForm->PerformanceLog(0, BaseLog + PerfLog);
+        if((ActionType == Arrive) && (ArrivalMinDwellTime > 30.1)) //add 0.1 to avoid rounding errors, can't use ArrivalMinDwellTime as not set until UpdateTrain
+        {
+            double MDTdouble = ArrivalMinDwellTime / 60;
+            double MDT = int(MDTdouble * 10);
+            MDT = MDT / 10;
+            MinMinsString = "mins";
+            if((MDT < 1.1) && (MDT > 0.9))
+            {
+                MinMinsString = "min";
+            }
+            PerfLogForm->PerformanceLog(0, BaseLog + PerfLog + " (Min. Dwell Time " + MDT + MinMinsString + ')');
+        }
+        else
+        {
+            PerfLogForm->PerformanceLog(0, BaseLog + PerfLog);
+        }
     }
     else
     {
@@ -6319,7 +6337,9 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
 //        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription; dropped at v2.16.1
         TrainController->TrainVector.back().Description = SplittingTrainDescription; //else takes it from this train's description
     }
-
+    TrainController->TrainVector.back().ActualArrivalTime = ActualArrivalTime; //added at v2.23.0, both trains take same arrival time
+    TrainController->TrainVector.back().ArrivalMinDwellTime = ArrivalMinDwellTime; //added at v2.23.0, split train uses original MDT
+    ArrivalMinDwellTime = ArrivalMinDwellTime + 30.0; //added at v2.23.0, original train adds 30 secs so split train departs first
     // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
     // see mods in UpdateTrain for v1.3.2
     TrainController->TrainAdded = true;
@@ -6478,6 +6498,8 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
 //        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription; dropped at v2.16.1
         TrainController->TrainVector.back().Description = SplittingTrainDescription; //else takes it from this train's description
     }
+    TrainController->TrainVector.back().ActualArrivalTime = ActualArrivalTime; //added at v2.23.0, both trains take same arrival time
+    TrainController->TrainVector.back().ArrivalMinDwellTime = ArrivalMinDwellTime + 30.0; //added at v2.23.0, split train uses MDT + 30 so original train departs first
 
     // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
     // see mods in UpdateTrain for v1.3.2
@@ -7783,7 +7805,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture) //added at v2.12.0 for becoming new service early (see BecomeNewservice)
         {
-            RetStr = "Depart " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(51, Ptr->EventTime));
+            RetStr = "Depart " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(ReleaseTime);
         }
         else if(Ptr->FormatType == PassTime) //must come after 'else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture)'
         {
@@ -8265,11 +8287,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                     }
                 }
-                else if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
-                {
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
-                }
-                else
+                else //still moving
                 {
                     if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
                     {
@@ -8301,10 +8319,6 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                     {
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                     }
-                }
-                else if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
-                {
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(78, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
                 }
                 else
                 {
@@ -8340,10 +8354,6 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                 {
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                 }
-            }
-            else if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
-            {
-                PartStr = Utilities->Format96HHMM(GetTrainTime(79, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
             }
             else
             {
@@ -11060,32 +11070,25 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         }
         if(Ptr->FormatType == TimeTimeLoc)
         {
-            if(Ptr->ArrivalTime == Ptr->DepartureTime) //no min dwell time for same arr & dep times
+            if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
             {
-                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(0, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive & depart from " + Ptr->LocationName;
+                double MDTdouble = Ptr->MinDwellTime / 60;
+                double MDT = int(MDTdouble * 10);
+                MDT = MDT / 10;
+                MinMinsString = "mins";
+                if((MDT < 1.1) && (MDT > 0.9))
+                {
+                    MinMinsString = "min";
+                }
+                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(1, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString + '\n' +
+                    Utilities->Format96HHMM(GetControllerTrainTime(3, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
             }
             else
             {
-                if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
-                {
-                    double MDTdouble = Ptr->MinDwellTime / 60;
-                    double MDT = int(MDTdouble * 10);
-                    MDT = MDT / 10;
-                    MinMinsString = "mins";
-                    if((MDT < 1.1) && (MDT > 0.9))
-                    {
-                        MinMinsString = "min";
-                    }
-                    PartStr = Utilities->Format96HHMM(GetControllerTrainTime(1, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString + '\n' +
-                        Utilities->Format96HHMM(GetControllerTrainTime(3, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
-                }
-                else
-                {
-                    PartStr = Utilities->Format96HHMM(GetControllerTrainTime(33, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + '\n' +
-                        Utilities->Format96HHMM(GetControllerTrainTime(2, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
-                }
-                Count++; // because there are 2 entries
+                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(33, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                    Utilities->Format96HHMM(GetControllerTrainTime(2, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
             }
+            Count++; // because there are 2 entries
         }
         else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1))) //arrival
         {

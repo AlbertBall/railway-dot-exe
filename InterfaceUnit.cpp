@@ -14429,8 +14429,7 @@ void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added at
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SkipTTActionsListBoxMouseUp(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y)
+void __fastcall TInterface::SkipTTActionsListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
 /*
 If stopped at signal then allowable next action will be TimeLoc arrival, TimeTimeLoc, Pass or Fer.
 
@@ -14444,6 +14443,10 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
 {
     try
     {
+        if(Button == mbRight) //added at v2.23.0 to prevent a crash as ItemIndex is -1 (existing fault)
+        {
+            return;
+        }
         TrainController->LogEvent("SkipTTActionsListBoxMouseUp, " + AnsiString(X) + ',' + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SkipTTActionsListBoxMouseUp");
         TTrain &Train = TrainController->TrainVectorAtIdent(56, SelectedTrainID); //Train.ActionVectorPtr advance here so need reference
@@ -14522,11 +14525,15 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
                 Utilities->CallLogPop(2437);
                 return;
             }
-            if(SkipTTActionsListBox->ItemIndex == 1)
+//            if(((Train.ActionVectorEntryPtr->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->DepartureTime != TDateTime(-1))) ||
+//                (Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc)) //departure next
             {
-                ShowMessage("This is already the next event after the departure, nothing will be skipped");
-                Utilities->CallLogPop(2703);
-                return;
+                if(SkipTTActionsListBox->ItemIndex == 1) //need above condition as the next action might not be a departure
+                {
+                    ShowMessage("This is already the next event after the departure, nothing will be skipped");
+                    Utilities->CallLogPop(2703);
+                    return;
+                }
             }
             for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < SkipTTActionsListBox->ItemIndex; AVEPtr++) //Count < rather than == because incremented at end
             {

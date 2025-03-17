@@ -1403,6 +1403,10 @@ void TTrain::UpdateTrain(int Caller)
                 }
             }
         }
+        if((TrainMode == Signaller) && StoppedForTrainInFront && !TrainInFront) //train not directly in front //added at v2.23.0 without this a train under signaller control
+        { //won't move until a train in front has passed the next signal, this is ok for being called on but under sig control the train should be able to move when required to do so
+            StoppedForTrainInFront = false;
+        }
         if((BeingCalledOn && RevisedStoppedAtLoc()) || StoppedForTrainInFront)
         {
             if(ClearToNextSignal(0))
@@ -14958,7 +14962,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                             SecondPassMessage(GiveMessages, "Error in timetable - a minimum dwell time is not permitted for a departure, "
                                 "add it to the corresponding arrival instead, see: " + TDEntry.HeadCode);
                             TrainDataVector.clear();
-                            Utilities->CallLogPop(7777);
+                            Utilities->CallLogPop(2744);
                             return(false);
                         }
                     }

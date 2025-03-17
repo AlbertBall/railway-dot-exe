@@ -6611,9 +6611,10 @@ void TTrain::JoinedBy(int Caller)
         {
             LastActionTime = TrainToBeJoinedBy->LastActionTime;
         }
-        if(TrainToBeJoinedBy->ArrivalMinDwellTime > ArrivalMinDwellTime) //set this to the maximum dwell time of the two joining trains
+        if((double(TrainToBeJoinedBy->ActualArrivalTime) + (TrainToBeJoinedBy->ArrivalMinDwellTime / 86400)) > (double(ActualArrivalTime) + (ArrivalMinDwellTime / 86400)))
         {
-            ArrivalMinDwellTime = TrainToBeJoinedBy->ArrivalMinDwellTime;
+            ActualArrivalTime = TrainToBeJoinedBy->ActualArrivalTime;
+            ArrivalMinDwellTime = TrainToBeJoinedBy->ArrivalMinDwellTime; //these set so that both trains get at least their required min dwell times
         }
         // need to update this as need 30s after both adjacent before the join
         if(TrainController->TTClockTime < (LastActionTime + TDateTime(30.0 / 86400))) //don't move on until 30s after last train to arrive + 30 secs

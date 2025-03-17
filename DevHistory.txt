@@ -2,7 +2,7 @@ Deal with operation first:
 
 / Repeating services where ActualArrivalTime later, OK works for both TimeLocs & TimeTimeLocs
 / Simple service changes Fns/Sns
-/ Joins Fjo/jbo  //use largest MDT of the 2 and LastActionTime of the last to arrive
+/ Joins Fjo/jbo  //both trains have at least their own min dwell time and LastActionTime of the last to arrive
 / Splits fsp/rsp/Sfs  //both trains take the arrival time of the original train, if fsp the split train takes the MDT of the original train, and the original train uses MDT + 30 secs to allow the new front train to depart first.  If rsp the split train takes MDT + 30 secs amd the original train takes MDT so it departs first
 / Shuttles F-nshs/Sns-sh, outbound to inbound later time to earlier time, Fns-sh/Sns-fsh
 / Skipped events: MDT at first station, MDT at later station
@@ -11,11 +11,11 @@ Deal with operation first:
 
 / Maybe note MDTs in logs?
 
+Note that the min dwell time only shown in floating timetable, not FloatingNextString
+
 Need to recheck several dwell time events after moving reset of ArrivalMinDwellTime etc. to departure instead of DepartureSet
 
-warn user about actions due being underestimated if MDT greater than timetable dwell time
-
-Mention dropping validation checks for dep-arr < MDT
+Mention dropping validation checks for dep-arr < MDT but warn user about actions due being underestimated if MDT greater than timetable dwell time
 
 
 
@@ -28,9 +28,9 @@ add WCML to map
 
 mention that can often add extra text after other commands and tt still validates, but here the extras are ignored by the program
 
-add link to choco in readme files
+add link to choco in readme files & manual
 
-List utilities in next version of manual (& on-screen help?)
+List utilities in readmes + manual
 
 Development History
 

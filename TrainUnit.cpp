@@ -8266,11 +8266,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
     {
         throw Exception("Error - start entry in FloatingTimetableString");
     }
-    TActionVectorEntry *EntryPtr = Ptr; //used in TimeTimeLoc check later
-    bool FirstPass = true;
+    TActionVectorEntry *EntryPtr = Ptr; //used in TimeTimeLoc check later to distinguish between starting at the location and later same location entries
+    bool FirstPass = true; // different first TimeTimeLoc display if in signaller control
     Ptr--; // because incremented at start of loop
 
-    // different first TimeTimeLoc display if in signaller control
     do
     {
         Ptr++;
@@ -8286,13 +8285,32 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
             {
                 if(TrainAtLocation(1, TrainLoc) && (TrainLoc == Ptr->LocationName) && (Ptr == EntryPtr)) //added '&& (Ptr == EntryPtr)' at v2.6.0 when allow multiple same location entries
                 {
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(33, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    PartStr = Utilities->Format96HHMM(GetTrainTime(33, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;  //no MDT for departure
                     if((LocName == Ptr->LocationName) && (LocName != "") && SkippedDeparture && !SkipDepActedOn)
                     {
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                     }
                 }
-                else //still moving
+                else if(Ptr->ArrivalTime == Ptr->DepartureTime) //arrive & dep shown in single entry
+                {
+                    if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+                    {
+                        double MDTdouble = Ptr->MinDwellTime / 60;
+                        double MDT = int(MDTdouble * 10);
+                        MDT = MDT / 10;
+                        MinMinsString = "mins";
+                        if((MDT < 1.1) && (MDT > 0.9))
+                        {
+                            MinMinsString = "min";
+                        }
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString;
+                    }
+                    else
+                    {
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
+                    }
+                }
+                else
                 {
                     if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
                     {
@@ -8325,6 +8343,25 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                     }
                 }
+                else if(Ptr->ArrivalTime == Ptr->DepartureTime) //arrive & dep shown in single entry
+                {
+                    if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+                    {
+                        double MDTdouble = Ptr->MinDwellTime / 60;
+                        double MDT = int(MDTdouble * 10);
+                        MDT = MDT / 10;
+                        MinMinsString = "mins";
+                        if((MDT < 1.1) && (MDT > 0.9))
+                        {
+                            MinMinsString = "min";
+                        }
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString;
+                    }
+                    else
+                    {
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
+                    }
+                }
                 else
                 {
                     if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
@@ -8337,13 +8374,13 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         {
                             MinMinsString = "min";
                         }
-                        PartStr = Utilities->Format96HHMM(GetTrainTime(39, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString + '\n' +
-                            Utilities->Format96HHMM(GetTrainTime(40, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(16, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString + '\n' +
+                            Utilities->Format96HHMM(GetTrainTime(17, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
                     }
                     else
                     {
-                        PartStr = Utilities->Format96HHMM(GetTrainTime(81, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
-                            Utilities->Format96HHMM(GetTrainTime(85, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(80, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                            Utilities->Format96HHMM(GetTrainTime(84, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
                     }
                     Count++; // because there are 2 entries
                 }
@@ -8360,6 +8397,25 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         SkipDep = true; //0 for incremental minutes because don't reduce the departure time when later actions have been skipped
                 }
             }
+            else if(Ptr->ArrivalTime == Ptr->DepartureTime) //arrive & dep shown in single entry
+            {
+                if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
+                {
+                    double MDTdouble = Ptr->MinDwellTime / 60;
+                    double MDT = int(MDTdouble * 10);
+                    MDT = MDT / 10;
+                    MinMinsString = "mins";
+                    if((MDT < 1.1) && (MDT > 0.9))
+                    {
+                        MinMinsString = "min";
+                    }
+                    PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString;
+                }
+                    else
+                    {
+                        PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName;
+                    }
+            }
             else
             {
                 if(Ptr->MinDwellTime > 30.1) //add 0.1 to avoid rounding errors
@@ -8372,13 +8428,13 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                     {
                         MinMinsString = "min";
                     }
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(87, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString + '\n' +
-                        Utilities->Format96HHMM(GetTrainTime(89, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    PartStr = Utilities->Format96HHMM(GetTrainTime(16, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + ", Min. Dwell Time " + MDT + MinMinsString + '\n' +
+                        Utilities->Format96HHMM(GetTrainTime(17, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
                 }
                 else
                 {
-                    PartStr = Utilities->Format96HHMM(GetTrainTime(82, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
-                        Utilities->Format96HHMM(GetTrainTime(86, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
+                    PartStr = Utilities->Format96HHMM(GetTrainTime(80, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                        Utilities->Format96HHMM(GetTrainTime(84, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
                 }
                 Count++; // because there are 2 entries
             }

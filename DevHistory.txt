@@ -15,6 +15,14 @@ Deal with operation first:
 
 / check for crash when right click entry in skip tt events<-existing error!  corrected by returning if mbRight
 
+make SkipTTActionsListBox auto width (AutoSize = true) like floating windows, note that will need to change SkipListHeaderPanel width to equal SkipTTActionsListBox NO, can't autosize a listbox
+
+when sort out floatingtimetablestring make same changes to ContinuationFloatingTTString
+
+check skip TT events works ok for signaller control where timetimeloc & firstpass
+
+correct the caller checker findings
+
 Note that the min dwell time only shown in floating timetable, not FloatingNextString
 
 Need to recheck several dwell time events after moving reset of ArrivalMinDwellTime etc. to departure instead of DepartureSet

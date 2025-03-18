@@ -1712,11 +1712,11 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void ShowTTActionsListBox(int Caller);
 /// Unused
     void SignallerControl(int Caller);
-/// Called for diagnostic purposes when keys CTRL ALT 4 pressed
+/// used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action pointer and record the skipped events in the original service
     void SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrAdvance); //added at v2.12.0
-///< used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action pointer and record the skipped events in the original service
+/// used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action pointer and record the skipped events in the new service
     void SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString LocationName); //added at v2.12.0
-///< used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action pointer and record the skipped events in the new service
+/// Called for diagnostic purposes when keys CTRL ALT 4 pressed
     void TestFunction();
 /// Called during timetable editing whenever a change is made to the timetable, sets all the timetable buttons and windows to the required values
     void TimetableHandler();

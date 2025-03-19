@@ -1,47 +1,4 @@
-Deal with operation first:
-
-/ Repeating services where ActualArrivalTime later, OK works for both TimeLocs & TimeTimeLocs
-/ Simple service changes Fns/Sns
-/ Joins Fjo/jbo  //both trains have at least their own min dwell time and LastActionTime of the last to arrive
-/ Splits fsp/rsp/Sfs  //both trains take the arrival time of the original train, if fsp the split train takes the MDT of the original train, and the original train uses MDT + 30 secs to allow the new front train to depart first.  If rsp the split train takes MDT + 30 secs and the original train takes MDT so it departs first
-/ Shuttles F-nshs/Sns-sh, outbound to inbound later time to earlier time, Fns-sh/Sns-fsh
-/ Skipped events: MDT at first station, MDT at later station
-/ Form new service after skipping events for normal departure: new service takes arrival time of earlier service & applies max dwell time of first arrival, because later events inc MDTs have been skipped
-/ Form new service after skipping events for pass treated as departure
-
-/ Maybe note MDTs in logs?
-
-/ Corrected sig control trains not being able to move until train in front has passed a signal - now can move when 'Move Forwards' selected provided that other train not directly in front.
-
-/ check for crash when right click entry in skip tt events<-existing error!  corrected by returning if mbRight
-
-/ reinstate condition for itemindex == 1 for first after departure when might not be
-
-/ check if listbox changes position for train at top of screen and at bottom - yes it does so can autosize if possible
-
-/ check above condition works ok for itemindex = 1 & not immediately after departure
-
-/ make SkipTTActionsListBox auto width if poss, note that will need to change SkipListHeaderPanel width to equal 	SkipTTActionsListBox, can't autosize box so made it 400px wide & seems ok now
-
-/ when sort out floatingtimetablestring make same changes to ContinuationEntryFloatingTTString
-
-/ check skip TT events works ok for signaller control where timetimeloc & firstpass
-
-/ correct the caller checker findings
-
-Note that the min dwell time only shown in floating timetable, not FloatingNextString
-
-Need to recheck several dwell time events after moving reset of ArrivalMinDwellTime etc. to departure instead of DepartureSet
-
 Mention dropping validation checks for dep-arr < MDT but warn user about actions due being underestimated if MDT greater than timetable dwell time
-
-
-
-
-
-
-
-mention FlyCalifornia/Silicon Airways error message via discord re exit operation button taking focus first, now it's the run/pause button
 
 add WCML to map
 
@@ -1005,11 +962,21 @@ VERSION CHANGES AFTER v2.22.0 for v2.23.0
 
 This version introduces one new feature and corrects two bugs.
 
-New feature:  This is the addition of location minimum dwell times (MDTs).  Formerly this was fixed at 30 seconds, so when a train had been delayed it would remain at a location for only 30 seconds, but as was pointed out some locations require considerably longer than this, for example because of heavy passenger usage, the need to change direction, join or split etc.  The way it works is as follows:  In the timetable editor an additional parameter is now allowed in arrival entries, e.g. '07:22;Wigan North Western;120', or '08:45;08;50;Patricroft;180'.  The MDT is expressed as a whole number of seconds.  Note that in the first example the entry must be an arrival, if a departure has an extra parameter then the validator will flag an error.  Also if the MDT exceeds the timetabled dwell time (departure time - arrival time) then the validator will flag an error.  Repeating services apply the same MDTs as the original service.
+New feature:  This is the addition of location minimum dwell times (MDTs).  Formerly this was fixed at 30 seconds, so when a train had been delayed it would remain at a location for only 30 seconds, but as was pointed out some locations require considerably longer than this, for example because of heavy passenger usage, the need to change direction, join or split etc.  The way it works is as follows:  In the timetable editor an additional parameter is now allowed in arrival entries, e.g. '07:22;Wigan North Western;120', or '08:45;08;50;Patricroft;180'.  The MDT is expressed as a whole number of seconds.  Note that in the first example the entry must be an arrival, if a departure has an extra parameter then the validator will flag an error.  Repeating services apply the same MDTs as the original service.
 
 Please note that if an earlier version of the program tries to load a timetable or a session containing an MDT then the load will fail.
 
 Bugs:  Two bugs have been fixed; the one referred to after release of v2.22.0 where the floating information window failed to give timetable information for trains that were still to enter from outside the railway; and one that Oxalin found where the 64bit version gave heatmap colours that were the wrong way round - short lengths and low speeds should have been represented by red colours but they were instead represented by blue/violet colours.  Thanks to Oxalin for reporting it.  It was due to an uninitialised variable that was handled differently by the 32bit and 64bit compilers.
+
+Not for website:
+
+/ Corrected sig control trains not being able to move until train in front has passed a signal - now can move when 'Move Forwards' selected provided that other train not directly in front.
+
+/ check for crash when right click entry in skip tt events<-existing error!  corrected by returning if mbRight
+
+/ Note that the min dwell time only shown in floating timetable, not FloatingNextString
+
+/ FlyCalifornia/Silicon Airways error message via discord re exit operation button taking focus first, now it's the run/pause button
 
 VERSION CHANGES AFTER v2.21.0 for v2.22.0
 

@@ -363,6 +363,11 @@
 		<param name="Local" value="html\5.2.1e41.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Development">
+		<param name="Name" value="Utilities and Further Development">
+		<param name="Local" value="html\7.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Development files">
 		<param name="Name" value="Files">
 		<param name="Local" value="html/2.34gc3.htm">
@@ -1744,6 +1749,11 @@
 		<param name="Name" value="Using the timetable editor">
 		<param name="Name" value="Using the timetable editor">
 		<param name="Local" value="html/5.84ptk.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Utilities">
+		<param name="Name" value="Utilities and Further Development">
+		<param name="Local" value="html\7.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Validation of timetables">

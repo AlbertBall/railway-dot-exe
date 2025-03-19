@@ -1,0 +1,11 @@
+digraph "TInterface::SkipEventsBeforeSameLoc"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TInterface::SkipEventsBefore\lSameLoc",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action poin..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TInterface::BecomeNewService\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a0e9af41ff305fe2813385fce38b73206",tooltip=" "];
+}

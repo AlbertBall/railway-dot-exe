@@ -36,7 +36,7 @@ digraph "TTrain::SetTrainMovementValues"
   Node3 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node14 [label="TTrain::ChangeTrainDirection",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#aaac04c1b5e358a69e1930bae9ca6f429",tooltip="Reverses the direction of motion of the train."];
   Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node15 [label="TInterface::SkipEventsBefore\lSameLoc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a528675bee2f8940b6fb3de82ebdd9cc1",tooltip="< used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action po..."];
+  Node15 [label="TInterface::SkipEventsBefore\lSameLoc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a528675bee2f8940b6fb3de82ebdd9cc1",tooltip="used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action poin..."];
   Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node16 [label="TInterface::BecomeNewService\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a0e9af41ff305fe2813385fce38b73206",tooltip=" "];
   Node14 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

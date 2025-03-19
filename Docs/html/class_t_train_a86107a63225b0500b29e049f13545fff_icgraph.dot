@@ -1,0 +1,13 @@
+digraph "TTrain::WriteTrainToImage"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrain::WriteTrainToImage",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Called by TrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to add..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TTrainController::WriteTrains\lToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#aa5e441a9ec80e5076b2c05c2bb6f3fd3",tooltip="Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::SaveOperating\lImageMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf",tooltip=" "];
+}

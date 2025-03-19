@@ -59,7 +59,7 @@ digraph "TInterface::ExportTTButtonClick"
   Node18 [label="TTrack::SaveChangingLCVector",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#a6e1031277500eadfd3a0751e4ca4057b",tooltip="Save all changing vector values (used for error file)"];
   Node18 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node18 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node19 [label="TUtilities::SaveFileBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876",tooltip="stores '1' if the bool is true or '0' if false to the file, then a CR"];
+  Node19 [label="TUtilities::SaveFileBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876",tooltip="gives a delay od Msec value;"];
   Node18 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

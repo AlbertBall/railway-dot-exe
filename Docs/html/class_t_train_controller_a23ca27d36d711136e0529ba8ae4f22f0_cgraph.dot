@@ -68,6 +68,10 @@ digraph "TTrainController::SplitEntry"
   Node16 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node16 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="TTrainController::NotACommand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#ae5c9a4b365c46f8b1e58b8fa1613b411",tooltip="Checks whether a piece of text is a command and returns false if it is."];
+  Node17 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

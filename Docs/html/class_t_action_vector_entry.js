@@ -11,6 +11,7 @@ var class_t_action_vector_entry =
     [ "LinkedTrainEntryPtr", "class_t_action_vector_entry.html#ab240a52305bd614f1921e86617687abf", null ],
     [ "LocationName", "class_t_action_vector_entry.html#afdc4364c8698998b3689039a32b8c148", null ],
     [ "LocationType", "class_t_action_vector_entry.html#a5de0c970525a897f8ac2cdf66004dab9", null ],
+    [ "MinDwellTime", "class_t_action_vector_entry.html#af8a8ec4176f776d91e12612ffc410b8e", null ],
     [ "NewDescription", "class_t_action_vector_entry.html#a22085a457659bb34e55849555d5a31c8", null ],
     [ "NewMaxSpeed", "class_t_action_vector_entry.html#af1e488ca8a9b20a153172d78e979e88e", null ],
     [ "NonRepeatingShuttleLinkEntryPtr", "class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7", null ],

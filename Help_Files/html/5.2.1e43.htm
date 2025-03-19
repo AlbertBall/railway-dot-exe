@@ -115,6 +115,9 @@ moved sufficiently the split will occur.</p>
 <p>When trains split the proportion of mass and power that are transferred to the split-off train can vary between 1% and 99% for the mass, and between 0% and 100% for the power.  0% for power is useful when dropping off wagons or coaching stock.  To apply this feature a fourth element is added to the end of the split command e.g. 09:48;fsp;0D00;25-35.  In this example the split-off train has 25% of the original mass leaving the train that splits with 75%, and has 35% of the power leaving the train that splits with 65%.  In all cases the brake force remains in the same proportion as the mass so braking performance stays the same as for the original train.  The maximum speed also remains the same as for the original train.  If no fourth element is provided the mass and power split evenly between the two. 
 </p>
 
+<p>If a train that splits at a location has a minimum dwell time (MDT) specified for its arrival (see arrival information in section 5.2.1) then the front train remains at the location for at least the MDT whereas the rear train remains at the location for at least the MDT + 30 seconds.  This allows the front train to depart first.</p>
+
+
 <p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
 will help to avoid errors.</p>
 

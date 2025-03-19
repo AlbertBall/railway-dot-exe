@@ -83,6 +83,9 @@ departure but before the selection are skipped.</p>
 
 <p class=MsoNormal>To select this option right click the stopped train and click 'Terminate here and become follow-on service xxxx' where 'xxxx' is the service reference for the next service.  A warning message is given pointing out that timetabled events will be skipped and offering the option to proceed or not.  Clicking 'Yes' immediately changes the service to the follow-on service, and the train will be facing the opposite direction.  This is normally what is required but if the direction change isn't wanted then it can be changed under signaller control in the normal way.</p>
 
+<p>If a train has a minimum dwell time (MDT - see arrival information in section 5.2.1) set for arrival at the location where later timetabled events are to be skipped, then it will remain at that location for at least that MDT.  If it is to become a follow-on service early and the follow-on service has an MDT set for arrival at the location, then that MDT will be ignored because the follow-on service arrival has been skipped. </p>
+
+
 </div>
 
 </body>

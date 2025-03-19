@@ -66,6 +66,7 @@ var class_t_train_controller =
     [ "LogEvent", "class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1", null ],
     [ "MinsToAnsiTime", "class_t_train_controller.html#aeb28f50c7e46b4431ac045e3b425ad66", null ],
     [ "MovingSuccessor", "class_t_train_controller.html#ae6c929171fa673b87e68694e6f48985d", null ],
+    [ "NotACommand", "class_t_train_controller.html#ae5c9a4b365c46f8b1e58b8fa1613b411", null ],
     [ "Operate", "class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481", null ],
     [ "PlotAllTrainsInZoomOutMode", "class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8", null ],
     [ "ProcessOneTimetableLine", "class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990", null ],

@@ -20,7 +20,7 @@ digraph "TInterface::SkipTimetabledActionsMenuItemClick"
   Node7 [label="TTrack::SaveChangingLCVector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a6e1031277500eadfd3a0751e4ca4057b",tooltip="Save all changing vector values (used for error file)"];
   Node7 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node8 [label="TUtilities::SaveFileBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876",tooltip="stores '1' if the bool is true or '0' if false to the file, then a CR"];
+  Node8 [label="TUtilities::SaveFileBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876",tooltip="gives a delay od Msec value;"];
   Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node9 [label="TUtilities::SaveFileDouble",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a92b5adfb8ad3a937a8d208bfd90a5741",tooltip="converts the double value to a string (if double stored directly it is truncated to 6 digits) then st..."];
   Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

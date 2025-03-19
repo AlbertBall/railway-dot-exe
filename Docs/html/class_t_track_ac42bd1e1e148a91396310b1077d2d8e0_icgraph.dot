@@ -1,0 +1,61 @@
+digraph "TTrack::GetVLocMin"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrack::GetVLocMin",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TInterface::LoadRailway",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c",tooltip="Load a railway file. The Active elements marker now has a '1' at the end if there are user graphics t..."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::LoadRailwayMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::MainScreenMouse\lDown3",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b",tooltip="Called when mouse button clicked in zoom-out mode."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TOneRoute::RouteImageMarker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#aa36c801460b594ec96af1779d633d739",tooltip="Used when creating a bitmap image to display the route colours and direction arrows (as on screen dur..."];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TInterface::SaveImageAnd\lGridMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TInterface::SaveImageAnd\lPrefDirsMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TInterface::SaveImageNoGrid\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a",tooltip=" "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TInterface::SaveOperating\lImageMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TInterface::SetSaveMenuAnd\lButtons",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#afeb3a4236e5cfa7e93d7d5167304f937",tooltip="Called during the ClockTimer2 function to set screen boundaries, buttons & menu items."];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node1 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="TTrack::WriteGraphicsToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a344403558e6e8c931b0fe615f930081b",tooltip="Called by SaveImageNoGridMenuItemClick, SaveImageAndGridMenuItemClick amd SaveImageAndPrefDirsMenuIte..."];
+  Node14 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="TTrack::WriteOperatingTrack\lAndTextToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4",tooltip="Called by TInterface::SaveOperatingImage1Click to add all track & text to the image file in their ope..."];
+  Node15 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TOnePrefDir::WritePrefDir\lToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#af87440e0ace47b20c8a874c51b314064",tooltip="Used when creating a bitmap image to display preferred directions (as on screen during 'Set preferred..."];
+  Node16 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="TTextHandler::WriteTextTo\lImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_text_handler.html#a7d202827ae62cd288a07431579977539",tooltip="write all items in TextVector to the railway image in 'Bitmap'"];
+  Node17 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="TTrack::WriteTrackAndText\lToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4",tooltip="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..."];
+  Node18 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="TTrain::WriteTrainToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a86107a63225b0500b29e049f13545fff",tooltip="Called by TrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to add..."];
+  Node19 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="TTrainController::WriteTrains\lToImage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#aa5e441a9ec80e5076b2c05c2bb6f3fd3",tooltip="Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file."];
+  Node20 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="TInterface::ZoomButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc",tooltip=" "];
+}

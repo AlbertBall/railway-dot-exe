@@ -78,7 +78,7 @@ digraph "TTrainController::TrainVectorAtIdent"
   Node27 -> Node28 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node28 [label="TTrain::ChangeTrainDirection",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#aaac04c1b5e358a69e1930bae9ca6f429",tooltip="Reverses the direction of motion of the train."];
   Node28 -> Node29 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node29 [label="TInterface::SkipEventsBefore\lSameLoc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a528675bee2f8940b6fb3de82ebdd9cc1",tooltip="< used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action po..."];
+  Node29 [label="TInterface::SkipEventsBefore\lSameLoc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a528675bee2f8940b6fb3de82ebdd9cc1",tooltip="used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action poin..."];
   Node29 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node28 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node27 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -99,7 +99,7 @@ digraph "TTrainController::TrainVectorAtIdent"
   Node45 [label="TInterface::SignallerControl\lStopMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a2313bac2c5c5ac3f8b91c46166e35b97",tooltip=" "];
   Node1 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node46 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node46 [label="TInterface::SkipAllEvents\lBeforeNewService",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a5b0d274cb60e7c9e9329559cf25a4475",tooltip="Called for diagnostic purposes when keys CTRL ALT 4 pressed."];
+  Node46 [label="TInterface::SkipAllEvents\lBeforeNewService",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a5b0d274cb60e7c9e9329559cf25a4475",tooltip="used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action poin..."];
   Node46 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node29 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node47 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

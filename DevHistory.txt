@@ -15,13 +15,19 @@ Deal with operation first:
 
 / check for crash when right click entry in skip tt events<-existing error!  corrected by returning if mbRight
 
-make SkipTTActionsListBox auto width (AutoSize = true) like floating windows, note that will need to change SkipListHeaderPanel width to equal SkipTTActionsListBox NO, can't autosize a listbox
+/ reinstate condition for itemindex == 1 for first after departure when might not be
 
-when sort out floatingtimetablestring make same changes to ContinuationFloatingTTString
+/ check if listbox changes position for train at top of screen and at bottom - yes it does so can autosize if possible
 
-check skip TT events works ok for signaller control where timetimeloc & firstpass
+/ check above condition works ok for itemindex = 1 & not immediately after departure
 
-correct the caller checker findings
+/ make SkipTTActionsListBox auto width if poss, note that will need to change SkipListHeaderPanel width to equal 	SkipTTActionsListBox, can't autosize box so made it 400px wide & seems ok now
+
+/ when sort out floatingtimetablestring make same changes to ContinuationEntryFloatingTTString
+
+/ check skip TT events works ok for signaller control where timetimeloc & firstpass
+
+/ correct the caller checker findings
 
 Note that the min dwell time only shown in floating timetable, not FloatingNextString
 

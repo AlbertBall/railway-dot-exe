@@ -14257,8 +14257,8 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
         AnsiString OneLine;
         int Count = 0;
         int NewLinePos = TTStr.Pos('\n');
-        SkipTTActionsListBox->Width = 200;
-        SkipListHeaderPanel->Width = 200;
+        SkipTTActionsListBox->Width = 400;
+        SkipListHeaderPanel->Width = 400;
         for(int x = 0; x < 30; x++)
         {
             if((TTStr.Length() > 1) && (NewLinePos <= TTStr.Length()) && (NewLinePos != 0)) //i.e. all lines apart from the last where there is no newline
@@ -14525,8 +14525,8 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
                 Utilities->CallLogPop(2437);
                 return;
             }
-//            if(((Train.ActionVectorEntryPtr->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->DepartureTime != TDateTime(-1))) ||
-//                (Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc)) //departure next
+            if(((Train.ActionVectorEntryPtr->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->DepartureTime != TDateTime(-1))) ||
+                (Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc)) //departure next
             {
                 if(SkipTTActionsListBox->ItemIndex == 1) //need above condition as the next action might not be a departure
                 {

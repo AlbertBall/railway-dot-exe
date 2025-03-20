@@ -1,13 +1,3 @@
-Mention dropping validation checks for dep-arr < MDT but warn user about actions due being underestimated if MDT greater than timetable dwell time
-
-add WCML to map
-
-mention that can often add extra text after other commands and tt still validates, but here the extras are ignored by the program
-
-add link to choco in readme files & manual
-
-List utilities in readmes + manual
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -966,7 +956,7 @@ New feature:  This is the addition of location minimum dwell times (MDTs).  Form
 
 Please note that if an earlier version of the program tries to load a timetable or a session containing an MDT then the load will fail.
 
-Bugs:  Two bugs have been fixed; the one referred to after release of v2.22.0 where the floating information window failed to give timetable information for trains that were still to enter from outside the railway; and one that Oxalin found where the 64bit version gave heatmap colours that were the wrong way round - short lengths and low speeds should have been represented by red colours but they were instead represented by blue/violet colours.  Thanks to Oxalin for reporting it.  It was due to an uninitialised variable that was handled differently by the 32bit and 64bit compilers.
+Bugs:  Three bugs have been fixed; the one referred to after release of v2.22.0 where the floating information window failed to give timetable information for trains that were still to enter from outside the railway; one that Oxalin found where the 64bit version gave heatmap colours that were the wrong way round - short lengths and low speeds should have been represented by red colours but they were instead represented by blue/violet colours.  Thanks to Oxalin for reporting it.  It was due to an uninitialised variable that was handled differently by the 32bit and 64bit compilers.  The third is not so much a bug as an undesirable effect.  When selecting a signal to set a route and the mouse is clicked on a non-signal element in error, and the enter key used to remove the error message, then if the enter key is pressed again (it's easy to press a key twice by mistake), then session exits because the exit button has focus.  This has been changed so that the run/pause button takes focus instead, so now the session pauses and no harm is done.  Thanks to Fly California/Silicon Airways for reporting this.
 
 Not for website:
 
@@ -976,7 +966,9 @@ Not for website:
 
 / Note that the min dwell time only shown in floating timetable, not FloatingNextString
 
-/ FlyCalifornia/Silicon Airways error message via discord re exit operation button taking focus first, now it's the run/pause button
+/ add link to choco in readme files & manual
+
+/ List utilities in readmes + manual
 
 VERSION CHANGES AFTER v2.21.0 for v2.22.0
 
@@ -1085,9 +1077,6 @@ Not for website:
 / mark all sig to sig truncation requests as [done]
 
 / in new version info mention that need v2.21.0 for ttb's & sessions that use cms
-
-
-
 
 VERSION CHANGES AFTER v2.20.2 for v2.20.3
 

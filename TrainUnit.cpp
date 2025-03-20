@@ -13984,8 +13984,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SecondPassActions,");
-    //TDateTime LastArrivalTime;
-//    double MinDwellTime;
+    TDateTime LastArrivalTime;
+    double MinDwellTime;
     if(TrainDataVector.empty())
     {
         SecondPassMessage(GiveMessages, "Error in timetable - there appear to be no train services in the timetable, it must contain at least one");
@@ -14750,6 +14750,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
     // check remaining successor validity except for TimeLoc arr & dep since those times not set yet
     for(unsigned int x = 0; x < TrainDataVector.size(); x++)
     {
+        bool DwellTimeWarningGiven = false;
         const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
         for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
         {
@@ -14902,23 +14903,23 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     Utilities->CallLogPop(807);
                     return(false);
                 }
-/*  dropped at v2.23.0 as too complex, and up to user to set timetable appropriately
-//                if((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)) //subtract 0.05 to avoid rounding errors
-                if((fabs(double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)))
-                { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                    SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
-                    TrainDataVector.clear();
-                    Utilities->CallLogPop(2740);
-                    return(false);
+                if(!DwellTimeWarningGiven)
+                {
+                    if((fabs(double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)))
+                    { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
+                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                                                                "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
+                        DwellTimeWarningGiven = true;
+                    }
+                    if((fabs(double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) < (0.1 / 86400)) && (AVEntry.MinDwellTime > 30.05))  //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
+                    { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
+                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                                                                "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
+                        DwellTimeWarningGiven = true;
+                    }
                 }
-                if((fabs(double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) < (0.1 / 86400)) && (AVEntry.MinDwellTime > 30.05))  //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
-                { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                    SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
-                    TrainDataVector.clear();
-                    Utilities->CallLogPop(2741);
-                    return(false);
-                }
-*/
             }
             if(AVEntry.FormatType == PassTime)
             {
@@ -14955,7 +14956,10 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
     // set arrival & departure times for TimeLocs & set their EventTimes to -1
     for(unsigned int x = 0; x < TrainDataVector.size(); x++)
     {
+        bool DwellTimeWarningGiven = false;
         bool LastEntryIsAnArrival = false;
+        LastArrivalTime = TDateTime(-1);
+        DwellTimeWarningGiven = false;
         const TTrainDataEntry & TDEntry = TrainDataVector.at(x);
         // first deal with unlocated Snt entries - so next entry (TimeLoc or TimeTimeLoc) is an arrival, all else stopped so the next TimeLoc is a departure
         const TActionVectorEntry &AVEntry0 = TrainDataVector.at(x).ActionVector.at(0);
@@ -14972,32 +14976,28 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     {
                         throw Exception("Timetable error, TimeLoc times not as initially set for " + TDEntry.HeadCode);
                     }
-                    if(LastEntryIsAnArrival)
+                    if(LastEntryIsAnArrival) //so this is a departure
                     {
                         AVEntry.DepartureTime = AVEntry.EventTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = false;
-//                        if((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)) //subtract 0.05 to avoid rounding
-//double aa = double(LastArrivalTime);    diagnostics
-//double bb = double(AVEntry.DepartureTime);
-//double cc = 0.1/86400;
-//double dd = double(AVEntry.ArrivalTime);
-/*  dropped at v2.23.0 as too complex, and up to user to set timetable appropriately
-                        if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
-                        { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                            SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
-                            TrainDataVector.clear();
-                            Utilities->CallLogPop(2745);
-                            return(false);
+                        if((LastArrivalTime > TDateTime(0)) && !DwellTimeWarningGiven)
+                        {
+                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
+                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
+                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                                                                "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
+                                DwellTimeWarningGiven = true;
+                            }
+                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) < (0.1 / 86400)) && (MinDwellTime > 30.05)) //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
+                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
+                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                                                                "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
+                                DwellTimeWarningGiven = true;
+                            }
                         }
-                        if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) < (0.1 / 86400)) && (MinDwellTime > 30.05)) //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
-                        { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                            SecondPassMessage(GiveMessages, "Error in timetable - the minimum dwell time is greater than the timetabled location stop duration, see " + TDEntry.HeadCode);
-                            TrainDataVector.clear();
-                            Utilities->CallLogPop(2746);
-                            return(false);
-                        }
-*/
                         if(AVEntry.MinDwellTime > 30.1)
                         {
                             SecondPassMessage(GiveMessages, "Error in timetable - a minimum dwell time is not permitted for a departure, "
@@ -15007,11 +15007,11 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                             return(false);
                         }
                     }
-                    else // last entry a departure
+                    else // last entry a departure so this is an arrival
                     {
                         AVEntry.ArrivalTime = AVEntry.EventTime;
-//                        MinDwellTime = AVEntry.MinDwellTime;
-//                        LastArrivalTime = AVEntry.ArrivalTime;
+                        MinDwellTime = AVEntry.MinDwellTime;
+                        LastArrivalTime = AVEntry.ArrivalTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = true;
                     }
@@ -15023,6 +15023,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             LastEntryIsAnArrival = true;
             for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
             {
+                LastArrivalTime = TDateTime(-1);
+                DwellTimeWarningGiven = false;
                 TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
                 if(AVEntry.FormatType == TimeLoc)
                 {
@@ -15030,11 +15032,28 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     {
                         throw Exception("Timetable error, TimeLoc times not as initially set for " + TDEntry.HeadCode);
                     }
-                    if(LastEntryIsAnArrival)
+                    if(LastEntryIsAnArrival)  //so this is a departure
                     {
                         AVEntry.DepartureTime = AVEntry.EventTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = false;
+                        if((LastArrivalTime > TDateTime(0)) && !DwellTimeWarningGiven)
+                        {
+                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
+                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
+                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                                                                "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
+                                DwellTimeWarningGiven = true;
+                            }
+                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) < (0.1 / 86400)) && (MinDwellTime > 30.05)) //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
+                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
+                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                                                                "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
+                                DwellTimeWarningGiven = true;
+                            }
+                        }
                         if(AVEntry.MinDwellTime > 30.1)
                         {
                             SecondPassMessage(GiveMessages, "Error in timetable - a minimum dwell time is not permitted for a departure, "
@@ -15044,9 +15063,11 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                             return(false);
                         }
                     }
-                    else // last entry a departure
+                    else // last entry a departure so this is an arrival
                     {
                         AVEntry.ArrivalTime = AVEntry.EventTime;
+                        MinDwellTime = AVEntry.MinDwellTime;
+                        LastArrivalTime = AVEntry.ArrivalTime;
                         AVEntry.EventTime = TDateTime(-1);
                         LastEntryIsAnArrival = true;
                     }

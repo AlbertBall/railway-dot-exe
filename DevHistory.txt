@@ -23,7 +23,7 @@ But also just the option to do XX:XX:00
 Albert 05/03/25
 This has been suggested before but to me it adds a degree of precision that isn't warranted, at least in the UK.  Trains that run within 2 or 3 minutes of scheduled times are generally regarded as 'on time', and attempting to run to seconds wouldn't make things any better.  Also the additional programming effort required would well exceed any benefit gained in my view.
 
-#116 from Commuterpop via discord 03/03/25
+#116 [done] from Commuterpop via discord 03/03/25
 I'd promised you to give you a pause after your latest efforts, before presenting a couple of suggestions, however, I'll try to present it in a way that you might answer it more or less with a simple "Maybe", "no" or "let's see later"  The reason for asking now is I'm at a crossroads (is that the way to put it?) in the programming in what I believe is my next sim for publishing. I do believe there was a discussion about time and delays earlier, even though I can't find it right now. This reasoning and example might be of interest, or not - let's see. What I would like to discuss is the handling of times when trains are delayed. (As always, correct me when I'm wrong!) Today Rail OS handles delays in a stop by reducing the trains stop time to 30 seconds, giving the train a chance to reduce delays like IRL. (I have to once again mention the magnificent delays/failures function!) That's fine in the very most cases. However, I'd like to present a couple of special cases, and an example of how to handle it, to see what you think. 
 
 Case 1a: A late train arrives to a medium or large sized station. Even if it's late and people hurry, it still takes time for the exchange of passengers with luggage. It's hard to press it under 2 minutes. 

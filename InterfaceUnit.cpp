@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32" + GetVersion();
+        ProgramVersion = "RailOS32" + GetVersion() + " Beta";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -14892,8 +14892,9 @@ void __fastcall TInterface::BecomeNewServiceMenuItemClick(TObject *Sender) //add
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BecomeNewServiceClick");
         TTrain &Train = TrainController->TrainVectorAtIdent(58, SelectedTrainID);
         TActionVectorEntry *NewServiceActionEntryPtr = Train.ActionVectorEntryPtr; //set initially to current position
-        while((NewServiceActionEntryPtr->Command != "Fns") && (NewServiceActionEntryPtr->Command != "Fns-sh") && (NewServiceActionEntryPtr->Command != "F-nshs"))
-        {
+        while((NewServiceActionEntryPtr->Command != "Fns") && (NewServiceActionEntryPtr->Command != "Fns-sh") && (NewServiceActionEntryPtr->Command != "F-nshs") &&
+            (NewServiceActionEntryPtr->Command != "Frh-sh"))  //last condition added after v2.23.0 because of error reported by andre (andrek1410) via discord ticket #86
+        {                                                     //error was that received the below message wrongly with plain shuttles without feeders
             NewServiceActionEntryPtr++;
             if(NewServiceActionEntryPtr > &Train.TrainDataEntryPtr->ActionVector.back()) //failed to find a new service
             {

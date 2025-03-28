@@ -18597,7 +18597,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrainInRear(int Caller, int &At
             }
         }
 
-        if(AllRoutes->RouteBackTruncateFlag)
+        if(AllRoutes->RouteTruncateFlag)
         {
             SkipForwardLook = true;
         }
@@ -18726,7 +18726,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrainInRear(int Caller, int &At
 // counts as the first red and the next rearwards signal becomes yellow, although it's the first in the route
             if(PrefDirPtr->Config[PrefDirPtr->XLinkPos] == Signal)
             {
-                if((!AllRoutes->RouteBackTruncateFlag) || (PrefDirPtr != (PrefDirVector.begin() + PrefDirVectorStartPosition)) || PrefDirPtr->AutoSignals ||
+                if((!AllRoutes->RouteTruncateFlag) || (PrefDirPtr != (PrefDirVector.begin() + PrefDirVectorStartPosition)) || PrefDirPtr->AutoSignals ||
                    PrefDirPtr->PrefDirRoute)
                 {
 //new section at v2.9.2 to check for pref dir element in a locked route, and if so set Attribute to 0 (red).  When emerge from locked route Attribute
@@ -18810,7 +18810,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     unsigned int TruncatePDElementPos; //the selected PD position to truncate to & include in the truncation (could be from the back or the front)//added at v2.15.0
     enum {NoTruncate, BackTruncate, FrontTruncate, NextSignalTruncate, FullTruncate} TruncateType;
     TruncateType = NoTruncate;
-    AllRoutes->RouteBackTruncateFlag = false;
+    AllRoutes->RouteTruncateFlag = false;
     //first check the truncate point is in a route
     for(unsigned int b = 0; b < PrefDirSize(); b++)
     {
@@ -18850,8 +18850,8 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         if(TruncatePDElementPos == 0)  //start of route
         {
             TruncateType = FullTruncate;
-            AllRoutes->RouteBackTruncateFlag = true; //Added at v2.15.1: FullTruncate is also a form of BackTruncate as far as the flag is concerned for SetAllRearwardsSignals
-                                                     //without this, if a non-autosigs route is in front of an autosigs route and runs into buffers or a
+            AllRoutes->RouteTruncateFlag = true; //Added at v2.15.1: Set for all route truncate types, used in SetAllRearwardsSignals to prevent a forward look.
+                                                     //Without this, if a non-autosigs route is in front of an autosigs route and runs into buffers or a
                                                      //continuation, and the non-autosigs route is truncated back to the autosigs route (i.e. a full
                                                      //truncate for that route), the last signal in the autosigs route doesn't change to red.
         }
@@ -18861,7 +18861,8 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             if(TempElement.Config[TempElement.XLinkPos] == Signal)
             {
                 TruncateType = FrontTruncate;
-            }
+                AllRoutes->RouteTruncateFlag = true; //to set signals properly rearwards of truncate point //added after v2.23.0 because of Fly California/Silicon Airways
+            }             //bug report via discord (ticket #87) where front truncated segment of a green route following a blue route & blue route end signal stayed green
             else //here could be back or next signal truncate, next sig truncate if truncate pos is a signal and there's a signal after that isn't the end of the route
             {
                 TempElement = PrefDirVector.at(TruncatePDElementPos);
@@ -18876,20 +18877,20 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                         if((TempElement.Config[TempElement.XLinkPos] == Signal) && (b < int(PrefDirSize() - 1)))  //if met then it's a mid-route signal
                         {
                             TruncateType = NextSignalTruncate;
-                            AllRoutes->RouteBackTruncateFlag = true; //to set signals properly rearwards of truncate point - relies on rearwards sig setting before re-instatement route sig setting
+                            AllRoutes->RouteTruncateFlag = true; //to set signals properly rearwards of truncate point - relies on rearwards sig setting before re-instatement route sig setting
                             break;                                   //re-instatement route sig setting
                         }
                     }
                     if(b == int(PrefDirSize())) //i.e. haven't found a mid-route signal
                     {
                         TruncateType = BackTruncate;
-                        AllRoutes->RouteBackTruncateFlag = true;
+                        AllRoutes->RouteTruncateFlag = true;
                     }
                 }
                 else
                 {
                     TruncateType = BackTruncate;
-                    AllRoutes->RouteBackTruncateFlag = true;
+                    AllRoutes->RouteTruncateFlag = true;
                 }
             }
         }
@@ -18897,7 +18898,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     else // == PrefDirSize() - 1, i.e. end of route
     {
         TruncateType = BackTruncate;
-        AllRoutes->RouteBackTruncateFlag = true;
+        AllRoutes->RouteTruncateFlag = true;
     }
 
 // it is in the route so continue, first look for a train or a flashing level crossing in the part to be removed
@@ -18929,7 +18930,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TrainController->StopTTClockMessage(79, "Can't cancel a route containing a level crossing that is changing state");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(1941);
                 return;
             }
@@ -18978,7 +18979,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TrainController->StopTTClockMessage(178, "Can't cancel a route containing a level crossing that is changing state");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(2713);
                 return;
             }
@@ -19024,7 +19025,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TrainController->StopTTClockMessage(143, "Can't cancel a route containing a level crossing that is changing state");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(2571);
                 return;
             }
@@ -19061,7 +19062,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TrainController->StopTTClockMessage(144, "Can't cancel a route containing a level crossing that is changing state");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(2572);
                 return;
             }
@@ -19071,7 +19072,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     {
         TrainController->StopTTClockMessage(57, "Can't select a bridge as a route truncation point");
         ReturnFlag = InRouteFalse;
-        AllRoutes->RouteBackTruncateFlag = false;
+        AllRoutes->RouteTruncateFlag = false;
         Utilities->CallLogPop(338);
         return;
     }
@@ -19079,7 +19080,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     {
         TrainController->StopTTClockMessage(58, "Can't truncate to a single route element");
         ReturnFlag = InRouteFalse;
-        AllRoutes->RouteBackTruncateFlag = false;
+        AllRoutes->RouteTruncateFlag = false;
         Utilities->CallLogPop(339);
         return;
     }
@@ -19096,7 +19097,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                                                           "that lies within the route;\n\nto truncate to the next signal that isn't the end of the route select a signal to truncate from;\n\n"
                                                           "or to remove the whole route select the first track element in the route");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(340);
                 return;
             }
@@ -19107,7 +19108,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TrainController->StopTTClockMessage(60, "Can't leave points, bridge or crossover as the last route element");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(341);
                 return;
             }
@@ -19126,7 +19127,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                                                           "that lies within the route;\n\nto truncate to the next signal that isn't the end of the route select a signal to truncate from;\n\n"
                                                           "or to remove the whole route select the first track element in the route");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(2573);
                 return;
             }
@@ -19141,7 +19142,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                 {
                     TrainController->StopTTClockMessage(147, "Can't leave points, bridge or crossover as the last route element");
                     ReturnFlag = InRouteFalse;
-                    AllRoutes->RouteBackTruncateFlag = false;
+                    AllRoutes->RouteTruncateFlag = false;
                     Utilities->CallLogPop(2574);
                     return;
                 }
@@ -19162,7 +19163,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
                                                           "that lies within the route;\n\nto truncate to the next signal that isn't the end of the route select a signal to truncate from;\n\n"
                                                           "or to remove the whole route select the first track element in the route");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(2575);
                 return;
             }
@@ -19173,7 +19174,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TrainController->StopTTClockMessage(149, "Can't select a bridge as a route truncation point"); //should have been caught above but include for completeness
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(2576);
                 return;
             }
@@ -19194,7 +19195,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TrainController->StopTTClockMessage(61, "Can't truncate a route that contains a locked section");
                 ReturnFlag = InRouteFalse;
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(749);
                 return;
             }
@@ -19219,7 +19220,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             TrainController->StopTTClockMessage(179, "Unable to truncate to next signal when route locking is required.  To apply locking truncate from the element "
                                                      "immediately after the signal, this will lock the remainder of the route ");
             ReturnFlag = InRouteFalse;
-            AllRoutes->RouteBackTruncateFlag = false;
+            AllRoutes->RouteTruncateFlag = false;
             Utilities->CallLogPop(2714);
             return;
         }
@@ -19234,7 +19235,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             if(button == IDNO)
             {
                 ReturnFlag = InRouteTrue; // still return true even though don't act on it
-                AllRoutes->RouteBackTruncateFlag = false;
+                AllRoutes->RouteTruncateFlag = false;
                 Utilities->CallLogPop(342);
                 return;
             }
@@ -19354,7 +19355,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
 
         if(TruncateType == NextSignalTruncate) //re-instate the saved route
         {
-            AllRoutes->RouteBackTruncateFlag = false; //added at v2.22.0, not truncating from the back any longer so don't want to set SkipForwardLook when setting rearward signals
+            AllRoutes->RouteTruncateFlag = false; //added at v2.22.0, not truncating any longer so don't want to set SkipForwardLook when setting rearward signals
             AllRoutes->StoreOneRoute(3, &ReinstatementRoute);
             int RouteID = AllRoutes->GetFixedRouteAt(231, AllRoutes->AllRoutesSize() - 1).RouteID;
             int RouteNumber = AllRoutes->GetRouteVectorNumber(8, IDInt(RouteID));
@@ -19368,7 +19369,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
 
     AllRoutes->CheckMapAndRoutes(5); // test
     ReturnFlag = InRouteTrue;
-    AllRoutes->RouteBackTruncateFlag = false;
+    AllRoutes->RouteTruncateFlag = false;
     Utilities->CallLogPop(344);
 }
 
@@ -19429,7 +19430,7 @@ So, truncating a blue route from the front leaves a green/red route ending short
                         }
                     }
                     AllRoutes->Route2MultiMapInsert(1, NewRedFirstPDElement.HLoc, NewRedFirstPDElement.VLoc, NewRedFirstPDElement.ELink, x, 0); //0 is new first element number
-                    AllRoutes->RouteBackTruncateFlag = false; //no longer truncating at this point
+                    AllRoutes->RouteTruncateFlag = false; //no longer truncating at this point
                     AllRoutes->SetAllRearwardsSignals(17, 0, x, AllRoutes->GetFixedRouteAt(225, x).PrefDirVector.size() - 1); //should be red but make sure
                 }
                 else if(RouteColour == 2) //green route
@@ -19450,7 +19451,7 @@ So, truncating a blue route from the front leaves a green/red route ending short
                         }
                     }
                     AllRoutes->Route2MultiMapInsert(2, NewGreenFirstPDElement.HLoc, NewGreenFirstPDElement.VLoc, NewGreenFirstPDElement.ELink, x, 0); //0 is new first element number
-                    AllRoutes->RouteBackTruncateFlag = false; //no longer truncating at this point
+                    AllRoutes->RouteTruncateFlag = false; //no longer truncating at this point
                     AllRoutes->SetAllRearwardsSignals(18, 0, x, AllRoutes->GetFixedRouteAt(226, x).PrefDirVector.size() - 1); //should be red but make sure
                 }
             }
@@ -19477,7 +19478,7 @@ So, truncating a blue route from the front leaves a green/red route ending short
                     NewRedLastPDElement.EXGraphicPtr = NewRedLastPDElement.GetRouteGraphicPtr(0, 0); //not autosigs &  not prefdir
                     AllRoutes->AddRouteElement(4, NewRedLastPDElement.HLoc, NewRedLastPDElement.VLoc, NewRedLastPDElement.ELink, x, NewRedLastPDElement);
                     //can use this as adding to the end of the route
-                    AllRoutes->RouteBackTruncateFlag = false; //no longer truncating at this point
+                    AllRoutes->RouteTruncateFlag = false; //no longer truncating at this point
                     AllRoutes->SetAllRearwardsSignals(19, 0, x, AllRoutes->GetFixedRouteAt(223, x).PrefDirVector.size() - 1); //should be red but make sure
                 }
                 else if(RouteColour == 2) //green route
@@ -19488,7 +19489,7 @@ So, truncating a blue route from the front leaves a green/red route ending short
                     NewGreenLastPDElement.EXGraphicPtr = NewGreenLastPDElement.GetRouteGraphicPtr(0, 1); //not autosigs & prefdir
                     AllRoutes->AddRouteElement(5, NewGreenLastPDElement.HLoc, NewGreenLastPDElement.VLoc, NewGreenLastPDElement.ELink, x, NewGreenLastPDElement);
                     //can use this as adding to the end of the route
-                    AllRoutes->RouteBackTruncateFlag = false; //no longer truncating at this point
+                    AllRoutes->RouteTruncateFlag = false; //no longer truncating at this point
                     AllRoutes->SetAllRearwardsSignals(20, 0, x, AllRoutes->GetFixedRouteAt(224, x).PrefDirVector.size() - 1); //should be red but make sure
                 }
             }

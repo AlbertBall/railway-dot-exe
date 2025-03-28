@@ -1,3 +1,5 @@
+Fly California/Silicon Airways bug report via discord (ticket #87) 28/03/25 where front truncated a segment of a green route that followed a blue route & blue route end signal stayed green.  Details: For full and nextsignal truncate types a RouteBackTruncateFlag was set, and that prevented the forward look when setting rearwards signals.  This has been changed to RouteTruncateFlag because it should apply for all trucate types, and it seems ok now.
+
 v2.23.1 Beta: Corrected error reported by andre (andrek1410) on discord ticket #86 - in terminating a shuttle early to link to a follow-on service it gave the message 'no follow-on service' when there was.  It was due to my missing condition 'Frh-sh' in BecomeNewService.  This is now included and it works ok.
 
 Development History

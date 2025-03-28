@@ -22132,7 +22132,7 @@ void TInterface::ResetAll(int Caller)
     FloatingPanel->Visible = false;
     OverallDistance = 0;
     OverallSpeedLimit = -1;
-    AllRoutes->RouteBackTruncateFlag = false;
+    AllRoutes->RouteTruncateFlag = false;
     CallingOnButton->Down = false;
     Display->ZoomOutFlag = false;
     ScreenGridFlag = false;

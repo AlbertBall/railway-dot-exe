@@ -1728,8 +1728,8 @@ public:
 
     bool RebuildRailwayFlag;
 ///< this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the next clock tick if not in zoom-out mode to clear the now cancelled route on the display
-    bool RouteBackTruncateFlag;
-///< used to flag the fact that a route is being truncated from the back in order to change the behaviour of signal aspect setting in SetRearwardsSignalsReturnFalseForTrainInRear
+    bool RouteTruncateFlag; //used to be RouteBackTruncateFlag but used in all route truncate cases
+///< used to flag the fact that a route is being truncated in order to change the behaviour of signal aspect setting in SetRearwardsSignalsReturnFalseForTrainInRear
 
     const float LevelCrossingBarrierUpDelay;
 ///< the full value in seconds for which the level crossing flashes prior to closing to trains
@@ -1864,7 +1864,7 @@ turn using AddRouteElement, which uses HLoc, VLoc, ELink and RouteNumber to prov
 
 /// Constructor
     TAllRoutes() : LevelCrossingBarrierUpDelay(10.0), LevelCrossingBarrierDownDelay(30.0), PointsDelay(2.5), SignalsDelay(0.5),
-        RebuildRailwayFlag(false), RouteBackTruncateFlag(false)
+        RebuildRailwayFlag(false), RouteTruncateFlag(false)
     {
         ;
     }

@@ -1,7 +1,3 @@
-Fly California/Silicon Airways bug report via discord (ticket #87) 28/03/25 where front truncated a segment of a green route that followed a blue route & blue route end signal stayed green.  Details: For full and nextsignal truncate types a RouteBackTruncateFlag was set, and that prevented the forward look when setting rearwards signals.  This has been changed to RouteTruncateFlag because it should apply for all trucate types, and it seems ok now.
-
-v2.23.1 Beta: Corrected error reported by andre (andrek1410) on discord ticket #86 - in terminating a shuttle early to link to a follow-on service it gave the message 'no follow-on service' when there was.  It was due to my missing condition 'Frh-sh' in BecomeNewService.  This is now included and it works ok.
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -951,6 +947,20 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.23.0 for v2.23.1
+
+This version fixes two bugs reported recently.
+
+In terminating a shuttle early to link to a follow-on service the program gave the message 'no follow-on service' when there was in fact such a service.  It was due to my having missed the 'Frh-sh' situation (shuttle without a finishing service) in the function that handles early terminations.  This is now included and works ok.  Thanks to Andre (andrek1410) for reporting this error.
+
+
+When a green route that immediately followed a blue route was truncated from the front the signal at the end of the blue route stayed green instead of changing to red as it should have done.  It was due to my having failed to set a truncate flag for front truncation so that the rearward signal setting functions didn't work properly.  This has been set correctly and works as it should.  Thanks to Fly California/Silicon Airways for reporting this error.
+
+Not for website:
+
+Andre (andrek1410) error reported on discord ticket #86 24/03/25
+Fly California/Silicon Airways bug report via discord ticket #87 28/03/25
 
 VERSION CHANGES AFTER v2.22.0 for v2.23.0
 

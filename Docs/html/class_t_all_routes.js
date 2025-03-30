@@ -67,7 +67,7 @@ var class_t_all_routes =
     [ "PointsDelay", "class_t_all_routes.html#a7f0e30f383ca3cb65ab72d102c162316", null ],
     [ "RebuildRailwayFlag", "class_t_all_routes.html#a140f03788fbf646cb07f3c51f1f19175", null ],
     [ "Route2MultiMap", "class_t_all_routes.html#a5dc6dfad729cb6659fb1cceafe00aa79", null ],
-    [ "RouteBackTruncateFlag", "class_t_all_routes.html#ac7242a4f8348f729c05132f4adc4b4d3", null ],
+    [ "RouteTruncateFlag", "class_t_all_routes.html#a86d544429dcddbcbe43e63c8879128ee", null ],
     [ "RouteType", "class_t_all_routes.html#a8b4c0632615307653f3d1a24de9967b3", null ],
     [ "SignallerRemovedTrainAutoRoute", "class_t_all_routes.html#a747ff868fb8db132732b282b1c30f35b", null ],
     [ "SignalsDelay", "class_t_all_routes.html#a7183b12f8de4fcb82e036252a37d574d", null ]

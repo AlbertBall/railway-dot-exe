@@ -246,8 +246,8 @@ var NAVTREEINDEX14 =
 "class_t_utilities.html#afd93c190e8be4692909d59d956ae1a07":[2,0,29,71],
 "classes.html":[2,1],
 "files.html":[3,0],
-"functions.html":[2,3,0,0],
 "functions.html":[2,3,0],
+"functions.html":[2,3,0,0],
 "functions_b.html":[2,3,0,1],
 "functions_c.html":[2,3,0,2]
 };

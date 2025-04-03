@@ -955,7 +955,7 @@ This version fixes two bugs reported recently.
 In terminating a shuttle early to link to a follow-on service the program gave the message 'no follow-on service' when there was in fact such a service.  It was due to my having missed the 'Frh-sh' situation (shuttle without a finishing service) in the function that handles early terminations.  This is now included and works ok.  Thanks to Andre (andrek1410) for reporting this error.
 
 
-When a green route that immediately followed a blue route was truncated from the front the signal at the end of the blue route stayed green instead of changing to red as it should have done.  It was due to my having failed to set a truncate flag for front truncation so that the rearward signal setting functions didn't work properly.  This has been set correctly and works as it should.  Thanks to Fly California/Silicon Airways for reporting this error.
+When a green route that immediately followed a blue route was truncated from the front the signal at the end of the blue route stayed green instead of changing to red as it should have done.  It was due to my having failed to set a truncate flag for front truncation so that the rearward signal setting functions didn't work properly.  This has now been set correctly and works as it should.  Surprisingly this error had been present since v2.27.0 released in November 2023!  That was when the signal setting functions were rewritten as they had been patched several times and had become very messy.  It's odd that it hadn't been spotted and reported before now.  Thanks to Fly California/Silicon Airways for reporting this error.
 
 Not for website:
 

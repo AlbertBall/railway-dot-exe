@@ -3816,9 +3816,9 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
         {
             if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
             {
-                // only plot if on screen, to save time
-//                if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-//                   ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+                // only plot if on screen, to save time (was commented out at v2.22.0 [not sure why] reinstated after v2.23.1)
+                if(((Next.HLoc - Disp->DisplayOffsetH) >= 0) && ((Next.HLoc - Disp->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+                   ((Next.VLoc - Disp->DisplayOffsetV) >= 0) && ((Next.VLoc - Disp->DisplayOffsetV) < Utilities->ScreenElementHeight))
                 {
                     Next.PlotVariableTrackElement(2, Disp); // striped if not named
                 }
@@ -3831,8 +3831,9 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
     {
         if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
         {
-//            if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-//               ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+            // only plot if on screen, to save time (was commented out at v2.22.0 [not sure why] reinstated after v2.23.1)
+            if(((Next.HLoc - Disp->DisplayOffsetH) >= 0) && ((Next.HLoc - Disp->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+               ((Next.VLoc - Disp->DisplayOffsetV) >= 0) && ((Next.VLoc - Disp->DisplayOffsetV) < Utilities->ScreenElementHeight))
             {
                 if(Next.TrackType == Points)
                 {
@@ -3897,9 +3898,9 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
             {
                 if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
                 {
-                    // only plot if on screen, to save time, & OK as plotting one by one here
-//                    if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-//                       ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+                // only plot if on screen, to save time, & OK as plotting one by one here (was commented out at v2.22.0 [not sure why] reinstated after v2.23.1)
+                    if(((Next.HLoc - Disp->DisplayOffsetH) >= 0) && ((Next.HLoc - Disp->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+                       ((Next.VLoc - Disp->DisplayOffsetV) >= 0) && ((Next.VLoc - Disp->DisplayOffsetV) < Utilities->ScreenElementHeight))
                     {
                         if(GetTrackElementFromTrackMap(1, Next.HLoc, Next.VLoc).SpeedTag == 1)
                         {
@@ -6304,9 +6305,9 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
 
                 //replot the blue square to cover the blank area - added at v2.18.0
                 TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(36, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
-                if(IMPair.first > 0) //can only have one entry in IMPair for signals
+                if(FoundFlag) //changed after v2.23.1, was if(IMPair.first > 0) but this excluded vector position 0 which it would be if it was the first inactive element
                 {
-                    TTrackElement ITE = InactiveTrackElementAt(1414, IMPair.first);
+                    TTrackElement ITE = InactiveTrackElementAt(1414, IMPair.first); //can only have one entry in IMPair for a blue square (second entry is only for second platform)
                     if(ITE.SpeedTag == 131)
                     {
                         ITE.PlotVariableTrackElement(9, Disp); //plot the blue square again to cover the blank area

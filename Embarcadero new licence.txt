@@ -1,0 +1,5 @@
+New Embarcadero licence:
+
+No need to uninstall anything, go to C++Builder CE (Community Edition) website & click Download.  Now taken to a page to enter name etc. but at bottom of page click 'Already have an Embarcadero account - Log in here' - em 002, pwd p44110e where 0 = soft 'c' & 2 words then 'Download Now'.  Get product serial number by email & download takes a while - watch the blue download clock at top.  Click the installer 'exe' file in download folder, enter serial no. when asked & click 'Register'.  When asked tick C++ & Windows target platforms (may already be ticked) + Samples & Help + Fonts (if forget to install help then available from Tools->Manage Platforms and select from additional options). Installation should now proceed - takes quite a while & seems to hang for several minutes a few times but just leave it, it sorts itself out eventually.
+
+

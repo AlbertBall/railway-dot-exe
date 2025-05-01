@@ -124,7 +124,7 @@ class TActionVectorEntry
 public:
     AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode, SplitDistribution, NewDescription, NewMaxSpeed; //SplitDistribution & NewDescription new at v2.15.0
 ///< string values for timetabled event entries, null on creation                                                                     //NewMaxSpeed added at v2.21.0
-//Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableLine but these are
+//Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableEntry but these are
 //changed back to basic HeadCodes as almost the final action in SecondPassActions (uses StripExcessFromHeadCode)
     bool SignallerControl;
 ///< indicates a train that is defined by the timetable as under signaller control
@@ -1026,7 +1026,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// Checks whether a piece of text is a command and returns false if it is
     bool NotACommand(int Caller, AnsiString Text);
 /// Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if FinalCall true) set the internal timetable data values, return true for success
-    bool ProcessOneTimetableLine(int Caller, int Count, AnsiString OneLine, bool &EndOfFile, bool FinalCall, bool GiveMessages, bool CheckLocationsExistInRailway);
+    bool ProcessOneTimetableEntry(int Caller, int Count, AnsiString OneEntry, bool &EndOfFile, bool FinalCall, bool GiveMessages, bool CheckLocationsExistInRailway);
 /// Determines whether two services are running in the same direction when they arrive or depart from Location
     bool SameDirection(int Caller, AnsiString Ref1, AnsiString Ref2, AnsiString Time1, AnsiString Time2, int RepeatNum1, int RepeatNum2, TServiceCallingLocsList List1,
                        TServiceCallingLocsList List2, AnsiString Location, bool Arrival);

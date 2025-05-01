@@ -11592,9 +11592,9 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
             Utilities->CallLogPop(1611);
             return(false);
         }
-        AnsiString OneLine(TrainTimetableString);
+        AnsiString OneEntry(TrainTimetableString);
         bool FinalCallFalse = false;
-        while((Count == 0) && !ProcessOneTimetableLine(5, Count, OneLine, EndOfFile, FinalCallFalse, GiveMessages, CheckLocationsExistInRailway))
+        while((Count == 0) && !ProcessOneTimetableEntry(5, Count, OneEntry, EndOfFile, FinalCallFalse, GiveMessages, CheckLocationsExistInRailway))
         // get rid of lines before the start time
         {
             // ProcessOneTimetableLine returns true for a valid start time, an EndOfFile &/or a blank entry
@@ -11610,7 +11610,7 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
                 Utilities->CallLogPop(772);
                 return(false);
             }
-            OneLine = AnsiString(TrainTimetableString);
+            OneEntry = AnsiString(TrainTimetableString);
         }
         // here when have accepted the start time
         Count++; // increment past the start time
@@ -11624,13 +11624,13 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
                 // may still have eof even if read a line (no CRLF at end), and
                 // if so need to process it
                 EndOfFile = true;
-                OneLine = "";
+                OneEntry = "";
             }
             else
             {
-                OneLine = AnsiString(TrainTimetableString);
+                OneEntry = AnsiString(TrainTimetableString);
             }
-            if(OneLine.Length() > 9999)
+            if(OneEntry.Length() > 9999)
             {
                 TimetableMessage(GiveMessages, "Timetable contains a line that is too long - 10,000 or more characters!");
                 TTBLFile.close();
@@ -11639,7 +11639,7 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
                 return(false);
             }
             bool FinalCallFalse = false;
-            if(!ProcessOneTimetableLine(6, Count, OneLine, EndOfFile, FinalCallFalse, GiveMessages, CheckLocationsExistInRailway))
+            if(!ProcessOneTimetableEntry(6, Count, OneEntry, EndOfFile, FinalCallFalse, GiveMessages, CheckLocationsExistInRailway))
             // false for FinalCall - just checking at this stage
             {
                 TTBLFile.close();
@@ -11673,10 +11673,10 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
 
 // ---------------------------------------------------------------------------
 
-bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString OneLine, bool &EndOfFile, bool FinalCall, bool GiveMessages,
+bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiString OneEntry, bool &EndOfFile, bool FinalCall, bool GiveMessages,
                                                bool CheckLocationsExistInRailway) // return true for success
-
-/* Format:
+                                                                                  //changed name to ProcessOneTimetableEntry from ...Line & AnsiString OneEntry from ...OneLine
+/* Format:                                                                        // to avoid confusion with single lines of entries
           Prior to start time, anything except a line beginning with a time [...leading spaces...] HH:MM is ignored - can be
           descriptive text or anything user wishes
           A time on its own line [HH:MM], with or without leading spaces, but with anything following it before the CR (which will
@@ -11803,21 +11803,21 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
           SplitRepeat returns false (message given in called function).
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ProcessOneTimetableLine," + AnsiString(Count) + "," + OneLine + "," +
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ProcessOneTimetableEntry," + AnsiString(Count) + "," + OneEntry + "," +
                                  AnsiString((short)FinalCall) + "," + AnsiString((short)CheckLocationsExistInRailway));
     TTrainDataEntry TempTrainDataEntry;
 
     EndOfFile = false;
-    StripSpaces(0, OneLine);
+    StripSpaces(0, OneEntry);
     // strip both leading and trailing spaces at ends of line and spaces before and after all commas and
     // semicolons within the line
     ServiceReference = "";
-    if(OneLine != "")
+    if(OneEntry != "")
     {
-        if(OneLine[1] != '*')
+        if(OneEntry[1] != '*')
         {
-            int DelimPos = OneLine.Pos(';');
-            int CPos = OneLine.Pos(',');      //added at v2.21.0 as Sns entries without a description have comma instead of semicolon but service ref. still valid
+            int DelimPos = OneEntry.Pos(';');
+            int CPos = OneEntry.Pos(',');      //added at v2.21.0 as Sns entries without a description have comma instead of semicolon but service ref. still valid
             if((CPos > 0) && (CPos < DelimPos))
             {
                 DelimPos = CPos;
@@ -11825,24 +11825,24 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
 
             if(DelimPos == 0)
             {
-                ServiceReference = OneLine.SubString(1, 8);
+                ServiceReference = OneEntry.SubString(1, 8);
             }
             else
             {
-                ServiceReference = OneLine.SubString(1, (DelimPos - 1));
+                ServiceReference = OneEntry.SubString(1, (DelimPos - 1));
             }
         }
     }
     bool AllCommas = true;
 
-    for(int x = 1; x < OneLine.Length() + 1; x++) // check for nothing but commas (may be all commas if created from Excel) or a blank line
+    for(int x = 1; x < OneEntry.Length() + 1; x++) // check for nothing but commas (may be all commas if created from Excel) or a blank line
     {
-        if(OneLine[x] != ',')
+        if(OneEntry[x] != ',')
         {
             AllCommas = false;
         }
     }
-    if(AllCommas || (OneLine == ""))
+    if(AllCommas || (OneEntry == ""))
     {
         if(Count > 0)
         {
@@ -11873,7 +11873,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
           AnyHeadCodeValid = true;
           }
 */
-        if(!CheckTimeValidity(0, OneLine, StartTime))
+        if(!CheckTimeValidity(0, OneEntry, StartTime))
         {
             // no message is given for an invalid time as it's assumed to be an irrelevant line
             // if no start time is found at all then an error message is given in the calling function
@@ -11894,25 +11894,25 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
         double MaxBrakeRate = 0;
         double PowerAtRail = 0;
         int SignallerSpeed = 0;
-        if(OneLine[1] == '*')
+        if(OneEntry[1] == '*')
         {
             Utilities->CallLogPop(1581);
             return(true);
             // ignore any line beginning with '*' but return true as there is no error
         }
-        int Pos = OneLine.Pos(',');
+        int Pos = OneEntry.Pos(',');
         if(Pos == 0)
         {
             int SubStringLength = 20;
-            if(OneLine.Length() < 20)
+            if(OneEntry.Length() < 20)
             {
-                SubStringLength = OneLine.Length();
+                SubStringLength = OneEntry.Length();
             }
-            TimetableMessage(GiveMessages, "Error in timetable - entry incomplete: see '" + OneLine.SubString(1, SubStringLength) + "'....");
+            TimetableMessage(GiveMessages, "Error in timetable - entry incomplete: see '" + OneEntry.SubString(1, SubStringLength) + "'....");
             Utilities->CallLogPop(766);
             return(false);
         }
-        TrainInfoStr = OneLine.SubString(1, Pos - 1);
+        TrainInfoStr = OneEntry.SubString(1, Pos - 1);
         if(!SplitTrainInfo(0, TrainInfoStr, HeadCode, Description, StartSpeed, MaxRunningSpeed, Mass, MaxBrakeRate, PowerAtRail, SignallerSpeed,
                            GiveMessages)) // error messages given in SplitTrainInfo
         {
@@ -11941,7 +11941,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
             TTrainOperatingData TempTrainOperatingData;
             TempTrainDataEntry.TrainOperatingDataVector.push_back(TempTrainOperatingData); // push empty vector for now
         }
-        AnsiString NewRemainder = OneLine.SubString(Pos + 1, OneLine.Length() - Pos);
+        AnsiString NewRemainder = OneEntry.SubString(Pos + 1, OneEntry.Length() - Pos);
         // now left with series of entries for this train, but there may be a string of commas at the end of the line if created by Excel
         // so strip them off
         while(NewRemainder[NewRemainder.Length()] == ',')
@@ -11959,7 +11959,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
         // check if zero length & fail if so
         if(NewRemainder == "")
         {
-            TimetableMessage(GiveMessages, "Error in timetable - no events following train: '" + OneLine + "'");
+            TimetableMessage(GiveMessages, "Error in timetable - no events following train: '" + OneEntry + "'");
             Utilities->CallLogPop(769);
             return(false);
         }
@@ -11977,13 +11977,13 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
             if((NewRemainder.SubString(7, 3) != "Snt") || (NewRemainder[NewRemainder.Length()] != 'S'))
             {
                 int SubStringLength = 20;
-                if(OneLine.Length() < 20)
+                if(OneEntry.Length() < 20)
                 {
-                    SubStringLength = OneLine.Length();
+                    SubStringLength = OneEntry.Length();
                 }
                 TimetableMessage(GiveMessages,
                                  "Error in timetable - must have at least a start and a finish event for a train that is not started under signaller control - see line beginning: '" +
-                                 OneLine.SubString(1, SubStringLength) + "'....");
+                                 OneEntry.SubString(1, SubStringLength) + "'....");
                 Utilities->CallLogPop(783);
                 return(false);
             }

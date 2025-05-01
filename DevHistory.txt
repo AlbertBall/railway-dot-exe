@@ -1,3 +1,5 @@
+Try to be more explicit in '...illegal event' messages
+
 / Remove the commented out lines in RebuildTrackAndText so only plot elements on visible screen + try to find out why they were commented out
 
 / When naming a signal sometimes the blue square doesn't overlap the signal itself, only applies when there's only one inactive element.  At line 6307 in TrackUnit.cpp should be 'if(FoundFlag)', not 'if(IMPair.first > 0)', because if only one inactive element its vector position IS 0!

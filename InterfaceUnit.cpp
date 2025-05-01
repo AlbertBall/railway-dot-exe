@@ -4090,7 +4090,7 @@ void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at
         bool GiveMessagesFalse = false;
         bool CheckLocationsExistInRailwayFalse = false;
         TrainController->StripSpaces(7, *TTCurrentEntryIterator);
-        if(!TrainController->ProcessOneTimetableLine(7, Count, *TTCurrentEntryIterator, EndOfFile, FinalCallFalse, GiveMessagesFalse, CheckLocationsExistInRailwayFalse))
+        if(!TrainController->ProcessOneTimetableEntry(7, Count, *TTCurrentEntryIterator, EndOfFile, FinalCallFalse, GiveMessagesFalse, CheckLocationsExistInRailwayFalse))
         // return true for success
         {
             ShowMessage("There seem to be one or more errors in the syntax for the selected entry.\n\nPlease correct before inverting. ");
@@ -5044,7 +5044,7 @@ void __fastcall TInterface::TTServiceSyntaxCheckButtonClick(TObject *Sender)
             CheckLocationsExistInRailway = true;
         }
 // TrainController->AnyHeadCodeValid = true; //don't fail here because of an unrestricted headcode, if no good will find when validate (dropped at v0.6b)
-        if(TrainController->ProcessOneTimetableLine(2, Count, *TTCurrentEntryIterator, EndOfFile, FinalCallFalse, GiveMessagesTrue, CheckLocationsExistInRailway))
+        if(TrainController->ProcessOneTimetableEntry(2, Count, *TTCurrentEntryIterator, EndOfFile, FinalCallFalse, GiveMessagesTrue, CheckLocationsExistInRailway))
         // return true for success
         {
             ShowMessage(
@@ -6808,7 +6808,7 @@ void __fastcall TInterface::TimeOrderButtonClick(TObject *Sender)
                     }
                     if((*x == "") || AllCommas) //end of MainBody, test for line with one or more commas, added after 2.19.1 when Micke's Uppsala railway had spurious
                     {                                                //comma at end but it validated ok. Not clear how got there but it did so it could happen again
-                        MainBody = false;                            //may have all commas if used Excel (this also used on ProcessOneTimetableLine)
+                        MainBody = false;                            //may have all commas if used Excel (this also used on ProcessOneTimetableEntry)
                         PostEnd = true;
                         *x = "::::;";
                         IteratorCount++;
@@ -6994,7 +6994,7 @@ void TInterface::ConvertCRLFsToCommas(int Caller, AnsiString &ConvStr)
     ConvStr = OutStr;
     if(ConvStr == "")
     {
-        ConvStr = ','; // don't return a null or will fail, OK to return a comma on its own as will be ignored during ProcessOneTimetableLine when AllCommas will be true
+        ConvStr = ','; // don't return a null or will fail, OK to return a comma on its own as will be ignored during ProcessOneTimetableEntry when AllCommas will be true
     }
     Utilities->CallLogPop(1846);
 }
@@ -24330,7 +24330,7 @@ bool TInterface::BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBL
         }
         AnsiString OneLine(TrainTimetableString);
         bool FinalCallTrue = true;
-        while((Count == 0) && !TrainController->ProcessOneTimetableLine(3, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages,
+        while((Count == 0) && !TrainController->ProcessOneTimetableEntry(3, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages,
                                                                         CheckLocationsExistInRailway)) // get rid of lines before the start time
         {
             TTBLFile.getline(TrainTimetableString, 10000, '\0');
@@ -24356,7 +24356,7 @@ bool TInterface::BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBL
                 OneLine = AnsiString(TrainTimetableString);
             }
         }
-        if(!TrainController->ProcessOneTimetableLine(4, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages, CheckLocationsExistInRailway))
+        if(!TrainController->ProcessOneTimetableEntry(4, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages, CheckLocationsExistInRailway))
         {
             TTBLFile.close();
             throw Exception("Timetable FinalCall error in processing one timetable line, Count = " + AnsiString(Count));
@@ -24431,7 +24431,7 @@ bool TInterface::BuildTrainDataVectorForValidateFile(int Caller, std::ifstream &
         }
         AnsiString OneLine(TrainTimetableString);
         bool FinalCallTrue = true;
-        while((Count == 0) && !TrainController->ProcessOneTimetableLine(0, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages,
+        while((Count == 0) && !TrainController->ProcessOneTimetableEntry(0, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages,
                                                                         CheckLocationsExistInRailway)) // get rid of lines before the start time
         {
             TTBLFile.getline(TrainTimetableString, 10000, '\0');
@@ -24457,7 +24457,7 @@ bool TInterface::BuildTrainDataVectorForValidateFile(int Caller, std::ifstream &
                 OneLine = AnsiString(TrainTimetableString);
             }
         }
-        if(!TrainController->ProcessOneTimetableLine(1, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages, CheckLocationsExistInRailway))
+        if(!TrainController->ProcessOneTimetableEntry(1, Count, OneLine, EndOfFile, FinalCallTrue, GiveMessages, CheckLocationsExistInRailway))
         {
             TTBLFile.close();
             throw Exception("Timetable FinalCall error in processing one timetable line, Count = " + AnsiString(Count));

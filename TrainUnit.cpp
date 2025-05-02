@@ -11988,7 +11988,8 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                 return(false);
             }
         }
-        AnsiString OneEntry = "";
+
+        AnsiString OneLine = "";
         TTimetableFormatType FormatType;
         TTimetableSequenceType SequenceType;
         TTimetableLocationType LocationType;
@@ -12004,13 +12005,13 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
             {
                 if(CommaCount == 0)
                 {
-                    OneEntry = NewRemainder;
+                    OneLine = NewRemainder;
                     NewRemainder = "";
                 }
                 else
                 {
                     Pos = NewRemainder.Pos(',');
-                    OneEntry = NewRemainder.SubString(1, Pos - 1);
+                    OneLine = NewRemainder.SubString(1, Pos - 1);
                     NewRemainder = NewRemainder.SubString(Pos + 1, NewRemainder.Length() - Pos);
                 }
                 First = "";
@@ -12020,10 +12021,10 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                 RearStartOrRepeatMins = 0;
                 FrontStartOrRepeatDigits = 0;
                 NumberOfRepeats = 0;
-                if(!SplitEntry(0, OneEntry, GiveMessages, CheckLocationsExistInRailway, First, Second, Third, Fourth, RearStartOrRepeatMins,
+                if(!SplitEntry(0, OneLine, GiveMessages, CheckLocationsExistInRailway, First, Second, Third, Fourth, RearStartOrRepeatMins,
                                FrontStartOrRepeatDigits, FormatType, LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
                 {
-                    TimetableMessage(GiveMessages, "Error in timetable - Event: '" + OneEntry + "'");
+                    TimetableMessage(GiveMessages, "Error in timetable - Event: '" + OneLine + "'");
                     Utilities->CallLogPop(756);
                     return(false);
                 }
@@ -12033,20 +12034,6 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                     NewTrain = true; not needed when zero power restrictions removed
                 }
 */
-                // check if warning for Frh or Fjo & reject
-                if(Warning && (Second == "Frh"))
-                {
-                    TimetableMessage(GiveMessages, "Error in line - '" + OneEntry + "': warnings cannot be given for 'Frh' events");
-                    Utilities->CallLogPop(1793);
-                    return(false);
-                }
-                if(Warning && (Second == "Fjo"))
-                {
-                    TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
-                                     "': warnings cannot be given for 'Fjo' events, for a train join warning add a 'W' prefix to the 'jbo' event");
-                    Utilities->CallLogPop(1794);
-                    return(false);
-                }
                 //below added at v2.14.0 to prevent unpowered trains attempting to be joined by (Second == jbo), split (Second -- fsp or rsp),
                 //or change direction.  Form a new service dealt with below for zero power as it's a finish event. <-- removed at v2.19.0
 
@@ -12080,7 +12067,7 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                 {
                     if(SequenceType != StartSequence)
                     {
-                        TimetableMessage(GiveMessages, "Error in timetable - First event not a start event: '" + OneEntry + "'");
+                        TimetableMessage(GiveMessages, "Error in timetable - First event not a start event: '" + OneLine + "'");
                         Utilities->CallLogPop(784);
                         return(false);
                     }
@@ -12090,7 +12077,7 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                         {
                             TimetableMessage(GiveMessages,
                                              "Error in timetable - the only event that can follow a train created under signaller control is a repeat, see '" +
-                                             OneEntry + "'");
+                                             OneLine + "'");
                             Utilities->CallLogPop(787);
                             return(false);
                         }
@@ -12103,7 +12090,7 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                         // (PowerAtRail == 0)) allowed 0 for power at v2.4.0
                         {
                             TimetableMessage(GiveMessages, "Error in timetable - train information incomplete before 'Snt' or 'Snt-sh' start event: '" +
-                                             OneEntry + "'");
+                                             OneLine + "'");
                             Utilities->CallLogPop(1783);
                             return(false);
                         }
@@ -12114,7 +12101,7 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                         if(HeadCode == "")
                         {
                             TimetableMessage(GiveMessages, "Error in timetable - headcode missing before 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh' start event: '" +
-                                             OneEntry + "'");
+                                             OneLine + "'");
                             Utilities->CallLogPop(788);
                             return(false);
                         }
@@ -12122,7 +12109,7 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                         {
                             TimetableMessage(GiveMessages,
                                              "Error in timetable - information additional to a headcode & optional description given before 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh' start event: '" +
-                                             OneEntry + "'");
+                                             OneLine + "'");
                             Utilities->CallLogPop(843);
                             return(false);
                         }
@@ -12299,12 +12286,13 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                         ActionVectorEntry.Command = Second;
                         ActionVectorEntry.NewMaxSpeed = Third;
                     }
+                    ActionVectorEntry.OneLineText = OneLine;
                     TempTrainDataEntry.ActionVector.push_back(ActionVectorEntry);
                 }
             }
             else // last entry, & not entered under signaller control with no repeats, i.e. could be finish or repeat
             {
-                OneEntry = NewRemainder;
+                OneLine = NewRemainder;
                 First = "";
                 Second = "";
                 Third = "";
@@ -12312,19 +12300,19 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                 RearStartOrRepeatMins = 0;
                 FrontStartOrRepeatDigits = 0;
                 NumberOfRepeats = 0;
-                if((FinishFlag) && (OneEntry[1] != 'R'))
+                if((FinishFlag) && (OneLine[1] != 'R'))
                 // already had a finish entry
                 {
-                    TimetableMessage(GiveMessages, "Error in timetable - Last event = '" + OneEntry + "'. An earlier finish event has been found with something other than a repeat following it - only a repeat can follow a finish event.");
+                    TimetableMessage(GiveMessages, "Error in timetable - Last event = '" + OneLine + "'. An earlier finish event has been found with something other than a repeat following it - only a repeat can follow a finish event.");
                     Utilities->CallLogPop(79);
                     return(false);
                 }
-                if(OneEntry[1] != 'R') // must be finish
+                if(OneLine[1] != 'R') // must be finish
                 {
-                    if(!SplitEntry(1, OneEntry, GiveMessages, CheckLocationsExistInRailway, First, Second, Third, Fourth, RearStartOrRepeatMins,
+                    if(!SplitEntry(1, OneLine, GiveMessages, CheckLocationsExistInRailway, First, Second, Third, Fourth, RearStartOrRepeatMins,
                                    FrontStartOrRepeatDigits, FormatType, LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
                     {
-                        TimetableMessage(GiveMessages, "Error in timetable - Event: '" + OneEntry + "'.\nIf the program version is not the latest the "
+                        TimetableMessage(GiveMessages, "Error in timetable - Event: '" + OneLine + "'.\nIf the program version is not the latest the "
                                                        "timetable may have features that aren't compatible with the version in use.");
                         Utilities->CallLogPop(757);
                         return(false);
@@ -12340,9 +12328,24 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                     }
                     //end of new additions
 */
+                    // check if warning for Frh or Fjo & reject
+                    if(Warning && (Second == "Frh"))
+                    {
+                        TimetableMessage(GiveMessages, "Error in line - '" + OneLine + "': warnings cannot be given for 'Frh' events");
+                        Utilities->CallLogPop(1793);
+                        return(false);
+                    }
+                    if(Warning && (Second == "Fjo"))
+                    {
+                        TimetableMessage(GiveMessages, "Error in line - '" + OneLine +
+                                         "': warnings cannot be given for 'Fjo' events, for a train join warning add a 'W' prefix to the 'jbo' event");
+                        Utilities->CallLogPop(1794);
+                        return(false);
+                    }
+
                     if(SequenceType != FinishSequence)
                     {
-                        TimetableMessage(GiveMessages, "Error in timetable - last event should be a finish: '" + OneEntry + "'");
+                        TimetableMessage(GiveMessages, "Error in timetable - last event should be a finish: '" + OneLine + "'");
                         Utilities->CallLogPop(785);
                         return(false);
                     }
@@ -12405,12 +12408,13 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                         {
                             ActionVectorEntry.Command = Second;
                         }
+                        ActionVectorEntry.OneLineText = OneLine;
                         TempTrainDataEntry.ActionVector.push_back(ActionVectorEntry);
                     }
                 }
                 else // repeat
                 {
-                    if(!SplitRepeat(0, OneEntry, RearStartOrRepeatMins, FrontStartOrRepeatDigits, NumberOfRepeats, GiveMessages))
+                    if(!SplitRepeat(0, OneLine, RearStartOrRepeatMins, FrontStartOrRepeatDigits, NumberOfRepeats, GiveMessages))
                     {
                         Utilities->CallLogPop(786);
                         // error messages given in SplitRepeat
@@ -12426,6 +12430,7 @@ bool TTrainController::ProcessOneTimetableEntry(int Caller, int Count, AnsiStrin
                         ActionVectorEntry.RearStartOrRepeatMins = RearStartOrRepeatMins;
                         ActionVectorEntry.FrontStartOrRepeatDigits = FrontStartOrRepeatDigits;
                         ActionVectorEntry.NumberOfRepeats = NumberOfRepeats;
+                        ActionVectorEntry.OneLineText = OneLine;
                         TempTrainDataEntry.ActionVector.push_back(ActionVectorEntry);
                     }
                 }
@@ -12514,7 +12519,7 @@ bool TTrainController::CheckTimeValidity(int Caller, AnsiString TimeStr, TDateTi
 
 // ---------------------------------------------------------------------------
 
-bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMessages, bool CheckLocationsExistInRailway, AnsiString &First, AnsiString &Second,
+bool TTrainController::SplitEntry(int Caller, AnsiString OneLine, bool GiveMessages, bool CheckLocationsExistInRailway, AnsiString &First, AnsiString &Second,
                                   AnsiString &Third, AnsiString &Fourth, int &RearStartOrRepeatMins, int &FrontStartOrRepeatDigits, TTimetableFormatType &FormatType,
                                   TTimetableLocationType &LocationType, TTimetableSequenceType &SequenceType, TTimetableShuttleLinkType &ShuttleLinkType, TNumList &ExitList, bool &Warning)
 /* This is a train action entry from a single line of the timetable, i.e. not train information and not a repeat entry.
@@ -12522,20 +12527,20 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
           See description above under ProcessOneTimetableLinefor details of train action entries
           NB all types set except LocationType for Snt as may be located or not
 */{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SplitEntry," + OneEntry);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SplitEntry," + OneLine);
     Warning = false;
     TDateTime TempTime;
 
-    if(OneEntry.Length() > 0)
+    if(OneLine.Length() > 0)
     {
-        if(OneEntry[1] == 'W') // warning
+        if(OneLine[1] == 'W') // warning
         {
             Warning = true;
-            OneEntry = OneEntry.SubString(2, OneEntry.Length() - 1);
+            OneLine = OneLine.SubString(2, OneLine.Length() - 1);
             // strip it off
         }
     }
-    if(OneEntry == "Frh")
+    if(OneLine == "Frh")
     {
         FormatType = FinRemHere;
         SequenceType = FinishSequence;
@@ -12545,12 +12550,12 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         Utilities->CallLogPop(1016);
         return(true);
     }
-    if(OneEntry.Length() < 7)
+    if(OneLine.Length() < 7)
     {
         Utilities->CallLogPop(907);
         return(false); // 'HH:MM;' + at least a one-letter location name
     }
-    int Pos = OneEntry.Pos(';'); // first segment delimiter
+    int Pos = OneLine.Pos(';'); // first segment delimiter
 
     if(Pos != 6)
     {
@@ -12558,13 +12563,13 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         return(false);
         // no delimiter or delimiter not in position 6, has to be a time so fail
     }
-    First = OneEntry.SubString(1, 5); // has to be a time
+    First = OneLine.SubString(1, 5); // has to be a time
     if(!CheckTimeValidity(16, First, TempTime))
     {
         Utilities->CallLogPop(909);
         return(false);
     }
-    AnsiString Remainder = OneEntry.SubString(Pos + 1, OneEntry.Length() - Pos);
+    AnsiString Remainder = OneLine.SubString(Pos + 1, OneLine.Length() - Pos);
 
 //    if((Remainder[1] >= '0') && (Remainder[1] <= '9')) changed at v2.16.0 so only 'digit-digit-colon....' interpreted as a time - to allow locations to begin with digits
     if((Remainder.Length() >= 3) && (Remainder[1] >= '0') && (Remainder[1] <= '9') && (Remainder[2] >= '0') && (Remainder[2] <= '9') && (Remainder[3] == ':'))
@@ -12603,14 +12608,14 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             {
                 if((Fourth[x] < '0') || (Fourth[x] > '9'))
                 {
-                    TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
+                    TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneLine + ". Must be a whole number of seconds.");
                     Utilities->CallLogPop(2732);
                     return(false);
                 }
             }
             if(Fourth.ToDouble() < 29.9)
             {
-                TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
+                TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneLine + "'");
                 Utilities->CallLogPop(2733);
                 return(false);
             }
@@ -12671,14 +12676,14 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
                 {
                     if((Third[x] < '0') || (Third[x] > '9'))
                     {
-                        TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneEntry + ". Must be a whole number of seconds.");
+                        TimetableMessage(GiveMessages, "Invalid character in minimum dwell time in " + OneLine + ". Must be a whole number of seconds.");
                         Utilities->CallLogPop(2735);
                         return(false);
                     }
                 }
                 if(Third.ToDouble() < 29.9)
                 {
-                    TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneEntry + "'");
+                    TimetableMessage(GiveMessages, "Error in timetable - a minimum dwell time can't be less than 30 seconds: '" + OneLine + "'");
                     Utilities->CallLogPop(2736);
                     return(false);
                 }
@@ -14083,7 +14088,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1); // must be a second entry if first not signallercontrol
             if((AVEntry1.SequenceType == FinishSequence) && ((AVEntry1.Command == "Fns-sh") || (AVEntry1.Command == "Frh-sh")))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - finish events Fns-sh and Frh-sh not permitted immediately after an Snt entry for: " +
+                SecondPassMessage(GiveMessages, "Error in timetable - finish events Fns-sh and Frh-sh are not permitted immediately after an Snt entry for: " +
                                   TDEntry.HeadCode);    //these are the only AtLoc finishes not allowed
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2046);
@@ -14235,8 +14240,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     if(!AtLocSuccessor(AVEntry1))
                     {
                         // Frh following Snt-sh will return false in location check, so no need to check here
-                        SecondPassMessage(GiveMessages, "Error in timetable - stopped 'Snt' or 'Snt-sh' followed by an illegal event for: " +
-                                          TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
+                        SecondPassMessage(GiveMessages, "Error in timetable - stopped 'Snt' or 'Snt-sh' event (stationary train) followed by event '"
+                             + AVEntry1.OneLineText + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                         TrainDataVector.clear();
                         Utilities->CallLogPop(523);
                         return(false);
@@ -14259,7 +14264,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     // at least 2 entries checked in integrity check so (1) valid
                     if(!MovingSuccessor(AVEntry1))
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - unlocated 'Snt' not followed by 'Fer', 'pas' or an arrival for: " +
+                        SecondPassMessage(GiveMessages, "Error in timetable - an 'Snt' command for a moving train is not followed by 'Fer', 'pas' or an arrival for: " +
                                           TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(790);
@@ -14275,15 +14280,14 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             // at least 2 entries present checked in integrity check so (1) valid
             if(!AtLocSuccessor(AVEntry1))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - 'Sfs', 'Sns', 'Sns-sh', 'Snt-fsh' or 'Sns-fsh' followed by an illegal event for: " +
-                                  TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
+                SecondPassMessage(GiveMessages, "Error in timetable - 'Sfs', 'Sns', 'Sns-sh', 'Snt-fsh' or 'Sns-fsh' (stationary train) followed by event '"
+                    + AVEntry1.OneLineText + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(793);
                 return(false);
             }
         }
     }
-
 
     // set Sns-sh & Sns-fsh locations same as following TimeLoc departure entry location, if no departure before end of sequence give error message
     for(unsigned int x = 0; x < TrainDataVector.size(); x++)    //at v2.15.0 set Sfs & Sns locations from corresponding fsp/rsp & Fns entries, shuttles ok as they are
@@ -14481,7 +14485,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             //successor checks first: /no starts, /finishes except Frh & Fjo (as of v2.15.0), /repeats, /pas, /TimeTimeLoc or /TimeLoc arr; any other cmd or TimeLoc (dep) OK
             if(TDEntry.ActionVector.size() < 2)
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - insufficient actions follwing an 'Sns' event for: " + TDEntry.HeadCode);
+                SecondPassMessage(GiveMessages, "Error in timetable - insufficient events follwing an 'Sns' event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2598);
                 return(false);
@@ -14489,8 +14493,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TDEntry.ActionVector.at(1);
             if(!AtLocSuccessor(AVEntry1))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' event is followed by an illegal event for: " + TDEntry.HeadCode +
-                                  ". The event isn't valid for a stationary train.");
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' event (stationary train) is followed by event '" + AVEntry1.OneLineText
+                    + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2599);
                 return(false);
@@ -14498,7 +14502,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             if((AVEntry1.SequenceType == StartSequence) || ((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo")) ||
                             (AVEntry1.FormatType == Repeat))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' event is followed by an illegal event for: " + TDEntry.HeadCode);
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' event (stationary train) is followed by event '" + AVEntry1.OneLineText + "' (moving train) for: "
+                    + TDEntry.HeadCode + ". At least one is incorrect.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2600);
                 return(false);
@@ -14592,7 +14597,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.LocationName == "")
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - an 'fsp' or 'rsp' event must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
+                    SecondPassMessage(GiveMessages, "Error in timetable - an 'fsp' or 'rsp' event must be preceded by an event at the same location that has an identified location name, normally an arrival, see "
+                        + TrainDataVector.at(x).ServiceReference);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(2617);
                     return(false);
@@ -14627,8 +14633,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TDEntry.ActionVector.at(1);
             if(!AtLocSuccessor(AVEntry1))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' event is followed by an illegal event for: " + TDEntry.HeadCode +
-                                  ". The event isn't valid for a stationary train.");
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' event (stationary train) is followed by event '" + AVEntry1.OneLineText +
+                    "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2588);
                 return(false);
@@ -14636,7 +14642,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             if((AVEntry1.SequenceType == StartSequence) || ((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo")) ||
                             (AVEntry1.FormatType == Repeat))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' event is followed by an illegal event for: " + TDEntry.HeadCode);
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' event is followed by illegal event '" + AVEntry1.OneLineText + "' for: "
+                    + TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2589);
                 return(false);
@@ -14802,8 +14809,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a jbo event is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a stationary train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a jbo event (stationary train) is followed by event '" + AVEntry2.OneLineText
+                        + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(801);
                     return(false);
@@ -14813,7 +14820,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(y >= (TrainDataVector.at(x).ActionVector.size() - 1))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a train split can't be the last event for: " + TDEntry.HeadCode);
+                    SecondPassMessage(GiveMessages, "Error in timetable - a train split can't be the last event for: "
+                        + TDEntry.HeadCode + ".");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(802);
                     return(false);
@@ -14821,8 +14829,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a train split is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a stationary train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a train split event (stationary trains) is followed by event '" + AVEntry2.OneLineText
+                        + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(803);
                     return(false);
@@ -14840,8 +14848,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a 'cdt' is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a stationary train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a 'cdt' event (stationary train) is followed by event '" + AVEntry2.OneLineText
+                        + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(805);
                     return(false);
@@ -14859,8 +14867,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a 'dsc' is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a stationary train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a 'dsc' event (stationary train) is followed by event '" + AVEntry2.OneLineText
+                        + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(2603);
                     return(false);
@@ -14878,8 +14886,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a 'cms' is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a stationary train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a 'cms' event (stationary train) is followed by event '" + AVEntry2.OneLineText
+                        + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(2712);
                     return(false);
@@ -14897,25 +14905,25 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!MovingSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure is followed by an illegal event for: " +
-                                      TDEntry.HeadCode + ". The event isn't valid for a moving train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure event '" + AVEntry.OneLineText +
+                        "' (moving train) is followed by event '" + AVEntry2.OneLineText + "' (stationary train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(807);
                     return(false);
                 }
                 if(!DwellTimeWarningGiven)
                 {
-                    if((fabs(double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)))
-                    { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
-                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                    if(((double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - AVEntry.ArrivalTime) < TDateTime((AVEntry.MinDwellTime - 0.05) / 86400)))
+                    { //0.1 & 0.05 are to avoid rounding errors, if dep time - arr time negative the error will be caught elsewhere
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration for '" + AVEntry.OneLineText +
+                                                                "'. This is not an error but it will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
                                                                 "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
                         DwellTimeWarningGiven = true;
                     }
-                    if((fabs(double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) < (0.1 / 86400)) && (AVEntry.MinDwellTime > 30.05))  //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
-                    { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
-                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                    if(((double(AVEntry.DepartureTime - AVEntry.ArrivalTime)) < (0.1 / 86400)) && (AVEntry.MinDwellTime > 30.05))  //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
+                    { //0.1 & 0.05 are to avoid rounding errors, if dep time - arr time negative the error will be caught elsewhere
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration for '" + AVEntry.OneLineText +
+                                                                "'. This is not an error but it will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
                                                                 "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
                         DwellTimeWarningGiven = true;
                     }
@@ -14933,8 +14941,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!MovingSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a pass time is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a moving train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a pass time (moving train) is followed by event '" + AVEntry2.OneLineText + "' (stationary train) for: "
+                     + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(1531);
                     return(false);
@@ -14983,17 +14991,17 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         LastEntryIsAnArrival = false;
                         if((LastArrivalTime > TDateTime(0)) && !DwellTimeWarningGiven)
                         {
-                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
-                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
-                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                            if(((double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
+                            { //0.1 & 0.05 are to avoid rounding errors, if dep time - arr time negative the error will be caught elsewhere
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration for '" + AVEntry.OneLineText +
+                                                                "'. This is not an error but it will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
                                                                 "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
                                 DwellTimeWarningGiven = true;
                             }
-                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) < (0.1 / 86400)) && (MinDwellTime > 30.05)) //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
-                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
-                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                            if(((double(AVEntry.DepartureTime - LastArrivalTime)) < (0.1 / 86400)) && (MinDwellTime > 30.05)) //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
+                            { //0.1 & 0.05 are to avoid rounding errors, if dep time - arr time negative the error will be caught elsewhere
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration for '" + AVEntry.OneLineText +
+                                                                "'. This is not an error but it will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
                                                                 "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
                                 DwellTimeWarningGiven = true;
                             }
@@ -15039,17 +15047,17 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         LastEntryIsAnArrival = false;
                         if((LastArrivalTime > TDateTime(0)) && !DwellTimeWarningGiven)
                         {
-                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
-                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
-                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                            if(((double(AVEntry.DepartureTime - LastArrivalTime)) > (0.1 / 86400)) && ((AVEntry.DepartureTime - LastArrivalTime) < TDateTime((MinDwellTime - 0.05) / 86400)))
+                            { //0.1 & 0.05 are to avoid rounding errors, if dep time - arr time negative the error will be caught elsewhere
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration for '" + AVEntry.OneLineText +
+                                                                "'. This is not an error but it will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
                                                                 "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
                                 DwellTimeWarningGiven = true;
                             }
-                            if((fabs(double(AVEntry.DepartureTime - LastArrivalTime)) < (0.1 / 86400)) && (MinDwellTime > 30.05)) //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
-                            { //0.1 & 0.05 are to avoid rounding errors, fabs give the absolute value for doubles, compare with 0.1sec to avoid rounding errors
-                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration. "
-                                                                "This will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
+                            if(((double(AVEntry.DepartureTime - LastArrivalTime)) < (0.1 / 86400)) && (MinDwellTime > 30.05)) //i.e MDT of 30 ok for equal arr & dep times (30 is the default)
+                            { //0.1 & 0.05 are to avoid rounding errors, if dep time - arr time negative the error will be caught elsewhere
+                                SecondPassMessage(GiveMessages, "Warning: Service " + TDEntry.HeadCode + " has a minimum dwell time that is greater than the timetabled stop duration for '" + AVEntry.OneLineText +
+                                                                "'. This is not an error but it will cause the train to run late and the 'Actions Due' panel to give inaccurate times.\n\n"
                                                                 "Note that this warning can't be given in every circumstance where a minimum dwell time is set too high so please try to avoid it.");
                                 DwellTimeWarningGiven = true;
                             }
@@ -15095,8 +15103,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a stationary train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival (stationary train) is followed by event '"
+                        + AVEntry2.OneLineText + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(810);
                     return(false);
@@ -15115,8 +15123,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
                 if(!MovingSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed departure is followed by an illegal event for: " + TDEntry.HeadCode +
-                                      ". The event isn't valid for a moving train.");
+                    SecondPassMessage(GiveMessages, "Error in timetable - a timed departure (moving train) is followed by event '" + AVEntry2.OneLineText
+                        + "' (stationary train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(812);
                     return(false);
@@ -15198,16 +15206,16 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.DepartureTime < AVEntry.ArrivalTime)
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure has a later arrival than departure time for: " +
-                                      TDEntry.HeadCode);
+                    SecondPassMessage(GiveMessages, "Error in timetable - timed arrival and departure '" + AVEntry.OneLineText
+                        + "' has a later arrival than departure time for: " + TDEntry.HeadCode);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(813);
                     return(false);
                 }
                 if(AVEntry.ArrivalTime < CurrentTime)
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure has too early an arrival time for: " +
-                                      TDEntry.HeadCode);
+                    SecondPassMessage(GiveMessages, "Error in timetable - timed arrival and departure '" + AVEntry.OneLineText
+                        + "' has too early an arrival time for: " + TDEntry.HeadCode);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(814);
                     return(false);
@@ -15221,7 +15229,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(AVEntry.ArrivalTime < CurrentTime)
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - a timed location event has a time that is too early for: " + TDEntry.HeadCode);
+                        SecondPassMessage(GiveMessages, "Error in timetable - timed arrival event '" + AVEntry.OneLineText
+                        + "' has a time that is too early for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(815);
                         return(false);
@@ -15233,7 +15242,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     if(AVEntry.DepartureTime < CurrentTime)
                     // both may be 0 legitimately so must allow for this
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - a timed location event has a time that is too early for: " + TDEntry.HeadCode);
+                        SecondPassMessage(GiveMessages, "Error in timetable - timed departure event '" + AVEntry.OneLineText
+                        + "' has a time that is too early for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(816);
                         return(false);
@@ -15245,8 +15255,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             if(AVEntry.EventTime < CurrentTime)
             // all others have EventTime set
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - a train event has a time that is set too early for: " + TDEntry.HeadCode +
-                                  ", may be before timetable start time");
+                SecondPassMessage(GiveMessages, "Error in timetable - event '" + AVEntry.OneLineText
+                        + "' has a time that is set too early for: " + TDEntry.HeadCode + ".");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(835);
                 return(false);
@@ -15285,8 +15295,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(AVEntry.LocationName != LastLocationName)
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - a location event is inconsistent for: " + TDEntry.HeadCode + " && " +
-                                          AVEntry.Command);
+                        SecondPassMessage(GiveMessages, "Error in timetable - event '" + AVEntry.OneLineText
+                        + "' is at a location that differs from the earlier event for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(823);
                         return(false);
@@ -15297,8 +15307,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(AVEntry.LocationName != LastLocationName)
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - a location event is inconsistent for: " + TDEntry.HeadCode + " && " +
-                                          AVEntry.Command);
+                        SecondPassMessage(GiveMessages, "Error in timetable - event '" + AVEntry.OneLineText
+                        + "' is at a location that differs from the earlier event for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(824);
                         return(false);
@@ -15321,16 +15331,16 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(LastEntryIsAnArrival && (AVEntry.LocationName != LastLocationName))
                     {
-                        SecondPassMessage(GiveMessages,
-                                          "Error in timetable - a location event for a timed departure is different from the arrival location for: " + TDEntry.HeadCode);
+                        SecondPassMessage(GiveMessages, "Error in timetable - departure event '" + AVEntry.OneLineText
+                        + "' is at a location that differs from the arrival location for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(826);
                         return(false);
                     }
                     else if(!LastEntryIsAnArrival && (AVEntry.LocationName == LastLocationName))
                     {
-                        SecondPassMessage(GiveMessages,
-                                          "Error in timetable - a location event for a timed arrival is the same as the earlier departure location for: " + TDEntry.HeadCode);
+                        SecondPassMessage(GiveMessages, "Error in timetable - arrival event '" + AVEntry.OneLineText
+                        + "' is at the same location as the earlier departure event for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(827);
                         return(false);
@@ -15356,8 +15366,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(AVEntry.LocationName != LastLocationName)
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - a location event is inconsistent for: " + TDEntry.HeadCode + " && " +
-                                          AVEntry.Command);
+                        SecondPassMessage(GiveMessages, "Error in timetable - event '" + AVEntry.OneLineText
+                        + "' is at a location that differs from the earlier event for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(828);
                         return(false);
@@ -15368,8 +15378,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(AVEntry.LocationName != LastLocationName)
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - a location event is inconsistent for: " + TDEntry.HeadCode + " && " +
-                                          AVEntry.Command);
+                        SecondPassMessage(GiveMessages, "Error in timetable - event '" + AVEntry.OneLineText
+                        + "' is at a location that differs from the earlier event for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(829);
                         return(false);
@@ -15392,16 +15402,16 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(LastEntryIsAnArrival && (AVEntry.LocationName != LastLocationName))
                     {
-                        SecondPassMessage(GiveMessages,
-                                          "Error in timetable - a location event for a timed departure is different from the arrival location for: " + TDEntry.HeadCode);
+                        SecondPassMessage(GiveMessages, "Error in timetable - departure event '" + AVEntry.OneLineText
+                        + "' is at a location that differs from the earlier arrival event for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(831);
                         return(false);
                     }
                     if(!LastEntryIsAnArrival && (AVEntry.LocationName == LastLocationName) && !TwoOrMoreLocationsWarningGiven)
                     {
-                        SecondPassMessage(GiveMessages,
-                                          "A location event for a timed arrival is the same as the earlier departure location for: " + TDEntry.HeadCode + ". Please correct if this is an error.\n\nThis warning will not be shown again.");
+                        SecondPassMessage(GiveMessages, "Warning - arrival event '" + AVEntry.OneLineText
+                        + "' is at the same location as the earlier departure event for: " + TDEntry.HeadCode + ". This may be an error.");
                         TwoOrMoreLocationsWarningGiven = true;
 //                        TrainDataVector.clear();
 //                        Utilities->CallLogPop(832);
@@ -15697,7 +15707,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(Track->ContinuationNameMap.find(LocName) != Track->ContinuationNameMap.end())
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - continuation names (" + LocName + ") must not be included, see service " + HC);
+                    SecondPassMessage(GiveMessages, "Error in timetable - a continuation name (" + LocName + ") must not be included in the timetable, see service " + HC);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(1578);
                     return(false);

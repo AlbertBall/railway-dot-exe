@@ -1,4 +1,6 @@
-Try to be more explicit in '...illegal event' messages
+NB changed a great many tt error messages, ask users to check for any that don't make sense.
+
+/ More explicit tt error messages provided, esp for 'illegal event' messages. Now giv the event(s) that are potentially in error.
 
 / Remove the commented out lines in RebuildTrackAndText so only plot elements on visible screen + try to find out why they were commented out
 

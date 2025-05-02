@@ -122,8 +122,9 @@ typedef std::pair<THVShortPair, TExitInfo> TTimeToExitMultiMapEntry;
 class TActionVectorEntry
 {
 public:
-    AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode, SplitDistribution, NewDescription, NewMaxSpeed; //SplitDistribution & NewDescription new at v2.15.0
-///< string values for timetabled event entries, null on creation                                                                     //NewMaxSpeed added at v2.21.0
+    AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode, SplitDistribution, NewDescription, NewMaxSpeed, OneLineText;
+//SplitDistribution & NewDescription new at v2.15.0
+///< string values for timetabled event entries, null on creation //NewMaxSpeed added at v2.21.0, OneLineText added after v2.21.1 - the text of the timetable line
 //Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableEntry but these are
 //changed back to basic HeadCodes as almost the final action in SecondPassActions (uses StripExcessFromHeadCode)
     bool SignallerControl;

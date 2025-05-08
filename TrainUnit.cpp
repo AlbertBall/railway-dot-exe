@@ -10809,6 +10809,13 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
         {
             NewTrain->MaxRunningSpeed = NewTrain->SignallerMaxSpeed;
         }
+        //added after v2.23.1 so sig train with zero start speed is stopped on creation
+        NewTrain->SignallerStopped = false;
+        if(NewTrain->TrainDataEntryPtr->StartSpeed == 0)
+        {
+            NewTrain->SignallerStopped = true;
+        }
+        //end of addition
         RailGraphics->ChangeForegroundColour(17, NewTrain->HeadCodePosition[0], NewTrain->FrontCodePtr, clFrontCodeSignaller, NewTrain->BackgroundColour);
     }
     // deal with starting conditions:-

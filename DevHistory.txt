@@ -1,3 +1,5 @@
+Discovered in MIcke's Tram Depot railway test: At 19:48 session 12A7 still identifies as without power so can't move even though had been joined by A112 - corrected in prog by making StoppedWithoutPower false for JoinedBy in TrainUnit.cpp in PowerAtRail > 1 after join.
+
 NB changed a great many tt error messages, ask users to check for any that don't make sense.
 
 / Have trains that start under signaller control with zero speed 'stopped under signaller control' even if not at a location, so they don't begin to move and demand attention when stopped at a signal.

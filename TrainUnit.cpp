@@ -6642,6 +6642,10 @@ void TTrain::JoinedBy(int Caller)
     Mass += TrainToBeJoinedBy->Mass;
     MaxBrakeRate = CombinedBrakeRate;
     PowerAtRail += TrainToBeJoinedBy->PowerAtRail;
+    if(PowerAtRail > 1)
+    {
+        StoppedWithoutPower = false;  //added after v2.23.1 when discovered in Micke's tram depot railway (train remained stopped after joined by powered train)
+    }
     AValue = sqrt(2 * PowerAtRail / Mass);
 
     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = NoEvent;

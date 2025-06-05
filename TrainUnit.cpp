@@ -6644,7 +6644,7 @@ void TTrain::JoinedBy(int Caller)
     PowerAtRail += TrainToBeJoinedBy->PowerAtRail;
     if(PowerAtRail > 1)
     {
-        StoppedWithoutPower = false;  //added after v2.23.1 when discovered in Micke's tram depot railway (train remained stopped after joined by powered train)
+        StoppedWithoutPower = false;  //added at v2.23.2 when discovered in Micke's tram depot railway (train remained stopped after joined by powered train)
     }
     AValue = sqrt(2 * PowerAtRail / Mass);
 
@@ -10813,7 +10813,7 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
         {
             NewTrain->MaxRunningSpeed = NewTrain->SignallerMaxSpeed;
         }
-        //added after v2.23.1 so sig train with zero start speed is stopped on creation
+        //added at v2.23.2 so sig train with zero start speed is stopped on creation
         NewTrain->SignallerStopped = false;
         if(NewTrain->TrainDataEntryPtr->StartSpeed == 0)
         {

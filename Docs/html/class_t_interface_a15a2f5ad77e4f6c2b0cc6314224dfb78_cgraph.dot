@@ -11,7 +11,7 @@ digraph "TInterface::LoadTimetableMenuItemClick"
   Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
   Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="TTrainController::Process\lOneTimetableLine",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990",tooltip="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..."];
+  Node4 [label="TTrainController::Process\lOneTimetableEntry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a83978315803613644ee47b4a23a93497",tooltip="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..."];
   Node4 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 [label="TTrainController::CheckTime\lValidity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52",tooltip="returns true if the time complies with requirements"];

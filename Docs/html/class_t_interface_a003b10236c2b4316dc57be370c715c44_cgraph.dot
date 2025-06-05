@@ -38,7 +38,7 @@ digraph "TInterface::TTServiceSyntaxCheckButtonClick"
   Node37 [label="TTrainController::LogEvent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1",tooltip="store Str to the event log - moved from TUtilities for v0.6 so can record the tt clock value"];
   Node37 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node38 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node38 [label="TTrainController::Process\lOneTimetableLine",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990",tooltip="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..."];
+  Node38 [label="TTrainController::Process\lOneTimetableEntry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a83978315803613644ee47b4a23a93497",tooltip="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..."];
   Node38 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node38 -> Node39 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node39 [label="TTrainController::CheckTime\lValidity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52",tooltip="returns true if the time complies with requirements"];

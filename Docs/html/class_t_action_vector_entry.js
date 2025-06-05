@@ -17,6 +17,7 @@ var class_t_action_vector_entry =
     [ "NonRepeatingShuttleLinkEntryPtr", "class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7", null ],
     [ "NonRepeatingShuttleLinkHeadCode", "class_t_action_vector_entry.html#ae142e8e9d3a842c9b1d81bcd4e93e291", null ],
     [ "NumberOfRepeats", "class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d", null ],
+    [ "OneLineText", "class_t_action_vector_entry.html#a1ad68ab0f4207ae12a8259a81ffce160", null ],
     [ "OtherHeadCode", "class_t_action_vector_entry.html#a0cce6ed92eea821583a661966baae024", null ],
     [ "RearStartOrRepeatMins", "class_t_action_vector_entry.html#a18171f01d5e5e01242c3c672045efb28", null ],
     [ "Reminder", "class_t_action_vector_entry.html#a1e2e9eacff85eaf055409a4505cd2b8b", null ],

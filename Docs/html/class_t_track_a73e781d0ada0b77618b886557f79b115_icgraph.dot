@@ -41,7 +41,7 @@ digraph "TTrack::IsLCAtHV"
   Node29 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node30 [label="TInterface::InvertTTEntry\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ac725de40241ecbcb4bf72733dad52f4e",tooltip=" "];
   Node29 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node31 [label="TTrainController::Process\lOneTimetableLine",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990",tooltip="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..."];
+  Node31 [label="TTrainController::Process\lOneTimetableEntry",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a83978315803613644ee47b4a23a93497",tooltip="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..."];
   Node31 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node40 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node40 [label="TOneRoute::FindForwardTarget\lSignalAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a8c15c59f761de0119fa17c44b18933d0",tooltip="Used when setting signal aspects for a route by working forwards through the route to see what the ne..."];

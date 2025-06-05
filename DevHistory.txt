@@ -1,17 +1,6 @@
-Discovered in MIcke's Tram Depot railway test: At 19:48 session 12A7 still identifies as without power so can't move even though had been joined by A112 - corrected in prog by making StoppedWithoutPower false for JoinedBy in TrainUnit.cpp in PowerAtRail > 1 after join.
+Add Grantham to Skegness to project map
 
-NB changed a great many tt error messages, ask users to check for any that don't make sense.
-
-/ Have trains that start under signaller control with zero speed 'stopped under signaller control' even if not at a location, so they don't begin to move and demand attention when stopped at a signal.
-
-Note above change in manual/help
-
-/ More explicit tt error messages provided, esp for 'illegal event' messages. Now giv the event(s) that are potentially in error.
-
-/ Remove the commented out lines in RebuildTrackAndText so only plot elements on visible screen + try to find out why they were commented out
-
-/ When naming a signal sometimes the blue square doesn't overlap the signal itself, only applies when there's only one inactive element.  At line 6307 in TrackUnit.cpp should be 'if(FoundFlag)', not 'if(IMPair.first > 0)', because if only one inactive element its vector position IS 0!
-
+Check speed at half element as had situation where speed = 0 & appeared stopped - prob rounded down to 0 but not really stopped (josco 130525 in images-and-links)
 
 Development History
 
@@ -962,6 +951,33 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.23.1 for v2.23.2
+
+This version fixes one bug and makes two improvements.
+
+Improvements:
+
+The main one is that timetable error messages that involve illegal events are now more explicit.  The event that causes the validator to fail is now given as well as the earlier event.  These errors almost always involve an event that is only valid for a stationary train followed by one that is only valid for a moving train, or vice versa.  The events in question now state whether they relate to stationary or moving trains, so the relevant fault should be much easier to pinpoint.
+
+A minor one is that a train that starts with zero speed and is created under signaller control (one that has 'S' after the Snt location) remains 'stopped on signaller's instruction' when it isn't at a named location rather than starting to accelerate.
+
+
+Bug:
+
+It was discovered that a train without power that is joined by a powered train still identifies as without power so it can't move even though it now has power from the powered train.  The fault was that an internal flag 'StoppedWithoutPower' wasn't reset to false during the 'JoinedBy' function.  This oversight has now been corrected.
+
+Not for website:
+
+Discovered in MIcke's Tram Depot railway test: At 19:48 session 12A7 still identifies as without power so can't move even though had been joined by A112 - corrected in prog by making StoppedWithoutPower false for JoinedBy in TrainUnit.cpp in PowerAtRail > 1 after join.
+
+Have trains that start under signaller control with zero speed 'stopped on signaller's instruction' even if not at a location, so they don't begin to move and demand attention when stopped at a signal.
+
+More explicit tt error messages provided, esp for 'illegal event' messages (moving/stationary conflicts). Now give the event(s) that are potentially in error.
+
+Remove the commented out lines in RebuildTrackAndText so only plot elements on visible screen + try to find out why they were commented out
+
+When naming a signal sometimes the blue square doesn't overlap the signal itself, only applies when there's only one inactive element.  At line 6307 in TrackUnit.cpp should be 'if(FoundFlag)', not 'if(IMPair.first > 0)', because if only one inactive element its vector position IS 0!
 
 VERSION CHANGES AFTER v2.23.0 for v2.23.1
 
@@ -3445,8 +3461,8 @@ Prior to uploading:
 
 8 Update any other relevant files e.g. filespec & timetable errors
 
-9 Include (for 11.3 compiler) 5 x .dll files and 5 x .bpl files from the Win32 debug folder. 
-Include (for 11.3 compiler) 3 x .dll files and 5 x .bpl files from the Win64 release folder.
+9 Include (for 12 compiler) 5 x .dll files and 5 x .bpl files from the Win32 debug folder. 
+Include (for 12 compiler) 3 x .dll files and 5 x .bpl files from the Win64 release folder.
 
 10 Write release notes & include in DevHistory.txt for this release.
 
@@ -3459,7 +3475,7 @@ Include (for 11.3 compiler) 3 x .dll files and 5 x .bpl files from the Win64 rel
 	Railway\Help.chm (if updated)
 	In Railway, check have appropriate dlls and bpls as above + GNU licence + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
 
-12 Zip the above as RailOS32-vx.x.x.zip & RailOS64-vx.x.x.zip
+-->12 Zip the above as RailOS32-vx.x.x.zip & RailOS64-vx.x.x.zip
 
 13 copy these new zip files to E:\Archives\railway backups
 

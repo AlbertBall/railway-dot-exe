@@ -69,7 +69,7 @@ var class_t_train_controller =
     [ "NotACommand", "class_t_train_controller.html#ae5c9a4b365c46f8b1e58b8fa1613b411", null ],
     [ "Operate", "class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481", null ],
     [ "PlotAllTrainsInZoomOutMode", "class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8", null ],
-    [ "ProcessOneTimetableLine", "class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990", null ],
+    [ "ProcessOneTimetableEntry", "class_t_train_controller.html#a83978315803613644ee47b4a23a93497", null ],
     [ "RebuildOpTimeToActMultimap", "class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d", null ],
     [ "RebuildTimeToExitMultiMap", "class_t_train_controller.html#adda46770e73214b896de94d98f9e2692", null ],
     [ "ReplotTrains", "class_t_train_controller.html#a47676de8fc677dbcabf565569cb1435c", null ],

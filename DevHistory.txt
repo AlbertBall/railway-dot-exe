@@ -1,7 +1,5 @@
 Add Grantham to Skegness to project map
 
-Check speed at half element as had situation where speed = 0 & appeared stopped - prob rounded down to 0 but not really stopped (josco 130525 in images-and-links)
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -968,6 +966,8 @@ Bug:
 It was discovered that a train without power that is joined by a powered train still identifies as without power so it can't move even though it now has power from the powered train.  The fault was that an internal flag 'StoppedWithoutPower' wasn't reset to false during the 'JoinedBy' function.  This oversight has now been corrected.
 
 Not for website:
+
+Changed GetTrainStatusFloat so when speed < 0.5kph it is made 0.5kph so always displays a minimum of 1kph (formatting floating point numbers rounds the last digit) [Background: had situation where speed = 0 & appeared stopped - prob rounded down to 0 but not really stopped (josco 130525 in images-and-links)]
 
 Discovered in MIcke's Tram Depot railway test: At 19:48 session 12A7 still identifies as without power so can't move even though had been joined by A112 - corrected in prog by making StoppedWithoutPower false for JoinedBy in TrainUnit.cpp in PowerAtRail > 1 after join.
 
@@ -3475,7 +3475,7 @@ Include (for 12 compiler) 3 x .dll files and 5 x .bpl files from the Win64 relea
 	Railway\Help.chm (if updated)
 	In Railway, check have appropriate dlls and bpls as above + GNU licence + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
 
--->12 Zip the above as RailOS32-vx.x.x.zip & RailOS64-vx.x.x.zip
+12 Zip the above as RailOS32-vx.x.x.zip & RailOS64-vx.x.x.zip
 
 13 copy these new zip files to E:\Archives\railway backups
 
@@ -3490,7 +3490,11 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit current development branch locally & on remote, select TortoiseGit->Show Log, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
+5 Leave source code as 32bit debug, commit current development branch locally & on remote, 
+
+--> to here 050625
+
+select TortoiseGit->Show Log, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
 
 6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
 

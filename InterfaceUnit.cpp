@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32" + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -21211,6 +21211,10 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     }
     else //added mph at v2.15.0
     {
+        if(CurrSpeed < 0.5) //added at v2.23.2 so always shows a minimum speed of 1kph (formatting rounds the last digit)
+        {
+            CurrSpeed = 0.5;
+        }
         TrainStatusFloat = HeadCode + ": " + Train.Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
             "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + ": " +
             CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h (" + CurrSpeedStr.FormatFloat(FormatNoDPStr, (CurrSpeed * 5 / 8)) + "mph)" +

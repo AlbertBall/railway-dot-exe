@@ -3490,11 +3490,7 @@ On GitHub:
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 
-5 Leave source code as 32bit debug, commit current development branch locally & on remote, 
-
---> to here 050625
-
-select TortoiseGit->Show Log, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
+5 Leave source code as 32bit debug, commit current development branch locally & on remote, select TortoiseGit->Show Log, switch/checkout last master branch (make sure select switch to master, not switch to this, make sure branch is set to 'master' after the switch - shows as red), then click on latest development branch & select merge to master, and tag with release version. Delete the development branch.
 
 6 Make sure now on 'master' branch and that all up to date - latest in bold & 'master' in red
 

@@ -13130,7 +13130,7 @@ bool TTrainController::CheckHeadCodeValidity(int Caller, bool GiveMessages, Ansi
         if(((HeadCode[HeadCode.Length() - x] < 'A') || (HeadCode[HeadCode.Length() - x] > 'Z')) && ((HeadCode[HeadCode.Length() - x] < 'a') ||
             (HeadCode[HeadCode.Length() - x] > 'z')) && ((HeadCode[HeadCode.Length() - x] < '0') || (HeadCode[HeadCode.Length() - x] > '9')))
         {
-            TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', headcode must consist of letters and digits only");
+            TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', the headcode (last four characters of the service reference) must consist of letters and digits only");
             Utilities->CallLogPop(1790);
             return(false);
         }

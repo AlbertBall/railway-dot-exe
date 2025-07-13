@@ -10705,8 +10705,11 @@ pause or run and it cycled round the operate panel buttons
             int OffV = Display->DisplayOffsetV;
             int ScreenX = Mouse->CursorPos.x - MainScreen->ClientOrigin.x;
             int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;
+//            int ReminderX = Mouse->CursorPos.x - ReminderListBox->ClientOrigin.x;
+//            int ReminderY = Mouse->CursorPos.y - ReminderListBox->ClientOrigin.y;
             int HLoc, VLoc;
             AnsiString MouseStr = "Posx: " + AnsiString(ScreenX) + "; Posy: " + AnsiString(ScreenY);
+//            AnsiString MouseStr = "RemX: " + AnsiString(ReminderX) + "; RemY: " + AnsiString(ReminderY);
             DevelopmentPanel->Caption = CurDir + " " + MouseStr + "; OffH " + OffH + ";OffV " + OffV;
             Track->GetTrackLocsFromScreenPos(7, HLoc, VLoc, ScreenX, ScreenY);
 

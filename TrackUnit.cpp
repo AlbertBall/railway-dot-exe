@@ -15840,7 +15840,8 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             Utilities->CallLogPop(224);
             return(false);
         }
-// check if adjacent to end of a route & disallow
+// check if adjacent to end of a route & disallow - drop this restriction after v2.23.2
+/*
         TPrefDirElement EndOfRouteElement = AllRoutes->GetFixedRouteAt(10, a).GetFixedPrefDirElementAt(37, AllRoutes->GetFixedRouteAt(11, a).PrefDirSize() - 1);
         if((EndOfRouteElement.Config[EndOfRouteElement.XLinkPos] != End) && (EndOfRouteElement.Conn[EndOfRouteElement.XLinkPos] == EndPosition))
         {
@@ -15848,6 +15849,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             Utilities->CallLogPop(225);
             return(false);
         }
+*/
     }
 
 // check for same route as start element
@@ -17432,7 +17434,8 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
             Utilities->CallLogPop(278);
             return(false);
         }
-// check if adjacent to end of a route & disallow (unless end of existing route is the start of this route - i.e. extending route by 1 element)
+// check if adjacent to end of a route & disallow (unless end of existing route is the start of this route - i.e. extending route by 1 element) - drop restriction after v2.23.2
+/*
         TPrefDirElement EndOfRouteElement = AllRoutes->GetFixedRouteAt(41, a).GetFixedPrefDirElementAt(63, AllRoutes->GetFixedRouteAt(42, a).PrefDirSize() - 1);
         if((EndOfRouteElement.Config[EndOfRouteElement.XLinkPos] != End) && (EndOfRouteElement.Conn[EndOfRouteElement.XLinkPos] == EndPosition) &&
            (EndOfRouteElement.TrackVectorPosition != StartRoutePosition))
@@ -17444,6 +17447,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
             Utilities->CallLogPop(279);
             return(false);
         }
+*/
     }
 
 // check for same route as start element

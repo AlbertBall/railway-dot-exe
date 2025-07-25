@@ -2593,6 +2593,7 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
         Track->ResetTSRs(0);  //added at v2.14.0
         TrainController->SendPerformanceSummary(0, Utilities->PerformanceFile); // must come before trains finished becuase examines the train vectors
         Utilities->PerformanceFile.close();
+        Utilities->PerformanceFileIfstream.close();  //added after v2.23.2
         TrainController->UnplotTrains(1);
         TrainController->FinishedOperation(0);
         RouteMode = None;
@@ -15629,6 +15630,7 @@ void __fastcall TInterface::FormClose(TObject *Sender, TCloseAction &Action)
             PerfLogForm->Close();
             TrainController->SendPerformanceSummary(1, Utilities->PerformanceFile);
             Utilities->PerformanceFile.close();
+            Utilities->PerformanceFileIfstream.close(); //added after v2.23.2
         }
         if((TempTTFileName != "") && FileExists(TempTTFileName))
         {
@@ -18888,12 +18890,17 @@ void TInterface::SetLevel1Mode(int Caller)
         {
             Utilities->PerformanceFile.close();
         }
+        if(Utilities->PerformanceFileIfstream.is_open()) //added after v2.23.2
+        {
+            Utilities->PerformanceFileIfstream.close();
+        }
         PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
         // format "16/06/2009 20:55:17"
         // avoid characters in filename:=   / \ : * ? " < > |
         PerformanceFileName = CurDir + "\\" + PERFLOG_DIR_NAME + "\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " + TimetableTitle + ".txt";
 
         Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
+        Utilities->PerformanceFileIfstream.open(PerformanceFileName.c_str(), std::ios_base::in); //added after v2.23.2
         if(Utilities->PerformanceFile.fail())
         {
             ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
@@ -22710,6 +22717,10 @@ void TInterface::LoadSession(int Caller)
                     {
                         Utilities->PerformanceFile.close();
                     }
+                    if(Utilities->PerformanceFileIfstream.is_open()) //added after v2.23.2
+                    {
+                        Utilities->PerformanceFileIfstream.close();
+                    }
                     TrainController->AvHoursIntValue = 0; // initial value set at v2.4.0 in case not changed later
                     TrainController->MTBFHours = 0; // initial value set at v2.4.0 in case not changed later
                     AnsiString TempString = Utilities->LoadFileString(SessionFile);
@@ -22831,6 +22842,7 @@ void TInterface::LoadSession(int Caller)
                         ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
                                     " in the folder where the 'Railway.exe' program file resides");
                     }
+                    Utilities->PerformanceFileIfstream.open(PerformanceFileName.c_str(), std::ios_base::in); //added after v2.23.2
                     // now reload the performance file (also populates PerformanceLogBox)
                     LoadPerformanceFile(0, SessionFile);
 

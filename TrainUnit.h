@@ -942,7 +942,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///< Colour used to replace long serv. ref. text colour when removed - can't be transparent or text remains, so needs to be as close as possible so not noticeable
 
 
-//inline function
+//inline functions
 
     bool LocServiceTimesLocationSort(TLocServiceTimes i, TLocServiceTimes j)
     {
@@ -1053,6 +1053,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     int CalcDistanceToRedSignalandStopTime(int Caller, int TrackVectorPosition, int TrackVectorPositionEntryPos, bool SigControlAndCanPassRedSignal,
                                            TActionVectorEntry *AVPtr, AnsiString HeadCode, int TrainID, float &CurrentStopTime, float &LaterStopTime,
                                            float &RecoverableTime, int &AvTrackSpeed, int &DistanceToExit, THVShortPair &ExitPair);
+/// calculate maximum lateness for performance summary
+    int CalculateMaxLateness();
 /// Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber
     int EntryPos(int Caller, int TrainIDIn, int TrackVectorNumber);
 /// Get the interval between repeats

@@ -22144,6 +22144,10 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     {
         PerfFile << LateDeps << " late departures" << '\n';
     }
+
+    int MaxLateness = CalculateMaxLateness();  //added after v2.23.2
+    PerfFile << "Maximum lateness " << MaxLateness << " minutes\n";
+
     TDateTime TempExcessLCDownTime;
     for(unsigned int x = 0; x < Track->BarriersDownVector.size(); x++)  //added at v2.6.0 - should have been added earlier
     {
@@ -22423,6 +22427,56 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     PerfFile << '\n' << "***************************************";
     PerfFile.flush();
     Utilities->CallLogPop(1736);
+}
+
+// ---------------------------------------------------------------------------
+
+int TTrainController::CalculateMaxLateness() //added after v2.23.2 performance file should always be open when this is called
+{
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + ",CalculateMaxLateness");
+        AnsiString OnePerfLine = "";
+        int MaxLateness = 0;
+        Utilities->PerformanceFileIfstream.seekg(Utilities->PerformanceFileIfstream.beg);
+        char *Buffer = new char[1000];
+        while(!Utilities->PerformanceFileIfstream.eof())
+        {
+            Utilities->PerformanceFileIfstream.getline(Buffer, 1000);
+            OnePerfLine = AnsiString(Buffer);
+            if((MaxLateness == 0) && (OnePerfLine.Length() > 14) && (OnePerfLine.SubString(OnePerfLine.Length() - 10, 11) == "minute late"))
+            {
+                (MaxLateness = 1);
+            }
+            else if((OnePerfLine.Length() > 25) && (OnePerfLine.SubString(OnePerfLine.Length() - 11, 12) == "minutes late"))
+            {
+                int x = OnePerfLine.Length() - 13; //points to last digit of lateness minutes
+                while(OnePerfLine.SubString(x,1) != ' ')
+                {
+                    x--;
+                }
+                // x now points to space before 1st lateness minutes
+                x++;
+                AnsiString lateness = "";
+                while(OnePerfLine.SubString(x,1) != ' ')
+                {
+                    lateness += OnePerfLine.SubString(x,1);
+                    x++;
+                }
+                if(MaxLateness < lateness.ToInt())
+                {
+                    MaxLateness = lateness.ToInt();
+                }
+            }
+        }
+    delete[] Buffer;
+    return MaxLateness;
+    }
+    catch(const Exception &e) //non-error catch
+    {
+        ShowMessage("Error in maximum lateness calculation\n" + e.Message);
+        return(-1);
+    }
 }
 
 // ---------------------------------------------------------------------------

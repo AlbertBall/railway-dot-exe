@@ -108,6 +108,8 @@ public:
     ///< the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary (added at v2.13.0)
     std::ofstream PerformanceFile;
     ///< the file where the performance log for a particular period of operation is saved
+    std::ifstream PerformanceFileIfstream;
+    ///< used in TrainUnit.cpp in CalculateMaxlateness
     std::deque<AnsiString>CallLog;
     ///< call stack store, saved to the errorlog for diagnostic purposes
     std::deque<AnsiString>EventLog;

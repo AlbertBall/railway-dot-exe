@@ -211,7 +211,7 @@ double TUtilities::LoadFileDouble(std::ifstream &InFile) // modified at v2.4.0 t
 }
 
 // ---------------------------------------------------------------------------
-AnsiString TUtilities::LoadFileString(std::ifstream &InFile)
+AnsiString TUtilities::LoadFileString(std::ifstream &InFile)  //NB only works for binary files
 {
     // see SaveFileString for use of the '\0' & '\n' characters
     char TempChar;

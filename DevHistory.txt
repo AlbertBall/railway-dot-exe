@@ -1,10 +1,10 @@
 Add Mohan's Manchester Airport to the project map after upload
 
-Consider adding maximum lateness, add to perf, session & error file
+/Added maximum lateness calculation to include with performance summary
 
 Ensure session file structure ok for additional strings, bools, integers & floats/doubles
 
-/Removed restriction on ending a route adjacent to an existing route after v2.23.2
+
 
 Development History
 

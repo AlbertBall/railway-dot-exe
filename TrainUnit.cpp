@@ -22146,7 +22146,14 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     }
 
     int MaxLateness = CalculateMaxLateness();  //added after v2.23.2
-    PerfFile << "Maximum lateness " << MaxLateness << " minutes\n";
+    if(MaxLateness == 1)
+    {
+        PerfFile << "Maximum lateness " << MaxLateness << " minute\n";
+    }
+    else //includes 0 minutes (and -1 minutes in case of error)
+    {
+        PerfFile << "Maximum lateness " << MaxLateness << " minutes\n";
+    }
 
     TDateTime TempExcessLCDownTime;
     for(unsigned int x = 0; x < Track->BarriersDownVector.size(); x++)  //added at v2.6.0 - should have been added earlier

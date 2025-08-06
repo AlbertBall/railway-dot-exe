@@ -22867,7 +22867,7 @@ void TInterface::LoadSession(int Caller)
                         TrainController->MTBFHours = TrainController->AvHoursIntValue; // TTClockSpeed set to 1 in RestartSessionMode so no need to include here
                         // now load any failed trains along with their OriginalPowerAtRail values
                         DummyStr = Utilities->LoadFileString(SessionFile); // discard "***Failed Trains***"
-                        int ID = Utilities->LoadFileInt(SessionFile); // train ID or -1 for no more failed trains
+                       	int ID = Utilities->LoadFileInt(SessionFile); // train ID or -1 for no more failed trains
                         double PowerDouble;
                         while(ID != -1)
                         {
@@ -22876,10 +22876,10 @@ void TInterface::LoadSession(int Caller)
                             TrainController->TrainVectorAtIdent(48, ID).OriginalPowerAtRail = PowerDouble;
                             ID = Utilities->LoadFileInt(SessionFile);
                         }
-//end of 2.4.0 addition
-// addition at v2.7.0 - need value for ConsecSignalsRoute but might have eof here with older sessions so first test for that
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.4.0"  discarded
+//end of 2.4.0 addition
 
+// addition at v2.7.0 - need value for ConsecSignalsRoute but might have eof here with older sessions so first test for that
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // get rid of all end of lines & emerge with eof or '0' or '1'
                         {
@@ -22887,7 +22887,7 @@ void TInterface::LoadSession(int Caller)
                         }
                         if(SessionFile.eof()) //old session file
                         {
-                            SessionFile.close(); //ConsecSignalsRoute set to PrefDirRoute
+                            SessionFile.close(); //ConsecSignalsRoute set to PrefDirRoute, nothing to initialise
                             goto FINISHEDLOADING;
                         }
                         if((TempChar != '0') && (TempChar != '1'))
@@ -22902,6 +22902,7 @@ void TInterface::LoadSession(int Caller)
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.7.0"  discarded
 //end of 2.7.0 additions
+
 //additions at v2.9.1 - added exit information for performance log (should have been included earlier)
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // get rid of all end of lines & emerge with 1st digit of EarlyExits as character
@@ -22910,7 +22911,7 @@ void TInterface::LoadSession(int Caller)
                         }
                         if(SessionFile.eof()) //old session file
                         {
-                            TrainController->EarlyExits = 0;    //initialise for new prog - added at v2.13.0, should heve been here before
+                            TrainController->EarlyExits = 0;    //initialise for new prog - should have been included before
                             TrainController->OnTimeExits = 0;
                             TrainController->LateExits = 0;
                             TrainController->TotEarlyExitMins = 0;
@@ -22934,6 +22935,7 @@ void TInterface::LoadSession(int Caller)
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.9.1"  discarded
 //end of 2.9.1 additions
 
+
 //2.11.0 additions - skip timetabled events
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
@@ -22942,7 +22944,7 @@ void TInterface::LoadSession(int Caller)
                         }
                         if(SessionFile.eof()) //old session file
                         {
-                            TrainController->SkippedTTEvents = 0; //initialise for new prog, added at v2.13.0, should have been here earlier
+                            TrainController->SkippedTTEvents = 0; //initialise for new prog
                             SessionFile.close();                  //no need to initialise train data as initialised during creation of a new train
                             goto FINISHEDLOADING;
                         }
@@ -22990,8 +22992,9 @@ void TInterface::LoadSession(int Caller)
                                 TempString = TempChar;     //when emerge this will be 'E' or 1st digit of TrainID
                             }
                         }
-                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.11.0"  discarded ('E' already loaded)
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "nd of file at v2.11.0"  discarded ('E' already loaded)
 //end of 2.11.0 additions
+
 
 //additions at v2.12.0 - change to new service early
                         SessionFile.get(TempChar);
@@ -23113,7 +23116,7 @@ void TInterface::LoadSession(int Caller)
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.13.0"  discarded
 //end of additions at v2.13.0
 
-//additions at v2.14.0 - delays and failures
+//additions at v2.14.0 - delays and failures - these are now separated with a tab for delays and one for failures, 4 for each, none, minor, moderate & major
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
                         {// get rid of all end of lines & emerge with eof or digit that represents DelayMode (0, 1, 2 or 3)
@@ -23293,7 +23296,7 @@ void TInterface::LoadSession(int Caller)
 //end of v2.16.1 additions
 
 NEXTADDITION:
-//additions at v2.19.0 - reminders in form of AnsiString "x-y" where x = train vector position & y is action vector position
+//additions at v2.19.0 - reminders in form of AnsiString "x-y" where x = Reminder * 10000 + Train vector position & y is action vector position
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st char of 1st reminder
                         {                                                                       //or 'E' for 'End of...'
@@ -23319,7 +23322,7 @@ NEXTADDITION:
                             int PosDash = TempString.Pos('-');
                             if(PosDash == 0)  //can't find it, will create an error as it shouldn't ever be
                             {
-                                break;
+                                throw Exception("Error: PosDash == 0 in v2.19.0 addition"); //non-error catch later, added after v2.23.2, was 'break' before
                             }
                             else
                             {
@@ -23336,6 +23339,8 @@ NEXTADDITION:
                         }
 //                        Don't need to load DummyString = "End of file at v2.19.0" as it's already been loaded into TempString
 
+//end of v2.19.0 additions
+
 //additions at v2.20.2 - AllowedToPassRedSignal flag for each train - without this could save a session after permission given but when reloaded would give a SPAD
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of AllowedToPassRedSignal
@@ -23349,13 +23354,13 @@ NEXTADDITION:
                             goto FINISHEDLOADING;
                         }
                         if(!TrainController->TrainVector.empty())
-                        {//TempChar now contains 1st train's bool of AllowedToPassRedSignal ('End of file at v2.19.0' already loaded above)' <--WRONG - see below!
+                        {//TempChar now contains 1st train's bool of AllowedToPassRedSignal ('End of file at v2.19.0' already loaded above)' <--WRONG - it isn't a bool - see below!
                             for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                             {
                                 if(TVIt == TrainController->TrainVector.begin())
                                 {
-                                    TVIt->AllowedToPassRedSignal = TempChar;   //<---this isn't a boolean, '0' or '1' will load as true for the first train!!!
-                                }                                              //corrected in later addition - see below
+                                    TVIt->AllowedToPassRedSignal = TempChar;   //<---this isn't a boolean, it's an ASCII character, '0' or '1' will load as true for the first train!!!
+                                }                                              //corrected in v2.20.3 - see below
                                 else
                                 {
                                     TVIt->AllowedToPassRedSignal = Utilities->LoadFileBool(SessionFile);
@@ -23445,11 +23450,11 @@ NEXTADDITION:
                                 }
                             }
                         }
-                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.3" discarded 'E' may have been loaded earlier
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.20.3" discarded, 'E' will have been loaded earlier if there are no trains
 //end of v2.20.3 additions
-//additions at v2.23.0
+//additions at v2.23.0 - minimum dwell time addition
                         SessionFile.get(TempChar); //if not eof TempChar contains 1st train's bool of NonDefaultMinDwellTimeFlag or if there are no trains 'E' of 'End of file at v2.23.0'
-                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of RemainHereLogNotSent
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) //get rid of all end of lines & emerge with eof or 1st train's bool of NonDefaultMinDwellTimeFlag or 'E'
                         {
                             SessionFile.get(TempChar);
                         }
@@ -23488,7 +23493,7 @@ NEXTADDITION:
 //double bb = TVIt->ArrivalMinDwellTime;
                             }
                         }
-                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.23.0" discarded, 'E' may have been loaded earlier
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.23.0" discarded, 'E' will have been loaded earlier if there are no trains
 //end of v2.23.0 additions
                     }   //this is the final block closure after all additions (enclosed in a block so goto doesn't bypass initialisation of a local variable (DummyStr, ID etc.))
 

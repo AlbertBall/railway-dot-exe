@@ -1,9 +1,4 @@
-Add Mohan's Manchester Airport to the project map after upload (added to own copy, add to website when Edinburgh added)
-
 /Added maximum lateness calculation to include with performance summary
-
-Ensure session file structure ok for additional strings, bools, integers & floats/doubles
-
 
 
 Development History

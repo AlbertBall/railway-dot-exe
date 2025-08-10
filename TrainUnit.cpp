@@ -22144,13 +22144,21 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     {
         PerfFile << LateDeps << " late departures" << '\n';
     }
-
-    int MaxLateness = CalculateMaxLateness();  //added after v2.23.2
+    AnsiString FileLine;
+    int MaxLateness = CalculateMaxLateness(FileLine);  //added after v2.23.2
     if(MaxLateness == 1)
     {
-        PerfFile << "Maximum lateness " << MaxLateness << " minute\n";
+        PerfFile << "Maximum lateness " << MaxLateness << " minute (" + FileLine + ")\n";
     }
-    else //includes 0 minutes (and -1 minutes in case of error)
+    else if(MaxLateness > 0)
+    {
+        PerfFile << "Maximum lateness " << MaxLateness << " minutes  (" + FileLine + ")\n";
+    }
+    else if(MaxLateness == 0)
+    {
+        PerfFile << "Maximum lateness " << MaxLateness << " minutes\n";
+    }
+    else //-1 minutes (error)
     {
         PerfFile << "Maximum lateness " << MaxLateness << " minutes\n";
     }
@@ -22438,13 +22446,14 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
 
 // ---------------------------------------------------------------------------
 
-int TTrainController::CalculateMaxLateness() //added after v2.23.2 performance file should always be open when this is called
+int TTrainController::CalculateMaxLateness(AnsiString& MaxLine) //added after v2.23.2 performance file should always be open when this is called
 {
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + ",CalculateMaxLateness");
         AnsiString OnePerfLine = "";
         int MaxLateness = 0;
+        MaxLine = "";
         Utilities->PerformanceFileIfstream.seekg(Utilities->PerformanceFileIfstream.beg);
         char *Buffer = new char[1000];
         while(!Utilities->PerformanceFileIfstream.eof())
@@ -22473,6 +22482,7 @@ int TTrainController::CalculateMaxLateness() //added after v2.23.2 performance f
                 if(MaxLateness < lateness.ToInt())
                 {
                     MaxLateness = lateness.ToInt();
+                    MaxLine = OnePerfLine;
                 }
             }
         }

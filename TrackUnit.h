@@ -1002,6 +1002,8 @@ can't have a route set while changing; can't be opened while a route is set; and
     bool CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, bool &GraphicsFollow, std::ifstream& VecFile);
 ///checks all user graphics & returns true for success
     bool CheckUserGraphics(int Caller, std::ifstream &InFile, UnicodeString GraphicsPath);
+///checks if Link[0] for a diagonal buffer, gap or continuation is a buffer etc. used in fouled diagonal functions
+    bool DiagAtLinkIsBufGapCont(int Caller, int H, int V, int LinkIn);
 /// As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a route present (new at v1.2.0))
     bool DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber, int &TrainID);
 /// True if the element defined by MapPos is present in LNDone2MultiMap, used during location naming
@@ -1393,7 +1395,7 @@ protected: // descendant (TOneRoute) can access these
 /** which in turn is called by PresetAutoSigRoutesButtonClick. Checks for a diagonal link in
 the autosigsroute being fouled by an adjacent track with a corresponding link that meets at the diagonal link, and if it is it
 returns true and prevents the route being set.  Note that adjacent track consisting of buffers, gaps and continuations at the
-diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy
+diagonal link are not excluded though they could be, but it makes the check code simpler and such adjacent track is untidy
 and can be modelled better anyway.  Added at v2.1.0. */
     bool PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink);
 /// Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points, crossovers, signals with wrong direction set, or buffers. Added at v1.2.0
@@ -1549,7 +1551,7 @@ public:
 
     static const int RouteSearchLimit = 200000; //raised at v2.16.1 to give better chance of finding route
 ///< limit to the total number of elements searched in attempting to find a route
-    static const int RouteSearchLimitOneLeg = 300; //raised at v2.17.0 to give better chance of finding route in a single leg
+    static const int RouteSearchLimitOneLeg = 600; //raised at v2.17.0 to give better chance of finding route in a single leg, doubled at v2.23.3 because of Commuterpop's Xmas 2025 railway
 ///< limit to the number of elements searched in attempting to find a route in on leg
     bool QuitAllRecursiveSearchesFlag;
 ///<used during searching for preferred routes when no more recursive calls are required, added at v2.15.1

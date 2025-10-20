@@ -1,4 +1,11 @@
-/Added maximum lateness calculation to include with performance summary for next release
+/(enhancement) Added maximum lateness calculation to include with performance summary for next release
+
+/(bug) Drop all buffer, gap & continuation diagonal links from all fouled diagonal functions
+
+/ Check if PresetAutoRouteDiagonalFouledByTrack is really necessary - yes it is as it's only for presetting of auto signal (blue) routes, not for individual route setting. Preset AutoRoutes can't be set across crossovers and a diagonal fouled by a crossing track is equivalent to a crossover.
+
+Add DiagAtLinkIsBufGapCont to CallerChecker
+
 
 
 Development History
@@ -58,6 +65,13 @@ If, during operation, you don't want a service to stop at a particular location 
 
 Fly California/Silicon Airways — 05/09/25 at 14:51
 Thanks. I’d forgotten about the skip timetabled events feature. However, one distinction i would like to make is that what stops can be skipped and for what trains are set by the user when they make the timetable file.
+
+cte1_0387_alt — 23/09/25 at 19:36
+Maybe just a built-in skip button when clicking on the train, that does only appear/work when a certain type of stop is written in the timetable?
+Irl it is handled in a very simple way: Stop unless next signal is green, then ignore stop
+There is no difference made between freight train/passenger train/delay, just keep the signal red if you intend the train to stop at the intended location AND wait until further action is taken, or green for proceed without stopping at all
+Especially, IRL this conditional stop has written info about the train to be given priority in the timetable BUT there is no real interaction coded in the signal box so this always stays at signaller's discretion. Therefor I don't see a need for you to code any interaction between specified trains since the player still has to do that anyways
+Maybe just one check if the signal ahead is clear or not and if yes, skip stop entirely
 
 #117 from ThatOneTrainPhotographer via discord on 04/03/25 at 21:56
 I don't know how much the code limits this from being implemented, but instead of just having times in the HH:MM, also having the option for HH:MM:SS? For example 17:30:45;Snt;01-12 02-12
@@ -2692,7 +2706,7 @@ n) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 
 *o) Corrected mainform caption when creating or editing timetables.  Formerly the earlier loaded timetable name remained in the caption in error.
 
-*p) Corrected the problem when presetting automatic signal routes, where a route could be set across a diagonal fouled by adjacent track (i.e. a track element with a diagonal link that touched another track element's diagonal link).  Added a new function to check for such conflicts - PresetAutoRouteDiagonalFouledByTrack
+*p) Corrected the problem when presetting automatic signal routes, where a route could be set across a diagonal fouled by adjacent track (i.e. a track element with a diagonal link that touched another track element's diagonal link).  Preset AutoRoutes can't be set across crossovers and a diagonal fouled by a crossing track is equivalent to a crossover. Added a new function to check for such conflicts - PresetAutoRouteDiagonalFouledByTrack
 
 q) Corrected Jordy de Koning's error:
 [Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.]

@@ -6054,10 +6054,10 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
             double MDTdouble = ArrivalMinDwellTime / 60;
             double MDT = int(MDTdouble * 10);
             MDT = MDT / 10;
-            MinMinsString = " mins";   //added space after v2.23.2
+            MinMinsString = " mins";   //added space at v2.23.3
             if((MDT < 1.1) && (MDT > 0.9))
             {
-                MinMinsString = " min";   //added space after v2.23.2
+                MinMinsString = " min";   //added space at v2.23.3
             }
             PerfLogForm->PerformanceLog(0, BaseLog + PerfLog + " (Min. Dwell Time " + MDT + MinMinsString + ')');
         }
@@ -8302,10 +8302,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         double MDTdouble = Ptr->MinDwellTime / 60;
                         double MDT = int(MDTdouble * 10);
                         MDT = MDT / 10;
-                        MinMinsString = " mins";   //added space after v2.23.2
+                        MinMinsString = " mins";   //added space at v2.23.3
                         if((MDT < 1.1) && (MDT > 0.9))
                         {
-                            MinMinsString = " min";   //added space after v2.23.2
+                            MinMinsString = " min";   //added space at v2.23.3
                         }
                         PartStr = Utilities->Format96HHMM(GetTrainTime(34, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')';
                     }
@@ -8321,10 +8321,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         double MDTdouble = Ptr->MinDwellTime / 60;
                         double MDT = int(MDTdouble * 10);
                         MDT = MDT / 10;
-                        MinMinsString = " mins";   //added space after v2.23.2
+                        MinMinsString = " mins";   //added space at v2.23.3
                         if((MDT < 1.1) && (MDT > 0.9))
                         {
-                            MinMinsString = " min";   //added space after v2.23.2
+                            MinMinsString = " min";   //added space at v2.23.3
                         }
                         PartStr = Utilities->Format96HHMM(GetTrainTime(16, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')' + '\n' +
                             Utilities->Format96HHMM(GetTrainTime(17, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
@@ -8354,10 +8354,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         double MDTdouble = Ptr->MinDwellTime / 60;
                         double MDT = int(MDTdouble * 10);
                         MDT = MDT / 10;
-                        MinMinsString = " mins";   //added space after v2.23.2
+                        MinMinsString = " mins";   //added space at v2.23.3
                         if((MDT < 1.1) && (MDT > 0.9))
                         {
-                            MinMinsString = " min";   //added space after v2.23.2
+                            MinMinsString = " min";   //added space at v2.23.3
                         }
                         PartStr = Utilities->Format96HHMM(GetTrainTime(90, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')';
                     }
@@ -8373,10 +8373,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                         double MDTdouble = Ptr->MinDwellTime / 60;
                         double MDT = int(MDTdouble * 10);
                         MDT = MDT / 10;
-                        MinMinsString = " mins";   //added space after v2.23.2
+                        MinMinsString = " mins";   //added space at v2.23.3
                         if((MDT < 1.1) && (MDT > 0.9))
                         {
-                            MinMinsString = " min";   //added space after v2.23.2
+                            MinMinsString = " min";   //added space at v2.23.3
                         }
                         PartStr = Utilities->Format96HHMM(GetTrainTime(94, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')' + '\n' +
                             Utilities->Format96HHMM(GetTrainTime(96, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
@@ -8408,10 +8408,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                     double MDTdouble = Ptr->MinDwellTime / 60;
                     double MDT = int(MDTdouble * 10);
                     MDT = MDT / 10;
-                    MinMinsString = " mins";   //added space after v2.23.2
+                    MinMinsString = " mins";   //added space at v2.23.3
                     if((MDT < 1.1) && (MDT > 0.9))
                     {
-                        MinMinsString = " min";   //added space after v2.23.2
+                        MinMinsString = " min";   //added space at v2.23.3
                     }
                     PartStr = Utilities->Format96HHMM(GetTrainTime(92, Ptr->ArrivalTime)) + ": Arrive & depart from " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')';
                 }
@@ -8427,10 +8427,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                     double MDTdouble = Ptr->MinDwellTime / 60;
                     double MDT = int(MDTdouble * 10);
                     MDT = MDT / 10;
-                    MinMinsString = " mins";   //added space after v2.23.2
+                    MinMinsString = " mins";   //added space at v2.23.3
                     if((MDT < 1.1) && (MDT > 0.9))
                     {
-                        MinMinsString = " min";   //added space after v2.23.2
+                        MinMinsString = " min";   //added space at v2.23.3
                     }
                     PartStr = Utilities->Format96HHMM(GetTrainTime(95, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')' + '\n' +
                         Utilities->Format96HHMM(GetTrainTime(97, Ptr->DepartureTime)) + ": Depart from " + Ptr->LocationName;
@@ -8450,10 +8450,10 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
                 double MDTdouble = Ptr->MinDwellTime / 60;
                 double MDT = int(MDTdouble * 10);
                 MDT = MDT / 10;
-                MinMinsString = " mins";   //added space after v2.23.2
+                MinMinsString = " mins";   //added space at v2.23.3
                 if((MDT < 1.1) && (MDT > 0.9))
                 {
-                    MinMinsString = " min";   //added space after v2.23.2
+                    MinMinsString = " min";   //added space at v2.23.3
                 }
                 PartStr = Utilities->Format96HHMM(GetTrainTime(88, Ptr->ArrivalTime)) + ": Arrive at " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')';
             }
@@ -11149,10 +11149,10 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
                     double MDTdouble = Ptr->MinDwellTime / 60;
                     double MDT = int(MDTdouble * 10);
                     MDT = MDT / 10;
-                    MinMinsString = " mins";   //added space after v2.23.2
+                    MinMinsString = " mins";   //added space at v2.23.3
                     if((MDT < 1.1) && (MDT > 0.9))
                     {
-                        MinMinsString = " min";   //added space after v2.23.2
+                        MinMinsString = " min";   //added space at v2.23.3
                     }
                     PartStr = Utilities->Format96HHMM(GetControllerTrainTime(34, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive & depart from " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')';
                 }
@@ -11168,10 +11168,10 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
                     double MDTdouble = Ptr->MinDwellTime / 60;
                     double MDT = int(MDTdouble * 10);
                     MDT = MDT / 10;
-                    MinMinsString = " mins";   //added space after v2.23.2
+                    MinMinsString = " mins";   //added space at v2.23.3
                     if((MDT < 1.1) && (MDT > 0.9))
                     {
-                        MinMinsString = " min";   //added space after v2.23.2
+                        MinMinsString = " min";   //added space at v2.23.3
                     }
                     PartStr = Utilities->Format96HHMM(GetControllerTrainTime(16, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')' + '\n' +
                         Utilities->Format96HHMM(GetControllerTrainTime(85, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
@@ -11191,10 +11191,10 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
                 double MDTdouble = Ptr->MinDwellTime / 60;
                 double MDT = int(MDTdouble * 10);
                 MDT = MDT / 10;
-                MinMinsString = " mins";   //added space after v2.23.2
+                MinMinsString = " mins";   //added space at v2.23.3
                 if((MDT < 1.1) && (MDT > 0.9))
                 {
-                    MinMinsString = " min";   //added space after v2.23.2
+                    MinMinsString = " min";   //added space at v2.23.3
                 }
                 PartStr = Utilities->Format96HHMM(GetControllerTrainTime(87, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + " (Min. Dwell Time " + MDT + MinMinsString + ')';
             }
@@ -11608,7 +11608,7 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
         while((Count == 0) && !ProcessOneTimetableEntry(5, Count, OneEntry, EndOfFile, FinalCallFalse, GiveMessages, CheckLocationsExistInRailway))
         // get rid of lines before the start time
         {
-            // ProcessOneTimetableLine returns true for a valid start time, an EndOfFile &/or a blank entry
+            // ProcessOneTimetableEntry returns true for a valid start time, an EndOfFile &/or a blank entry
             TTBLFile.getline(TrainTimetableString, 10000, '\0');
             if(TTBLFile.eof() && (TrainTimetableString[0] == '\0'))
             // stores a null in 1st position if doesn't load any characters
@@ -15115,7 +15115,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 if(!AtLocSuccessor(AVEntry2))
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival (stationary train) is followed by event '"
-                        + AVEntry2.OneLineText + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect.");
+                        + AVEntry2.OneLineText + "' (moving train) for: " + TDEntry.HeadCode + ". At least one is incorrect. \n\nThis error may be caused by the rear "
+                        "of the train starting on a continuation. Trains are not allowed to stop on continuations so it will be treated as moving, even with a "
+                        "start speed of zero.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(810);
                     return(false);
@@ -16520,7 +16522,8 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
     {
         throw Exception("Error, first event not 'Snt' or 'Snt-sh' in IsSNTEntryLocated");
     }
-    if(Track->TrackElementAt(506, AVEntry0.RearStartOrRepeatMins).TrackType == Continuation)
+    TTrackElement TE = Track->TrackElementAt(506, AVEntry0.RearStartOrRepeatMins);
+    if(TE.TrackType == Continuation)  //train rear can start on a continuation but it will be classed as moving, even if start speed is zero
     {
         Utilities->CallLogPop(852);
         return(false);
@@ -16616,7 +16619,7 @@ bool TTrainController::CheckStartPositionValidity(int Caller, AnsiString RearEle
     }
     TTrackElement RearTrackElement = Track->TrackElementAt(490, RearPosition);
     TTrackElement FrontTrackElement = Track->TrackElementAt(491, FrontPosition);
-//    TTrackType RearType = RearTrackElement.TrackType;   //dropped at v2.18.0
+//    TTrackType RearType = RearTrackElement.TrackType;  dropped at 2.18.0
     TTrackType FrontType = FrontTrackElement.TrackType;
 
     // check front & rear connected
@@ -22145,7 +22148,7 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
         PerfFile << LateDeps << " late departures" << '\n';
     }
     AnsiString FileLine;
-    int MaxLateness = CalculateMaxLateness(FileLine);  //added after v2.23.2
+    int MaxLateness = CalculateMaxLateness(FileLine);  //added at v2.23.3
     if(MaxLateness == 1)
     {
         PerfFile << "Maximum lateness " << MaxLateness << " minute (" + FileLine + ")\n";
@@ -22446,7 +22449,7 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
 
 // ---------------------------------------------------------------------------
 
-int TTrainController::CalculateMaxLateness(AnsiString& MaxLine) //added after v2.23.2 performance file should always be open when this is called
+int TTrainController::CalculateMaxLateness(AnsiString& MaxLine) //added at v2.23.3 performance file should always be open when this is called
 {
     try
     {
@@ -22486,8 +22489,9 @@ int TTrainController::CalculateMaxLateness(AnsiString& MaxLine) //added after v2
                 }
             }
         }
-    delete[] Buffer;
-    return MaxLateness;
+        delete[] Buffer;
+        Utilities->CallLogPop( 2753); //added at v2.23.3, ChatGPT found this missing pop!!!
+        return MaxLateness;
     }
     catch(const Exception &e) //non-error catch
     {

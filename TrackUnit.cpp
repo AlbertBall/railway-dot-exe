@@ -12258,7 +12258,7 @@ bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID)
 
 bool TTrack::DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber, int &TrainID)
 /* New at v1.2.0
-      As DiagonalFouledByRouteOrTarin but checks for a train only (may or may not be a route) and returns the ID number.    Enter with H & V set for the element whose diagonal
+      As DiagonalFouledByRouteOrTrain but checks for a train only (may or may not be a route) and returns the ID number.    Enter with H & V set for the element whose diagonal
       is to be checked, and the XLink number of the relevant diagonal, which must be 1, 3, 7 or 9.
       for XLink = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
       for XLink = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
@@ -12272,23 +12272,41 @@ bool TTrack::DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalL
     TrainID = -1;
     TPrefDirElement TempPrefDirElement;
     TAllRoutes::TRouteElementPair FirstPair, SecondPair;
-
-    if(((DiagonalLinkNumber == 1) && TrainOnLink(8, HLoc - 1, VLoc, 3, TrainID)) || ((DiagonalLinkNumber == 7) && TrainOnLink(9, HLoc - 1, VLoc, 9, TrainID)))
+    //first check if the DiagonalLinkNumber is itself a buffer/Gap/Continuation and if so return false
+    TTrackElement TE = GetTrackElementFromTrackMap(6, HLoc, VLoc);
+    if(((TE.TrackType == Buffers) || (TE.TrackType == GapJump) || (TE.TrackType == Continuation)) && (TE.Link[0] == DiagonalLinkNumber))
+    {
+        Utilities->CallLogPop(2747);
+        return(false);
+    }
+    int H = HLoc - 1;
+    int V = VLoc;
+    if(((DiagonalLinkNumber == 1) && TrainOnLink(8, H, V, 3, TrainID) && !(DiagAtLinkIsBufGapCont(40, H, V, 3)))
+        || ((DiagonalLinkNumber == 7) && TrainOnLink(9, H, V, 9, TrainID) && !(DiagAtLinkIsBufGapCont(41, H, V, 9))))
     {
         Utilities->CallLogPop(2027);
         return(true);
     }
-    if(((DiagonalLinkNumber == 1) && TrainOnLink(10, HLoc, VLoc - 1, 7, TrainID)) || ((DiagonalLinkNumber == 3) && TrainOnLink(11, HLoc, VLoc - 1, 9, TrainID)))
+    H = HLoc;
+    V = VLoc - 1;
+    if(((DiagonalLinkNumber == 1) && TrainOnLink(10, H, V, 7, TrainID) && !(DiagAtLinkIsBufGapCont(42, H, V, 7)))
+        || ((DiagonalLinkNumber == 3) && TrainOnLink(11, H, V, 9, TrainID) && !(DiagAtLinkIsBufGapCont(43, H, V, 9))))
     {
         Utilities->CallLogPop(2028);
         return(true);
     }
-    if(((DiagonalLinkNumber == 3) && TrainOnLink(12, HLoc + 1, VLoc, 1, TrainID)) || ((DiagonalLinkNumber == 9) && TrainOnLink(13, HLoc + 1, VLoc, 7, TrainID)))
+    H = HLoc + 1;
+    V = VLoc;
+    if(((DiagonalLinkNumber == 3) && TrainOnLink(12, H, V, 1, TrainID) && !(DiagAtLinkIsBufGapCont(44, H, V, 1)))
+        || ((DiagonalLinkNumber == 9) && TrainOnLink(13, H, V, 7, TrainID) && !(DiagAtLinkIsBufGapCont(45, H, V, 7))))
     {
         Utilities->CallLogPop(2029);
         return(true);
     }
-    if(((DiagonalLinkNumber == 7) && TrainOnLink(14, HLoc, VLoc + 1, 1, TrainID)) || ((DiagonalLinkNumber == 9) && TrainOnLink(15, HLoc, VLoc + 1, 3, TrainID)))
+    H = HLoc;
+    V = VLoc + 1;
+    if(((DiagonalLinkNumber == 7) && TrainOnLink(14, H, V, 1, TrainID) && !(DiagAtLinkIsBufGapCont(46, H, V, 1)))
+        || ((DiagonalLinkNumber == 9) && TrainOnLink(15, H, V, 3, TrainID) && !(DiagAtLinkIsBufGapCont(47, H, V, 3))))
     {
         Utilities->CallLogPop(2030);
         return(true);
@@ -12497,6 +12515,27 @@ void TTrack::PopulateSimpleVector(int Caller)
         }
     }
     Utilities->CallLogPop(2521);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::DiagAtLinkIsBufGapCont(int Caller, int H, int V, int LinkIn)
+//added at v2.23.3 because of errors in Commuterpop's Xmas 2025 candle holder railway - in checking for fouled diagonals had omitted the exclusion of
+//buffers, gaps and continuations.  This function is now in all associated functions: DiagonalFouledByRoute, DiagonalFouledByTrain, DiagonalFouledByRouteOrTrain
+//and PresetAutoRouteDiagonalFouledByTrack
+{ //returns true if linkIn on H & V is a buffer, gap or continuation
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagAtLinkIsBufGapCont");
+    TTrackElement TempElement = GetTrackElementFromTrackMap(5, H, V);
+    if((TempElement.TrackType == Buffers) || (TempElement.TrackType == GapJump) || (TempElement.TrackType == Continuation))
+    {
+        if(TempElement.Link[0] == LinkIn)
+        {
+            Utilities->CallLogPop(2751);
+            return true;
+        }
+    }
+    Utilities->CallLogPop(2522);
+    return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -15094,12 +15133,15 @@ bool TOnePrefDir::PresetAutoRouteElementValid(int Caller, TPrefDirElement Elemen
 
 bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink)
 {
-/* //Added at v2.1.0
+/*
       Called by GetStartAndEndPrefDirElements, which in turn is called by PresetAutoSigRoutesButtonClick. Checks for a diagonal link in
       the autosigsroute being fouled by an adjacent track with a corresponding link that meets at the diagonal link, and if it is it
       returns true and prevents the route being set.  Note that adjacent track consisting of buffers, gaps and continuations at the
-      diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy
-      and can be modelled better anyway.
+      diagonal link are excluded.
+
+      Added at v2.1.0 - Corrects the problem when presetting automatic signal routes, where a route could be set across a
+      diagonal fouled by adjacent track (i.e. a track element with a diagonal link that touched another track element's
+      diagonal link). Preset AutoRoutes can't be set across crossovers and a diagonal fouled by a crossing track is equivalent to a crossover.
 
       Enter with PrefDirElement whose XLink is to be checked for track that fouls a diagonal.
       If XLink is anything but 1,3,7 or 9 return false - no fouling as not a diagonal.
@@ -15113,7 +15155,12 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
     int TrackVecPos;
     bool TrackFoundFlag;
     TTrackElement TempTrackElement;
-
+    //first check that this element at XLink is not itself a buffer/Gap/Continuation
+    if(((ElementIn.TrackType == Buffers) || (ElementIn.TrackType == GapJump) || (ElementIn.TrackType == Continuation)) && (ElementIn.Link[0] == XLink))
+    {
+        Utilities->CallLogPop(2750);
+        return(false);
+    }
     if((XLink == 2) || (XLink == 4) || (XLink == 6) || (XLink == 8))
     {
         Utilities->CallLogPop(2047);
@@ -15126,7 +15173,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(898, TrackVecPos);
-            if((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3))
+            if(!(Track->DiagAtLinkIsBufGapCont(48, TempTrackElement.HLoc, TempTrackElement.VLoc, 3)) &&
+                ((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3)))
             {
                 Utilities->CallLogPop(2048);
                 return(true);
@@ -15136,7 +15184,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(899, TrackVecPos);
-            if((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7))
+            if(!(Track->DiagAtLinkIsBufGapCont(49, TempTrackElement.HLoc, TempTrackElement.VLoc, 7))
+                && ((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7)))
             {
                 Utilities->CallLogPop(2049);
                 return(true);
@@ -15150,7 +15199,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(900, TrackVecPos);
-            if((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1))
+            if(!(Track->DiagAtLinkIsBufGapCont(50, TempTrackElement.HLoc, TempTrackElement.VLoc, 1))
+                && ((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1)))
             {
                 Utilities->CallLogPop(2050);
                 return(true);
@@ -15160,7 +15210,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(901, TrackVecPos);
-            if((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9))
+            if(!(Track->DiagAtLinkIsBufGapCont(51, TempTrackElement.HLoc, TempTrackElement.VLoc, 9))
+                && ((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9)))
             {
                 Utilities->CallLogPop(2051);
                 return(true);
@@ -15174,7 +15225,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(902, TrackVecPos);
-            if((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9))
+            if(!(Track->DiagAtLinkIsBufGapCont(52, TempTrackElement.HLoc, TempTrackElement.VLoc, 9))
+                && ((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9)))
             {
                 Utilities->CallLogPop(2052);
                 return(true);
@@ -15184,7 +15236,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(903, TrackVecPos);
-            if((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1))
+            if(!(Track->DiagAtLinkIsBufGapCont(53, TempTrackElement.HLoc, TempTrackElement.VLoc, 1))
+                && ((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1)))
             {
                 Utilities->CallLogPop(2053);
                 return(true);
@@ -15198,7 +15251,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(904, TrackVecPos);
-            if((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7))
+            if(!(Track->DiagAtLinkIsBufGapCont(54, TempTrackElement.HLoc, TempTrackElement.VLoc, 7))
+                && ((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7)))
             {
                 Utilities->CallLogPop(2054);
                 return(true);
@@ -15208,7 +15262,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
         if(TrackFoundFlag)
         {
             TempTrackElement = Track->TrackElementAt(905, TrackVecPos);
-            if((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3))
+            if(!(Track->DiagAtLinkIsBufGapCont(55, TempTrackElement.HLoc, TempTrackElement.VLoc, 3))
+                && ((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3)))
             {
                 Utilities->CallLogPop(2055);
                 return(true);
@@ -15248,8 +15303,9 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
             continue;
         }
 */
-// if(AllRoutes::TrackIsInARoute(, PDVIt->TrackVectorPosition, PDVIt->EntryPos) continue; //already in a route - no, don't check start position as if a signal might well be at end of an existing route
-        // found a potential route start point
+// if(AllRoutes::TrackIsInARoute(, PDVIt->TrackVectorPosition, PDVIt->EntryPos) continue; //already in a route - no, don't check start position as if a signal might well be
+//at end of an existing route
+// found a potential route start point
         if(PresetAutoRouteDiagonalFouledByTrack(0, *PDVIt, PDVIt->XLink)) // Added at v2.1.0
         {
             continue;
@@ -15269,8 +15325,8 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
                 }
             }
             StartElement = *PDVIt;
-// in Glenn Mitchell's error log (14/04/13) the offending signal start position was 4680, problem was it linked to a point with pref dirs set on through track but signal linked to
-            // diverging track on which there was no pref dir.  See below for 2 required changes.
+// in Glenn Mitchell's error log (14/04/13) the offending signal start position was 4680, problem was it linked to a point with pref dirs set on through track but signal linked
+            //to diverging track on which there was no pref dir.  See below for 2 required changes.
         }
         else
         {
@@ -21536,22 +21592,29 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
 */
 {
     int TrainID; // not used in this function
-
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagonalFouledByRouteOrTrain," + AnsiString(HLoc) + "," +
                                  AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));
     TPrefDirElement TempPrefDirElement;
     TAllRoutes::TRouteElementPair FirstPair, SecondPair;
-
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(4, HLoc - 1, VLoc, SecondPair);
+    //first check that this element with DiagonalLinkNumber is not itself a budder/Gap/Continuation
+    TTrackElement TE = Track->GetTrackElementFromTrackMap(7, HLoc, VLoc);
+    if(((TE.TrackType == Buffers) || (TE.TrackType == GapJump) || (TE.TrackType == Continuation)) && (TE.Link[0] == DiagonalLinkNumber))
+    {
+        Utilities->CallLogPop(2748);
+        return(false);
+    }
+    int H = HLoc - 1;
+    int V = VLoc;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(4, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(50, FirstPair.first).GetFixedPrefDirElementAt(70, FirstPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(0, H, V, 3)))
         {
             Utilities->CallLogPop(310);
             return(true);
         }
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(1, H, V, 9)))
         {
             Utilities->CallLogPop(311);
             return(true);
@@ -21560,33 +21623,35 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(51, SecondPair.first).GetFixedPrefDirElementAt(71, SecondPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(2, H, V, 3)))
         {
             Utilities->CallLogPop(312);
             return(true);
         }
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(3, H, V, 9)))
         {
             Utilities->CallLogPop(313);
             return(true);
         }
     }
-    if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(0, HLoc - 1, VLoc, 3, TrainID)) || ((DiagonalLinkNumber == 7) && Track->TrainOnLink(1, HLoc - 1, VLoc,
-                                                                                                                                            9, TrainID)))
+    if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(0, H, V, 3, TrainID) && !(Track->DiagAtLinkIsBufGapCont(16, H, V, 3)))
+        || ((DiagonalLinkNumber == 7) && Track->TrainOnLink(1, H, V, 9, TrainID) && !(Track->DiagAtLinkIsBufGapCont(17, H, V, 9))))
     {
         Utilities->CallLogPop(1997);
         return(true);
     }
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(5, HLoc, VLoc - 1, SecondPair);
+    H = HLoc;
+    V = VLoc - 1;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(5, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(52, FirstPair.first).GetFixedPrefDirElementAt(72, FirstPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(4, H, V, 7)))
         {
             Utilities->CallLogPop(314);
             return(true);
         }
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(5, H, V, 9)))
         {
             Utilities->CallLogPop(315);
             return(true);
@@ -21595,33 +21660,35 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(53, SecondPair.first).GetFixedPrefDirElementAt(73, SecondPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(6, H, V, 7)))
         {
             Utilities->CallLogPop(316);
             return(true);
         }
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(7, H, V, 9)))
         {
             Utilities->CallLogPop(317);
             return(true);
         }
     }
-    if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(2, HLoc, VLoc - 1, 7, TrainID)) || ((DiagonalLinkNumber == 3) && Track->TrainOnLink(3, HLoc, VLoc - 1,
-                                                                                                                                            9, TrainID)))
+    if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(2, H, V, 7, TrainID) && !(Track->DiagAtLinkIsBufGapCont(18, H, V, 7)))
+        || ((DiagonalLinkNumber == 3) && Track->TrainOnLink(3, H, V, 9, TrainID) && !(Track->DiagAtLinkIsBufGapCont(19, H, V, 9))))
     {
         Utilities->CallLogPop(1998);
         return(true);
     }
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(6, HLoc + 1, VLoc, SecondPair);
+    H = HLoc + 1;
+    V = VLoc;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(6, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(54, FirstPair.first).GetFixedPrefDirElementAt(74, FirstPair.second);
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(8, H, V, 1)))
         {
             Utilities->CallLogPop(318);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(9, H, V, 7)))
         {
             Utilities->CallLogPop(319);
             return(true);
@@ -21630,33 +21697,35 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(55, SecondPair.first).GetFixedPrefDirElementAt(75, SecondPair.second);
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(10, H, V, 1)))
         {
             Utilities->CallLogPop(320);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(11, H, V, 7)))
         {
             Utilities->CallLogPop(321);
             return(true);
         }
     }
-    if(((DiagonalLinkNumber == 3) && Track->TrainOnLink(4, HLoc + 1, VLoc, 1, TrainID)) || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(5, HLoc + 1, VLoc,
-                                                                                                                                            7, TrainID)))
+    if(((DiagonalLinkNumber == 3) && Track->TrainOnLink(4, H, V, 1, TrainID) && !(Track->DiagAtLinkIsBufGapCont(20, H, V, 1)))
+        || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(5, H, V, 7, TrainID) && !(Track->DiagAtLinkIsBufGapCont(21, H, V, 7))))
     {
         Utilities->CallLogPop(1999);
         return(true);
     }
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(7, HLoc, VLoc + 1, SecondPair);
+    H = HLoc;
+    V = VLoc + 1;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(7, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(56, FirstPair.first).GetFixedPrefDirElementAt(76, FirstPair.second);
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(12, H, V, 1)))
         {
             Utilities->CallLogPop(322);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(13, H, V, 3)))
         {
             Utilities->CallLogPop(323);
             return(true);
@@ -21665,19 +21734,19 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(57, SecondPair.first).GetFixedPrefDirElementAt(77, SecondPair.second);
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(14, H, V, 1)))
         {
             Utilities->CallLogPop(324);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(15, H, V, 3)))
         {
             Utilities->CallLogPop(325);
             return(true);
         }
     }
-    if(((DiagonalLinkNumber == 7) && Track->TrainOnLink(6, HLoc, VLoc + 1, 1, TrainID)) || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(7, HLoc, VLoc + 1,
-                                                                                                                                            3, TrainID)))
+    if(((DiagonalLinkNumber == 7) && Track->TrainOnLink(6, H, V, 1, TrainID) && !(Track->DiagAtLinkIsBufGapCont(22, H, V, 1)))
+        || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(7, H, V, 3, TrainID) && !(Track->DiagAtLinkIsBufGapCont(23, H, V, 3))))
     {
         Utilities->CallLogPop(2000);
         return(true);
@@ -21703,17 +21772,25 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
                                  "," + AnsiString(DiagonalLinkNumber));
     TPrefDirElement TempPrefDirElement;
     TAllRoutes::TRouteElementPair FirstPair, SecondPair;
-
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(17, HLoc - 1, VLoc, SecondPair);
+    //first check that this element with DiagonalLinkNumber is not itself a budder/Gap/Continuation
+    TTrackElement TE = Track->GetTrackElementFromTrackMap(8, HLoc, VLoc);
+    if(((TE.TrackType == Buffers) || (TE.TrackType == GapJump) || (TE.TrackType == Continuation)) && (TE.Link[0] == DiagonalLinkNumber))
+    {
+        Utilities->CallLogPop(2749);
+        return(false);
+    }
+    int H = HLoc - 1;
+    int V = VLoc;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(17, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(197, FirstPair.first).GetFixedPrefDirElementAt(233, FirstPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(24, H, V, 3)))
         {
             Utilities->CallLogPop(2010);
             return(true);
         }
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(25, H, V, 9)))
         {
             Utilities->CallLogPop(2011);
             return(true);
@@ -21722,27 +21799,29 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(198, SecondPair.first).GetFixedPrefDirElementAt(234, SecondPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(26, H, V, 3)))
         {
             Utilities->CallLogPop(2012);
             return(true);
         }
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(27, H, V, 9)))
         {
             Utilities->CallLogPop(2013);
             return(true);
         }
     }
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(18, HLoc, VLoc - 1, SecondPair);
+    H = HLoc;
+    V = VLoc - 1;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(18, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(199, FirstPair.first).GetFixedPrefDirElementAt(235, FirstPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(28, H, V, 7)))
         {
             Utilities->CallLogPop(2014);
             return(true);
         }
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(29, H, V, 9)))
         {
             Utilities->CallLogPop(2015);
             return(true);
@@ -21751,27 +21830,29 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(200, SecondPair.first).GetFixedPrefDirElementAt(236, SecondPair.second);
-        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(30, H, V, 7)))
         {
             Utilities->CallLogPop(2016);
             return(true);
         }
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)) && !(Track->DiagAtLinkIsBufGapCont(31, H, V, 9)))
         {
             Utilities->CallLogPop(2017);
             return(true);
         }
     }
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(19, HLoc + 1, VLoc, SecondPair);
+    H = HLoc + 1;
+    V = VLoc;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(19, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(201, FirstPair.first).GetFixedPrefDirElementAt(237, FirstPair.second);
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(32, H, V, 1)))
         {
             Utilities->CallLogPop(2018);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(33, H, V, 7)))
         {
             Utilities->CallLogPop(2019);
             return(true);
@@ -21780,27 +21861,29 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(202, SecondPair.first).GetFixedPrefDirElementAt(238, SecondPair.second);
-        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(34, H, V, 1)))
         {
             Utilities->CallLogPop(2020);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)) && !(Track->DiagAtLinkIsBufGapCont(35, H, V, 7)))
         {
             Utilities->CallLogPop(2021);
             return(true);
         }
     }
-    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(20, HLoc, VLoc + 1, SecondPair);
+    H = HLoc;
+    V = VLoc + 1;
+    FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(20, H, V, SecondPair);
     if(FirstPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(203, FirstPair.first).GetFixedPrefDirElementAt(239, FirstPair.second);
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(36, H, V, 1)))
         {
             Utilities->CallLogPop(2022);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(37, H, V, 3)))
         {
             Utilities->CallLogPop(2023);
             return(true);
@@ -21809,12 +21892,12 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
     if(SecondPair.first > -1)
     {
         TempPrefDirElement = AllRoutes->GetFixedRouteAt(204, SecondPair.first).GetFixedPrefDirElementAt(240, SecondPair.second);
-        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)) && !(Track->DiagAtLinkIsBufGapCont(38, H, V, 1)))
         {
             Utilities->CallLogPop(2024);
             return(true);
         }
-        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)) && !(Track->DiagAtLinkIsBufGapCont(39, H, V, 3)))
         {
             Utilities->CallLogPop(2025);
             return(true);

@@ -1,10 +1,10 @@
-/(enhancement) Added maximum lateness calculation to include with performance summary for next release
+/ (enhancement) Added maximum lateness calculation to include with performance summary for next release
 
-/(bug) Drop all buffer, gap & continuation diagonal links from all fouled diagonal functions
+/ (bug) Drop all buffer, gap & continuation diagonal links from all fouled diagonal functions
 
 / Check if PresetAutoRouteDiagonalFouledByTrack is really necessary - yes it is as it's only for presetting of auto signal (blue) routes, not for individual route setting. Preset AutoRoutes can't be set across crossovers and a diagonal fouled by a crossing track is equivalent to a crossover.
 
-Add DiagAtLinkIsBufGapCont to CallerChecker
+/ Add DiagAtLinkIsBufGapCont to CallerChecker
 
 
 

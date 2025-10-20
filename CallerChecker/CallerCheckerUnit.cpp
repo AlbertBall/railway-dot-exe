@@ -157,6 +157,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "Delay",
         "DeleteTextItem",
         "DeleteTrain",
+        "DiagAtLinkIsBufGapCont",
         "DiagonalFouledByRoute",
         "DiagonalFouledByRouteOrTrain",
         "DiagonalFouledByTrain",

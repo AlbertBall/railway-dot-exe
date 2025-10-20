@@ -12534,7 +12534,7 @@ bool TTrack::DiagAtLinkIsBufGapCont(int Caller, int H, int V, int LinkIn)
             return true;
         }
     }
-    Utilities->CallLogPop(2522);
+    Utilities->CallLogPop(2752);
     return false;
 }
 

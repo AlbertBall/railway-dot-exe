@@ -1,5 +1,7 @@
 # Railway Operation Simulator (RailOS)
 
+### *Please note that the RailOS site (www.railwayoperationsimulator.com) is currently unavailable due to a massive Distributed Denial of Service (DDoS) attack. This attack is using AI which makes it very much more effective. We are currently working hard on a solution so the site will be operational again as soon as possible.*
+
 Welcome to the RailOS project, a railway simulator for Windows originally written in Borland's C++ Builder 4 Professional and now updated to work with Embarcadero's C++ Builder Community Edition v10.4.  Development to date has resulted in a complete and usable program that provides options to:
 
 - build a railway of any size

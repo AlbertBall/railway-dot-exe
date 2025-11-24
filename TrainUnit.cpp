@@ -17492,11 +17492,13 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     }
     else if(ActionEventType == FailMissedDSC) //new at v2.15.0
     {
+        Prefix = ": ";
         ErrorLog = " failed to change its description at ";
 //        OtherMissedEvents++;    shouldn't count
     }
     else if(ActionEventType == FailMissedCMS) //new at v2.21.0
     {
+        Prefix = ": ";
         ErrorLog = " failed to change its maximum speed at ";
 //        OtherMissedEvents++;    shouldn't count
     }
@@ -17522,11 +17524,13 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     }
     else if(ActionEventType == FailMissedChangeDirection)
     {
+        Prefix = ": ";
         ErrorLog = " failed to change direction at ";
 //        OtherMissedEvents++;   //dropped at v2.12.0 as cdt shouldn't count
     }
     else if(ActionEventType == FailMissedPass)
     {
+        Prefix = ": ";
         ErrorLog = " failed to pass ";
 //        OtherMissedEvents++;  //dropped at v2.12.0 as missed pass shouldn't count
     }

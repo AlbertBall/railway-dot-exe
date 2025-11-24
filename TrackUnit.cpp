@@ -2002,21 +2002,25 @@ bool TTrack::NoActiveTrack(int Caller)
 
 // ---------------------------------------------------------------------------
 
-void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &ErasedTrackVectorPosition, bool &TrackEraseSuccessfulFlag, bool InternalChecks)
+void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, TOnePrefDir *TempEveryPrefDir, int &ErasedTrackVectorPosition, bool &TrackEraseSuccessfulFlag, bool InternalChecks)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EraseTrackElement," + AnsiString(HLocInput) + "," +
                                  AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
     TrackEraseSuccessfulFlag = false;
-// TrackEraseSuccessfulFlag used for both track element and inactive element erase,
-// since have to match platforms as well as track
-// used to set TrackFinished to false if an element erased
+// TrackEraseSuccessfulFlag used for any element erased, used to set TrackFinished to false if a track element erased (nneded even if track reinstated as otherwise all connections etc. lost)
 
+//After v2.23.2 if location has both active & inactive elements then the active element will be put back afterwards (so first erase just for inactives) but if a foot crossing
+//replace active with just the corresponding track (because crossings are active)
     ErasedTrackVectorPosition = -1; // marker for no element erased
     AnsiString SName = "", ErrorString;
     TLocationNameMultiMapIterator SNIt;
     THVPair TrackMapKeyPair, InactiveTrackMapKeyPair;
     TTrackMapIterator TrackMapPtr;
     TInactiveTrack2MultiMapIterator InactiveTrack2MultiMapIterator;
+    TTrackElement TempTrackElement; //save element in case need to reinstate it
+    bool ActiveElementErased = false;
+    bool InactiveElementErased = false;
+    bool FootCrossingErased = false;
 
     if(TrackVector.size() != 0)
     {
@@ -2029,9 +2033,10 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
             int VecPos = GetVectorPositionFromTrackMap(37, HLocInput, VLocInput, FoundFlag);
             if(FoundFlag) // should find it as it's in the map
             {
+                TempTrackElement = TrackElementAt(1690, VecPos);
                 if(TrackElementAt(629, VecPos).FixedNamedLocationElement) // footcrossings only
                 {
-                    SName = TrackElementAt(1, VecPos).LocationName;
+                    SName = TrackElementAt(1, VecPos).LocationName;  //need to erase this even if null
                     SNIt = FindNamedElementInLocationNameMultiMap(7, SName, TrackVector.begin() + VecPos, ErrorString);
                     if(ErrorString != "")
                     {
@@ -2061,6 +2066,11 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                 }
                 ErasedTrackVectorPosition = VecPos;
                 TrackEraseSuccessfulFlag = true;
+                ActiveElementErased = true;
+                if(TempTrackElement.TrackType == FootCrossing)
+                {
+                    FootCrossingErased = true;
+                }
             }
         }
     }
@@ -2076,7 +2086,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
             VecPos = InactiveTrack2MultiMapIterator->second;
             if(InactiveTrackElementAt(0, VecPos).FixedNamedLocationElement)
             {
-                SName = InactiveTrackElementAt(1, VecPos).LocationName;
+                SName = InactiveTrackElementAt(1, VecPos).LocationName; //need to erase this even if null
                 SNIt = FindNamedElementInLocationNameMultiMap(2, SName, InactiveTrackVector.begin() + VecPos, ErrorString);
                 if(ErrorString != "")
                 {
@@ -2091,6 +2101,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
             // need to decrement all map element position values that lie above VecPos, since vector positions above this have all moved down one
             DecrementValuesInInactiveTrackAndNameMaps(1, VecPos);
             TrackEraseSuccessfulFlag = true;
+            InactiveElementErased = true;
             if(SName != "")
             {
                 EraseLocationAndActiveTrackElementNames(3, SName); // this instead of SearchForAndUpdateLocationName later (saves time)
@@ -2101,11 +2112,10 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                     {
                         ;
                     } // condition not used
-
                 }
             }
         }
-        if(InactiveTrackVector.size() != 0) // need to check again as last access may have erased the last element
+        if(InactiveTrackVector.size() != 0) // need to check again as could be 2 platforms at the location & both need to be erased
         {
             InactiveTrack2MultiMapIterator = InactiveTrack2MultiMap.find(InactiveTrackMapKeyPair); // may be up to 2 elements (platforms) at same location
             if(InactiveTrack2MultiMapIterator != InactiveTrack2MultiMap.end())
@@ -2114,7 +2124,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                 VecPos = InactiveTrack2MultiMapIterator->second;
                 if(InactiveTrackElementAt(2, VecPos).FixedNamedLocationElement)
                 {
-                    SName = InactiveTrackElementAt(3, VecPos).LocationName;
+                    SName = InactiveTrackElementAt(3, VecPos).LocationName; //need to erase this even if null
                     SNIt = FindNamedElementInLocationNameMultiMap(3, SName, InactiveTrackVector.begin() + VecPos, ErrorString);
                     if(ErrorString != "")
                     {
@@ -2126,6 +2136,8 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                 InactiveTrack2MultiMap.erase(InactiveTrack2MultiMapIterator);
                 // need to decrement all map element position values that lie above VecPos, since vector positions above this have all moved down one
                 DecrementValuesInInactiveTrackAndNameMaps(2, VecPos);
+                TrackEraseSuccessfulFlag = true;
+                InactiveElementErased = true;
                 if(SName != "")
                 {
                     EraseLocationAndActiveTrackElementNames(4, SName); // this instead of SearchForAndUpdateLocationName later (saves time)
@@ -2136,12 +2148,67 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                         {
                             ;
                         } // condition not used
-
                     }
                 }
             }
         }
     }
+    //here reinstate the track element if ActiveElementErased AND either (InactiveElementErased or FootCrossingErased)
+    bool TrackPlottedFlag = false;
+    if(ActiveElementErased && InactiveElementErased) //reinstate the original element, set ErasedTrackVectorPosition to -1 so prefdirs not affected
+    {
+        if(!FootCrossingErased) //new element will be plotted below, without this the below plot won't work and CheckLocationNameMultiMap will fail
+        {
+            PlotAndAddTrackElement(4, TempTrackElement.SpeedTag, 0, HLocInput, VLocInput, TrackPlottedFlag, false, false);
+            //0 for Aspect indicates adding and not pasting
+            TTrackElement &TE = GetTrackElementFromTrackMap(9, HLocInput, VLocInput);
+            TE.SigAspect = TempTrackElement.SigAspect;
+            TE.Length01 = TempTrackElement.Length01;
+            TE.Length23 = TempTrackElement.Length23;
+            TE.SpeedLimit01 = TempTrackElement.SpeedLimit01;
+            TE.SpeedLimit23 = TempTrackElement.SpeedLimit23;
+            ErasedTrackVectorPosition = -1;
+        }
+    }
+
+    if(ActiveElementErased && FootCrossingErased) //reinstate a basic horiz or vert element with all the same attributes [not else if... because can have a crossing and platform(s) at same location
+    {
+        int NewSpeedTag = 1; //horizontal
+        if((TempTrackElement.SpeedTag == 130) || (TempTrackElement.SpeedTag == 146))
+        {
+            NewSpeedTag = 2; //vertical
+        }
+        PlotAndAddTrackElement(5, NewSpeedTag, 0, HLocInput, VLocInput, TrackPlottedFlag, false, false);
+        //0 for Aspect indicates adding and not pasting
+        TTrackElement &TE = GetTrackElementFromTrackMap(10, HLocInput, VLocInput);
+        TE.SigAspect = TempTrackElement.SigAspect;
+        TE.Length01 = TempTrackElement.Length01;
+        TE.Length23 = TempTrackElement.Length23;
+        TE.SpeedLimit01 = TempTrackElement.SpeedLimit01;
+        TE.SpeedLimit23 = TempTrackElement.SpeedLimit23;
+        ErasedTrackVectorPosition = -1;
+        //need to update EveryPrefDir with the new SpeedTag value at H&V
+        bool FoundFlag;
+        int PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
+        TempEveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(36, HLocInput, VLocInput, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+        if(PrefDirPos0 > -1)
+        {
+            TempEveryPrefDir->GetModifiablePrefDirElementAt(14, PrefDirPos0).SpeedTag = NewSpeedTag;
+        }
+        if(PrefDirPos1 > -1)
+        {
+            TempEveryPrefDir->GetModifiablePrefDirElementAt(15, PrefDirPos1).SpeedTag = NewSpeedTag;
+        }
+        if(PrefDirPos2 > -1)
+        {
+            TempEveryPrefDir->GetModifiablePrefDirElementAt(16, PrefDirPos2).SpeedTag = NewSpeedTag;
+        }
+        if(PrefDirPos3 > -1)
+        {
+            TempEveryPrefDir->GetModifiablePrefDirElementAt(17, PrefDirPos3).SpeedTag = NewSpeedTag;
+        }
+    }
+
     if(TrackEraseSuccessfulFlag)
     {
         CalcHLocMinEtc(2);
@@ -2153,13 +2220,14 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
         CheckMapAndInactiveTrack(1); // test
         CheckLocationNameMultiMap(6); // test
     }
+    AllRoutes->RebuildRailwayFlag = true; //rebuild to clear any location names where named locations erased
     Utilities->CallLogPop(428);
 }
 
 // ---------------------------------------------------------------------------
 
-void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks, bool PerformNameSearch)
-// TrackLinkingRequiredFlag only relates to elements that require track linking after plotting - used to set TrackFinished
+void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks, bool PerformNameSearch)
+// TrackPlottedFlag only relates to elements that require track linking after plotting - used to set TrackFinished
 // to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted with correct number of aspects (for pasting)
 // and also when zero and combined with SignalPost to indicate that adding track rather than pasting
 // PerformNameSearch added at v2.18.0 to speed up named element additions when area selected
@@ -2168,7 +2236,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
                                  AnsiString(HLocInput) + "," + AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
     bool PlatAllowedFlag = false;
 
-    TrackLinkingRequiredFlag = false;
+    TrackPlottedFlag = false;
 /*
       Not erase, that covered separately.
       First check if Current SpeedButton assigned, then check if a platform and only
@@ -2284,7 +2352,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
             }
             if(PlatAllowedFlag)
             {
-                TrackLinkingRequiredFlag = true; // needed in order to call LinkTrack
+                TrackPlottedFlag = true; // needed in order to call LinkTrack
                 TrackPush(1, TempTrackElement);
                 if(PerformNameSearch)
                 {
@@ -2319,7 +2387,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
            (!FoundFlag && !InactiveFoundFlag))
         // need to add && !NonStationOrLevelCrossingPresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
         {
-            TrackLinkingRequiredFlag = true; // needed in case have named a continuation, need to check if adjacent element named
+            TrackPlottedFlag = true; // needed in case have named a continuation, need to check if adjacent element named
             TrackPush(2, TempTrackElement);
             if(PerformNameSearch)
             {
@@ -2354,7 +2422,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
             TrackPush(11, TempTrackElement);
             PlotRaisedLinkedLevelCrossingBarriers(0, TrackElementAt(1050, VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //always plots red
 // no need for reference to LC element as can't be open
-            TrackLinkingRequiredFlag = true;
+            TrackPlottedFlag = true;
             Utilities->CallLogPop(1907);
             return;
         }
@@ -2403,7 +2471,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
     }
     if((TempTrackElement.TrackType != Concourse) && (TempTrackElement.TrackType != Parapet))
     {
-        TrackLinkingRequiredFlag = true; // plats & NamedLocs aleady dealt with
+        TrackPlottedFlag = true; // plats & NamedLocs aleady dealt with
     }
     if(InternalChecks && PerformNameSearch) //don't carry out checks if PerformNameSearch false else will fail, should be set correctly in calling function but include to be sure
     {

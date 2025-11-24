@@ -1,3 +1,25 @@
+/ Try to implement suggestion #121 - if 1 or 2 platforms present, a footbridge/underpass, or non-station named location with track, just the inactives are erased. Track can be erased with another right click. Thia avoids removal of track along with distance and speeds. Note that for footbridges/underpasses will need to substitute with a new track element with the same distances & speeds. / Try to keep pref dirs too if possible.
+
+/ Need to reinstate all prefdirs - all calls to EraseTrackElement are from TInterface so can pass *EveryPrefDir to TTrack within the calls so can store all prefdirs within the function for reinstatement if required
+
+/ add to manual point about no penalty for missed or late passes though log records them (drop the ERROR in the message)
+
+/ add to manual about deleting location parts before track, track keeps its lengths etc. & pref dirs
+
+/ update .chm file iaw above changes
+
+update manual with new date & pdf
+
+/ dropped the 'ERROR: ' prefix for events that don't carry a performance penalty
+
+/ signals need to keep their aspects
+
+/ sort out LocationNameMultiMap erases for name == "", will erase first that find whereas need to erase the H&V location - no, the find is at the vector position which corresponds to H&V so the correct one is erased
+
+/ Test operationally with middle sections of LCs removed, will it treat as separate LCs as it should after operating before split? - yes
+
+/ resolve all 7777s
+
 / (enhancement) Added maximum lateness calculation to include with performance summary for next release
 
 / (bug) Drop all buffer, gap & continuation diagonal links from all fouled diagonal functions
@@ -25,6 +47,47 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#123 from cte1_0387_alt via discord on 20/11/25 at 10:41
+Btw what about the idea that locations having the precise same name are counted as the same place? That would remove the need to always add a "physical" connection with red/blue tiles which sometimes can be quite disorienting/feel unnatural?
+Maybe one could get a pop-up asking something along the lines of "Do you want to connect this location to the existing one with the same name" with yes -> link them or no -> cancel renaming it instead of the current error message?
+Or do fundamental issues arise when trying to implement that?
+
+Fly California/Silicon Airways - 20/11/25 at 14:48
+this would be useful for sidinga on opposite sides of the main tracks where it doesnt matter which the train goes to. Or for high speed stations or stations with two blocks of platforms (eg Nippori station in Tokyo)
+
+Albert — 20/11/25 at 17:12
+To have two separate locations with the same name would to my mind potentially cause a lot of confusion, not to mention complexities in coding.  If you wish to have the same name (say 'Place') for separate locations that can't be directly linked why not call them 'Place North' and 'Place South', or East/West or whatever.  That would keep the program happy and still indicate that the places are linked. I'll add your suggestion to the wishlist but to me the benefit gained wouldn't justify the coding effort and potential confusion for the user.
+
+#122 from fitzburger96 via discord on 20/11/25 at 7:26
+I'll second that [i.e.suggestion 120], with an addition of some sort of termination for over/underpass assets. At present they can only link to a platform or station concourse, neither of which really represent the classic staircase footbridge
+
+Albert — 20/11/25 at 08:53
+Do you mean that a footbridge/underpass could be placed anywhere on the track without the ends linking to anything else? If so I think a user graphic would probably do the job.
+
+#121 from Fly California/Silicon Airways via discord on 20/11/25 at 5:55
+a way to change track element overlays (stations/blue areas) without deleting the track element. maybe a single right click will clear any overlays, then a second will delete the track element?
+if I have a railway set up with distances and speed limits and i learn new stuff about operations while making the timetable, I should be able to update these areas more easily
+
+Albert — 20/11/25 at 08:48
+That's a useful suggestion, it would avoid the need to replot the track then reset distances and speeds. I'll have a think about it. Hopefully it can be done without too much trouble [famous last words!]
+
+#120 from ctel_0387_alt via discord on 23/10/25 at21:09
+I was wondering if there is any way to code a "conditional stop". It would be a timetabled stop where trains only stop when requested by passengers on platform/aboard.
+It could be added by setting a probability/ratio (like 20/80) how likely it is for the train to actually come to a full stop there, else it just slows down to a reasonable speed to check for passengers and accelerates again once it did so
+It is not a super important thing but still many small rural lines depend on that and it would lead to some funny randomness on otherwise mostly boring single-track parts with no points to set
+
+Albert - 24/10/25 at 08:55
+I'll add it to the wishlist
+
+#119 from red leader via discord on 22/10/25 at 12:05
+i feel like 3D views could be added to RailOS
+so you can see the rail vehicles on your routes visually as well as on a diagram. 
+if you are looking for a good engine to do it, i recommend Godot
+https://godotengine.org/
+
+Albert - 22/10/25at 15:53
+I'll add it to the wishlist but it's well beyond my capabilities to program.
 
 #118 from Fly California/Silicon Airways via discord on 02/09/25
 An optional stop, where trains that are on time make the stop but late trains do not stop. This would be useful for trains that stop at junctions to allow other trains to pass first. This could be implemented with a minimum dwell time of 0 seconds.
@@ -3498,7 +3561,7 @@ CHANGE OF PROGRAM VERSION:
 
 Prior to uploading:
 
-1 Check that all callers have unique numbers and that no 'after vx.y.z' comments left in code
+(ok for 2.23.3) 1 Check that all callers have unique numbers and that no 'after vx.y.z' comments left in code
 
 2 Increment version number in Project>Options separately for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
 

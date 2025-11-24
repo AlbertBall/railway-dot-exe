@@ -45,6 +45,8 @@ class TDisplay;
 ///< type only declared here to allow access, full declaration in DisplayUnit
 class TPrefDirElement;
 ///< forward declaration because needed in TTrack
+class TOnePrefDir;
+///< forward declaration because needed in TTrack
 typedef std::vector<TPrefDirElement> TPrefDirVector;
 ///< forward declaration because needed in TTrack
 
@@ -84,7 +86,7 @@ class TFixedTrackPiece
 public: // everything uses these - should really have Gets & Sets but too many to change now
 
     bool FixedNamedLocationElement;
-///< true for an element that can be named (platforms, concourse, footcrossings & non-station named loactions)
+///< true for an element that can be named (platforms, concourses, footcrossings (the only active elements that have a location name) & non-station named locations)
     int SpeedTag;
 ///< The element identification number - corresponds to the relevant SpeedButton->Tag
     int Link[4];
@@ -691,7 +693,7 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< can be up to 2 entries (platforms) at a single location
 
     typedef std::multimap<AnsiString, int>TLocationNameMultiMap;
-///< map of location name vector positions (see note below), one entry for every element that is a FixedNamedLocationElement i.e platforms, concourses, footcrossings & named non-station locations.  Hence the only active track elements included are footcrossings
+///< map of location name vector positions (see note below), one entry for every element that is a FixedNamedLocationElement i.e platforms, concourses, footcrossings & named non-station locations.  Hence the only active track elements included are footcrossings. Note that ALL such elements are stored with their names, even if the name is null.
     typedef TLocationNameMultiMap::iterator TLocationNameMultiMapIterator;
     typedef std::pair<TLocationNameMultiMapIterator, TLocationNameMultiMapIterator> TLocationNameMultiMapRange;
     typedef std::pair<AnsiString, int>TLocationNameMultiMapEntry;
@@ -1171,10 +1173,10 @@ To set these names the user selects a single named location element (not a footc
 to all linked platform, concourse and footcrossing elements, and as an ActiveTrackElementName to all track elements adjacent to
 platforms (inc footcrossing tracks if (but only if) they have a platform at that location). */
     void EnterLocationName(int Caller, AnsiString LocationName, bool AddingElements);
-/// Examines LocationNameMultiMap and if the LocationName is found all elements at that H & V (in both active and inactive vectors) have the name erased both as a LocationName and a ActiveTrackElementName.  The LocationNameMultiMap is also rebuilt to correspond to the new names in the vectors.
+/// Examines LocationNameMultiMap and if the LocationName is found all elements at that H & V (in both active and inactive vectors) have the name erased both as a LocationName and an ActiveTrackElementName.  The LocationNameMultiMap is also rebuilt to correspond to the new names in the vectors.
     void EraseLocationAndActiveTrackElementNames(int Caller, AnsiString LocationName);
 /// Erases all active and inactive track elements at HLocInput & VLocInput from the vectors, and, if any of these elements are named the entries are erased from LocationNameMultiMap and the corresponding name is removed from the display and from all other linked named elements
-    void EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &ErasedTrackVectorPosition, bool &TrackEraseSuccessfulFlag, bool InternalChecks);
+    void EraseTrackElement(int Caller, int HLocInput, int VLocInput, TOnePrefDir *TempEveryPrefDir, int &ErasedTrackVectorPosition, bool &TrackEraseSuccessfulFlag, bool InternalChecks);
 /// With large railways only part of the railway is displayed on screen, and this function converts true (relative to the whole railway) H & V positions to screen (relative to the displayed screen) H & V positions
     void GetScreenPositionsFromTruePos(int Caller, int &ScreenPosH, int &ScreenPosV, int HPosTrue, int VPosTrue);
 /// Converse of GetScreenPositionsFromTruePos except that in this function HLoc & VLoc are expressed in track elements (i.e. 16x16 pixel squares) rather than in single pixels

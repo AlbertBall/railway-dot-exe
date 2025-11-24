@@ -98,7 +98,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post" + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion() + " Beta2";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -7621,7 +7621,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 bool TrackEraseSuccessfulFlag;
                 int ErasedTrackVectorPosition;
                 Screen->Cursor = TCursor(-11); // Hourglass;
-                Track->EraseTrackElement(1, HLoc, VLoc, ErasedTrackVectorPosition, TrackEraseSuccessfulFlag, true);
+                Track->EraseTrackElement(1, HLoc, VLoc, EveryPrefDir, ErasedTrackVectorPosition, TrackEraseSuccessfulFlag, true);
                 if(TrackEraseSuccessfulFlag)
                 {
                     if(ErasedTrackVectorPosition > -1) //may have been an inactive element
@@ -19355,7 +19355,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
             {
                 for(int V = SelectRect.top; V < SelectRect.bottom; V++)
                 {
-                    Track->EraseTrackElement(2, H, V, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
+                    Track->EraseTrackElement(2, H, V, EveryPrefDir, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
                     if(EraseSuccessfulFlag)
                     {
                         if(ErasedTrackVectorPosition > -1) //may be an inactive element that was erased
@@ -19510,7 +19510,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
             {
                 for(int y = LowSelectVLoc; y < HighSelectVLoc; y++)
                 {
-                    Track->EraseTrackElement(5, x, y, ErasedTrackVectorPosition, TrackEraseSuccessfulFlag, false);
+                    Track->EraseTrackElement(5, x, y, EveryPrefDir, ErasedTrackVectorPosition, TrackEraseSuccessfulFlag, false);
                     if(ErasedTrackVectorPosition > -1)
                     {
                         EveryPrefDir->RealignAfterTrackErase(2, ErasedTrackVectorPosition);
@@ -19744,7 +19744,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
             {
                 for(int V = SelectRect.top; V < SelectRect.bottom; V++)
                 {
-                    Track->EraseTrackElement(3, H, V, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
+                    Track->EraseTrackElement(3, H, V, EveryPrefDir, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
                     if(EraseSuccessfulFlag)
                     {
                         if(ErasedTrackVectorPosition > -1)

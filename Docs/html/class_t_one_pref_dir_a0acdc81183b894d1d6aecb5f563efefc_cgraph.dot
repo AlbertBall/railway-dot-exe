@@ -1,0 +1,68 @@
+digraph "TOnePrefDir::GetStartAndEndPrefDirElements"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TOnePrefDir::GetStartAnd\lEndPrefDirElements",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Called when searching for start and end PrefDirElements when setting up automatic signals routes in P..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TOnePrefDir::GetFixedPref\lDirElementAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8",tooltip="Return a non-modifiable element at PrefDirVector position 'At'."];
+  Node3 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TOnePrefDir::GetVectorPositions\lFromPrefDir4MultiMap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc",tooltip="Return up to 4 vector positions for a given HLoc & VLoc; unused values return -1."];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TPrefDirElement::GetXLinkPos",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b",tooltip="Returns the XLink array position."];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TOnePrefDir::PresetAutoRoute\lDiagonalFouledByTrack",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#ae0e03d494164fe961da51b0be8492934",tooltip="Called by GetStartAndEndPrefDirElements..."];
+  Node7 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TTrack::DiagAtLinkIsBufGapCont",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#aa70ad4c90d9902ed4e039ca2b3127502",tooltip="checks if Link[0] for a diagonal buffer, gap or continuation is a buffer etc. used in fouled diagonal..."];
+  Node8 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TTrack::GetTrackElementFrom\lTrackMap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#aeb60286bc570dbafab64fe6dc06af2e4",tooltip="Return a reference to the element at HLoc & VLoc, if no element is found an error is thrown."];
+  Node9 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TTrack::TrackElementAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f",tooltip="A range-checked version of TrackVector.at(At)"];
+  Node10 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TTrack::GetVectorPosition\lFromTrackMap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134",tooltip="Returns the track vector position corresponding to the Hloc & VLoc positions, FoundFlag indicates whe..."];
+  Node11 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TOnePrefDir::PresetAutoRoute\lElementValid",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#ab35c683ba0ec156d19d4db991046b7d2",tooltip="Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entr..."];
+  Node12 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TTrack::IsLCAtHV",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a73e781d0ada0b77618b886557f79b115",tooltip="True if a level crossing is found at H & V."];
+  Node13 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="TTrack::GetVectorPositions\lFromInactiveTrackMap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da",tooltip="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..."];
+  Node14 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="TTrack::InactiveTrackElementAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b",tooltip="A range-checked version of InactiveTrackVector.at(At)"];
+  Node15 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TAllRoutes::TrackIsInARoute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311",tooltip="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..."];
+  Node16 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -24,6 +24,7 @@ var class_t_train_controller =
     [ "BuildContinuationTrainExpectationMultiMap", "class_t_train_controller.html#a0445987b1a355de3aef2c21b66d1ed8b", null ],
     [ "CalcDistanceToRedSignalandStopTime", "class_t_train_controller.html#a9fa0023214c894b378c929311da6c185", null ],
     [ "CalcOperatingAndNotStartedTrainLateness", "class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1", null ],
+    [ "CalculateMaxLateness", "class_t_train_controller.html#a8570224632c39f38f115d1259bc794ef", null ],
     [ "CheckAndPopulateListOfIDs", "class_t_train_controller.html#a3733e089b5f58d8b5e8355298653b53a", null ],
     [ "CheckCrossReferencesAndSetData", "class_t_train_controller.html#a36581d2c8663849c6d19b65542c8fa4c", null ],
     [ "CheckForDuplicateCrossReferences", "class_t_train_controller.html#a232adcf919e3d70f2fc0cdc4d3bb2ee4", null ],

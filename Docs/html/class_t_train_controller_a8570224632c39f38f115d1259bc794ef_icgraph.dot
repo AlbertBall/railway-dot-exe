@@ -1,0 +1,15 @@
+digraph "TTrainController::CalculateMaxLateness"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrainController::Calculate\lMaxLateness",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="calculate maximum lateness for performance summary, MaxLine is the perf file line where the max laten..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TTrainController::SendPerformance\lSummary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#af6c6e1e1236559f07b29b069d4377690",tooltip="At the end of operation a summary of overall performance is sent to the performance file by this func..."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::ExitOperation\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff",tooltip=" "];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::FormClose",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad1418f26381a91c4333c3947585ed60e",tooltip=" "];
+}

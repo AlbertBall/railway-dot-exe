@@ -1,35 +1,3 @@
-/ Try to implement suggestion #121 - if 1 or 2 platforms present, a footbridge/underpass, or non-station named location with track, just the inactives are erased. Track can be erased with another right click. Thia avoids removal of track along with distance and speeds. Note that for footbridges/underpasses will need to substitute with a new track element with the same distances & speeds. / Try to keep pref dirs too if possible.
-
-/ Need to reinstate all prefdirs - all calls to EraseTrackElement are from TInterface so can pass *EveryPrefDir to TTrack within the calls so can store all prefdirs within the function for reinstatement if required
-
-/ add to manual point about no penalty for missed or late passes though log records them (drop the ERROR in the message)
-
-/ add to manual about deleting location parts before track, track keeps its lengths etc. & pref dirs
-
-/ update .chm file iaw above changes
-
-update manual with new date & pdf
-
-/ dropped the 'ERROR: ' prefix for events that don't carry a performance penalty
-
-/ signals need to keep their aspects
-
-/ sort out LocationNameMultiMap erases for name == "", will erase first that find whereas need to erase the H&V location - no, the find is at the vector position which corresponds to H&V so the correct one is erased
-
-/ Test operationally with middle sections of LCs removed, will it treat as separate LCs as it should after operating before split? - yes
-
-/ resolve all 7777s
-
-/ (enhancement) Added maximum lateness calculation to include with performance summary for next release
-
-/ (bug) Drop all buffer, gap & continuation diagonal links from all fouled diagonal functions
-
-/ Check if PresetAutoRouteDiagonalFouledByTrack is really necessary - yes it is as it's only for presetting of auto signal (blue) routes, not for individual route setting. Preset AutoRoutes can't be set across crossovers and a diagonal fouled by a crossing track is equivalent to a crossover.
-
-/ Add DiagAtLinkIsBufGapCont to CallerChecker
-
-
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -1067,6 +1035,55 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.23.2 for v2.23.3
+
+This version makes three minor improvements and fixes one bug.
+
+Improvements:
+
+When erasing track that also has platforms, foot or level crossings or other (blue) locations present the first right click just erases the platforms etc., leaving the track intact with its length, speed limit and preferred direction(s) in place.  This makes it easier when only those elements need to be erased, as it saves having to replace the track and reset lengths etc.  A second right click erases the track.
+
+During operation missed or late passes carry no score penalty (this has been the case for several versions), so the 'ERROR' prefix has been dropped in the performance log to better reflect this.
+
+A 'maximum lateness' entry has been added to the performance log summary.
+
+
+Bug fix:
+
+Routes can't be set on crossovers when a route already exists on the other leg of the crossover.  This is easy for the program to recognise when the crossover lies on a single track element, but there can also be diagonal crossovers where diagonal track elements cross each other.  To recognise these the program includes special functions that check for such crossings.  This worked fine for normal elements, but I had omitted to exclude diagonal buffers, gaps and continuations, where the gap, buffer etc. meets the adjacent ordinary diagonals.  Commuterpop spotted that when a railway he was building caused route failures and even train crashes on such diagonals.  This version now excludes these types of diagonal.  Thanks to Commuterpop for notifying me of this fault.
+
+Not for website:
+
+/ Try to implement suggestion #121 - if 1 or 2 platforms present, a footbridge/underpass, or non-station named location with track, just the inactives are erased. Track can be erased with another right click. Thia avoids removal of track along with distance and speeds. Note that for footbridges/underpasses will need to substitute with a new track element with the same distances & speeds. / Try to keep pref dirs too if possible.
+
+/ Need to reinstate all prefdirs - all calls to EraseTrackElement are from TInterface so can pass *EveryPrefDir to TTrack within the calls so can store all prefdirs within the function for reinstatement if required
+
+/ add to manual point about no penalty for missed or late passes though log records them (drop the ERROR in the message)
+
+/ add to manual about deleting location parts before track, track keeps its lengths etc. & pref dirs
+
+/ update .chm file iaw above changes
+
+/ update manual with new date & pdf
+
+/ dropped the 'ERROR: ' prefix for events that don't carry a performance penalty
+
+/ signals need to keep their aspects
+
+/ sort out LocationNameMultiMap erases for name == "", will erase first that find whereas need to erase the H&V location - no, the find is at the vector position which corresponds to H&V so the correct one is erased
+
+/ Test operationally with middle sections of LCs removed, will it treat as separate LCs as it should after operating before split? - yes
+
+/ resolve all 7777s
+
+/ (enhancement) Added maximum lateness calculation to include with performance summary for next release
+
+/ (bug) Drop all buffer, gap & continuation diagonal links from all fouled diagonal functions
+
+/ Check if PresetAutoRouteDiagonalFouledByTrack is really necessary - yes it is as it's only for presetting of auto signal (blue) routes, not for individual route setting. Preset AutoRoutes can't be set across crossovers and a diagonal fouled by a crossing track is equivalent to a crossover.
+
+/ Add DiagAtLinkIsBufGapCont to CallerChecker
 
 VERSION CHANGES AFTER v2.23.1 for v2.23.2
 
@@ -3561,7 +3578,7 @@ CHANGE OF PROGRAM VERSION:
 
 Prior to uploading:
 
-(ok for 2.23.3) 1 Check that all callers have unique numbers and that no 'after vx.y.z' comments left in code
+1 Check that all callers have unique numbers and that no 'after vx.y.z' comments left in code
 
 2 Increment version number in Project>Options separately for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
 

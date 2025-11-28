@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.23.2</span>
+   &#160;<span id="projectnumber">v2.23.3</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -121,7 +121,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a2d225bf10a7fb1c7e8ffd924b4d4ed2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_fixed_track_piece.html#a2d225bf10a7fb1c7e8ffd924b4d4ed2a">FixedNamedLocationElement</a></td></tr>
-<tr class="memdesc:a2d225bf10a7fb1c7e8ffd924b4d4ed2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">true for an element that can be named (platforms, concourse, footcrossings &amp; non-station named loactions)  <a href="class_t_fixed_track_piece.html#a2d225bf10a7fb1c7e8ffd924b4d4ed2a">More...</a><br /></td></tr>
+<tr class="memdesc:a2d225bf10a7fb1c7e8ffd924b4d4ed2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">true for an element that can be named (platforms, concourses, footcrossings (the only active elements that have a location name) &amp; non-station named locations)  <a href="class_t_fixed_track_piece.html#a2d225bf10a7fb1c7e8ffd924b4d4ed2a">More...</a><br /></td></tr>
 <tr class="separator:a2d225bf10a7fb1c7e8ffd924b4d4ed2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4f1d13f7b7c0dc13ad378706aa55238"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_fixed_track_piece.html#ad4f1d13f7b7c0dc13ad378706aa55238">SpeedTag</a></td></tr>
 <tr class="memdesc:ad4f1d13f7b7c0dc13ad378706aa55238"><td class="mdescLeft">&#160;</td><td class="mdescRight">The element identification number - corresponds to the relevant SpeedButton-&gt;Tag.  <a href="class_t_fixed_track_piece.html#ad4f1d13f7b7c0dc13ad378706aa55238">More...</a><br /></td></tr>
@@ -144,7 +144,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00082">82</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00084">84</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af9d54643faf473becbc953a11eacab51"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9d54643faf473becbc953a11eacab51">&#9670;&nbsp;</a></span>TFixedTrackPiece() <span class="overload">[1/2]</span></h2>
@@ -288,7 +288,7 @@ Here is the caller graph for this function:</div>
 
 <p>the type of link - see TConfiguration above </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00097">97</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00099">99</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -304,9 +304,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>true for an element that can be named (platforms, concourse, footcrossings &amp; non-station named loactions) </p>
+<p>true for an element that can be named (platforms, concourses, footcrossings (the only active elements that have a location name) &amp; non-station named locations) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00086">86</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00088">88</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -324,7 +324,7 @@ Here is the caller graph for this function:</div>
 
 <p>the track bitmap for display on the zoomed-in railway </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00092">92</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00094">94</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +342,7 @@ Here is the caller graph for this function:</div>
 
 <p>Track connection link values, max. of 4, unused = -1, top lh diag = 1, top = 2, top rh diag = 3, left = 4, right = 6, bottom lh diag = 7, bottom = 8, bottom rh diag = 9. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00090">90</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00092">92</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Here is the caller graph for this function:</div>
 
 <p>the track bitmap for display on the zoomed-out railway </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00094">94</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00096">96</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -378,7 +378,7 @@ Here is the caller graph for this function:</div>
 
 <p>The element identification number - corresponds to the relevant SpeedButton-&gt;Tag. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00088">88</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00090">90</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -396,7 +396,7 @@ Here is the caller graph for this function:</div>
 
 <p>the type of track element </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00100">100</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00102">102</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

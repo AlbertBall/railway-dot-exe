@@ -165,12 +165,12 @@ digraph "TInterface::RotRightMenuItemClick"
   Node151 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node131 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node151 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node202 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node202 [label="TPrefDirElement::SetTrack\lVectorPosition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_pref_dir_element.html#a5a16be326c5335d429b98c5e5767fd74",tooltip="Used in pasting pref dirs."];
   Node1 -> Node203 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node203 [label="TPrefDirElement::SetXLink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_pref_dir_element.html#a579e7a238caee09162ea809d9f349113",tooltip="Used in pasting pref dirs."];
+  Node203 [label="TPrefDirElement::SetTrack\lVectorPosition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_pref_dir_element.html#a5a16be326c5335d429b98c5e5767fd74",tooltip="Used in pasting pref dirs."];
   Node1 -> Node204 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node204 [label="TPrefDirElement::SetXLinkPos",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_pref_dir_element.html#a2d025cec62751649b22787cac4a201f1",tooltip="Used in pasting pref dirs."];
+  Node204 [label="TPrefDirElement::SetXLink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_pref_dir_element.html#a579e7a238caee09162ea809d9f349113",tooltip="Used in pasting pref dirs."];
+  Node1 -> Node205 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node205 [label="TPrefDirElement::SetXLinkPos",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_pref_dir_element.html#a2d025cec62751649b22787cac4a201f1",tooltip="Used in pasting pref dirs."];
   Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

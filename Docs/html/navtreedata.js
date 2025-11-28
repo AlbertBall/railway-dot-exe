@@ -71,9 +71,9 @@ var NAVTREEINDEX =
 "class_t_rail_graphics.html#a8cf32a783b4932619689080b6ebc5e65",
 "class_t_rail_graphics.html#ae130a7e7578c1458d0130613219a32b9",
 "class_t_track.html#a5a13617f24183757f275ac1b691e50a4",
-"class_t_train.html#a0e0ab54415645b04cbdeadd829d27898",
-"class_t_train_controller.html#a4499820b03efbcf8f427843ffa1cbb26",
-"functions_c.html"
+"class_t_train.html#a0dd5144abd7dbc49a714d6c2e4cc1851",
+"class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7",
+"functions.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

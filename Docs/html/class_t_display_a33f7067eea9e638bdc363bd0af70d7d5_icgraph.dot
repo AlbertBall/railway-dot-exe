@@ -162,10 +162,10 @@ digraph "TDisplay::GetImage"
   Node1 -> Node236 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node236 [label="TTrack::PlotPoints",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2",tooltip="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..."];
   Node236 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node243 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node243 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
-  Node243 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node251 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node251 [label="TTrain::RemoveLongServRef",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_train.html#a6b192df8ac751107c89ada2363ff47d7",tooltip="Removes the displayed train service ref."];
-  Node251 -> Node127 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node244 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node244 [label="TTrack::PlotSignal",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e",tooltip="Plot signals on screen according to their aspect (Attribute value)"];
+  Node244 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node252 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node252 [label="TTrain::RemoveLongServRef",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_train.html#a6b192df8ac751107c89ada2363ff47d7",tooltip="Removes the displayed train service ref."];
+  Node252 -> Node127 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

@@ -64,6 +64,7 @@ var class_t_utilities =
     [ "NoPlatsMessageSent", "class_t_utilities.html#a959a5eb9ca935e1e4e0a36c6e48dff37", null ],
     [ "OverrideAndHideSignalBridgeMessage", "class_t_utilities.html#a5f785004a9072b6e737d1a2f034e0de4", null ],
     [ "PerformanceFile", "class_t_utilities.html#acc7cd1d066ac7942ad6c1239b3c25eee", null ],
+    [ "PerformanceFileIfstream", "class_t_utilities.html#a88215f8665c61d173a4f2e9042ecbc08", null ],
     [ "PointChangeEventsPerFailure", "class_t_utilities.html#a81cdc4810af7fb4d2efd80a1abe92a7d", null ],
     [ "RedLowFlag", "class_t_utilities.html#a52111fe8678b83ca072a2b235bf80821", null ],
     [ "RepairDiagnosisTime", "class_t_utilities.html#ae7abd82dfb74ba9706cde72a9ba3c014", null ],

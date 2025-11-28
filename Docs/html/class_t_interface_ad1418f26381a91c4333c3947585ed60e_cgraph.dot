@@ -176,6 +176,10 @@ digraph "TInterface::FormClose"
   Node40 [label="TTrain::RevisedStoppedAtLoc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab",tooltip=" "];
   Node38 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node38 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node37 -> Node41 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node41 [label="TTrainController::Calculate\lMaxLateness",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a8570224632c39f38f115d1259bc794ef",tooltip="calculate maximum lateness for performance summary, MaxLine is the perf file line where the max laten..."];
+  Node41 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node41 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node37 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node37 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node37 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

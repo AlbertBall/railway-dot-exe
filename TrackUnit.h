@@ -665,6 +665,19 @@ can't have a route set while changing; can't be opened while a route is set; and
     typedef TTrackMap::iterator TTrackMapIterator;
     typedef std::pair<THVPair, unsigned int>TTrackMapEntry;
 
+    struct TInterposeLabel
+    {
+        AnsiString Text;
+        TColor BackgroundColour;
+        TInterposeLabel() : Text(""), BackgroundColour(clSilver) {}
+        TInterposeLabel(AnsiString TextIn, TColor BackgroundColourIn) : Text(TextIn), BackgroundColour(BackgroundColourIn) {}
+    };
+
+    typedef std::map<unsigned int, TInterposeLabel>TInterposeLabelMap;
+///< map of temporary interpose labels, keyed by TrackVector position
+    typedef TInterposeLabelMap::iterator TInterposeLabelMapIterator;
+    typedef std::pair<unsigned int, TInterposeLabel>TInterposeLabelMapEntry;
+
     typedef std::map<THVPair, THVPair, TMapComp>TGapMap;
 ///< map of matching gap positions as an HLoc/VLoc pair, with the key being
     typedef TGapMap::iterator TGapMapIterator;
@@ -829,6 +842,8 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///<the map of graphic filenames as key and TPicture* as values
     TTrackMap TrackMap;
 ///< map of track (see type for more information above)
+    TInterposeLabelMap InterposeLabelMap;
+///< map of temporary interpose labels for display only
     TTrackVector TrackVector, InactiveTrackVector, NewVector, DistanceVector, DistanceSearchVector, SelectVector;
 ///< vectors of TrackElements
     TTrackVectorIterator NextTrackElementPtr;
@@ -1190,6 +1205,10 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp); //Length false -> speed heatmap
 /// Load all BarriersDownVector values from SessionFile
     void LoadBarriersDownVector(int Caller, std::ifstream &VecFile);
+/// Load all interpose labels from SessionFile
+    void LoadSessionInterposeLabels(int Caller, std::ifstream &InFile);
+/// Load all interpose label colours from SessionFile
+    void LoadSessionInterposeLabelColours(int Caller, std::ifstream &InFile);
 /// new at v2.4.0, load user graphics
     void LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString GraphicsPath);
 /// Load track elements (active & inactive) from the file into the relevant vectors and maps, and try to link the resulting track
@@ -1229,6 +1248,8 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void PlotSmallRailway(int Caller, TDisplay *Disp);
 /// Plot on screen in zoomed-out mode and in gap setting mode a small red square corresponding to the gap position that is waiting to have its matching gap selected (see also ShowSelectedGap)
     void PlotSmallRedGap(int Caller);
+/// Plot all interpose labels on the displayed track
+    void PlotInterposeLabels(int Caller, TDisplay *Disp);
 /// Add all LCs to LCVector - note that this contains all LC elements whether linked to others or not
     void PopulateLCVector(int Caller);
 /// clear then add all simple element track vector positions to the vector, added at v2.13.0
@@ -1262,6 +1283,10 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void SaveChangingLCVector(int Caller, std::ofstream &OutFile);
 /// Save all vector values to the session file
     void SaveSessionBarriersDownVector(int Caller, std::ofstream &OutFile);
+/// Save all interpose labels to the session file
+    void SaveSessionInterposeLabels(int Caller, std::ofstream &OutFile);
+/// Save all interpose label colours to the session file
+    void SaveSessionInterposeLabelColours(int Caller, std::ofstream &OutFile);
 /// Save all active and inactive track elements to VecFile
     void SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow);
 /// save graphics

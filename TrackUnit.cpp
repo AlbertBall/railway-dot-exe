@@ -3996,8 +3996,151 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
     }
 
     TextHandler->RebuildFromTextVector(1, Disp); // plot text after all else so visible over stations/track etc.  //moved from above at v2.20.3
+    PlotInterposeLabels(0, Disp);
     Disp->Update();
     Utilities->CallLogPop(468);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::PlotInterposeLabels(int Caller, TDisplay *Disp)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotInterposeLabels");
+    if(InterposeLabelMap.empty())
+    {
+        Utilities->CallLogPop(2600);
+        return;
+    }
+
+    TCanvas *Canvas = Disp->GetImage()->Canvas;
+    TFont *TempFont = new TFont;
+    TBrush *TempBrush = new TBrush;
+    TPen *TempPen = new TPen;
+    TempFont->Assign(Canvas->Font);
+    TempBrush->Assign(Canvas->Brush);
+    TempPen->Assign(Canvas->Pen);
+
+    Canvas->Font->Name = "MS Sans Serif";
+    Canvas->Font->Size = 7;
+    Canvas->Font->Style.Clear();
+    Canvas->Brush->Style = bsSolid;
+    Canvas->Pen->Style = psSolid;
+    Canvas->Pen->Width = 1;
+    Canvas->Pen->Color = clB0G0R0;
+
+    for(TInterposeLabelMapIterator ILIt = InterposeLabelMap.begin(); ILIt != InterposeLabelMap.end(); ILIt++)
+    {
+        if(ILIt->first >= TrackVector.size())
+        {
+            continue;
+        }
+        TTrackElement &TE = TrackVector.at(ILIt->first);
+        if(((TE.HLoc - Disp->DisplayOffsetH) < 0) || ((TE.HLoc - Disp->DisplayOffsetH) >= Utilities->ScreenElementWidth) ||
+           ((TE.VLoc - Disp->DisplayOffsetV) < 0) || ((TE.VLoc - Disp->DisplayOffsetV) >= Utilities->ScreenElementHeight))
+        {
+            continue;
+        }
+        int CellLeft = (TE.HLoc - Disp->DisplayOffsetH) * 16;
+        int CellTop = (TE.VLoc - Disp->DisplayOffsetV) * 16;
+        Canvas->Font->Color = clB0G0R0;
+        if(ILIt->second.BackgroundColour == clRed)
+        {
+            Canvas->Font->Color = clB5G5R5;
+        }
+        Canvas->Brush->Color = ILIt->second.BackgroundColour;
+        int TextWidth = Canvas->TextWidth(ILIt->second.Text);
+        int TextHeight = Canvas->TextHeight(ILIt->second.Text);
+        int LabelWidth = TextWidth + 6;
+        if(LabelWidth < 18)
+        {
+            LabelWidth = 18;
+        }
+        int LabelHeight = TextHeight + 2;
+        if(LabelHeight < 12)
+        {
+            LabelHeight = 12;
+        }
+        int Left = CellLeft + 8 - (LabelWidth / 2);
+        int Top = CellTop + 8 - (LabelHeight / 2);
+        Canvas->Rectangle(Left, Top, Left + LabelWidth, Top + LabelHeight);
+        Canvas->Brush->Style = bsClear;
+        Canvas->TextOut(Left + ((LabelWidth - TextWidth) / 2), Top + ((LabelHeight - TextHeight) / 2), ILIt->second.Text);
+        Canvas->Brush->Style = bsSolid;
+    }
+
+    Canvas->Font->Assign(TempFont);
+    Canvas->Brush->Assign(TempBrush);
+    Canvas->Pen->Assign(TempPen);
+    delete TempFont;
+    delete TempBrush;
+    delete TempPen;
+    Utilities->CallLogPop(2601);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::SaveSessionInterposeLabels(int Caller, std::ofstream &OutFile)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveSessionInterposeLabels");
+    Utilities->SaveFileInt(OutFile, (int)InterposeLabelMap.size());
+    for(TInterposeLabelMapIterator ILIt = InterposeLabelMap.begin(); ILIt != InterposeLabelMap.end(); ILIt++)
+    {
+        Utilities->SaveFileInt(OutFile, (int)ILIt->first);
+        Utilities->SaveFileString(OutFile, ILIt->second.Text);
+    }
+    Utilities->CallLogPop(2602);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::LoadSessionInterposeLabels(int Caller, std::ifstream &InFile)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadSessionInterposeLabels");
+    InterposeLabelMap.clear();
+    int NumberOfLabels = Utilities->LoadFileInt(InFile);
+    for(int x = 0; x < NumberOfLabels; x++)
+    {
+        int TrackVectorPosition = Utilities->LoadFileInt(InFile);
+        AnsiString Label = Utilities->LoadFileString(InFile);
+        if((TrackVectorPosition >= 0) && (TrackVectorPosition < TrackVector.size()) && (Label != "") && (Label.Length() <= 4))
+        {
+            InterposeLabelMap.insert(TInterposeLabelMapEntry(TrackVectorPosition, TInterposeLabel(Label, clSilver)));
+        }
+    }
+    Utilities->CallLogPop(2603);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::SaveSessionInterposeLabelColours(int Caller, std::ofstream &OutFile)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveSessionInterposeLabelColours");
+    Utilities->SaveFileInt(OutFile, (int)InterposeLabelMap.size());
+    for(TInterposeLabelMapIterator ILIt = InterposeLabelMap.begin(); ILIt != InterposeLabelMap.end(); ILIt++)
+    {
+        Utilities->SaveFileInt(OutFile, (int)ILIt->first);
+        Utilities->SaveFileInt(OutFile, (int)ILIt->second.BackgroundColour);
+    }
+    Utilities->CallLogPop(2612);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::LoadSessionInterposeLabelColours(int Caller, std::ifstream &InFile)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadSessionInterposeLabelColours");
+    int NumberOfLabels = Utilities->LoadFileInt(InFile);
+    for(int x = 0; x < NumberOfLabels; x++)
+    {
+        int TrackVectorPosition = Utilities->LoadFileInt(InFile);
+        int BackgroundColour = Utilities->LoadFileInt(InFile);
+        TInterposeLabelMapIterator ILIt = InterposeLabelMap.find(TrackVectorPosition);
+        if(ILIt != InterposeLabelMap.end())
+        {
+            ILIt->second.BackgroundColour = (TColor)BackgroundColour;
+        }
+    }
+    Utilities->CallLogPop(2613);
 }
 
 // ---------------------------------------------------------------------------
@@ -11089,6 +11232,7 @@ void TTrack::TrackClear(int Caller)
     TrackVector.clear();
     InactiveTrackVector.clear();
     TrackMap.clear();
+    InterposeLabelMap.clear();
     InactiveTrack2MultiMap.clear(), LocationNameMultiMap.clear();
     if(TextHandler->TextVector.size() == 0)
     {

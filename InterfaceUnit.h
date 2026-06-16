@@ -824,6 +824,9 @@ __published: // IDE-managed Components
     void __fastcall StepForwardMenuItemClick(TObject *Sender);
     void __fastcall TakeSignallerControlMenuItemClick(TObject *Sender);
 	void __fastcall TimetableControlMenuItemClick(TObject *Sender);
+    void __fastcall InterposeLabelMenuItemClick(TObject *Sender);
+    void __fastcall RemoveInterposeLabelMenuItemClick(TObject *Sender);
+    void __fastcall InterposeLabelColourPanelClick(TObject *Sender);
     void __fastcall ModGraphicsMenuClick(TObject* Sender);
 
 // mouse actions
@@ -1045,6 +1048,12 @@ public: // AboutForm needs access to these
 
 
 private:
+
+    TMenuItem *InterposeLabelMenuItem;
+    TMenuItem *EditInterposeLabelMenuItem;
+    TMenuItem *RemoveInterposeLabelMenuItem;
+    int InterposeLabelDialogColour;
+    bool GetInterposeLabelDetails(AnsiString &Label, TColor &BackgroundColour);
 
 // Folder names
     static const UnicodeString RAILWAY_DIR_NAME;
@@ -1473,6 +1482,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     int RightClickTrainMousePosX;
     int RightClickTrainMousePosY;
 ///< used to retain the mouse position on the train for SkipTimetabledActionsMenuItemClick
+    int RightClickInterposeTrackVectorPosition;
+///< used to store the track vector position selected for an interpose label action
     int StartWholeRailwayMoveHPos;
 ///<mouse X position when start to move the whole railway
     int StartWholeRailwayMoveVPos;

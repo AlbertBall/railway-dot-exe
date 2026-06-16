@@ -488,6 +488,24 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         MainMenu1->AutoHotkeys = maManual; // Embarcadero mod: to suppress '&' inclusion for underlined characters in menu items
         PopupMenu->AutoHotkeys = maManual; // as above
 
+        InterposeLabelMenuItem = new TMenuItem(this);
+        InterposeLabelMenuItem->Caption = "Interpose Label...";
+        InterposeLabelMenuItem->OnClick = InterposeLabelMenuItemClick;
+        InterposeLabelMenuItem->Visible = false;
+        PopupMenu->Items->Add(InterposeLabelMenuItem);
+
+        EditInterposeLabelMenuItem = new TMenuItem(this);
+        EditInterposeLabelMenuItem->Caption = "Edit Interpose Label...";
+        EditInterposeLabelMenuItem->OnClick = InterposeLabelMenuItemClick;
+        EditInterposeLabelMenuItem->Visible = false;
+        PopupMenu->Items->Add(EditInterposeLabelMenuItem);
+
+        RemoveInterposeLabelMenuItem = new TMenuItem(this);
+        RemoveInterposeLabelMenuItem->Caption = "Remove Interpose Label";
+        RemoveInterposeLabelMenuItem->OnClick = RemoveInterposeLabelMenuItemClick;
+        RemoveInterposeLabelMenuItem->Visible = false;
+        PopupMenu->Items->Add(RemoveInterposeLabelMenuItem);
+
         Utilities = new TUtilities;
 		RailGraphics = new TRailGraphics();
 
@@ -7661,6 +7679,10 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             AnsiString Text = ""; // needed for TextFound but not used
             RightClickTrainMousePosX = X;
             RightClickTrainMousePosY = Y;
+            RightClickInterposeTrackVectorPosition = -1;
+            InterposeLabelMenuItem->Visible = false;
+            EditInterposeLabelMenuItem->Visible = false;
+            RemoveInterposeLabelMenuItem->Visible = false;
             if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->InactiveTrackElementPresentAtHV(0, HLoc, VLoc) && !Track->UserGraphicPresentAtHV(0, X,
                                                                                                                                                           Y, Dummy) && !TextHandler->TextFound(0, X + (Display->DisplayOffsetH * 16), Y + (Display->DisplayOffsetV * 16), Text))
             {
@@ -7861,12 +7883,32 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 return;
             }
 
-            else if((Level2OperMode == Operating) || (Level2OperMode == PreStart)) // disallow when paused, but allow some parts in prestart
+            else if((Level2OperMode == Operating) || (Level2OperMode == PreStart) || (Level2OperMode == Paused)) // allow interpose labels when paused
             {
                 TrainController->LogEvent("mbRight + OperMode");
                 bool FoundFlag;
                 int VecPos = Track->GetVectorPositionFromTrackMap(1, HLoc, VLoc, FoundFlag);
-                if(FoundFlag && (Level2OperMode != PreStart)) // disallow train popup menu in PreStart
+                bool PlainRightClick = !Shift.Contains(ssCtrl) && !CtrlKey;
+                if(FoundFlag && PlainRightClick)
+                {
+                    RightClickInterposeTrackVectorPosition = VecPos;
+                    if(Track->InterposeLabelMap.find(VecPos) == Track->InterposeLabelMap.end())
+                    {
+                        InterposeLabelMenuItem->Visible = true;
+                        InterposeLabelMenuItem->Enabled = true;
+                        EditInterposeLabelMenuItem->Visible = false;
+                        RemoveInterposeLabelMenuItem->Visible = false;
+                    }
+                    else
+                    {
+                        InterposeLabelMenuItem->Visible = false;
+                        EditInterposeLabelMenuItem->Visible = true;
+                        EditInterposeLabelMenuItem->Enabled = true;
+                        RemoveInterposeLabelMenuItem->Visible = true;
+                        RemoveInterposeLabelMenuItem->Enabled = true;
+                    }
+                }
+                if(FoundFlag && PlainRightClick && (Level2OperMode == Operating)) // disallow train popup menu in PreStart, Paused or Ctrl-right-click route cancellation
                 {
                     SelectedTrainID = Track->TrackElementAt(426, VecPos).TrainIDOnElement;
                     // display popup menu for the train
@@ -8130,6 +8172,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 }
                             }
                             TrainHeadCodeMenuItem->Caption = Train.HeadCode + ":";
+                            TrainHeadCodeMenuItem->Visible = true;
                             BecomeNewServiceMenuItem->Caption = "Terminate here and become follow-on service " + Train.FollowOnServiceRef;    //added at v2.12.0
                             TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
                             TrainController->RestartTime = TrainController->TTClockTime;
@@ -8171,6 +8214,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             BecomeNewServiceMenuItem->Enabled = false;
                             BecomeNewServiceMenuItem->Visible = false;
                             TrainHeadCodeMenuItem->Caption = Train.HeadCode + ":";
+                            TrainHeadCodeMenuItem->Visible = true;
                             TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
                             TrainController->RestartTime = TrainController->TTClockTime;
                             PopupMenu->Popup(MainScreen->Left + X, MainScreen->Top + Y + 43); // menu stops everything so reset timetable time when restarts,
@@ -8180,6 +8224,27 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             TrainController->StopTTClockFlag = false;
                         }
                     }
+                }
+                if(FoundFlag && PlainRightClick && (RouteMode != RouteContinuing) && !RouteCancelFlag &&
+                   ((Level2OperMode == PreStart) || (Level2OperMode == Paused) || (Track->TrackElementAt(1739, VecPos).TrainIDOnElement == -1)))
+                {
+                    TrainHeadCodeMenuItem->Visible = false;
+                    TakeSignallerControlMenuItem->Visible = false;
+                    TimetableControlMenuItem->Visible = false;
+                    ChangeDirectionMenuItem->Visible = false;
+                    MoveForwardsMenuItem->Visible = false;
+                    PassRedSignalMenuItem->Visible = false;
+                    StepForwardMenuItem->Visible = false;
+                    SkipTimetabledActionsMenuItem->Visible = false;
+                    SignallerControlStopMenuItem->Visible = false;
+                    RemoveTrainMenuItem->Visible = false;
+                    SignallerJoinedByMenuItem->Visible = false;
+                    RepairFailedTrainMenuItem->Visible = false;
+                    SetReminderMenuItem->Visible = false;
+                    BecomeNewServiceMenuItem->Visible = false;
+                    PopupMenu->Popup(MainScreen->Left + X, MainScreen->Top + Y + 43);
+                    Utilities->CallLogPop(2604);
+                    return;
                 }
                 if(RouteMode == RouteContinuing) // clear a single element (clears whether use left or right mouse button) +allow in PreStart
                 {
@@ -14486,6 +14551,186 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
 
 //---------------------------------------------------------------------------
 
+void __fastcall TInterface::InterposeLabelColourPanelClick(TObject *Sender)
+{
+    TPanel *SelectedPanel = dynamic_cast<TPanel*>(Sender);
+    if(SelectedPanel == 0)
+    {
+        return;
+    }
+    InterposeLabelDialogColour = SelectedPanel->Tag;
+    TWinControl *ParentControl = SelectedPanel->Parent;
+    for(int x = 0; x < ParentControl->ControlCount; x++)
+    {
+        TPanel *ColourPanel = dynamic_cast<TPanel*>(ParentControl->Controls[x]);
+        if(ColourPanel != 0 && ColourPanel->Tag != 0)
+        {
+            ColourPanel->BevelOuter = bvRaised;
+        }
+    }
+    SelectedPanel->BevelOuter = bvLowered;
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::GetInterposeLabelDetails(AnsiString &Label, TColor &BackgroundColour)
+{
+    TForm *Dialog = new TForm(this);
+    Dialog->Caption = "Interpose Label";
+    Dialog->BorderStyle = bsDialog;
+    Dialog->Position = poMainFormCenter;
+    Dialog->ClientWidth = 236;
+    Dialog->ClientHeight = 132;
+
+    TLabel *TextLabel = new TLabel(Dialog);
+    TextLabel->Parent = Dialog;
+    TextLabel->Left = 12;
+    TextLabel->Top = 14;
+    TextLabel->Caption = "Label:";
+
+    TEdit *LabelEdit = new TEdit(Dialog);
+    LabelEdit->Parent = Dialog;
+    LabelEdit->Left = 60;
+    LabelEdit->Top = 10;
+    LabelEdit->Width = 80;
+    LabelEdit->MaxLength = 4;
+    LabelEdit->Text = Label;
+
+    TLabel *ColourLabel = new TLabel(Dialog);
+    ColourLabel->Parent = Dialog;
+    ColourLabel->Left = 12;
+    ColourLabel->Top = 50;
+    ColourLabel->Caption = "Colour:";
+
+    TColor Colours[4] = {clSilver, clGreen, clRed, clYellow};
+    for(int x = 0; x < 4; x++)
+    {
+        TPanel *ColourPanel = new TPanel(Dialog);
+        ColourPanel->Parent = Dialog;
+        ColourPanel->Left = 60 + (x * 38);
+        ColourPanel->Top = 46;
+        ColourPanel->Width = 30;
+        ColourPanel->Height = 24;
+        ColourPanel->Caption = "";
+        ColourPanel->Color = Colours[x];
+        ColourPanel->ParentColor = false;
+        ColourPanel->ParentBackground = false;
+        ColourPanel->Tag = (int)Colours[x];
+        ColourPanel->BevelOuter = bvRaised;
+        ColourPanel->OnClick = InterposeLabelColourPanelClick;
+        if(Colours[x] == BackgroundColour)
+        {
+            ColourPanel->BevelOuter = bvLowered;
+        }
+    }
+
+    InterposeLabelDialogColour = (int)BackgroundColour;
+
+    TButton *OKButton = new TButton(Dialog);
+    OKButton->Parent = Dialog;
+    OKButton->Left = 72;
+    OKButton->Top = 94;
+    OKButton->Width = 72;
+    OKButton->Caption = "OK";
+    OKButton->Default = true;
+    OKButton->ModalResult = mrOk;
+
+    TButton *CancelButton = new TButton(Dialog);
+    CancelButton->Parent = Dialog;
+    CancelButton->Left = 152;
+    CancelButton->Top = 94;
+    CancelButton->Width = 72;
+    CancelButton->Caption = "Cancel";
+    CancelButton->Cancel = true;
+    CancelButton->ModalResult = mrCancel;
+
+    Dialog->ActiveControl = LabelEdit;
+    bool Accepted = (Dialog->ShowModal() == mrOk);
+    if(Accepted)
+    {
+        Label = AnsiString(LabelEdit->Text).Trim();
+        if(Label == "")
+        {
+            Accepted = false;
+        }
+        BackgroundColour = (TColor)InterposeLabelDialogColour;
+    }
+    delete Dialog;
+    return(Accepted);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::InterposeLabelMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("InterposeLabelMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",InterposeLabelMenuItemClick");
+        if((RightClickInterposeTrackVectorPosition < 0) || (RightClickInterposeTrackVectorPosition >= Track->TrackVectorSize()))
+        {
+            Utilities->CallLogPop(2605);
+            return;
+        }
+
+        AnsiString Label = "";
+        TColor BackgroundColour = clSilver;
+        TTrack::TInterposeLabelMapIterator ILIt = Track->InterposeLabelMap.find(RightClickInterposeTrackVectorPosition);
+        if(ILIt != Track->InterposeLabelMap.end())
+        {
+            Label = ILIt->second.Text;
+            BackgroundColour = ILIt->second.BackgroundColour;
+        }
+        if(GetInterposeLabelDetails(Label, BackgroundColour))
+        {
+            if(Label.Length() > 4)
+            {
+                Label = Label.SubString(1, 4);
+            }
+            Track->InterposeLabelMap[RightClickInterposeTrackVectorPosition] = TTrack::TInterposeLabel(Label, BackgroundColour);
+            ClearandRebuildRailway(87);
+        }
+        Utilities->CallLogPop(2607);
+    }
+    catch(const Exception &e)
+    {
+        TrainController->StopTTClockMessage(151, "Interpose label failed: " + e.Message);
+        Utilities->CallLogPop(2608);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::RemoveInterposeLabelMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("RemoveInterposeLabelMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RemoveInterposeLabelMenuItemClick");
+        TTrack::TInterposeLabelMapIterator ILIt = Track->InterposeLabelMap.find(RightClickInterposeTrackVectorPosition);
+        if(ILIt == Track->InterposeLabelMap.end())
+        {
+            Utilities->CallLogPop(2609);
+            return;
+        }
+
+        UnicodeString Message = UnicodeString("Remove interpose label \"") + UnicodeString(ILIt->second.Text) + UnicodeString("\"?");
+        if(Application->MessageBox(Message.c_str(), L"Remove Interpose Label", MB_YESNO | MB_ICONQUESTION) == IDYES)
+        {
+            Track->InterposeLabelMap.erase(ILIt);
+            ClearandRebuildRailway(88);
+        }
+        Utilities->CallLogPop(2610);
+    }
+    catch(const Exception &e)
+    {
+        TrainController->StopTTClockMessage(152, "Interpose label removal failed: " + e.Message);
+        Utilities->CallLogPop(2611);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::SetReminderMenuItemClick(TObject *Sender) //added at v2.19.0
 {  //note that the TTClock stays stopped when ReminderListBox is visible - sets WarningHover to true in ClockTimer2
     try
@@ -18344,6 +18589,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
         //populate StaticFeaturesDisplay at this point prior to train plotting
         StaticFeaturesDisplay->GetImage()->Picture->Bitmap->Assign(HiddenScreen->Picture->Bitmap); //now has same offsets as mainscreen
         TrainController->ReplotTrains(0, HiddenDisplay);
+        Track->PlotInterposeLabels(1, HiddenDisplay);
     }
     Display->ZoomOutFlag = false;
     if(InitialisationCount > 1) //used to detect initialisation to prevent ZoomOut graphic showing too soon in ClearandRebuildRailway
@@ -22828,6 +23074,16 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.23.0");
 //end of v2.23.0 additions
 
+//additions at v2.24.0 - track interpose labels
+            Track->SaveSessionInterposeLabels(0, SessionFile);
+            Utilities->SaveFileString(SessionFile, "End of file at v2.24.0");
+//end of v2.24.0 additions
+
+//additions at v2.25.0 - track interpose label colours
+            Track->SaveSessionInterposeLabelColours(0, SessionFile);
+            Utilities->SaveFileString(SessionFile, "End of file at v2.25.0");
+//end of v2.25.0 additions
+
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
             SessionFile.close();
@@ -23668,6 +23924,39 @@ NEXTADDITION:
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.23.0" discarded, 'E' will have been loaded earlier if there are no trains
 //end of v2.23.0 additions
+
+//additions at v2.24.0 - track interpose labels
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) // old session file
+                        {
+                            Track->InterposeLabelMap.clear();
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        SessionFile.putback(TempChar);
+                        Track->LoadSessionInterposeLabels(0, SessionFile);
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.24.0" discarded
+//end of v2.24.0 additions
+
+//additions at v2.25.0 - track interpose label colours
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) // old session file
+                        {
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        SessionFile.putback(TempChar);
+                        Track->LoadSessionInterposeLabelColours(0, SessionFile);
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.25.0" discarded
+//end of v2.25.0 additions
                     }   //this is the final block closure after all additions (enclosed in a block so goto doesn't bypass initialisation of a local variable (DummyStr, ID etc.))
 
 FINISHEDLOADING:
@@ -25889,6 +26178,14 @@ void TInterface::SaveErrorFile()
                 Utilities->SaveFileDouble(ErrorFile, TVIt->ArrivalMinDwellTime); //may be the default value of 30secs
             }
             Utilities->SaveFileString(ErrorFile, "End of file at v2.23.0");
+
+//additions at v2.24.0 - track interpose labels
+            Track->SaveSessionInterposeLabels(1, ErrorFile);
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.24.0");
+
+//additions at v2.25.0 - track interpose label colours
+            Track->SaveSessionInterposeLabelColours(1, ErrorFile);
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.25.0");
 
 //REMAINDER STAY AT END OF FILE
 // addition at v2.8.0 in case of clipboard

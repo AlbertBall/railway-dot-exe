@@ -19,6 +19,21 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#129 from fitzburger96 via discord on 21/06/26 08:09
+I'm coming back to Brisbane South after a break, played through a morning peak timetable. I've set a few warnings, which I think are just for conflicting movements, but some of them I just can't remember! It might help if we could incorporate a brief explanation message with each warning
+
+Albert - 21/06/26 09:27
+Timetable warnings use the 'W' prefix before an entry. I mostly use them as a memory jogger to tell me that a route needs to be set soon for the relevant service.  To give an explanation I suggest adding some text in the timetable either before or after the 'W' service using an asterisk as the first character of the text. The timetable editor ignores any line beginning with an asterisk - user manual section 5.8.
+
+Fitzburger96 - 21/06/26 09:47
+But if I have an asterisk line written into the timetable at the editing stage, that's not going to show anything when the warning comes up in operation? The warning just reads "1A23 arrived at x", I'm talking about putting extra detail into that, like "set route into ABC siding"
+
+Albert - 10:16
+That could be quite a task but I'll add it to the wishlist.
+
+#128 from Lunarfxy [Aqan] 01/06/26 09:36
+It would be so cool to have some kind of calls system so that drivers could interact with the player in some kind of way like when they are standing at a red signal.
+
 #127 from Mohan via discord on 23/05/26
 for the program: a timetable test mode which simulates trains running along set service patterns without regard for signals or other trains. In situations where full working timetables are not available or for fictional timetables/maps, this would allow creators to easily see conflicts when and where they occur and make appropriate adjustments to the timetable without having to spend a month on test runs to catch most of the bugs. Users would set paths for each train to move through the map and trains' positions would be calculated based on the last scheduled event for that train. I know that there is already a textual conflict catcher, but that does not account for stations with many platforms or direction differences. A test mode would massively speed up project development and likely increase project quality without needing external tools and extensive translation between timetable formats. 
 
@@ -1110,6 +1125,10 @@ Multi-player facility over the internet.
 2.  When operating Chiltern had a train under signaller control & moving forwards, but couldn't get popup menu when right clicked - nothing happened.  Saved session & reloaded, then OK.
 
 3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
+
+4. See ticket #118 on discord from Mohan 290426 05:12 (saved in railway-dot-exe folder): The bug is that when I right click on a train while its position is being updated, the game hangs and my mouse becomes a spinning beach ball - couldn't reproduce it.
+
+5. See ticket #119 on discord from Mohan 270526 05:17 (saved in railway-dot-exe folder): "green signal remains after red route has been locked" message. Similar problem to mod for version 2.9.2 but that solved, this still to solve - couldn't reproduce it.
 
 -------------------------------------------------------------------------------
 

@@ -18996,7 +18996,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     //end of route (not signal)     green or blue         n/a                                                 Give invalid element message
     //end of route (any element)    red                   n/a                                                 Erases last element only
 
-    //now find whether back, front, nextsignal (added at v2.21.0) or full truncate //added at v2.15.0, backtrucate = from truncate position to the end of the route (i.e. the original truncate function)
+    //now find whether back, front, nextsignal (added at v2.21.0) or full truncate //added at v2.15.0, backtruncate = from truncate position to the end of the route (i.e. the original truncate function)
     if(TruncatePDElementPos < (PrefDirSize() - 1)) //if last position then can't be a front truncate as that requires a signal after the truncate point
     {
         if(TruncatePDElementPos == 0)  //start of route

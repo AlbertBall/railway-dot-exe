@@ -46,6 +46,7 @@
 #include "TextUnit.h"
 #include "PerfLogUnit.h"
 #include "Utilities.h"
+#include "InterfaceUnit.h"
 
 #pragma package(smart_init)
 // ---------------------------------------------------------------------------
@@ -244,10 +245,10 @@ AnsiString TTrackElement::LogTrack(int Caller) const
 // ---------------------------------------------------------------------------
 
 /// Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members
-    TTrackElement::TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
+    TTrackElement::TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""), PlatformNumber(""),
         Attribute(0), CallingOnSet(false), Length01(Utilities->DefaultTrackLength), Length23(-1), SpeedLimit01(Utilities->DefaultTrackSpeedLimit), SpeedLimit23(-1),
         TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1),
-        StationEntryStopLinkPos2(-1), StationEntryStopLinkPos3(-1), StationEntryStopLinkPos4(-1), SigAspect(FourAspect)
+        StationEntryStopLinkPos2(-1), StationEntryStopLinkPos3(-1), StationEntryStopLinkPos4(-1), SigAspect(FourAspect), PortalDirection(PortalBoth)
     {
         Failed = false; //added at v2.13.0
         for(int x = 0; x < 4; x++)
@@ -3165,6 +3166,18 @@ void TTrack::LoadTrack(int Caller, std::ifstream& VecFile, bool &GraphicsFollow)
                 TrackElement.CallingOnSet = true;
             }
         }
+        // A short-lived multiplayer build wrote the portal direction before
+        // the length fields as well as writing the normal trailing marker.
+        // Accept that malformed layout so affected railways can be loaded and
+        // rewritten by the corrected saver without losing their directions.
+        AnsiString LegacyPortalMarker = "";
+        if(TrackElement.TrackType == Continuation)
+        {
+            VecFile >> std::ws;
+            const int NextCharacter = VecFile.peek();
+            if((NextCharacter == 'I') || (NextCharacter == 'O') || (NextCharacter == 'B'))
+                LegacyPortalMarker = Utilities->LoadFileString(VecFile);
+        }
         VecFile >> TempInt;
         TrackElement.Length01 = TempInt;
         VecFile >> TempInt;
@@ -3194,7 +3207,18 @@ void TTrack::LoadTrack(int Caller, std::ifstream& VecFile, bool &GraphicsFollow)
         TrackElement.ActiveTrackElementName = Utilities->LoadFileString(VecFile);
         SetElementID(0, TrackElement);
         AnsiString Marker = Utilities->LoadFileString(VecFile); // marker
+        const int PlatformMarkerPosition = Marker.Pos("|P=");
+        if(PlatformMarkerPosition > 0)
+            TrackElement.PlatformNumber = Marker.SubString(PlatformMarkerPosition + 3,
+                                                            Marker.Length() - PlatformMarkerPosition - 2).Trim().UpperCase();
 // new for v0.6
+        if(TrackElement.TrackType == Continuation)
+        {
+            const AnsiString PortalMarker = LegacyPortalMarker != "" ? LegacyPortalMarker : Marker;
+            if(PortalMarker[1] == 'I') TrackElement.PortalDirection = TTrackElement::PortalEntry;
+            else if(PortalMarker[1] == 'O') TrackElement.PortalDirection = TTrackElement::PortalExit;
+            else TrackElement.PortalDirection = TTrackElement::PortalBoth;
+        }
         if(TrackElement.TrackType == SignalPost)
         {
             if(Marker[1] == '3')
@@ -3451,30 +3475,39 @@ void TTrack::SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow)
         VecFile << TrackElement.SpeedLimit23 << '\n';
         VecFile << TrackElement.LocationName.c_str() << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
         VecFile << TrackElement.ActiveTrackElementName.c_str() << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
+        AnsiString ElementMarker = "******";
 // new for v0.6
-        if(TrackElement.TrackType == SignalPost)
+        if(TrackElement.TrackType == Continuation)
+        {
+            if(TrackElement.PortalDirection == TTrackElement::PortalEntry)
+                ElementMarker = "I*****";
+            else if(TrackElement.PortalDirection == TTrackElement::PortalExit)
+                ElementMarker = "O*****";
+            else
+                ElementMarker = "B*****";
+        }
+        else if(TrackElement.TrackType == SignalPost)
         {
             if(TrackElement.SigAspect == TTrackElement::ThreeAspect)
             {
-                VecFile << "3*****" << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
+                ElementMarker = "3*****";
             }
             else if(TrackElement.SigAspect == TTrackElement::TwoAspect)
             {
-                VecFile << "2*****" << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
+                ElementMarker = "2*****";
             }
             else if(TrackElement.SigAspect == TTrackElement::GroundSignal)
             {
-                VecFile << "G*****" << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
+                ElementMarker = "G*****";
             }
             else // 4 aspect
             {
-                VecFile << "4*****" << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
+                ElementMarker = "4*****";
             }
         }
-        else
-        {
-            VecFile << "******" << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
-        }
+        if(TrackElement.PlatformNumber.Trim() != "")
+            ElementMarker += "|P=" + TrackElement.PlatformNumber.Trim().UpperCase();
+        VecFile << ElementMarker.c_str() << '\0' << '\n'; // explicit null terminator for the variable-length marker
     }
 
     Utilities->SaveFileInt(VecFile, InactiveTrackVector.size());
@@ -3579,6 +3612,21 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, b
             {
                 Utilities->CallLogPop(1155);
                 return(false);
+            }
+        }
+        if(FixedTrackArray.FixedTrackPiece[SpeedTag].TrackType == Continuation)
+        {
+            VecFile >> std::ws;
+            const int NextCharacter = VecFile.peek();
+            if((NextCharacter == 'I') || (NextCharacter == 'O') || (NextCharacter == 'B'))
+            {
+                AnsiString LegacyPortalMarker;
+                if(!Utilities->CheckAndReadFileString(VecFile, LegacyPortalMarker) ||
+                   LegacyPortalMarker.Length() != 6 || LegacyPortalMarker.SubString(2, 5) != "*****")
+                {
+                    Utilities->CallLogPop(1806);
+                    return(false);
+                }
             }
         }
         VecFile >> TempInt;
@@ -3996,9 +4044,119 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
     }
 
     TextHandler->RebuildFromTextVector(1, Disp); // plot text after all else so visible over stations/track etc.  //moved from above at v2.20.3
+    PlotModTrackOverlays(0, Disp);
     PlotInterposeLabels(0, Disp);
     Disp->Update();
     Utilities->CallLogPop(468);
+}
+
+// ---------------------------------------------------------------------------
+
+TTrack::TModTrackOverlay *TTrack::FindModTrackOverlay(const std::string& ModId, const std::string& ActionId, int TrackVectorPosition)
+{
+    if(TrackVectorPosition < 0) return nullptr;
+    TModTrackOverlayMap::iterator map_it = ModTrackOverlayMap.find(static_cast<unsigned int>(TrackVectorPosition));
+    if(map_it == ModTrackOverlayMap.end()) return nullptr;
+    for(TModTrackOverlayVector::iterator it = map_it->second.begin(); it != map_it->second.end(); ++it)
+    {
+        if(it->ModId == ModId && it->ActionId == ActionId) return &(*it);
+    }
+    return nullptr;
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::SetModTrackOverlay(const std::string& ModId, const std::string& ActionId, int TrackVectorPosition, const AnsiString& Text, TColor BackgroundColour)
+{
+    if(TrackVectorPosition < 0 || TrackVectorPosition >= static_cast<int>(TrackVector.size()) || Text.IsEmpty()) return;
+    TModTrackOverlay *existing = FindModTrackOverlay(ModId, ActionId, TrackVectorPosition);
+    if(existing)
+    {
+        existing->Text = Text;
+        existing->BackgroundColour = BackgroundColour;
+        return;
+    }
+    ModTrackOverlayMap[static_cast<unsigned int>(TrackVectorPosition)].push_back(
+        TModTrackOverlay(ModId, ActionId, Text, BackgroundColour));
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::RemoveModTrackOverlay(const std::string& ModId, const std::string& ActionId, int TrackVectorPosition)
+{
+    if(TrackVectorPosition < 0) return;
+    TModTrackOverlayMap::iterator map_it = ModTrackOverlayMap.find(static_cast<unsigned int>(TrackVectorPosition));
+    if(map_it == ModTrackOverlayMap.end()) return;
+    TModTrackOverlayVector& overlays = map_it->second;
+    for(TModTrackOverlayVector::iterator it = overlays.begin(); it != overlays.end();)
+    {
+        if(it->ModId == ModId && it->ActionId == ActionId) it = overlays.erase(it);
+        else ++it;
+    }
+    if(overlays.empty()) ModTrackOverlayMap.erase(map_it);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::PlotModTrackOverlays(int Caller, TDisplay *Disp)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotModTrackOverlays");
+    if(ModTrackOverlayMap.empty())
+    {
+        Utilities->CallLogPop(2600);
+        return;
+    }
+
+    TCanvas *Canvas = Disp->GetImage()->Canvas;
+    TFont *TempFont = new TFont;
+    TBrush *TempBrush = new TBrush;
+    TPen *TempPen = new TPen;
+    TempFont->Assign(Canvas->Font);
+    TempBrush->Assign(Canvas->Brush);
+    TempPen->Assign(Canvas->Pen);
+
+    Canvas->Font->Name = "MS Sans Serif";
+    Canvas->Font->Size = 7;
+    Canvas->Font->Style.Clear();
+    Canvas->Brush->Style = bsSolid;
+    Canvas->Pen->Style = psSolid;
+    Canvas->Pen->Width = 1;
+    Canvas->Pen->Color = clBlack;
+
+    for(TModTrackOverlayMap::iterator map_it = ModTrackOverlayMap.begin(); map_it != ModTrackOverlayMap.end(); ++map_it)
+    {
+        if(map_it->first >= TrackVector.size()) continue;
+        TTrackElement &element = TrackVector.at(map_it->first);
+        if(((element.HLoc - Disp->DisplayOffsetH) < 0) || ((element.HLoc - Disp->DisplayOffsetH) >= Utilities->ScreenElementWidth) ||
+           ((element.VLoc - Disp->DisplayOffsetV) < 0) || ((element.VLoc - Disp->DisplayOffsetV) >= Utilities->ScreenElementHeight)) continue;
+
+        const int cell_left = (element.HLoc - Disp->DisplayOffsetH) * 16;
+        const int cell_top = (element.VLoc - Disp->DisplayOffsetV) * 16;
+        int overlay_number = 0;
+        for(TModTrackOverlayVector::iterator overlay = map_it->second.begin(); overlay != map_it->second.end(); ++overlay, ++overlay_number)
+        {
+            Canvas->Font->Color = (overlay->BackgroundColour == clRed || overlay->BackgroundColour == clBlack) ? clWhite : clBlack;
+            Canvas->Brush->Color = overlay->BackgroundColour;
+            const int text_width = Canvas->TextWidth(overlay->Text);
+            const int text_height = Canvas->TextHeight(overlay->Text);
+            const int label_width = std::max(18, text_width + 6);
+            const int label_height = std::max(12, text_height + 2);
+            const int left = cell_left + 8 - (label_width / 2);
+            const int top = cell_top + 8 - (label_height / 2) + (overlay_number * label_height);
+            Canvas->Rectangle(left, top, left + label_width, top + label_height);
+            Canvas->Brush->Style = bsClear;
+            Canvas->TextOut(left + ((label_width - text_width) / 2), top + ((label_height - text_height) / 2), overlay->Text);
+            Canvas->Brush->Style = bsSolid;
+        }
+    }
+
+    Canvas->Font->Assign(TempFont);
+    Canvas->Brush->Assign(TempBrush);
+    Canvas->Pen->Assign(TempPen);
+    delete TempFont;
+    delete TempBrush;
+    delete TempPen;
+    Utilities->CallLogPop(2601);
 }
 
 // ---------------------------------------------------------------------------
@@ -11232,6 +11390,7 @@ void TTrack::TrackClear(int Caller)
     TrackVector.clear();
     InactiveTrackVector.clear();
     TrackMap.clear();
+    ModTrackOverlayMap.clear();
     InterposeLabelMap.clear();
     InactiveTrack2MultiMap.clear(), LocationNameMultiMap.clear();
     if(TextHandler->TextVector.size() == 0)
@@ -18783,7 +18942,12 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
         }
         if(PrefDirVector.at(x).TrackType == Continuation)
         {
-            Attribute = 3;
+            int boundaryAttribute = 3;
+            const TTrackElement& continuation = Track->TrackElementAt(1530, PrefDirVector.at(x).TrackVectorPosition);
+            if(Interface && Interface->GetMultiplayerBoundaryTargetAttribute(continuation.ElementID, boundaryAttribute))
+                Attribute = boundaryAttribute;
+            else
+                Attribute = 3;
             Utilities->CallLogPop(330);
             return(true);
         }
@@ -18933,7 +19097,12 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrainInRear(int Caller, int &At
                     }
                     if(SetAttributeTo3)
                     {
-                        Attribute = 3; // treat continuation as a green signal
+                        int boundaryAttribute = 3;
+                        if(Interface && Interface->GetMultiplayerBoundaryTargetAttribute(
+                           Track->TrackElementAt(1531, PDE.TrackVectorPosition).ElementID, boundaryAttribute))
+                            Attribute = boundaryAttribute;
+                        else
+                            Attribute = 3; // without a connected peer, retain the original continuation behaviour
                     }
                 }
             }
@@ -18949,7 +19118,12 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrainInRear(int Caller, int &At
                     }
                     if(PrefDirVector.back().TrackType == Continuation)
                     {
-                        Attribute = 3; // treat continuation as a green signal
+                        int boundaryAttribute = 3;
+                        if(Interface && Interface->GetMultiplayerBoundaryTargetAttribute(
+                           Track->TrackElementAt(1532, PDE.TrackVectorPosition).ElementID, boundaryAttribute))
+                            Attribute = boundaryAttribute;
+                        else
+                            Attribute = 3; // without a connected peer, retain the original continuation behaviour
                     }
                 }
                 //else there is a forward route, so just continue to examine it below unless SkipForwardLook is true

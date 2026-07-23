@@ -59,6 +59,7 @@
 #include "ActionsDueUnit.h" //added at v2.13.0 for ActionsDue form
 #include "Utilities.h"
 #include "API.h"        //added at v2.10.0
+#include "MultiplayerPeer.h"
 #include <dirent.h>
 #include <Filectrl.hpp> //to check whether directories exist
 
@@ -380,6 +381,24 @@ void __fastcall TInterface::ModGraphicsMenuClick(TObject* Sender) {
 __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 {
     // constructor
+    PeerMultiplayerButton = NULL;
+    PeerMultiplayerForm = NULL;
+    OperateMultiplayerMenuItem = NULL;
+    SetPlatformNumbersMenuItem = NULL;
+    MultiplayerOperateMode = false;
+    PeerWTTClockActive = false;
+    OperateMultiplayerMenuItem = new TMenuItem(this);
+    OperateMultiplayerMenuItem->Caption = "Operate (Multiplayer)";
+    OperateMultiplayerMenuItem->Hint = "Operate without a conventional timetable and load services through Live WTT";
+    OperateMultiplayerMenuItem->OnClick = OperateMultiplayerMenuItemClick;
+    OperateMultiplayerMenuItem->Enabled = false;
+    ModeMenu->Insert(OperateRailwayMenuItem->MenuIndex + 1, OperateMultiplayerMenuItem);
+    SetPlatformNumbersMenuItem = new TMenuItem(this);
+    SetPlatformNumbersMenuItem->Caption = "Set platform numbers...";
+    SetPlatformNumbersMenuItem->Hint = "Click a platform and type the number used by the WTT";
+    SetPlatformNumbersMenuItem->OnClick = SetPlatformNumbersMenuItemClick;
+    SetPlatformNumbersMenuItem->Enabled = false;
+    ModeMenu->Insert(PlanPrefDirsMenuItem->MenuIndex + 1, SetPlatformNumbersMenuItem);
     try
     {
 //        TestFunctionCount = 0; //used only in test function
@@ -600,6 +619,39 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 		*/
 
 		loadModdedContent();
+
+        FeatureMods->set_host_callbacks(
+            [this](const std::string& ModId, const std::string& ActionId, int Position, const std::string& Text, TColor Colour)
+            {
+                Track->SetModTrackOverlay(ModId, ActionId, Position, AnsiString(Text.c_str()), Colour);
+            },
+            [this](const std::string& ModId, const std::string& ActionId, int Position)
+            {
+                Track->RemoveModTrackOverlay(ModId, ActionId, Position);
+            },
+            [this]() { ClearandRebuildRailway(87); });
+        FeatureMods->discover();
+        BuildFeatureModMenus();
+
+        // Keep the legacy host/client controls intact while the new peer-to-peer
+        // mode is introduced through a dedicated operating-view button.
+        ClockLabel->Left += 30;
+        TTClockSpeedLabel->Left += 30;
+        OperatingPanel->Width += 30;
+        InfoPanel->Left += 30;
+        InfoPanel->Width -= 30;
+        PeerMultiplayerButton = new TBitBtn(this);
+        PeerMultiplayerButton->Parent = OperatingPanel;
+        PeerMultiplayerButton->Left = 400;
+        PeerMultiplayerButton->Top = 0;
+        PeerMultiplayerButton->Width = 30;
+        PeerMultiplayerButton->Height = 30;
+        PeerMultiplayerButton->Caption = "MP";
+        PeerMultiplayerButton->Hint = "Open peer-to-peer multiplayer";
+        PeerMultiplayerButton->ShowHint = true;
+        PeerMultiplayerButton->OnClick = PeerMultiplayerButtonClick;
+        PeerMultiplayerForm = new TMultiplayerPeerForm(this, this,
+            ExcludeTrailingPathDelimiter(ExtractFilePath(Application->ExeName)));
 
         // =====================================================================
         InitialisationCount = 0; //used to detect initialisation to prevent ZoomOut graphic showing too soon in ClearandRebuildRailway
@@ -851,6 +903,8 @@ __fastcall TInterface::~TInterface()
         delete AutoRouteStartMarker;
         delete PointFlash;
         delete SelectBitmap;
+        delete PeerMultiplayerForm;
+        PeerMultiplayerForm = NULL;
         delete TrainController;
         delete EveryPrefDir;
         delete SelectPrefDir;
@@ -918,13 +972,15 @@ void __fastcall TInterface::AppDeactivate(TObject *Sender)
                 DivergingPointVectorPosition = -1;
                 Screen->Cursor = TCursor(-2); // Arrow
             }
-            if(!HostInSessionFlag && !PlayerInSessionFlag) //don't pause if multiplay in session
+            const bool peerMultiplayerActive = PeerMultiplayerForm && PeerMultiplayerForm->IsJoined();
+            if(!HostInSessionFlag && !PlayerInSessionFlag && !peerMultiplayerActive) //don't pause if multiplay in session
             {
                 Level2OperMode = Paused;
                 SetLevel2OperMode(2);
             }
         }
-        if(!HostMultiplayInProgressFlag && !PlayerMultiplayInProgressFlag)
+        const bool peerMultiplayerActive = PeerMultiplayerForm && PeerMultiplayerForm->IsJoined();
+        if(!HostMultiplayInProgressFlag && !PlayerMultiplayInProgressFlag && !peerMultiplayerActive)
         {
             MasterClock->Enabled = false; //keep enabled for comms in multiplayer
         }
@@ -1402,6 +1458,159 @@ void __fastcall TInterface::LocationNameButtonClick(TObject *Sender)
     {
         ErrorLog(126, e.Message);
     }
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TInterface::SetPortalDirectionsMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("SetPortalDirectionsMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetPortalDirectionsMenuItemClick");
+        ExitHeatmaps();
+        Level1Mode = TrackMode;
+        SetLevel1Mode(82);
+        Level2TrackMode = SetPortalDirection;
+        SetLevel2TrackMode(71);
+        Utilities->CallLogPop(1805);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(1802, e.Message);
+    }
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TInterface::SetPlatformNumbersMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("SetPlatformNumbersMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetPlatformNumbersMenuItemClick");
+        ExitHeatmaps();
+        Level1Mode = TrackMode;
+        SetLevel1Mode(83);
+        Level2TrackMode = SetPlatformNumber;
+        SetLevel2TrackMode(72);
+        Utilities->CallLogPop(1807);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(1803, e.Message);
+    }
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::TrackPositionHasPlatform(int TrackPosition)
+{
+    if(TrackPosition < 0 || TrackPosition >= Track->TrackVectorSize()) return false;
+    const TTrackElement& active = Track->TrackElementAt(1762, TrackPosition);
+    bool found = false;
+    const TTrack::TIMPair inactivePositions =
+        Track->GetVectorPositionsFromInactiveTrackMap(40, active.HLoc, active.VLoc, found);
+    if(!found) return false;
+    return Track->InactiveTrackElementAt(1407, inactivePositions.first).TrackType == Platform ||
+           Track->InactiveTrackElementAt(1408, inactivePositions.second).TrackType == Platform;
+}
+
+// ---------------------------------------------------------------------------
+void TInterface::SetPlatformNumberAt(int HLoc, int VLoc)
+{
+    bool found = false;
+    const int startPosition = Track->GetVectorPositionFromTrackMap(71, HLoc, VLoc, found);
+    if(!found || startPosition < 0 || startPosition >= Track->TrackVectorSize() ||
+       !TrackPositionHasPlatform(startPosition))
+    {
+        InfoPanel->Visible = true;
+        InfoPanel->Caption = "PLATFORM NUMBERS: Click directly on a named platform track.";
+        return;
+    }
+
+    TTrackElement& selected = Track->TrackElementAt(1763, startPosition);
+    if(selected.ActiveTrackElementName.Trim() == "")
+    {
+        InfoPanel->Visible = true;
+        InfoPanel->Caption = "PLATFORM NUMBERS: Name this location before assigning its platform number.";
+        return;
+    }
+
+    UnicodeString entered = UnicodeString(selected.PlatformNumber);
+    const UnicodeString prompt = UnicodeString("Platform number for ") + UnicodeString(selected.ActiveTrackElementName) +
+                                 UnicodeString("\n\nExamples: 1, 2, 3A. Leave blank to clear it.");
+    if(!InputQuery(L"Set platform number", prompt, entered)) return;
+    AnsiString platformNumber = AnsiString(entered).Trim().UpperCase();
+    if(platformNumber.Length() > 12 || platformNumber.Pos("|") > 0 || platformNumber.Pos(";") > 0 ||
+       platformNumber.Pos(",") > 0 || platformNumber.Pos("\r") > 0 || platformNumber.Pos("\n") > 0)
+    {
+        ShowMessage("Use a short platform number such as 1, 2 or 3A. Commas, semicolons and | are not allowed.");
+        return;
+    }
+
+    const AnsiString location = selected.ActiveTrackElementName.Trim().UpperCase();
+    std::vector<int> pending;
+    std::set<int> visited;
+    pending.push_back(startPosition);
+    int changed = 0;
+    for(unsigned int pendingIndex = 0; pendingIndex < pending.size(); ++pendingIndex)
+    {
+        const int position = pending[pendingIndex];
+        if(visited.count(position)) continue;
+        visited.insert(position);
+        if(position < 0 || position >= Track->TrackVectorSize()) continue;
+        TTrackElement& element = Track->TrackElementAt(1764, position);
+        if(element.ActiveTrackElementName.Trim().UpperCase() != location || !TrackPositionHasPlatform(position)) continue;
+        if(element.PlatformNumber != platformNumber)
+        {
+            element.PlatformNumber = platformNumber;
+            ++changed;
+        }
+        for(int link = 0; link < 4; ++link)
+            if(element.Conn[link] >= 0 && !visited.count(element.Conn[link])) pending.push_back(element.Conn[link]);
+    }
+
+    if(changed > 0) ResetChangedFileDataAndCaption(30, true);
+    Display->Rectangle(0, HLoc * 16, VLoc * 16, clB0G0R5, 0, 2);
+    InfoPanel->Visible = true;
+    InfoPanel->Caption = "PLATFORM NUMBERS: " + selected.ActiveTrackElementName +
+                         (platformNumber == "" ? " platform number cleared." : " = platform " + platformNumber + ".") +
+                         " Click another platform to continue.";
+}
+
+// ---------------------------------------------------------------------------
+void TInterface::SetOrDescribePortalDirection(int HLoc, int VLoc, bool CycleDirection)
+{
+    bool found = false;
+    const int position = Track->GetVectorPositionFromTrackMap(70, HLoc, VLoc, found);
+    if(!found || position < 0 || position >= Track->TrackVectorSize() ||
+       Track->TrackElementAt(1760, position).TrackType != Continuation)
+    {
+        InfoPanel->Visible = true;
+        InfoPanel->Caption = "PORTAL DIRECTION: Select a continuation at the edge of the map.";
+        return;
+    }
+
+    TTrackElement& portal = Track->TrackElementAt(1761, position);
+    if(CycleDirection)
+    {
+        if(portal.PortalDirection == TTrackElement::PortalBoth)
+            portal.PortalDirection = TTrackElement::PortalEntry;
+        else if(portal.PortalDirection == TTrackElement::PortalEntry)
+            portal.PortalDirection = TTrackElement::PortalExit;
+        else
+            portal.PortalDirection = TTrackElement::PortalBoth;
+        ResetChangedFileDataAndCaption(29, true);
+    }
+
+    AnsiString direction = "Both - trains may enter or leave here";
+    if(portal.PortalDirection == TTrackElement::PortalEntry)
+        direction = "Entry only - trains may enter this map here";
+    else if(portal.PortalDirection == TTrackElement::PortalExit)
+        direction = "Exit only - trains may leave this map here";
+    const AnsiString portalName = portal.ActiveTrackElementName != "" ? portal.ActiveTrackElementName : portal.ElementID;
+    InfoPanel->Visible = true;
+    InfoPanel->Caption = "PORTAL DIRECTION: " + portalName + " = " + direction +
+                         ". Left click to cycle; right click to inspect.";
+    Display->Rectangle(0, HLoc * 16, VLoc * 16, clB0G0R5, 0, 2);
 }
 
 // ---------------------------------------------------------------------------
@@ -2346,6 +2555,7 @@ void __fastcall TInterface::OperateRailwayMenuItemClick(TObject *Sender) // Mode
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperateRailwayMenuItemClick");
         TTrain::NextTrainID = 0; // reset to 0 whenever enter operating mode
         AllRoutes->NextRouteID = 0; // reset to 0 whenever enter operating mode
+        MultiplayerOperateMode = false;
         Level1Mode = OperMode;
         SetLevel1Mode(7);
         Utilities->CallLogPop(26);
@@ -2379,6 +2589,877 @@ void __fastcall TInterface::OperateButtonClick(TObject *Sender)
     {
         ErrorLog(37, e.Message);
     }
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TInterface::OperateMultiplayerMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("OperateMultiplayerMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperateMultiplayerMenuItemClick");
+        if(!Track->IsTrackFinished())
+        {
+            ShowMessage("The railway must be complete before multiplayer operation can begin.");
+            Utilities->CallLogPop(1801);
+            return;
+        }
+        if(!TrainController->TrainDataVector.empty() || TimetableTitle != "")
+        {
+            ShowMessage("Operate (Multiplayer) is for Live WTT operation without a conventional timetable. "
+                        "Clear or reload the railway without a timetable first.");
+            Utilities->CallLogPop(1802);
+            return;
+        }
+        TTrain::NextTrainID = 0;
+        AllRoutes->NextRouteID = 0;
+        MultiplayerOperateMode = true;
+        Level1Mode = OperMode;
+        SetLevel1Mode(81);
+        Utilities->CallLogPop(1803);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(1801, e.Message);
+    }
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TInterface::PeerMultiplayerButtonClick(TObject *Sender)
+{
+    if(PeerMultiplayerForm) PeerMultiplayerForm->ShowForRailway(RailwayTitle);
+}
+
+// ---------------------------------------------------------------------------
+void TInterface::NotifyMultiplayerTrainExited(AnsiString ServiceReference, AnsiString HeadCode, int RepeatNumber,
+                                               int LagElement, AnsiString ExitLocation)
+{
+    if(!PeerMultiplayerForm || !PeerMultiplayerForm->IsJoined()) return;
+    if(LagElement < 0 || LagElement >= Track->TrackVectorSize()) return;
+    const TTrackElement& exitElement = Track->TrackElementAt(1740, LagElement);
+    if(exitElement.TrackType != Continuation) return;
+    if(exitElement.PortalDirection == TTrackElement::PortalEntry)
+    {
+        PeerMultiplayerForm->LogMultiplayerEvent("TRAIN-DIRECTION-REJECT", "Reference=" + ServiceReference +
+            ", headcode=" + HeadCode + ", continuation=" + exitElement.ElementID +
+            "; portal is configured as entry only");
+        return;
+    }
+    bool expectedExit = false;
+    for(TTrainDataVector::const_iterator service = TrainController->TrainDataVector.begin();
+        service != TrainController->TrainDataVector.end() && !expectedExit; ++service)
+    {
+        if(service->ServiceReference != ServiceReference) continue;
+        for(TActionVector::const_iterator action = service->ActionVector.begin(); action != service->ActionVector.end(); ++action)
+        {
+            if(action->Command != "Fer") continue;
+            for(TNumList::const_iterator exit = action->ExitList.begin(); exit != action->ExitList.end(); ++exit)
+                if(*exit == LagElement) expectedExit = true;
+        }
+    }
+    if(!expectedExit)
+    {
+        PeerMultiplayerForm->LogMultiplayerEvent("TRAIN-WRONG-EXIT", "Reference=" + ServiceReference +
+            ", headcode=" + HeadCode + ", continuation=" + exitElement.ElementID +
+            "; no matching Fer action, so no handover was created");
+        return;
+    }
+    AnsiString portal = exitElement.ElementID;
+    if(portal == "") portal = ExitLocation;
+    PeerMultiplayerForm->QueueTrainTransfer(ServiceReference, HeadCode, RepeatNumber, portal);
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::ReceiveMultiplayerTrain(AnsiString ServiceReference, AnsiString HeadCode, int RepeatNumber,
+                                         AnsiString FromBox, AnsiString DestinationPortal, AnsiString &FailureReason)
+{
+    FailureReason = "";
+    int transferredRearPosition = -1;
+    int transferredFrontPosition = -1;
+    if(DestinationPortal != "")
+    {
+        for(int position = 0; position < Track->TrackVectorSize(); ++position)
+        {
+            const TTrackElement& element = Track->TrackElementAt(1758, position);
+            if(element.TrackType != Continuation ||
+               element.ElementID.UpperCase() != DestinationPortal.UpperCase()) continue;
+            if(element.PortalDirection == TTrackElement::PortalExit)
+            {
+                FailureReason = "Destination portal " + DestinationPortal +
+                                " is configured as exit only and cannot receive trains.";
+                return false;
+            }
+            transferredRearPosition = position;
+            for(int link = 0; link < 4; ++link)
+            {
+                const int connected = element.Conn[link];
+                if(connected >= 0 && connected < Track->TrackVectorSize() &&
+                   Track->TrackElementAt(1759, connected).TrackType != Continuation)
+                {
+                    transferredFrontPosition = connected;
+                    break;
+                }
+            }
+            break;
+        }
+        if(transferredRearPosition < 0)
+        {
+            FailureReason = "Destination portal " + DestinationPortal + " does not exist as a continuation on this map.";
+            return false;
+        }
+        if(transferredFrontPosition < 0)
+        {
+            FailureReason = "Destination portal " + DestinationPortal + " has no connected internal track element.";
+            return false;
+        }
+    }
+
+    bool matchingReferenceFound = false;
+    for(unsigned int index = 0; index < TrainController->TrainDataVector.size(); ++index)
+    {
+        TTrainDataEntry& entry = TrainController->TrainDataVector.at(index);
+        if((entry.ServiceReference != ServiceReference) && (entry.ServiceReference != HeadCode)) continue;
+        matchingReferenceFound = true;
+        if(entry.ActionVector.empty() || ((entry.ActionVector.at(0).Command != "Snt") &&
+                                          (entry.ActionVector.at(0).Command != "Snt-sh")))
+        {
+            FailureReason = "Matching service " + entry.ServiceReference + " has no valid start-new-train action.";
+            continue;
+        }
+        if(RepeatNumber < 0 || RepeatNumber >= entry.NumberOfTrains) RepeatNumber = 0;
+        TTrainOperatingData& operating = entry.TrainOperatingDataVector.at(RepeatNumber);
+        if(operating.RunningEntry == Running)
+        {
+            FailureReason = "";
+            return true;
+        }
+        if(operating.RunningEntry == Exited)
+        {
+            FailureReason = "Matching service " + entry.ServiceReference +
+                            " has already been completed or cancelled on this signalbox.";
+            return false;
+        }
+
+        const TActionVectorEntry& start = entry.ActionVector.at(0);
+        const int rearPosition = transferredRearPosition >= 0 ? transferredRearPosition : start.RearStartOrRepeatMins;
+        const int frontPosition = transferredFrontPosition >= 0 ? transferredFrontPosition : start.FrontStartOrRepeatDigits;
+        int incrementalMinutes = 0;
+        int incrementalDigits = 0;
+        if(entry.ActionVector.back().FormatType == Repeat)
+        {
+            incrementalMinutes = entry.ActionVector.back().RearStartOrRepeatMins;
+            incrementalDigits = entry.ActionVector.back().FrontStartOrRepeatDigits;
+        }
+        TActionEventType eventType = NoEvent;
+        AnsiString actualHeadCode = HeadCode == "" ? TrainController->GetRepeatHeadCode(80, entry.ServiceReference,
+                                                                                       RepeatNumber, incrementalDigits) : HeadCode;
+        if(!TrainController->AddTrain(80, rearPosition, frontPosition, actualHeadCode,
+                                      entry.StartSpeed, entry.Mass, entry.MaxRunningSpeed, entry.MaxBrakeRate, entry.PowerAtRail,
+                                      "Timetable", &entry, RepeatNumber, incrementalMinutes, incrementalDigits,
+                                      entry.SignallerSpeed, start.SignallerControl, eventType))
+        {
+            FailureReason = "RailOS AddTrain rejected " + actualHeadCode + " at portal " + DestinationPortal +
+                            "; the entry track may be occupied or incompatible.";
+            return false;
+        }
+
+        operating.TrainID = TrainController->TrainVector.back().TrainID;
+        operating.RunningEntry = Running;
+        TrainController->TrainVector.back().Description = entry.FixedDescription;
+        for(TTrainController::TContinuationTrainExpectationMultiMapIterator expectation =
+                TrainController->ContinuationTrainExpectationMultiMap.begin();
+            expectation != TrainController->ContinuationTrainExpectationMultiMap.end(); )
+        {
+            if(expectation->second.TrainDataEntryPtr == &entry && expectation->second.RepeatNumber == RepeatNumber)
+                expectation = TrainController->ContinuationTrainExpectationMultiMap.erase(expectation);
+            else
+                ++expectation;
+        }
+        TrainController->LogEvent("Multiplayer receive " + actualHeadCode + " from " + FromBox + " at " + DestinationPortal);
+        if(PeerMultiplayerForm)
+            PeerMultiplayerForm->LogMultiplayerEvent("TRAIN-ACCEPT", "Headcode=" + actualHeadCode + ", reference=" +
+                entry.ServiceReference + ", from=" + FromBox + ", portal=" + DestinationPortal +
+                ", rear/front positions=" + AnsiString(rearPosition) + "/" + AnsiString(frontPosition));
+        return true;
+    }
+    if(!matchingReferenceFound)
+        FailureReason = "No loaded Live WTT service matches reference " + ServiceReference + " or headcode " + HeadCode +
+                        " (loaded services=" + AnsiString(static_cast<int>(TrainController->TrainDataVector.size())) + ").";
+    else if(FailureReason == "")
+        FailureReason = "A matching Live WTT service exists but could not be started.";
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::MultiplayerHoldTimetabledEntry(int RearPosition) const
+{
+    if(!PeerMultiplayerForm || !PeerMultiplayerForm->IsJoined()) return false;
+    if(RearPosition < 0 || RearPosition >= Track->TrackVectorSize()) return false;
+    const TTrackElement& element = Track->TrackElementAt(1741, RearPosition);
+    return element.TrackType == Continuation && element.PortalDirection != TTrackElement::PortalExit &&
+           PeerMultiplayerForm->ShouldHoldPortalEntry(element.ElementID);
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::GetMultiplayerPortalSignalAspect(AnsiString Portal, int &SignalAttribute) const
+{
+    int continuationPosition = -1;
+    for(int position = 0; position < Track->TrackVectorSize(); ++position)
+    {
+        const TTrackElement& element = Track->TrackElementAt(1743, position);
+        if(element.TrackType == Continuation && element.ElementID.UpperCase() == Portal.UpperCase())
+        {
+            // The receiving (entry) side publishes its first internal signal to
+            // the neighbouring box.  An exit-only portal has no inbound signal
+            // state to advertise.
+            if(element.PortalDirection == TTrackElement::PortalExit) return false;
+            continuationPosition = position;
+            break;
+        }
+    }
+    if(continuationPosition < 0) return false;
+
+    const TTrackElement& continuation = Track->TrackElementAt(1744, continuationPosition);
+    int connectionLink = -1;
+    for(int link = 0; link < 4; ++link)
+        if(continuation.Config[link] == Connection) connectionLink = link;
+    if(connectionLink < 0 || continuation.Conn[connectionLink] < 0) return false;
+
+    int currentPosition = continuation.Conn[connectionLink];
+    int entryLink = continuation.ConnLinkPos[connectionLink];
+    std::set<int> visited;
+    while(currentPosition >= 0 && currentPosition < Track->TrackVectorSize() && visited.size() < 512)
+    {
+        if(visited.count(currentPosition)) return false;
+        visited.insert(currentPosition);
+        const TTrackElement& element = Track->TrackElementAt(1745, currentPosition);
+
+        int exitLink = -1;
+        if(element.TrackType == Points)
+        {
+            if(element.Config[entryLink] == Lead) exitLink = element.Attribute == 0 ? 1 : 3;
+            else if(entryLink == 1) exitLink = 0;
+            else if(entryLink == 3) exitLink = 2;
+        }
+        else if(entryLink == 0) exitLink = 1;
+        else if(entryLink == 1) exitLink = 0;
+        else if(entryLink == 2) exitLink = 3;
+        else if(entryLink == 3) exitLink = 2;
+
+        if(exitLink < 0 || exitLink > 3) return false;
+        if(element.Config[exitLink] == Signal)
+        {
+            SignalAttribute = element.Failed ? 0 : std::max(0, std::min(3, element.Attribute));
+            return true;
+        }
+        if(element.Conn[exitLink] < 0) return false;
+        entryLink = element.ConnLinkPos[exitLink];
+        currentPosition = element.Conn[exitLink];
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::MultiplayerPortalAllowsEntry(AnsiString Portal) const
+{
+    for(int position = 0; position < Track->TrackVectorSize(); ++position)
+    {
+        const TTrackElement& element = Track->TrackElementAt(1762, position);
+        if(element.TrackType == Continuation && element.ElementID.UpperCase() == Portal.UpperCase())
+            return element.PortalDirection != TTrackElement::PortalExit;
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::MultiplayerPortalAllowsExit(AnsiString Portal) const
+{
+    for(int position = 0; position < Track->TrackVectorSize(); ++position)
+    {
+        const TTrackElement& element = Track->TrackElementAt(1763, position);
+        if(element.TrackType == Continuation && element.ElementID.UpperCase() == Portal.UpperCase())
+            return element.PortalDirection != TTrackElement::PortalEntry;
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::GetMultiplayerBoundaryTargetAttribute(AnsiString LocalPortal, int &TargetAttribute) const
+{
+    return MultiplayerPortalAllowsExit(LocalPortal) && PeerMultiplayerForm && PeerMultiplayerForm->IsJoined() &&
+           PeerMultiplayerForm->BoundaryTargetAttribute(LocalPortal, TargetAttribute);
+}
+
+// ---------------------------------------------------------------------------
+void TInterface::RefreshMultiplayerBoundarySignals(AnsiString LocalPortal)
+{
+    if(!AllRoutes) return;
+    for(unsigned int routeNumber = 0; routeNumber < AllRoutes->AllRoutesVector.size(); ++routeNumber)
+    {
+        const TOneRoute& route = AllRoutes->AllRoutesVector.at(routeNumber);
+        if(route.PrefDirSize() == 0) continue;
+        const TPrefDirElement& last = route.GetFixedPrefDirElementAt(271, route.PrefDirSize() - 1);
+        const TTrackElement& endElement = Track->TrackElementAt(1746, last.GetSignedIntTrackVectorPosition());
+        if(endElement.TrackType == Continuation && endElement.ElementID.UpperCase() == LocalPortal.UpperCase())
+            route.SetRouteSignals(15);
+    }
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::BeginMultiplayerWTTClock(TDateTime LocalSessionTime, __int64 RailwayClockMilliseconds,
+                                           AnsiString &ErrorMessage)
+{
+    if(PeerWTTClockActive)
+    {
+        ErrorMessage = "";
+        return true;
+    }
+    if(Level1Mode != OperMode || !MultiplayerOperateMode)
+    {
+        ErrorMessage = "Use Mode > Operate (Multiplayer) before enabling Live WTT.";
+        return false;
+    }
+    if(!TrainController->TrainDataVector.empty() || !TrainController->TrainVector.empty())
+    {
+        ErrorMessage = "Live WTT needs an empty multiplayer railway; unload the normal timetable and remove running trains first.";
+        return false;
+    }
+
+    PeerWTTClockBackup = TrainController->TTClockTime;
+    PeerWTTRestartBackup = TrainController->RestartTime;
+    PeerWTTBaseBackup = TrainController->BaseTime;
+    PeerWTTSpeedBackup = TTClockSpeed;
+    PeerWTTClockActive = true;
+
+    double localClock;
+    if(RailwayClockMilliseconds >= 0)
+        localClock = double(RailwayClockMilliseconds) / 86400000.0;
+    else
+    {
+        localClock = double(LocalSessionTime) - static_cast<int>(double(LocalSessionTime));
+        if(localClock < 0.0) localClock += 1.0;
+    }
+    TrainController->TTClockTime = TDateTime(localClock);
+    TrainController->RestartTime = TrainController->TTClockTime;
+    TrainController->BaseTime = TDateTime::CurrentDateTime();
+    TTClockSpeed = 1.0;
+    TrainController->StopTTClockFlag = false;
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+    ErrorMessage = "";
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+void TInterface::SynchroniseMultiplayerWTTClock(TDateTime LocalSessionTime, __int64 RailwayClockMilliseconds)
+{
+    if(!PeerWTTClockActive) return;
+    double localClock;
+    if(RailwayClockMilliseconds >= 0)
+        localClock = double(RailwayClockMilliseconds) / 86400000.0;
+    else
+    {
+        // Legacy peers only advertise wall-clock date/time.  Select the
+        // equivalent day nearest to RailOS's current continuous clock so a
+        // midnight heartbeat cannot turn 24:xx back into 00:xx.
+        localClock = double(LocalSessionTime) - static_cast<int>(double(LocalSessionTime));
+        if(localClock < 0.0) localClock += 1.0;
+        const double currentClock = double(TrainController->TTClockTime);
+        localClock += floor(currentClock);
+        while(localClock - currentClock > 0.5) localClock -= 1.0;
+        while(currentClock - localClock > 0.5) localClock += 1.0;
+    }
+    TrainController->TTClockTime = TDateTime(localClock);
+    TrainController->RestartTime = TrainController->TTClockTime;
+    TrainController->BaseTime = TDateTime::CurrentDateTime();
+    TTClockSpeed = 1.0;
+    TrainController->StopTTClockFlag = false;
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+}
+
+// ---------------------------------------------------------------------------
+__int64 TInterface::MultiplayerWTTRailwayClockMilliseconds() const
+{
+    if(!PeerWTTClockActive) return -1;
+    return static_cast<__int64>(double(TrainController->TTClockTime) * 86400000.0);
+}
+
+// ---------------------------------------------------------------------------
+void TInterface::EndMultiplayerWTTClock()
+{
+    if(!PeerWTTClockActive) return;
+    TrainController->TTClockTime = PeerWTTClockBackup;
+    TrainController->RestartTime = PeerWTTRestartBackup;
+    TrainController->BaseTime = PeerWTTBaseBackup;
+    TTClockSpeed = PeerWTTSpeedBackup;
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+    PeerWTTClockActive = false;
+}
+
+// ---------------------------------------------------------------------------
+namespace
+{
+int MultiplayerTrackDistance(TTrack *Track, int StartPosition, int BlockedPosition,
+                             const AnsiString& TargetLocation)
+{
+    if(!Track || StartPosition < 0 || StartPosition >= Track->TrackVectorSize()) return -1;
+    std::vector<int> distance(Track->TrackVectorSize(), -1);
+    std::vector<int> pending;
+    distance[StartPosition] = 0;
+    if(BlockedPosition >= 0 && BlockedPosition < Track->TrackVectorSize()) distance[BlockedPosition] = -2;
+    pending.push_back(StartPosition);
+    for(unsigned int pendingIndex = 0; pendingIndex < pending.size(); ++pendingIndex)
+    {
+        const int position = pending[pendingIndex];
+        const TTrackElement& element = Track->TrackElementAt(1750, position);
+        if(element.ActiveTrackElementName.UpperCase() == TargetLocation.UpperCase()) return distance[position];
+        for(int link = 0; link < 4; ++link)
+        {
+            const int next = element.Conn[link];
+            if(next < 0 || next >= Track->TrackVectorSize() || distance[next] != -1) continue;
+            distance[next] = distance[position] + 1;
+            pending.push_back(next);
+        }
+    }
+    return -1;
+}
+
+bool MultiplayerBoundaryNameAllowed(const AnsiString& BoundaryNames, const AnsiString& ActiveName,
+                                    const AnsiString& ElementID)
+{
+    if(BoundaryNames.Trim() == "") return true;
+    int start = 1;
+    while(start <= BoundaryNames.Length())
+    {
+        const AnsiString remainder = BoundaryNames.SubString(start, BoundaryNames.Length() - start + 1);
+        const int separator = remainder.Pos(";");
+        const AnsiString name = (separator == 0 ? remainder : remainder.SubString(1, separator - 1)).Trim();
+        if(name.UpperCase() == ActiveName.UpperCase() || name.UpperCase() == ElementID.UpperCase()) return true;
+        if(separator == 0) break;
+        start += separator;
+    }
+    return false;
+}
+}
+
+bool TInterface::ResolveMultiplayerWTTStart(AnsiString FirstLocation, AnsiString NextLocation, AnsiString PlatformNumber,
+                                             bool FromContinuation, AnsiString BoundaryNames,
+                                             AnsiString &StartElementIDs) const
+{
+    StartElementIDs = "";
+    std::vector<AnsiString> candidates;
+    ResolveMultiplayerWTTStartCandidates(FirstLocation, NextLocation, PlatformNumber,
+                                         FromContinuation, BoundaryNames, candidates);
+    if(candidates.empty()) return false;
+    StartElementIDs = candidates.front();
+    return true;
+}
+
+void TInterface::ResolveMultiplayerWTTStartCandidates(AnsiString FirstLocation, AnsiString NextLocation,
+                                                       AnsiString PlatformNumber, bool FromContinuation, AnsiString BoundaryNames,
+                                                       std::vector<AnsiString> &StartElementIDs) const
+{
+    StartElementIDs.clear();
+    if(!Track || FirstLocation.Trim() == "") return;
+    const AnsiString requestedPlatform = PlatformNumber.Trim().UpperCase();
+    bool numberedPlatformsExist = false;
+    if(!FromContinuation && requestedPlatform != "")
+    {
+        for(int position = 0; position < Track->TrackVectorSize(); ++position)
+        {
+            const TTrackElement& element = Track->TrackElementAt(1765, position);
+            if(element.ActiveTrackElementName.UpperCase() == FirstLocation.UpperCase() &&
+               element.PlatformNumber.Trim() != "")
+            {
+                numberedPlatformsExist = true;
+                break;
+            }
+        }
+    }
+    std::vector<std::pair<int, AnsiString> > rankedCandidates;
+    for(int rearPosition = 0; rearPosition < Track->TrackVectorSize(); ++rearPosition)
+    {
+        const TTrackElement& rear = Track->TrackElementAt(1751, rearPosition);
+        if(FromContinuation)
+        {
+            if(rear.TrackType != Continuation) continue;
+            if(rear.PortalDirection == TTrackElement::PortalExit) continue;
+            if(!MultiplayerBoundaryNameAllowed(BoundaryNames, rear.ActiveTrackElementName, rear.ElementID)) continue;
+        }
+        else if(rear.TrackType == Continuation ||
+                 rear.ActiveTrackElementName.UpperCase() != FirstLocation.UpperCase()) continue;
+        if(!FromContinuation && numberedPlatformsExist &&
+           rear.PlatformNumber.Trim().UpperCase() != requestedPlatform) continue;
+
+        for(int link = 0; link < 4; ++link)
+        {
+            const int frontPosition = rear.Conn[link];
+            if(frontPosition < 0 || frontPosition >= Track->TrackVectorSize()) continue;
+            const TTrackElement& front = Track->TrackElementAt(1752, frontPosition);
+            if(front.TrackType == Continuation) continue;
+
+            const AnsiString target = FromContinuation ? FirstLocation : NextLocation;
+            int distance = target.Trim() == "" ? 0 :
+                           MultiplayerTrackDistance(Track, frontPosition, rearPosition, target);
+            if(!FromContinuation && front.ActiveTrackElementName.UpperCase() != FirstLocation.UpperCase() && distance >= 0)
+                distance += 10000; // Prefer two platform elements, but permit a short one-element location.
+            if(distance < 0) continue;
+            const AnsiString ids = rear.ElementID + " " + front.ElementID;
+            if(ids.Trim() != "") rankedCandidates.push_back(std::make_pair(distance, ids));
+        }
+    }
+    std::sort(rankedCandidates.begin(), rankedCandidates.end());
+    for(std::vector<std::pair<int, AnsiString> >::const_iterator candidate = rankedCandidates.begin();
+        candidate != rankedCandidates.end(); ++candidate)
+    {
+        bool duplicate = false;
+        for(std::vector<AnsiString>::const_iterator existing = StartElementIDs.begin();
+            existing != StartElementIDs.end(); ++existing)
+            if(*existing == candidate->second) duplicate = true;
+        if(!duplicate) StartElementIDs.push_back(candidate->second);
+        if(StartElementIDs.size() >= (FromContinuation ? 12u : 4u)) break;
+    }
+}
+
+bool TInterface::ResolveMultiplayerWTTExit(AnsiString LastLocation, AnsiString BoundaryNames,
+                                           AnsiString &ExitElementID) const
+{
+    ExitElementID = "";
+    if(!Track || LastLocation.Trim() == "") return false;
+    int bestDistance = 2000000000;
+    int bestContinuation = -1;
+    for(int position = 0; position < Track->TrackVectorSize(); ++position)
+    {
+        const TTrackElement& continuation = Track->TrackElementAt(1755, position);
+        if(continuation.TrackType != Continuation) continue;
+        if(continuation.PortalDirection == TTrackElement::PortalEntry) continue;
+        if(!MultiplayerBoundaryNameAllowed(BoundaryNames, continuation.ActiveTrackElementName,
+                                           continuation.ElementID)) continue;
+        for(int link = 0; link < 4; ++link)
+        {
+            const int insidePosition = continuation.Conn[link];
+            if(insidePosition < 0 || insidePosition >= Track->TrackVectorSize()) continue;
+            const int distance = MultiplayerTrackDistance(Track, insidePosition, position, LastLocation);
+            if(distance < 0 || distance >= bestDistance) continue;
+            bestDistance = distance;
+            bestContinuation = position;
+        }
+    }
+    if(bestContinuation < 0) return false;
+    ExitElementID = Track->TrackElementAt(1756, bestContinuation).ElementID;
+    return ExitElementID.Trim() != "";
+}
+
+namespace
+{
+bool ValidateMultiplayerWTTEntrySet(TTrainController *Controller,
+                                    const std::vector<AnsiString>& Entries)
+{
+    Controller->TrainDataVector.clear();
+    Controller->LastTimetableError = "";
+    bool endOfFile = false;
+    bool finalCall = true;
+    bool valid = Controller->ProcessOneTimetableEntry(90, 0, "00:00", endOfFile, finalCall, false, true);
+    int lineNumber = 1;
+    for(std::vector<AnsiString>::const_iterator entry = Entries.begin(); valid && entry != Entries.end(); ++entry)
+        valid = Controller->ProcessOneTimetableEntry(91, lineNumber++, *entry, endOfFile, finalCall, false, true);
+    bool twoLocationFlag = false;
+    if(valid) valid = Controller->SecondPassActions(90, false, twoLocationFlag);
+    return valid && Controller->TrainDataVector.size() == Entries.size();
+}
+
+AnsiString MultiplayerWTTLinkedReference(const AnsiString& Entry, const AnsiString& Marker)
+{
+    const int markerPosition = Entry.Pos(Marker);
+    if(markerPosition == 0) return "";
+    AnsiString remainder = Entry.SubString(markerPosition + Marker.Length(), Entry.Length());
+    const int comma = remainder.Pos(",");
+    if(comma > 0) remainder = remainder.SubString(1, comma - 1);
+    return remainder.Trim();
+}
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::InstallMultiplayerWTTTimetable(const std::vector<AnsiString>& ServiceEntries, AnsiString &ErrorMessage)
+{
+    if(!PeerWTTClockActive)
+    {
+        ErrorMessage = "The multiplayer WTT clock is not active.";
+        return false;
+    }
+    if(!TrainController->TrainVector.empty())
+    {
+        ErrorMessage = "Cannot replace Live WTT entries while a train is running.";
+        return false;
+    }
+    const TDateTime liveClock = TrainController->TTClockTime;
+    std::set<AnsiString> attemptedReferences;
+    std::set<AnsiString> acceptedReferences;
+    std::map<AnsiString, std::vector<AnsiString> > candidatesByReference;
+    for(std::vector<AnsiString>::const_iterator entry = ServiceEntries.begin(); entry != ServiceEntries.end(); ++entry)
+    {
+        const int referenceEnd = entry->Pos(";");
+        const AnsiString reference = referenceEnd > 1 ? entry->SubString(1, referenceEnd - 1) : *entry;
+        attemptedReferences.insert(reference);
+        candidatesByReference[reference].push_back(*entry);
+    }
+
+    std::map<AnsiString, std::set<AnsiString> > linkedReferences;
+    for(std::map<AnsiString, std::vector<AnsiString> >::const_iterator service = candidatesByReference.begin();
+        service != candidatesByReference.end(); ++service)
+    {
+        for(std::vector<AnsiString>::const_iterator entry = service->second.begin();
+            entry != service->second.end(); ++entry)
+        {
+            const AnsiString finishLink = MultiplayerWTTLinkedReference(*entry, ";Fns;");
+            const AnsiString startLink = MultiplayerWTTLinkedReference(*entry, ";Sns;");
+            if(finishLink != "" && candidatesByReference.count(finishLink))
+            {
+                linkedReferences[service->first].insert(finishLink);
+                linkedReferences[finishLink].insert(service->first);
+            }
+            if(startLink != "" && candidatesByReference.count(startLink))
+            {
+                linkedReferences[service->first].insert(startLink);
+                linkedReferences[startLink].insert(service->first);
+            }
+        }
+    }
+
+    std::vector<AnsiString> acceptedEntries;
+    std::set<AnsiString> processedReferences;
+    for(std::map<AnsiString, std::vector<AnsiString> >::const_iterator service = candidatesByReference.begin();
+        service != candidatesByReference.end(); ++service)
+    {
+        if(processedReferences.count(service->first)) continue;
+        std::vector<AnsiString> component;
+        std::vector<AnsiString> pending;
+        pending.push_back(service->first);
+        while(!pending.empty())
+        {
+            const AnsiString reference = pending.back();
+            pending.pop_back();
+            if(processedReferences.count(reference)) continue;
+            processedReferences.insert(reference);
+            component.push_back(reference);
+            const std::set<AnsiString>& neighbours = linkedReferences[reference];
+            for(std::set<AnsiString>::const_iterator neighbour = neighbours.begin();
+                neighbour != neighbours.end(); ++neighbour)
+                if(!processedReferences.count(*neighbour)) pending.push_back(*neighbour);
+        }
+
+        if(component.size() == 1 && linkedReferences[component.front()].empty())
+        {
+            const AnsiString reference = component.front();
+            const std::vector<AnsiString>& serviceCandidates = candidatesByReference[reference];
+            for(std::vector<AnsiString>::const_iterator entry = serviceCandidates.begin();
+                entry != serviceCandidates.end(); ++entry)
+            {
+                std::vector<AnsiString> testEntries(1, *entry);
+                if(ValidateMultiplayerWTTEntrySet(TrainController, testEntries))
+                {
+                    acceptedEntries.push_back(*entry);
+                    acceptedReferences.insert(reference);
+                    if(PeerMultiplayerForm)
+                        PeerMultiplayerForm->LogMultiplayerEvent("WTT-ACCEPT", "Reference=" + reference);
+                    break;
+                }
+                if(PeerMultiplayerForm)
+                    PeerMultiplayerForm->LogMultiplayerEvent("WTT-REJECT", "Reference=" + reference +
+                        ", reason=" + (TrainController->LastTimetableError == "" ? "parser returned false" :
+                                        TrainController->LastTimetableError) + ", candidate=" + *entry);
+            }
+            continue;
+        }
+
+        AnsiString rootReference;
+        for(std::vector<AnsiString>::const_iterator reference = component.begin();
+            reference != component.end() && rootReference == ""; ++reference)
+        {
+            const std::vector<AnsiString>& serviceCandidates = candidatesByReference[*reference];
+            for(std::vector<AnsiString>::const_iterator entry = serviceCandidates.begin();
+                entry != serviceCandidates.end(); ++entry)
+                if(entry->Pos(";Snt;") > 0 && entry->Pos(";Fns;") > 0)
+                {
+                    rootReference = *reference;
+                    break;
+                }
+        }
+
+        bool linkedAccepted = false;
+        std::vector<AnsiString> selectedComponent;
+        if(rootReference != "")
+        {
+            const std::vector<AnsiString>& rootCandidates = candidatesByReference[rootReference];
+            for(std::vector<AnsiString>::const_iterator rootEntry = rootCandidates.begin();
+                rootEntry != rootCandidates.end() && !linkedAccepted; ++rootEntry)
+            {
+                if(rootEntry->Pos(";Fns;") == 0) continue;
+                std::vector<AnsiString> testEntries;
+                testEntries.push_back(*rootEntry);
+                bool complete = true;
+                for(std::vector<AnsiString>::const_iterator reference = component.begin();
+                    reference != component.end(); ++reference)
+                {
+                    if(*reference == rootReference) continue;
+                    const std::vector<AnsiString>& serviceCandidates = candidatesByReference[*reference];
+                    bool foundLinked = false;
+                    for(std::vector<AnsiString>::const_iterator entry = serviceCandidates.begin();
+                        entry != serviceCandidates.end(); ++entry)
+                    {
+                        if(entry->Pos(";Sns;") == 0 && entry->Pos(";Fns;") == 0) continue;
+                        testEntries.push_back(*entry);
+                        foundLinked = true;
+                        break;
+                    }
+                    if(!foundLinked)
+                    {
+                        complete = false;
+                        break;
+                    }
+                }
+                if(complete && ValidateMultiplayerWTTEntrySet(TrainController, testEntries))
+                {
+                    selectedComponent = testEntries;
+                    linkedAccepted = true;
+                }
+                else if(PeerMultiplayerForm)
+                    PeerMultiplayerForm->LogMultiplayerEvent("WTT-FORMATION-REJECT", "Component rooted at " +
+                        rootReference + ", reason=" + (TrainController->LastTimetableError == "" ?
+                        "parser returned false" : TrainController->LastTimetableError));
+            }
+        }
+
+        if(linkedAccepted)
+        {
+            acceptedEntries.insert(acceptedEntries.end(), selectedComponent.begin(), selectedComponent.end());
+            for(std::vector<AnsiString>::const_iterator reference = component.begin();
+                reference != component.end(); ++reference)
+            {
+                acceptedReferences.insert(*reference);
+                if(PeerMultiplayerForm)
+                    PeerMultiplayerForm->LogMultiplayerEvent("WTT-FORMATION-ACCEPT", "Reference=" + *reference);
+            }
+            continue;
+        }
+
+        // If an inferred link is unsuitable for this physical map, retain the
+        // old behaviour: load each service's independent Snt/Frh candidate.
+        for(std::vector<AnsiString>::const_iterator reference = component.begin();
+            reference != component.end(); ++reference)
+        {
+            const std::vector<AnsiString>& serviceCandidates = candidatesByReference[*reference];
+            for(std::vector<AnsiString>::const_iterator entry = serviceCandidates.begin();
+                entry != serviceCandidates.end(); ++entry)
+            {
+                if(entry->Pos(";Fns;") > 0 || entry->Pos(";Sns;") > 0) continue;
+                std::vector<AnsiString> testEntries(1, *entry);
+                if(!ValidateMultiplayerWTTEntrySet(TrainController, testEntries)) continue;
+                acceptedEntries.push_back(*entry);
+                acceptedReferences.insert(*reference);
+                if(PeerMultiplayerForm)
+                    PeerMultiplayerForm->LogMultiplayerEvent("WTT-FORMATION-FALLBACK", "Reference=" + *reference +
+                        " loaded as an independent service");
+                break;
+            }
+        }
+    }
+
+    if(!acceptedEntries.empty() && !ValidateMultiplayerWTTEntrySet(TrainController, acceptedEntries))
+    {
+        ErrorMessage = "RailOS rejected the combined Live WTT after candidate selection: " +
+                       (TrainController->LastTimetableError == "" ? "unknown parser error" :
+                        TrainController->LastTimetableError);
+        TrainController->TrainDataVector.clear();
+        return false;
+    }
+    TrainController->TimetableStartTime = TDateTime(0);
+    TrainController->TTClockTime = liveClock;
+    TrainController->RestartTime = liveClock;
+    TrainController->BaseTime = TDateTime::CurrentDateTime();
+    TrainController->BuildContinuationTrainExpectationMultiMap(90);
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+
+    if(acceptedEntries.empty())
+    {
+        ErrorMessage = "RailOS could not represent any of the generated Live WTT services on this map.";
+        return false;
+    }
+    ErrorMessage = "Loaded " + AnsiString(static_cast<int>(acceptedEntries.size())) + " Live WTT services";
+    const int rejectedServices = static_cast<int>(attemptedReferences.size() - acceptedReferences.size());
+    if(rejectedServices > 0)
+        ErrorMessage += "; skipped " + AnsiString(rejectedServices) + " services whose WTT path cannot be represented on this map";
+    ErrorMessage += ".";
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::ClearMultiplayerWTTTimetable()
+{
+    if(!TrainController->TrainVector.empty()) return false;
+    TrainController->ContinuationTrainExpectationMultiMap.clear();
+    TrainController->TrainDataVector.clear();
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::ApplyMultiplayerWTTSkip(AnsiString ServiceReference, AnsiString LocationName)
+{
+    for(TTrainDataVector::iterator service = TrainController->TrainDataVector.begin();
+        service != TrainController->TrainDataVector.end(); ++service)
+    {
+        if(service->ServiceReference != ServiceReference) continue;
+        for(TActionVector::iterator action = service->ActionVector.begin(); action != service->ActionVector.end(); ++action)
+        {
+            if(action->LocationName != LocationName) continue;
+            if(action->FormatType != TimeLoc && action->FormatType != TimeTimeLoc) return action->FormatType == PassTime;
+            action->FormatType = PassTime;
+            action->EventTime = action->DepartureTime >= TDateTime(0) ? action->DepartureTime : action->ArrivalTime;
+            action->ArrivalTime = TDateTime(-1);
+            action->DepartureTime = TDateTime(-1);
+            action->MinDwellTime = 0.0;
+            return true;
+        }
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::MultiplayerWTTServiceRunning(AnsiString ServiceReference) const
+{
+    for(TTrainDataVector::const_iterator service = TrainController->TrainDataVector.begin();
+        service != TrainController->TrainDataVector.end(); ++service)
+    {
+        if(service->ServiceReference != ServiceReference) continue;
+        for(TTrainOperatingDataVector::const_iterator operating = service->TrainOperatingDataVector.begin();
+            operating != service->TrainOperatingDataVector.end(); ++operating)
+            if(operating->RunningEntry == Running) return true;
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+bool TInterface::ApplyMultiplayerWTTCancellation(AnsiString ServiceReference)
+{
+    for(TTrainDataVector::iterator service = TrainController->TrainDataVector.begin();
+        service != TrainController->TrainDataVector.end(); ++service)
+    {
+        if(service->ServiceReference != ServiceReference) continue;
+        for(TTrainOperatingDataVector::const_iterator operating = service->TrainOperatingDataVector.begin();
+            operating != service->TrainOperatingDataVector.end(); ++operating)
+            if(operating->RunningEntry == Running) return false;
+        bool changed = false;
+        for(TTrainOperatingDataVector::iterator operating = service->TrainOperatingDataVector.begin();
+            operating != service->TrainOperatingDataVector.end(); ++operating)
+        {
+            if(operating->RunningEntry == NotStarted)
+            {
+                operating->RunningEntry = Exited;
+                changed = true;
+            }
+        }
+        return changed;
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -2719,6 +3800,7 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
         Utilities->PerformanceFileIfstream.close();  //added at v2.23.3
         TrainController->UnplotTrains(1);
         TrainController->FinishedOperation(0);
+        if(PeerMultiplayerForm) PeerMultiplayerForm->RailwayOperationEnded();
         RouteMode = None;
         PreferredRoute = true; // default starting conditions
         ConsecSignalsRoute = true; // default starting conditions
@@ -7672,6 +8754,12 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
         TrainController->LogEvent("MainScreenMouseDown2," + AnsiButton + "," + AnsiString(X) + "," + AnsiString(Y) + "," + AnsiString(HLoc) + "," + AnsiString(VLoc));
         int NoOffsetX, NoOffsetY;
         Track->GetTruePositionsFromScreenPos(0, NoOffsetX, NoOffsetY, X, Y);
+        if(Button == mbRight && Level2TrackMode == SetPortalDirection)
+        {
+            SetOrDescribePortalDirection(HLoc, VLoc, false);
+            Utilities->CallLogPop(1806);
+            return;
+        }
         if(Button == mbRight) // track, PrefDir or text erase, PrefDir/route truncate, or take signaller control of train
         {
             // this routine new at v2.1.0.  Allows railway moving for zoom-in mode when no element at HLoc & VLoc
@@ -7679,6 +8767,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             AnsiString Text = ""; // needed for TextFound but not used
             RightClickTrainMousePosX = X;
             RightClickTrainMousePosY = Y;
+            RightClickModTrackVectorPosition = -1;
+            PrepareFeatureModContext(-1);
             RightClickInterposeTrackVectorPosition = -1;
             InterposeLabelMenuItem->Visible = false;
             EditInterposeLabelMenuItem->Visible = false;
@@ -7891,6 +8981,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 bool PlainRightClick = !Shift.Contains(ssCtrl) && !CtrlKey;
                 if(FoundFlag && PlainRightClick)
                 {
+                    RightClickModTrackVectorPosition = VecPos;
+                    PrepareFeatureModContext(VecPos);
                     RightClickInterposeTrackVectorPosition = VecPos;
                     if(Track->InterposeLabelMap.find(VecPos) == Track->InterposeLabelMap.end())
                     {
@@ -8358,6 +9450,21 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             RevertToOriginalRouteSelector(2);
         }
         mbLeftDown = true;
+
+        if(Level2TrackMode == SetPlatformNumber)
+        {
+            TrainController->LogEvent("mbLeft + SetPlatformNumber");
+            SetPlatformNumberAt(HLoc, VLoc);
+            Utilities->CallLogPop(1808);
+            return;
+        }
+        if(Level2TrackMode == SetPortalDirection)
+        {
+            TrainController->LogEvent("mbLeft + SetPortalDirection");
+            SetOrDescribePortalDirection(HLoc, VLoc, true);
+            Utilities->CallLogPop(1807);
+            return;
+        }
 
         if(Level2TrackMode == AddTrack)
         {
@@ -10342,6 +11449,7 @@ void __fastcall TInterface::MasterClockTimer(TObject *Sender)
             return; // don't continue after an error
         }
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MasterClockTimer");
+        if(FeatureMods && TrainController) FeatureMods->emit_event("tick", std::to_string(double(TrainController->TTClockTime)));
         // put counter outside Clock2 as that may be missed
         LCResetCounter++;
 // this checks LCs every 20 clock ticks (1 sec) & raises barriers if no route & no train present, to avoid delays due to too frequent calls
@@ -12097,6 +13205,8 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
             TE.HLoc = HLoc;
 
             TE.ActiveTrackElementName = Track->SelectVectorAt(37, x).ActiveTrackElementName; // these new in v2.4.0 so keeps attributes
+            TE.PortalDirection = Track->SelectVectorAt(71, x).PortalDirection;
+            TE.PlatformNumber = Track->SelectVectorAt(76, x).PlatformNumber;
             TE.LocationName = Track->SelectVectorAt(38, x).LocationName;
             TE.Length01 = Track->SelectVectorAt(39, x).Length01;
             TE.Length23 = Track->SelectVectorAt(40, x).Length23;
@@ -12211,6 +13321,8 @@ void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
             TE.HLoc = HLoc;
 
             TE.ActiveTrackElementName = Track->SelectVectorAt(44, x).ActiveTrackElementName; // these new in v2.4.0 so keeps attributes
+            TE.PortalDirection = Track->SelectVectorAt(72, x).PortalDirection;
+            TE.PlatformNumber = Track->SelectVectorAt(77, x).PlatformNumber;
             TE.LocationName = Track->SelectVectorAt(45, x).LocationName;
             TE.Length01 = Track->SelectVectorAt(46, x).Length01;
             TE.Length23 = Track->SelectVectorAt(47, x).Length23;
@@ -12334,6 +13446,8 @@ void __fastcall TInterface::RotateMenuItemClick(TObject *Sender)
             TE.HLoc = HLoc;
 
             TE.ActiveTrackElementName = Track->SelectVectorAt(51, x).ActiveTrackElementName; // these new in v2.4.0 so keeps attributes
+            TE.PortalDirection = Track->SelectVectorAt(73, x).PortalDirection;
+            TE.PlatformNumber = Track->SelectVectorAt(78, x).PlatformNumber;
             TE.LocationName = Track->SelectVectorAt(52, x).LocationName;
             TE.Length01 = Track->SelectVectorAt(53, x).Length01;
             TE.Length23 = Track->SelectVectorAt(54, x).Length23;
@@ -12637,6 +13751,8 @@ void __fastcall TInterface::RotRightMenuItemClick(TObject *Sender)
             TE.HLoc = HLoc;
 
             TE.ActiveTrackElementName = Track->SelectVectorAt(58, x).ActiveTrackElementName; // these new in v2.4.0 so keeps attributes
+            TE.PortalDirection = Track->SelectVectorAt(74, x).PortalDirection;
+            TE.PlatformNumber = Track->SelectVectorAt(79, x).PlatformNumber;
             TE.LocationName = Track->SelectVectorAt(59, x).LocationName;
             TE.Length01 = Track->SelectVectorAt(60, x).Length01;
             TE.Length23 = Track->SelectVectorAt(61, x).Length23;
@@ -12923,6 +14039,8 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
             TE.HLoc = HLoc;
 
             TE.ActiveTrackElementName = Track->SelectVectorAt(66, x).ActiveTrackElementName; // these new in v2.4.0 so keeps attributes
+            TE.PortalDirection = Track->SelectVectorAt(75, x).PortalDirection;
+            TE.PlatformNumber = Track->SelectVectorAt(80, x).PlatformNumber;
             TE.LocationName = Track->SelectVectorAt(67, x).LocationName;
             TE.Length01 = Track->SelectVectorAt(68, x).Length01;
             TE.Length23 = Track->SelectVectorAt(69, x).Length23;
@@ -14546,6 +15664,188 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
     catch(const Exception &e)
     {
         ErrorLog(241, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::BuildFeatureModMenus()
+{
+    FeatureModMenuBindings.clear();
+    const std::vector<FeatureModAction>& actions = FeatureMods->actions();
+    for(size_t index = 0; index < actions.size(); ++index)
+    {
+        if(actions[index].event != "track_context") continue;
+        TFeatureModMenuBinding binding;
+        binding.ActionIndex = index;
+        binding.EditItem = new TMenuItem(this);
+        binding.EditItem->Caption = actions[index].caption.c_str();
+        binding.EditItem->Tag = static_cast<int>(index) + 1;
+        binding.EditItem->OnClick = FeatureModMenuItemClick;
+        binding.EditItem->Visible = false;
+        PopupMenu->Items->Add(binding.EditItem);
+        binding.RemoveItem = new TMenuItem(this);
+        binding.RemoveItem->Caption = actions[index].remove_caption.c_str();
+        binding.RemoveItem->Tag = -(static_cast<int>(index) + 1);
+        binding.RemoveItem->OnClick = FeatureModMenuItemClick;
+        binding.RemoveItem->Visible = false;
+        PopupMenu->Items->Add(binding.RemoveItem);
+        FeatureModMenuBindings.push_back(binding);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::PrepareFeatureModContext(int TrackVectorPosition)
+{
+    if(FeatureMods) FeatureMods->emit_event("track_context", std::to_string(TrackVectorPosition));
+    for(std::vector<TFeatureModMenuBinding>::iterator binding = FeatureModMenuBindings.begin();
+        binding != FeatureModMenuBindings.end(); ++binding)
+    {
+        binding->EditItem->Visible = false;
+        binding->RemoveItem->Visible = false;
+        if(TrackVectorPosition < 0) continue;
+        const FeatureModAction& action = FeatureMods->actions().at(binding->ActionIndex);
+        const bool exists = Track->FindModTrackOverlay(action.mod_id, action.id, TrackVectorPosition) != nullptr;
+        binding->EditItem->Caption = (exists ? action.edit_caption : action.caption).c_str();
+        binding->EditItem->Visible = true;
+        binding->EditItem->Enabled = true;
+        binding->RemoveItem->Visible = exists;
+        binding->RemoveItem->Enabled = exists;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::FeatureModColourPanelClick(TObject *Sender)
+{
+    TPanel *selected = dynamic_cast<TPanel*>(Sender);
+    if(!selected) return;
+    FeatureModDialogColour = selected->Tag;
+    TWinControl *parent = selected->Parent;
+    for(int index = 0; index < parent->ControlCount; ++index)
+    {
+        TPanel *panel = dynamic_cast<TPanel*>(parent->Controls[index]);
+        if(panel && panel->Tag != 0) panel->BevelOuter = bvRaised;
+    }
+    selected->BevelOuter = bvLowered;
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::GetFeatureModTextOverlayDetails(const FeatureModAction& Action, AnsiString& Text, TColor& BackgroundColour)
+{
+    TForm *dialog = new TForm(this);
+    dialog->Caption = Action.caption.c_str();
+    dialog->BorderStyle = bsDialog;
+    dialog->Position = poMainFormCenter;
+    dialog->ClientWidth = 270;
+    dialog->ClientHeight = 132;
+
+    TLabel *text_label = new TLabel(dialog);
+    text_label->Parent = dialog;
+    text_label->Left = 12;
+    text_label->Top = 14;
+    text_label->Caption = "Text:";
+    TEdit *text_edit = new TEdit(dialog);
+    text_edit->Parent = dialog;
+    text_edit->Left = 60;
+    text_edit->Top = 10;
+    text_edit->Width = 196;
+    text_edit->MaxLength = Action.max_length;
+    text_edit->Text = Text;
+
+    TLabel *colour_label = new TLabel(dialog);
+    colour_label->Parent = dialog;
+    colour_label->Left = 12;
+    colour_label->Top = 50;
+    colour_label->Caption = "Colour:";
+    TColor colours[4] = {clSilver, clGreen, clRed, clYellow};
+    for(int index = 0; index < 4; ++index)
+    {
+        TPanel *panel = new TPanel(dialog);
+        panel->Parent = dialog;
+        panel->Left = 60 + (index * 42);
+        panel->Top = 46;
+        panel->Width = 34;
+        panel->Height = 24;
+        panel->Caption = "";
+        panel->Color = colours[index];
+        panel->ParentColor = false;
+        panel->ParentBackground = false;
+        panel->Tag = static_cast<int>(colours[index]);
+        panel->BevelOuter = colours[index] == BackgroundColour ? bvLowered : bvRaised;
+        panel->OnClick = FeatureModColourPanelClick;
+    }
+    FeatureModDialogColour = static_cast<int>(BackgroundColour);
+
+    TButton *ok = new TButton(dialog);
+    ok->Parent = dialog;
+    ok->Left = 104;
+    ok->Top = 94;
+    ok->Width = 72;
+    ok->Caption = "OK";
+    ok->Default = true;
+    ok->ModalResult = mrOk;
+    TButton *cancel = new TButton(dialog);
+    cancel->Parent = dialog;
+    cancel->Left = 184;
+    cancel->Top = 94;
+    cancel->Width = 72;
+    cancel->Caption = "Cancel";
+    cancel->Cancel = true;
+    cancel->ModalResult = mrCancel;
+    dialog->ActiveControl = text_edit;
+
+    bool accepted = dialog->ShowModal() == mrOk;
+    if(accepted)
+    {
+        Text = AnsiString(text_edit->Text).Trim();
+        accepted = Text != "";
+        BackgroundColour = static_cast<TColor>(FeatureModDialogColour);
+    }
+    delete dialog;
+    return accepted;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::FeatureModMenuItemClick(TObject *Sender)
+{
+    TMenuItem *item = dynamic_cast<TMenuItem*>(Sender);
+    if(!item || item->Tag == 0 || RightClickModTrackVectorPosition < 0 ||
+       RightClickModTrackVectorPosition >= Track->TrackVectorSize()) return;
+    const bool remove = item->Tag < 0;
+    const size_t action_index = static_cast<size_t>(abs(item->Tag) - 1);
+    if(action_index >= FeatureMods->actions().size()) return;
+    const FeatureModAction& action = FeatureMods->actions().at(action_index);
+
+    if(remove)
+    {
+        Track->RemoveModTrackOverlay(action.mod_id, action.id, RightClickModTrackVectorPosition);
+        ClearandRebuildRailway(88);
+        return;
+    }
+    if(!action.lua_handler.empty())
+    {
+        if(FeatureMods->invoke_lua(action_index, RightClickModTrackVectorPosition)) ClearandRebuildRailway(87);
+        return;
+    }
+    if(action.command == "text_overlay")
+    {
+        AnsiString text = "";
+        TColor colour = action.default_colour;
+        TTrack::TModTrackOverlay *existing = Track->FindModTrackOverlay(action.mod_id, action.id, RightClickModTrackVectorPosition);
+        if(existing)
+        {
+            text = existing->Text;
+            colour = existing->BackgroundColour;
+        }
+        if(GetFeatureModTextOverlayDetails(action, text, colour))
+        {
+            Track->SetModTrackOverlay(action.mod_id, action.id, RightClickModTrackVectorPosition, text, colour);
+            ClearandRebuildRailway(87);
+        }
     }
 }
 
@@ -18589,6 +19889,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
         //populate StaticFeaturesDisplay at this point prior to train plotting
         StaticFeaturesDisplay->GetImage()->Picture->Bitmap->Assign(HiddenScreen->Picture->Bitmap); //now has same offsets as mainscreen
         TrainController->ReplotTrains(0, HiddenDisplay);
+        Track->PlotModTrackOverlays(1, HiddenDisplay);
         Track->PlotInterposeLabels(1, HiddenDisplay);
     }
     Display->ZoomOutFlag = false;
@@ -18903,6 +20204,7 @@ void TInterface::SetLevel1Mode(int Caller)
     switch(Level1Mode) // use the data member
     {
     case BaseMode:
+        MultiplayerOperateMode = false;
         CopyMenuItem->ShortCut = TextToShortCut(""); // added these for v2.1.0 to set default values after use of the 'Edit' menu during track building
         CutMenuItem->ShortCut = TextToShortCut(""); // to allow normal cutting/copying/pasting, especially in timetable construction or editing
         PasteMenuItem->ShortCut = TextToShortCut("");
@@ -18962,6 +20264,9 @@ void TInterface::SetLevel1Mode(int Caller)
         if(Track->IsTrackFinished())
         {
             PlanPrefDirsMenuItem->Enabled = true;
+            SetPortalDirectionsMenuItem->Enabled = true;
+            SetPlatformNumbersMenuItem->Enabled = true;
+            OperateMultiplayerMenuItem->Enabled = (TimetableTitle == "" && TrainController->TrainDataVector.empty());
             if(TimetableTitle != "")
             {
                 OperateRailwayMenuItem->Enabled = true;
@@ -18974,7 +20279,10 @@ void TInterface::SetLevel1Mode(int Caller)
         else
         {
             PlanPrefDirsMenuItem->Enabled = false;
+            SetPortalDirectionsMenuItem->Enabled = false;
+            SetPlatformNumbersMenuItem->Enabled = false;
             OperateRailwayMenuItem->Enabled = false;
+            OperateMultiplayerMenuItem->Enabled = false;
         }
         if(RlyFile)
         {
@@ -19683,6 +20991,21 @@ void TInterface::SetLevel2TrackMode(int Caller)
             ClearandRebuildRailway(35); // to get rid of earlier red rectangle
             UserGraphicReselectPanel->Visible = false;
             SetTrackBuildImages(12);
+            break;
+
+        case SetPortalDirection:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "PORTAL DIRECTION: Left click a continuation to cycle Both / Entry only / Exit only. "
+                                 "Right click to inspect without changing it.";
+            ClearandRebuildRailway(101);
+            UserGraphicReselectPanel->Visible = false;
+            break;
+
+        case SetPlatformNumber:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "PLATFORM NUMBERS: Click a named platform, type its number, then press Enter.";
+            ClearandRebuildRailway(102);
+            UserGraphicReselectPanel->Visible = false;
             break;
 
         case DistanceStart:
@@ -21060,11 +22383,16 @@ void TInterface::TrackTrainFloat(int Caller)
                     {
                         ShowTrainTTFloatFlag = true;
                     }
-                    if((TrainID > -1) && (ShowTrainStatusFloatFlag || ShowTrainTTFloatFlag))
+                    if((TrainID > -1) && TrainController->TrainExistsAtIdent(70, TrainID) &&
+                       (ShowTrainStatusFloatFlag || ShowTrainTTFloatFlag))
                     {
                         TTrain Train = TrainController->TrainVectorAtIdent(53, TrainID);
                         TrainStatusFloat = GetTrainStatusFloat(0, TrainID, FormatNoDPStr, SpecialStr);
                         TrainTTFloat = Train.FloatingTimetableString(1, Train.ActionVectorEntryPtr);
+                        AnsiString fullWTT;
+                        if(PeerMultiplayerForm && Train.TrainDataEntryPtr &&
+                           PeerMultiplayerForm->GetFullWTTForService(Train.TrainDataEntryPtr->ServiceReference, fullWTT))
+                            TrainTTFloat = fullWTT;
                     }
                     else if(ContinuationPos > -1)
                     {
@@ -21082,16 +22410,25 @@ void TInterface::TrackTrainFloat(int Caller)
                 // if a bridge & 2 trains at that position will select the train with TrainIDOnElement set
                 {
                     int TrainID = Track->TrackElementAt(452, VecPos).TrainIDOnElement;
-                    if(TrainStatusShowing)
+                    if(!TrainController->TrainExistsAtIdent(71, TrainID))
+                    {
+                        // A departing train can leave its ID on the continuation until the next redraw.
+                        Track->TrackElementAt(1757, VecPos).TrainIDOnElement = -1;
+                    }
+                    else if(TrainStatusShowing)
                     {
                         ShowTrainStatusFloatFlag = true;
                         TrainStatusFloat = GetTrainStatusFloat(1, TrainID, FormatNoDPStr, SpecialStr);
                     }
-                    if(TrainTTShowing)
+                    if(TrainController->TrainExistsAtIdent(72, TrainID) && TrainTTShowing)
                     {
                         ShowTrainTTFloatFlag = true;
                         TTrain Train = TrainController->TrainVectorAtIdent(54, TrainID);
                         TrainTTFloat = Train.FloatingTimetableString(0, Train.ActionVectorEntryPtr);
+                        AnsiString fullWTT;
+                        if(PeerMultiplayerForm && Train.TrainDataEntryPtr &&
+                           PeerMultiplayerForm->GetFullWTTForService(Train.TrainDataEntryPtr->ServiceReference, fullWTT))
+                            TrainTTFloat = fullWTT;
                     }
                 }
 
@@ -21334,6 +22671,10 @@ void TInterface::GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, An
                 {
                     TrainTTFloat = TrainController->ContinuationEntryFloatingTTString(0, TTDEPtr, CTEIt->second.RepeatNumber, CTEIt->second.IncrementalMinutes,
                           CTEIt->second.IncrementalDigits);
+                    AnsiString fullWTT;
+                    if(PeerMultiplayerForm &&
+                       PeerMultiplayerForm->GetFullWTTForService(TTDEPtr->ServiceReference, fullWTT))
+                        TrainTTFloat = fullWTT;
                 }
             }
         }
@@ -23087,6 +24428,8 @@ In each case need to ensure that the following points are considered and dealt w
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
             SessionFile.close();
+            FeatureMods->save_session_state(std::string(SessionFileStr.c_str()), Track);
+            FeatureMods->emit_event("session_saved", std::string(SessionFileStr.c_str()));
             TrainController->StopTTClockMessage(4, "Session saved: Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
                                                 RailwayTitle + "; " + TimetableTitle + ".ssn");
             LastNonCtrlOrShiftKeyDown = -1;
@@ -23964,6 +25307,8 @@ FINISHEDLOADING:
                     {
                         SessionFile.close();
                     }
+                    FeatureMods->load_session_state(std::string(AnsiString(LoadSessionDialog->FileName).c_str()), Track);
+                    FeatureMods->emit_event("session_loaded", std::string(AnsiString(LoadSessionDialog->FileName).c_str()));
                     // deal with other settings
                     //first check if there are any trains without descriptions and if so allocate them from TrainDataEntryPtr->FixedDescription
                     if(!TrainController->TrainVector.empty()) //added at v2.17.0 as old session files won't have train descriptions

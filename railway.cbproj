@@ -80,7 +80,7 @@
         <DynamicRTL>true</DynamicRTL>
         <UsePackages>true</UsePackages>
         <IntermediateOutputDir>.\$(Platform)\$(Config)</IntermediateOutputDir>
-        <FinalOutputDir>.\$(Platform)\$(Config)</FinalOutputDir>
+        <FinalOutputDir>.</FinalOutputDir>
         <BCC_wpar>false</BCC_wpar>
         <BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
         <BCC_ExtendedErrorInfo>true</BCC_ExtendedErrorInfo>
@@ -234,6 +234,14 @@
         <CppCompile Include="Modding.cpp">
             <DependentOn>Modding.h</DependentOn>
             <BuildOrder>15</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="MultiplayerPeer.cpp">
+            <DependentOn>MultiplayerPeer.h</DependentOn>
+            <BuildOrder>16</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="MultiplayerWTT.cpp">
+            <DependentOn>MultiplayerWTT.h</DependentOn>
+            <BuildOrder>17</BuildOrder>
         </CppCompile>
         <CppCompile Include="PerfLogUnit.cpp">
             <Form>PerfLogForm</Form>

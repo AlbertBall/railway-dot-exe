@@ -304,6 +304,12 @@
 #define clStoppedTrainInFront      (TColor)0xFF9999 //lavender blue  16751001d     35a    83
 #define clTRSBackground            (TColor)0xFFCCFF //light pink     16764159d     37a    d1
 #define clTrainFailedBackground    (TColor)0x0066FF //orange            26367d      7a    c0
+#define clTrainEarlyBackground     (TColor)0xFFCC99 //light blue     16764057d
+#define clTrainOnTimeBackground    (TColor)0x66FF66 //green          6741862d
+#define clTrainLate1Background     (TColor)0x00FFCC //yellow           65484d
+#define clTrainLate5Background     (TColor)0x0099FF //orange           39423d
+#define clTrainLate10Background    (TColor)0x0000CC //red                204d
+#define clTrainLate20Background    (TColor)0xFF66FF //pink          16738047d
 
 /// Handles graphic data & functions, single object defined
 class TRailGraphics

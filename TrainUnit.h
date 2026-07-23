@@ -302,6 +302,7 @@ typedef std::vector<TTrainFormattedInformation>TAllFormattedTrains;
 
 class TTrainController; // declared here so TTrain can access it as a friend
 class TInterface; // declared here so TTrain can access it as a friend
+class FeatureModManager;
 
 /// Defines the train position with respect to the track elements; three consecutive elements are Lead (front), Mid (middle) and Lag (rear), and a train is either fully on two of the elements (LeadMid or MidLag), or is straddling all three elements (LeadMidLag).  As the train moves forwards the element that was Lead becomes Mid and Mid becomes Lag.
 enum TStraddle
@@ -317,6 +318,7 @@ private:
 
     friend TTrainController;
     friend TInterface;
+    friend FeatureModManager;
 
 // start data
     static const int CallOnMaxSpeed = 30;
@@ -533,6 +535,10 @@ private:
 ///< the existing track graphic that the train headcode segment covers up (one for each headcode segment)
     Graphics::TBitmap *FrontCodePtr;
 ///< points to the front headcode segment, this is set to red or blue depending on TrainMode
+    Graphics::TBitmap *HeadCodeLabelPtr;
+///< complete readable headcode used by the interpose-label train display capability
+    Graphics::TBitmap *HeadCodeLabelBackgroundPtr;
+///< pixels saved underneath the complete headcode label
     Graphics::TBitmap *HeadCodeGrPtr[4];
 ///< points to the headcode segment graphics e.g. 5,A,4,7.
     Graphics::TBitmap *LongServRefNameBitmap;  //added at v2.22.0
@@ -544,6 +550,8 @@ private:
 
     TColor BackgroundColour;
 ///< the background colour of the train's headcode graphics
+    bool HeadCodeLabelPlotted;
+    int HeadCodeLabelH, HeadCodeLabelV;
     TStraddle Straddle;
 ///< the current Straddle value of the train (see TStraddle above)
     UnicodeString SelReminderString;
@@ -615,6 +623,14 @@ will stop at (true) or pass (false) the location.*/
 
 /// Returns the timetable action time corresponding to 'Time' for this train, i.e. it adjusts the time value according to the train's RepeatNumber and the incremental minutes between repeats
     TDateTime GetTrainTime(int Caller, TDateTime Time);
+/// Returns the current timetable performance in minutes, negative for early and positive for late
+    double CurrentTimelinessMinutes(int Caller);
+/// Selects the configured lateness-band colour for this train
+    TColor TimelinessBackgroundColour(int Caller);
+/// True when Colour is one of the lateness-band colours
+    bool IsTimelinessBackgroundColour(TColor Colour) const;
+/// Refreshes the train colour when the timetable performance crosses a lateness threshold
+    void UpdateTimelinessBackgroundColour(int Caller, TDisplay *Disp);
 
 /// Reverses the direction of motion of the train
     void ChangeTrainDirection(int Caller, bool NoLogFlag); //NoLogFlag added at v2.12.0 for new service TT skips
@@ -656,6 +672,8 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
     void PlotAlternativeTrackRouteGraphic(int Caller, unsigned int LagElement, int LagELinkPos, int HOffset, int VOffset, TStraddle StraddleValue);
 /// Replot the graphic pointed to by BackgroundPtr (see above) after a train has passed
     void PlotBackgroundGraphic(int Caller, int ArrayNumber, TDisplay *Disp) const;
+/// Restores the pixels covered by the optional complete headcode label
+    void UnplotHeadCodeLabel(int Caller, TDisplay *Disp);
 /// Plots the train and sets up all relevant members for a new train when it is introduced into the railway
     void PlotStartPosition(int Caller);
 /// Plots the train on the display in normal (zoomed-in) mode
@@ -930,6 +948,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///<added v2.2.0 for Op time to act display
     TTrainDataVector TrainDataVector, TrainDataVectorCopy;
 ///< vector containing the internal timetable, the copy is used for conflict analysis only
+    AnsiString LastTimetableError;
+///< most recent timetable parser/second-pass error, also retained when UI messages are suppressed
     TTrainVector TrainVector;
 ///< vector containing all trains currently in the railway
     TFont *LongServRefFont;

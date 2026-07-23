@@ -1,0 +1,25 @@
+# Fallbacks for edges of the currently modelled multiplayer network only.
+# Journeys between registered signalboxes do not need entries here: RailOS derives
+# their permitted portals from connections.csv and the owning boxes in the WTT.
+# Signalbox,WTT location immediately outside the modelled network,continuation active name(s)
+
+# Guildford ASC
+GD,SHALFORD JN,GDBEP1
+GD,LEATHERHEAD,GDW1;GDW2
+GD,BLACKWATER,GDBEF1
+GD,WOKINGHAM,GDBEF1
+GD,FELTHAM,GDWK3;GDWK4
+
+# Woking ASC external edges
+WK,NEW MALDEN,WKWIMBLEDON1
+WK,WOKING JN,WKBASINGSTOKE1
+WK,PIRBRIGHT JN,WKBASINGSTOKE1
+WK,FARNBOROUGH (MAIN),WKBASINGSTOKE1
+WK,CHERTSEY,WKBEF1
+WK,ADDLESTONE JN,WKBEF1
+WK,ALDERSHOT NORTH JN,GDWK2
+WK,CAMBERLEY,WKBEF2
+WK,FRIMLEY JN,WKBEF2
+
+# Reigate
+RG,REDHILL,RGT1

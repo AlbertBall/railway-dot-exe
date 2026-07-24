@@ -1,0 +1,24 @@
+# from box,local continuation element ID,to box,remote continuation element ID
+# Guildford GDRG1 (east edge) to Reigate RGGD1 (west edge), top and bottom tracks.
+GD,125-21,RG,33-19
+GD,125-22,RG,33-20
+RG,33-19,GD,125-21
+RG,33-20,GD,125-22
+
+# Guildford to Woking.  The active continuation names in both maps are
+# GDWK1 (two tracks), GDWK2 (two tracks), GDWK3 and GDWK4.
+GD,N21-21,WK,98-15
+GD,N21-22,WK,98-16
+WK,98-15,GD,N21-21
+WK,98-16,GD,N21-22
+
+GD,0-33,WK,241-10
+GD,1-33,WK,242-10
+WK,241-10,GD,0-33
+WK,242-10,GD,1-33
+
+GD,8-25,WK,203-15
+WK,203-15,GD,8-25
+
+GD,17-26,WK,208-16
+WK,208-16,GD,17-26

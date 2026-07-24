@@ -31,6 +31,7 @@
 #include <fstream>
 #include <list>
 #include <utility>                       //for pair
+#include <string>
 #include "DisplayUnit.h"                 //for UserGraphicVector
 #include <windows.h>            //needed for 64 bit compilation
 #include "Utilities.h"
@@ -128,12 +129,18 @@ class TTrackElement : public TFixedTrackPiece
 {
 public: // everything uses these - should really have Gets & Sets but too many to change now
 
+    enum TPortalDirection {PortalBoth, PortalEntry, PortalExit};
+
     AnsiString ActiveTrackElementName;
 ///< Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can't stop there).  Only active track elements where there are platforms or non-station named locations (not footcrossings) have ActiveTrackElementNames
     AnsiString ElementID;
 ///< the element identifier based on position in the railway
     AnsiString LocationName;
 ///< location name not used for timetabling, only for identification: platforms, non-station named locations, concourses (inactive) and footcrossings (active) have LocationNames
+    AnsiString PlatformNumber;
+///< Optional map-editor platform identifier used by Live WTT to choose the correct starting track at a named location
+    TPortalDirection PortalDirection;
+///< Multiplayer direction for continuations: both directions by default, entry-only, or exit-only
 
     bool CallingOnSet;
 ///< Used for for signals only when a train is being called on - used to plot the position lights
@@ -167,10 +174,10 @@ public: // everything uses these - should really have Gets & Sets but too many t
 // inline functions
 
 /// Constructor for non-specific default element. Use high neg numbers for 'unset' h & v as can go high negatively legitimately
-    TTrackElement() : TFixedTrackPiece(), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""), Attribute(0), CallingOnSet(false),
+    TTrackElement() : TFixedTrackPiece(), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""), PlatformNumber(""), Attribute(0), CallingOnSet(false),
         Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1),
         TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), StationEntryStopLinkPos3(-1),
-        StationEntryStopLinkPos4(-1), SigAspect(FourAspect)
+        StationEntryStopLinkPos4(-1), SigAspect(FourAspect), PortalDirection(PortalBoth)
     {
         Failed = false; //added at v2.13.1
         for(int x = 0; x < 4; x++)
@@ -665,6 +672,33 @@ can't have a route set while changing; can't be opened while a route is set; and
     typedef TTrackMap::iterator TTrackMapIterator;
     typedef std::pair<THVPair, unsigned int>TTrackMapEntry;
 
+    struct TModTrackOverlay
+    {
+        std::string ModId;
+        std::string ActionId;
+        AnsiString Text;
+        TColor BackgroundColour;
+        TModTrackOverlay() : BackgroundColour(clSilver) {}
+        TModTrackOverlay(const std::string& ModIdIn, const std::string& ActionIdIn, const AnsiString& TextIn, TColor ColourIn) :
+            ModId(ModIdIn), ActionId(ActionIdIn), Text(TextIn), BackgroundColour(ColourIn) {}
+    };
+
+    typedef std::vector<TModTrackOverlay>TModTrackOverlayVector;
+    typedef std::map<unsigned int, TModTrackOverlayVector>TModTrackOverlayMap;
+
+    struct TInterposeLabel
+    {
+        AnsiString Text;
+        TColor BackgroundColour;
+        TInterposeLabel() : Text(""), BackgroundColour(clSilver) {}
+        TInterposeLabel(AnsiString TextIn, TColor BackgroundColourIn) : Text(TextIn), BackgroundColour(BackgroundColourIn) {}
+    };
+
+    typedef std::map<unsigned int, TInterposeLabel>TInterposeLabelMap;
+///< map of temporary interpose labels, keyed by TrackVector position
+    typedef TInterposeLabelMap::iterator TInterposeLabelMapIterator;
+    typedef std::pair<unsigned int, TInterposeLabel>TInterposeLabelMapEntry;
+
     typedef std::map<THVPair, THVPair, TMapComp>TGapMap;
 ///< map of matching gap positions as an HLoc/VLoc pair, with the key being
     typedef TGapMap::iterator TGapMapIterator;
@@ -829,6 +863,10 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///<the map of graphic filenames as key and TPicture* as values
     TTrackMap TrackMap;
 ///< map of track (see type for more information above)
+    TModTrackOverlayMap ModTrackOverlayMap;
+///< text overlays supplied by enabled feature mods, keyed by TrackVector position
+    TInterposeLabelMap InterposeLabelMap;
+///< map of temporary interpose labels for display only
     TTrackVector TrackVector, InactiveTrackVector, NewVector, DistanceVector, DistanceSearchVector, SelectVector;
 ///< vectors of TrackElements
     TTrackVectorIterator NextTrackElementPtr;
@@ -1190,6 +1228,10 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void LengthOrSpeedHeatMap(int Caller, bool Length, TDisplay *Disp); //Length false -> speed heatmap
 /// Load all BarriersDownVector values from SessionFile
     void LoadBarriersDownVector(int Caller, std::ifstream &VecFile);
+/// Load all interpose labels from SessionFile
+    void LoadSessionInterposeLabels(int Caller, std::ifstream &InFile);
+/// Load all interpose label colours from SessionFile
+    void LoadSessionInterposeLabelColours(int Caller, std::ifstream &InFile);
 /// new at v2.4.0, load user graphics
     void LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString GraphicsPath);
 /// Load track elements (active & inactive) from the file into the relevant vectors and maps, and try to link the resulting track
@@ -1229,6 +1271,16 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void PlotSmallRailway(int Caller, TDisplay *Disp);
 /// Plot on screen in zoomed-out mode and in gap setting mode a small red square corresponding to the gap position that is waiting to have its matching gap selected (see also ShowSelectedGap)
     void PlotSmallRedGap(int Caller);
+/// Plot text overlays supplied by feature mods
+    void PlotModTrackOverlays(int Caller, TDisplay *Disp);
+/// Add or replace one mod's overlay on a track element
+    void SetModTrackOverlay(const std::string& ModId, const std::string& ActionId, int TrackVectorPosition, const AnsiString& Text, TColor BackgroundColour);
+/// Remove one mod action's overlay from a track element
+    void RemoveModTrackOverlay(const std::string& ModId, const std::string& ActionId, int TrackVectorPosition);
+/// Find one mod action's overlay on a track element, or null if none exists
+    TModTrackOverlay *FindModTrackOverlay(const std::string& ModId, const std::string& ActionId, int TrackVectorPosition);
+/// Plot all interpose labels on the displayed track
+    void PlotInterposeLabels(int Caller, TDisplay *Disp);
 /// Add all LCs to LCVector - note that this contains all LC elements whether linked to others or not
     void PopulateLCVector(int Caller);
 /// clear then add all simple element track vector positions to the vector, added at v2.13.0
@@ -1262,6 +1314,10 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void SaveChangingLCVector(int Caller, std::ofstream &OutFile);
 /// Save all vector values to the session file
     void SaveSessionBarriersDownVector(int Caller, std::ofstream &OutFile);
+/// Save all interpose labels to the session file
+    void SaveSessionInterposeLabels(int Caller, std::ofstream &OutFile);
+/// Save all interpose label colours to the session file
+    void SaveSessionInterposeLabelColours(int Caller, std::ofstream &OutFile);
 /// Save all active and inactive track elements to VecFile
     void SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow);
 /// save graphics

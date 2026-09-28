@@ -19,6 +19,14 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#130 from josco via discord on 28/09/26 13:19
+I have just started to revisit and use the train failures function. I address the failures via the repair the train menu link rather than using the standby train function. Is it possible for ROS to give a time limit for the repair of the train?
+Similar to the track failures whereby, after a random timespan, the train could then be repaired
+
+Albert 28/09/26 16:02
+Trains aren't repaired automatically.  Relatively minor failures that can be repaired by the driver or by calling out a specialist can be dealt with via the menu as you mention, but serious failures need standby motive power to recover the train.  It is up to the operator to decide which method to use.  This approach is thought to represent real life situations.
+Having an automatic repair after a random time interval will be a new function, which I'll add to the wishlist in case anyone wants to have a go at coding it.  I have become reluctant to add new functions myself because of unwanted side effects that have plagued recent changes, where correcting the unwanted effects has often been much more problematic than adding the new function!
+
 #129 from fitzburger96 via discord on 21/06/26 08:09
 I'm coming back to Brisbane South after a break, played through a morning peak timetable. I've set a few warnings, which I think are just for conflicting movements, but some of them I just can't remember! It might help if we could incorporate a brief explanation message with each warning
 

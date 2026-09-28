@@ -43,12 +43,14 @@
 #pragma hdrstop
 
 #include "TrainUnit.h"
+#include "Modding.h"
 #include "TrackUnit.h"
 #include "TextUnit.h" //for displaying train service reference
 #include "GraphicUnit.h"
 //#include "DisplayUnit.h" included in TrackUnit.h
 #include "PerfLogUnit.h"
 #include "Utilities.h"
+#include "InterfaceUnit.h"
 
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -125,6 +127,21 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     FrontCodePtr->Width = 8;
     FrontCodePtr->Assign(RailGraphics->TempBackground);
     FrontCodePtr->Transparent = false;
+    HeadCodeLabelPtr = new Graphics::TBitmap;
+    HeadCodeLabelPtr->PixelFormat = pf8bit;
+    HeadCodeLabelPtr->Height = 12;
+    HeadCodeLabelPtr->Width = 32;
+    HeadCodeLabelPtr->Assign(RailGraphics->TempBackground);
+    HeadCodeLabelPtr->Transparent = false;
+    HeadCodeLabelBackgroundPtr = new Graphics::TBitmap;
+    HeadCodeLabelBackgroundPtr->PixelFormat = pf8bit;
+    HeadCodeLabelBackgroundPtr->Height = 12;
+    HeadCodeLabelBackgroundPtr->Width = 32;
+    HeadCodeLabelBackgroundPtr->Assign(RailGraphics->TempBackground);
+    HeadCodeLabelBackgroundPtr->Transparent = false;
+    HeadCodeLabelPlotted = false;
+    HeadCodeLabelH = -1;
+    HeadCodeLabelV = -1;
     AValue = sqrt(2 * PowerAtRail / Mass);
     TimetableMaxRunningSpeed = MaxRunningSpeed;
     TerminatedMessageSent = false;
@@ -278,12 +295,17 @@ void TTrain::DeleteTrain(int Caller)
     {
         UnplotTrainInZoomOutMode(0);
     }
+    UnplotHeadCodeLabel(0, Display);
     if(FrontCodePtr == 0)
     {
         throw Exception("Error in attempting to delete FrontCodePtr");
     }
     delete FrontCodePtr;
     FrontCodePtr = 0;
+    delete HeadCodeLabelPtr;
+    HeadCodeLabelPtr = 0;
+    delete HeadCodeLabelBackgroundPtr;
+    HeadCodeLabelBackgroundPtr = 0;
     for(int x = 0; x < 4; x++)
     {
         if(BackgroundPtr[x] == 0)
@@ -596,6 +618,7 @@ void TTrain::UnplotTrain(int Caller)
         return;
     }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UnplotTrain," + HeadCode);
+    UnplotHeadCodeLabel(2, Display);
 
     if(Straddle == MidLag)
     {
@@ -753,6 +776,8 @@ void TTrain::UpdateTrain(int Caller)
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateTrain," + HeadCode);
+    if(FeatureMods) FeatureMods->emit_event("train_updated", std::to_string(TrainID));
+    UpdateTimelinessBackgroundColour(1, Display);
     UpdateCounter++;
     // 100 counts = 5secs (used in splits to prevent too frequent length checks in front & rear splits)
     if(UpdateCounter >= 100)
@@ -2999,6 +3024,43 @@ Graphics::TBitmap *TTrain::SetOneGraphicCode(char CodeChar)
 
 // ----------------------------------------------------------------------------
 
+static void BuildWholeHeadCodeGraphic(AnsiString Code, Graphics::TBitmap *Graphic, TColor BackgroundColour)
+{
+    TColor TextColour = clB0G0R0;
+    if((BackgroundColour == clCrashedBackground) || (BackgroundColour == clTrainLate10Background) ||
+       (BackgroundColour == clTrainLate20Background))
+    {
+        TextColour = clB5G5R5;
+    }
+    Graphic->PixelFormat = pf8bit;
+    Graphic->Height = 12;
+    Graphic->Width = 32;
+    RailGraphics->SetWebSafePalette(68, Graphic);
+    Graphic->Canvas->Font->Name = "MS Sans Serif";
+    Graphic->Canvas->Font->Size = 7;
+    Graphic->Canvas->Font->Style.Clear();
+    Graphic->Canvas->Font->Color = TextColour;
+    UnicodeString DrawCode = Code;
+    const int TextWidth = Graphic->Canvas->TextWidth(DrawCode);
+    int LabelWidth = TextWidth + 6;
+    if(LabelWidth < 24) LabelWidth = 24;
+    if(LabelWidth > 32) LabelWidth = 32;
+    Graphic->Width = LabelWidth;
+    Graphic->Canvas->Brush->Style = bsSolid;
+    Graphic->Canvas->Brush->Color = BackgroundColour;
+    Graphic->Canvas->FillRect(TRect(0, 0, LabelWidth, 12));
+    Graphic->Canvas->Pen->Style = psSolid;
+    Graphic->Canvas->Pen->Width = 1;
+    Graphic->Canvas->Pen->Color = clB0G0R0;
+    Graphic->Canvas->Rectangle(0, 0, LabelWidth, 12);
+    Graphic->Canvas->Brush->Style = bsClear;
+    int LabelTextLeft = (LabelWidth - TextWidth) / 2;
+    int LabelTextTop = (12 - Graphic->Canvas->TextHeight(DrawCode)) / 2;
+    if(LabelTextLeft < 1) LabelTextLeft = 1;
+    if(LabelTextTop < 0) LabelTextTop = 0;
+    Graphic->Canvas->TextOut(LabelTextLeft, LabelTextTop, DrawCode);
+}
+
 void TTrain::SetHeadCodeGraphics(int Caller, AnsiString Code)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetHeadCodeGraphics," + HeadCode);
@@ -3018,6 +3080,7 @@ void TTrain::SetHeadCodeGraphics(int Caller, AnsiString Code)
             RailGraphics->ChangeBackgroundColour3(0, HeadCodeGrPtr[x], HeadCodeGrPtr[x], BackgroundColour, clB5G5R5);
         }
     }
+    BuildWholeHeadCodeGraphic(Code, HeadCodeLabelPtr, BackgroundColour);
     Utilities->CallLogPop(1484);
 }
 
@@ -3568,6 +3631,17 @@ void TTrain::PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int El
 */
 // ---------------------------------------------------------------------------
 
+void TTrain::UnplotHeadCodeLabel(int Caller, TDisplay *Disp)
+{
+    if(!HeadCodeLabelPlotted) return;
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UnplotHeadCodeLabel," + HeadCode);
+    Disp->PlotOutput(34, HeadCodeLabelH, HeadCodeLabelV, HeadCodeLabelBackgroundPtr);
+    HeadCodeLabelPlotted = false;
+    HeadCodeLabelH = -1;
+    HeadCodeLabelV = -1;
+    Utilities->CallLogPop(2764);
+}
+
 void TTrain::PlotTrainGraphic(int Caller, int ArrayNumber, TDisplay *Disp)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotTrainGraphic," + AnsiString(ArrayNumber) + "," + HeadCode);
@@ -3578,8 +3652,62 @@ void TTrain::PlotTrainGraphic(int Caller, int ArrayNumber, TDisplay *Disp)
     }
     SetTrainElementID(0, PlotElement[ArrayNumber], PlotEntryPos[ArrayNumber]);
     // set before plot so gap flashing stops first
-    Disp->PlotOutput(29, ((Track->TrackElementAt(295, PlotElement[ArrayNumber]).HLoc * 16) + HOffset[ArrayNumber]),
-                     ((Track->TrackElementAt(296, PlotElement[ArrayNumber]).VLoc * 16) + VOffset[ArrayNumber]), HeadCodePosition[ArrayNumber]);
+    if(!FeatureMods || !FeatureMods->train_interpose_labels_enabled())
+    {
+        Disp->PlotOutput(29, ((Track->TrackElementAt(295, PlotElement[ArrayNumber]).HLoc * 16) + HOffset[ArrayNumber]),
+                         ((Track->TrackElementAt(296, PlotElement[ArrayNumber]).VLoc * 16) + VOffset[ArrayNumber]), HeadCodePosition[ArrayNumber]);
+    }
+    else
+    {
+        int LabelCentreH = 0, LabelCentreV = 0, LabelPointCount = 0;
+        for(int x = 0; x < 4; x++)
+        {
+            if(PlotElement[x] > -1)
+            {
+                int LabelVOffset = VOffset[x] - 2;
+                if(LabelVOffset < 0) LabelVOffset = 0;
+                else if(LabelVOffset > 4) LabelVOffset = 4;
+                LabelCentreH += (Track->TrackElementAt(295, PlotElement[x]).HLoc * 16) + HOffset[x] + 4;
+                LabelCentreV += (Track->TrackElementAt(296, PlotElement[x]).VLoc * 16) + LabelVOffset + 6;
+                LabelPointCount++;
+            }
+        }
+        UnplotHeadCodeLabel(1, Disp);
+        if(LabelPointCount > 0)
+        {
+            const int LabelWidth = HeadCodeLabelPtr->Width;
+            const int LabelHeight = HeadCodeLabelPtr->Height;
+            int LabelH = (LabelCentreH / LabelPointCount) - (LabelWidth / 2);
+            int LabelV = (LabelCentreV / LabelPointCount) - (LabelHeight / 2);
+            int ScreenLabelH = LabelH - (Disp->DisplayOffsetH * 16);
+            int ScreenLabelV = LabelV - (Disp->DisplayOffsetV * 16);
+            if(ScreenLabelH < 0) { LabelH -= ScreenLabelH; ScreenLabelH = 0; }
+            if(ScreenLabelV < 0) { LabelV -= ScreenLabelV; ScreenLabelV = 0; }
+            if((ScreenLabelH + LabelWidth) > Disp->GetImage()->Width)
+            {
+                const int Shift = (ScreenLabelH + LabelWidth) - Disp->GetImage()->Width;
+                LabelH -= Shift; ScreenLabelH -= Shift;
+            }
+            if((ScreenLabelV + LabelHeight) > Disp->GetImage()->Height)
+            {
+                const int Shift = (ScreenLabelV + LabelHeight) - Disp->GetImage()->Height;
+                LabelV -= Shift; ScreenLabelV -= Shift;
+            }
+            if((ScreenLabelH >= 0) && (ScreenLabelV >= 0) &&
+               ((ScreenLabelH + LabelWidth) <= Disp->GetImage()->Width) &&
+               ((ScreenLabelV + LabelHeight) <= Disp->GetImage()->Height))
+            {
+                HeadCodeLabelBackgroundPtr->Width = LabelWidth;
+                HeadCodeLabelBackgroundPtr->Height = LabelHeight;
+                HeadCodeLabelBackgroundPtr->Canvas->CopyRect(TRect(0, 0, LabelWidth, LabelHeight), Disp->GetImage()->Canvas,
+                    TRect(ScreenLabelH, ScreenLabelV, ScreenLabelH + LabelWidth, ScreenLabelV + LabelHeight));
+                Disp->PlotOutput(29, LabelH, LabelV, HeadCodeLabelPtr);
+                HeadCodeLabelPlotted = true;
+                HeadCodeLabelH = LabelH;
+                HeadCodeLabelV = LabelV;
+            }
+        }
+    }
     // Only need to set ID for leading element, stays set until train finally leaves the element
     Plotted = true;
     Utilities->CallLogPop(677);
@@ -4069,6 +4197,13 @@ void TTrain::CheckAndCancelRouteForWrongEndEntry(int Caller, int Element, int En
 
 void TTrain::PlotTrainWithNewBackgroundColour(int Caller, TColor NewBackgroundColour, TDisplay *Disp)
 {
+    if(FeatureMods && FeatureMods->train_lateness_colours_enabled() && (TrainMode == Timetable) &&
+       ((NewBackgroundColour == clNormalBackground) || (NewBackgroundColour == clStationStopBackground) ||
+        (NewBackgroundColour == clTRSBackground) || (NewBackgroundColour == clSignalStopBackground) ||
+        (NewBackgroundColour == clStoppedTrainInFront)))
+    {
+        NewBackgroundColour = TimelinessBackgroundColour(1);
+    }
     if(BackgroundColour == NewBackgroundColour)
     {
         return; // don't replot if already correct
@@ -4090,6 +4225,7 @@ void TTrain::PlotTrainWithNewBackgroundColour(int Caller, TColor NewBackgroundCo
             ColourError2 = true;
         }
     }
+    BuildWholeHeadCodeGraphic(HeadCode, HeadCodeLabelPtr, NewBackgroundColour);
     if(ColourError2)
     {
         TrainController->StopTTClockMessage(63, "ERROR:  Colour depth insufficient to display train colours properly.  Please ensure that the 'safe' (web) palette of "
@@ -5702,6 +5838,85 @@ TDateTime TTrain::GetTrainTime(int Caller, TDateTime Time)
 
 // ---------------------------------------------------------------------------
 
+bool TTrain::IsTimelinessBackgroundColour(TColor Colour) const
+{
+    return((Colour == clTrainEarlyBackground) || (Colour == clTrainOnTimeBackground) ||
+           (Colour == clTrainLate1Background) || (Colour == clTrainLate5Background) ||
+           (Colour == clTrainLate10Background) || (Colour == clTrainLate20Background));
+}
+
+// ---------------------------------------------------------------------------
+
+TColor TTrain::TimelinessBackgroundColour(int)
+{
+    const double MinsLate = CurrentTimelinessMinutes(0);
+    if(MinsLate < 0) return(clTrainEarlyBackground);
+    if(MinsLate >= 20) return(clTrainLate20Background);
+    if(MinsLate >= 10) return(clTrainLate10Background);
+    if(MinsLate >= 5) return(clTrainLate5Background);
+    if(MinsLate >= 1) return(clTrainLate1Background);
+    return(clTrainOnTimeBackground);
+}
+
+// ---------------------------------------------------------------------------
+
+double TTrain::CurrentTimelinessMinutes(int)
+{
+    double MinsLate = MinsDelayed;
+    if((TrainMode == Timetable) && !TimetableFinished && RevisedStoppedAtLoc() && DepartureTimeSet && (ActionVectorEntryPtr != 0))
+    {
+        TDateTime TimetableTime = TDateTime(-1);
+        if(ActionVectorEntryPtr->DepartureTime > TDateTime(-1))
+            TimetableTime = GetTrainTime(76, ActionVectorEntryPtr->DepartureTime);
+        else if((ActionVectorEntryPtr->Command == "pas") && TreatPassAsTimeLocDeparture && (ActionVectorEntryPtr->EventTime > TDateTime(-1)))
+            TimetableTime = GetTrainTime(77, ActionVectorEntryPtr->EventTime);
+        if(TimetableTime > TDateTime(-1))
+            MinsLate = double(TrainController->TTClockTime - TimetableTime) * 1440;
+    }
+    if((TrainMode == Timetable) && !TimetableFinished && (ActionVectorEntryPtr != 0) && (TrainDataEntryPtr != 0))
+    {
+        TDateTime NextTimetableTime = TDateTime(-1);
+        if((ActionVectorEntryPtr->FormatType == TimeTimeLoc) && !TimeTimeLocArrived && (ActionVectorEntryPtr->ArrivalTime > TDateTime(-1)))
+            NextTimetableTime = GetTrainTime(78, ActionVectorEntryPtr->ArrivalTime);
+        else if((ActionVectorEntryPtr->FormatType == TimeTimeLoc) && TimeTimeLocArrived && (ActionVectorEntryPtr->DepartureTime > TDateTime(-1)))
+            NextTimetableTime = GetTrainTime(79, ActionVectorEntryPtr->DepartureTime);
+        else if((ActionVectorEntryPtr->FormatType == TimeLoc) && (ActionVectorEntryPtr->ArrivalTime > TDateTime(-1)))
+            NextTimetableTime = GetTrainTime(80, ActionVectorEntryPtr->ArrivalTime);
+        else if((ActionVectorEntryPtr->FormatType == TimeLoc) && (ActionVectorEntryPtr->DepartureTime > TDateTime(-1)))
+            NextTimetableTime = GetTrainTime(81, ActionVectorEntryPtr->DepartureTime);
+        else if(ActionVectorEntryPtr->EventTime > TDateTime(-1))
+            NextTimetableTime = GetTrainTime(82, ActionVectorEntryPtr->EventTime);
+        if(NextTimetableTime > TDateTime(-1))
+        {
+            const double NextEventMinsLate = double(TrainController->TTClockTime - NextTimetableTime) * 1440;
+            if(NextEventMinsLate > MinsLate) MinsLate = NextEventMinsLate;
+        }
+    }
+    return(MinsLate);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrain::UpdateTimelinessBackgroundColour(int Caller, TDisplay *Disp)
+{
+    if(!FeatureMods || !FeatureMods->train_lateness_colours_enabled()) return;
+    if((TrainMode == Timetable) && !TimetableFinished && Plotted &&
+       (IsTimelinessBackgroundColour(BackgroundColour) || (BackgroundColour == clNormalBackground) ||
+        (BackgroundColour == clStationStopBackground) || (BackgroundColour == clTRSBackground) ||
+        (BackgroundColour == clSignalStopBackground) || (BackgroundColour == clStoppedTrainInFront)))
+    {
+        const TColor NewBackgroundColour = TimelinessBackgroundColour(0);
+        if(BackgroundColour != NewBackgroundColour)
+        {
+            Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateTimelinessBackgroundColour," + HeadCode);
+            PlotTrainWithNewBackgroundColour(58, NewBackgroundColour, Disp);
+            Utilities->CallLogPop(2755);
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+
 bool TTrain::IsThereAnAdjacentTrain(int Caller, TTrain *&TrainToBeJoinedBy)
 {
     // Used to check for a stopped adjacent train for use in PopUp menu //new at v2.4.0
@@ -6146,6 +6361,10 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     {
         TrainController->LateDeps++;
         TrainController->TotLateDepMins += IntMinsLate;
+    }
+    if(TimePerformance && TTEvent)
+    {
+        UpdateTimelinessBackgroundColour(0, Display);
     }
     Utilities->CallLogPop(968);
 }
@@ -10390,10 +10609,12 @@ void TTrainController::Operate(int Caller)
                         continue;
                     }
 
-//Multiplayer: here check for a train entering at a coupling {RearStartOrRepeatMins shows if it's a coupling or not), and can only be a Snt entry
-//if so and no arrival signalled yet bypass the timetabled arrival
-//if so and arrival signalled then start the new service, using the repeat number and headcode for the entering train
-//if a repeat is skipped then should be ok if it arrives later as its RunningEntry is still NotStarted
+                    // A continuation entry is held while multiplayer is joined.  The receiving peer creates it
+                    // only after the neighbouring signalbox has actually handed the train over.
+                    if(Interface && Interface->MultiplayerHoldTimetabledEntry(AVEntry0.RearStartOrRepeatMins))
+                    {
+                        continue;
+                    }
 
                     if(GetRepeatTime(2, AVEntry0.EventTime, y, IncrementalMinutes) > TTClockTime)
                     {
@@ -10633,6 +10854,9 @@ void TTrainController::Operate(int Caller)
                     }
                 }
                 Utilities->CumulativeDelayedRandMinsAllTrains += Train.CumulativeDelayedRandMinsOneTrain; //added at v2.13.0 for random delays
+                if(Interface && Train.TrainDataEntryPtr)
+                    Interface->NotifyMultiplayerTrainExited(Train.TrainDataEntryPtr->ServiceReference, Train.HeadCode,
+                                                            Train.RepeatNumber, Train.LagElement, Loc);
                 Train.TrainDataEntryPtr->TrainOperatingDataVector.at(Train.RepeatNumber).RunningEntry = Exited;
                 Train.DeleteTrain(1);
                 TrainVector.erase(TrainVector.begin() + x);
@@ -17316,6 +17540,7 @@ bool TTrainController::CheckShuttleServiceIntegrity(int Caller, TTrainDataEntry 
 
 void TTrainController::TimetableMessage(bool GiveMessages, AnsiString Message)
 {
+    LastTimetableError = Message;
     if(!GiveMessages)
     {
         return;
@@ -17337,6 +17562,7 @@ void TTrainController::TimetableMessage(bool GiveMessages, AnsiString Message)
 
 void TTrainController::SecondPassMessage(bool GiveMessages, AnsiString Message)
 {
+    LastTimetableError = Message;
     if(!GiveMessages)
     {
         return;

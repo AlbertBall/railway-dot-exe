@@ -1,0 +1,10 @@
+# Signalbox,WTT book,cache file,source folder beneath the configured WTT root
+RG,WE01,WE01.tsv,WE\WE01
+GD,WE01,WE01.tsv,WE\WE01
+GD,WG03,WG03.tsv,WG\WG03
+GD,WH01,WH01.tsv,WH\WH01
+GD,WH03,WH03.tsv,WH\WH03
+WK,WG01,WG01.tsv,WG\WG01
+WK,WG02,WG02.tsv,WG\WG02
+WK,WH01,WH01.tsv,WH\WH01
+WK,WH03,WH03.tsv,WH\WH03

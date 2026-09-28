@@ -36,7 +36,7 @@ Redistribution and use in source and binary forms, with or without modification,
     No personal names or organizations names associated with the Indy project may be used to endorse or promote products derived from
         this software without specific prior written permission of the specific individual or organization.
 
-THIS SOFTWARE IS PROVIDED BY Chad Z. Hower (Kudzu) and the Indy Pit Crew “AS IS?AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+THIS SOFTWARE IS PROVIDED BY Chad Z. Hower (Kudzu) and the Indy Pit Crew â€œAS IS?AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
 BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
 THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
 BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
@@ -89,6 +89,9 @@ class TOneRoute;
 class TTrack;
 class TGraphicElement;
 class TTrainController;
+class FeatureModManager;
+class TMultiplayerPeerForm;
+class TTrain;
 class TTrainDataEntry;
 class API; //forward class declaration instead of including header  added at v2.10.0
 
@@ -455,6 +458,8 @@ __published: // IDE-managed Components
     TMenuItem *ModeMenu;
     TMenuItem *BuildTrackMenuItem;
     TMenuItem *PlanPrefDirsMenuItem;
+    TMenuItem *SetPortalDirectionsMenuItem;
+    TMenuItem *SetPlatformNumbersMenuItem;
     TMenuItem *CreateTimetableMenuItem;
     TMenuItem *EditTimetableMenuItem;
     TMenuItem *OperateRailwayMenuItem;
@@ -824,6 +829,11 @@ __published: // IDE-managed Components
     void __fastcall StepForwardMenuItemClick(TObject *Sender);
     void __fastcall TakeSignallerControlMenuItemClick(TObject *Sender);
 	void __fastcall TimetableControlMenuItemClick(TObject *Sender);
+    void __fastcall FeatureModMenuItemClick(TObject *Sender);
+    void __fastcall FeatureModColourPanelClick(TObject *Sender);
+    void __fastcall InterposeLabelMenuItemClick(TObject *Sender);
+    void __fastcall RemoveInterposeLabelMenuItemClick(TObject *Sender);
+    void __fastcall InterposeLabelColourPanelClick(TObject *Sender);
     void __fastcall ModGraphicsMenuClick(TObject* Sender);
 
 // mouse actions
@@ -866,6 +876,8 @@ __published: // IDE-managed Components
     void __fastcall LengthCancelButtonClick(TObject *Sender);
     void __fastcall LengthOKButtonClick(TObject *Sender);
     void __fastcall LocationNameButtonClick(TObject *Sender);
+    void __fastcall SetPortalDirectionsMenuItemClick(TObject *Sender);
+    void __fastcall SetPlatformNumbersMenuItemClick(TObject *Sender);
     void __fastcall MoveTextOrGraphicButtonClick(TObject *Sender);
     void __fastcall MoveTTEntryDownButtonClick(TObject *Sender);
     void __fastcall MoveTTEntryUpButtonClick(TObject *Sender);
@@ -1030,6 +1042,34 @@ public: // AboutForm needs access to these
 
     void SetPausedOrZoomedInfoCaption(int Caller); //ActionsDueForm needs access
 ///< Sets the information panel message for zoom-out or paused modes
+    bool ReceiveMultiplayerTrain(AnsiString ServiceReference, AnsiString HeadCode, int RepeatNumber,
+                                 AnsiString FromBox, AnsiString DestinationPortal, AnsiString &FailureReason);
+    void NotifyMultiplayerTrainExited(AnsiString ServiceReference, AnsiString HeadCode, int RepeatNumber,
+                                      int LagElement, AnsiString ExitLocation);
+    bool MultiplayerHoldTimetabledEntry(int RearPosition) const;
+    bool GetMultiplayerPortalSignalAspect(AnsiString Portal, int &SignalAttribute) const;
+    bool MultiplayerPortalAllowsEntry(AnsiString Portal) const;
+    bool MultiplayerPortalAllowsExit(AnsiString Portal) const;
+    bool GetMultiplayerBoundaryTargetAttribute(AnsiString LocalPortal, int &TargetAttribute) const;
+    void RefreshMultiplayerBoundarySignals(AnsiString LocalPortal);
+    bool BeginMultiplayerWTTClock(TDateTime LocalSessionTime, __int64 RailwayClockMilliseconds,
+                                  AnsiString &ErrorMessage);
+    void SynchroniseMultiplayerWTTClock(TDateTime LocalSessionTime, __int64 RailwayClockMilliseconds);
+    __int64 MultiplayerWTTRailwayClockMilliseconds() const;
+    void EndMultiplayerWTTClock();
+    bool ResolveMultiplayerWTTStart(AnsiString FirstLocation, AnsiString NextLocation, AnsiString PlatformNumber,
+                                    bool FromContinuation, AnsiString BoundaryNames,
+                                    AnsiString &StartElementIDs) const;
+    void ResolveMultiplayerWTTStartCandidates(AnsiString FirstLocation, AnsiString NextLocation, AnsiString PlatformNumber,
+                                              bool FromContinuation, AnsiString BoundaryNames,
+                                              std::vector<AnsiString> &StartElementIDs) const;
+    bool ResolveMultiplayerWTTExit(AnsiString LastLocation, AnsiString BoundaryNames,
+                                   AnsiString &ExitElementID) const;
+    bool InstallMultiplayerWTTTimetable(const std::vector<AnsiString>& ServiceEntries, AnsiString &ErrorMessage);
+    bool ClearMultiplayerWTTTimetable();
+    bool ApplyMultiplayerWTTSkip(AnsiString ServiceReference, AnsiString LocationName);
+    bool MultiplayerWTTServiceRunning(AnsiString ServiceReference) const;
+    bool ApplyMultiplayerWTTCancellation(AnsiString ServiceReference);
     void ClearandRebuildRailway(int Caller);
 ///< Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker
     bool FirstActionsDueFormDisplay;
@@ -1045,6 +1085,38 @@ public: // AboutForm needs access to these
 
 
 private:
+
+    friend FeatureModManager;
+
+    TBitBtn *PeerMultiplayerButton;
+    TMultiplayerPeerForm *PeerMultiplayerForm;
+    TMenuItem *OperateMultiplayerMenuItem;
+    bool MultiplayerOperateMode;
+    bool PeerWTTClockActive;
+    TDateTime PeerWTTClockBackup;
+    TDateTime PeerWTTRestartBackup;
+    TDateTime PeerWTTBaseBackup;
+    float PeerWTTSpeedBackup;
+    void __fastcall PeerMultiplayerButtonClick(TObject *Sender);
+    void __fastcall OperateMultiplayerMenuItemClick(TObject *Sender);
+
+    struct TFeatureModMenuBinding
+    {
+        TMenuItem *EditItem;
+        TMenuItem *RemoveItem;
+        size_t ActionIndex;
+    };
+    std::vector<TFeatureModMenuBinding> FeatureModMenuBindings;
+    int FeatureModDialogColour;
+    int RightClickModTrackVectorPosition;
+    void BuildFeatureModMenus();
+    void PrepareFeatureModContext(int TrackVectorPosition);
+    bool GetFeatureModTextOverlayDetails(const FeatureModAction& Action, AnsiString& Text, TColor& BackgroundColour);
+    TMenuItem *InterposeLabelMenuItem;
+    TMenuItem *EditInterposeLabelMenuItem;
+    TMenuItem *RemoveInterposeLabelMenuItem;
+    int InterposeLabelDialogColour;
+    bool GetInterposeLabelDetails(AnsiString &Label, TColor &BackgroundColour);
 
 // Folder names
     static const UnicodeString RAILWAY_DIR_NAME;
@@ -1067,7 +1139,7 @@ private:
 
     enum TLevel2TrackMode
     {
-        NoTrackMode, AddTrack, AddGraphic, SelectGraphic, GapSetting, AddText, MoveTextOrGraphic, AddLocationName, DistanceStart, DistanceContinuing,
+        NoTrackMode, AddTrack, AddGraphic, SelectGraphic, GapSetting, AddText, MoveTextOrGraphic, AddLocationName, SetPortalDirection, SetPlatformNumber, DistanceStart, DistanceContinuing,
         TrackSelecting, CutMoving, CopyMoving, Pasting, Deleting
     } Level2TrackMode;
 
@@ -1473,6 +1545,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     int RightClickTrainMousePosX;
     int RightClickTrainMousePosY;
 ///< used to retain the mouse position on the train for SkipTimetabledActionsMenuItemClick
+    int RightClickInterposeTrackVectorPosition;
+///< used to store the track vector position selected for an interpose label action
     int StartWholeRailwayMoveHPos;
 ///<mouse X position when start to move the whole railway
     int StartWholeRailwayMoveVPos;
@@ -1604,6 +1678,9 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     bool SessionFileIntegrityCheck(int Caller, AnsiString FileName);
 /// Add 'Name' to TextVector and display on screen at a position determined by the shape and size of the location if UseEnteredPosition false, or at HPos & VPos if UseEnteredPosition true
     void AddLocationNameText(int Caller, AnsiString Name, int HPos, int VPos, bool UseEnteredPosition);
+    void SetOrDescribePortalDirection(int HLoc, int VLoc, bool CycleDirection);
+    bool TrackPositionHasPlatform(int TrackPosition);
+    void SetPlatformNumberAt(int HLoc, int VLoc);
 /// Used in ExpandRepeatsButtonClick function to add digits to a service reference
     void AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits); //added at v2.17.0
 /// Function that deals with approach locking during ClockTimer2 function
